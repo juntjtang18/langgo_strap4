@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_a_verb_metas",
+  "info": {
+    "displayName": "verb_meta",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "simple_past": {
+      "type": "string"
+    },
+    "past_participle": {
+      "type": "string"
+    },
+    "present_participle": {
+      "type": "string"
+    },
+    "thirdperson_singular": {
+      "type": "string"
+    },
+    "auxiliary_verb": {
+      "type": "string"
+    },
+    "conjugations": {
+      "type": "json"
+    }
+  }
+}

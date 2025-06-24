@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_a_taglists",
+  "info": {
+    "displayName": "taglist",
+    "icon": "server"
+  },
+  "options": {},
+  "attributes": {
+    "tag": {
+      "type": "string"
+    }
+  }
+}
