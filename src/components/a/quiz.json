@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_a_quizzes",
+  "info": {
+    "displayName": "quiz",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string"
+    },
+    "options": {
+      "type": "json"
+    },
+    "answer": {
+      "type": "string"
+    },
+    "explanation": {
+      "type": "string"
+    },
+    "audio": {
+      "allowedTypes": [
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

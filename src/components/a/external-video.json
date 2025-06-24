@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_a_external_videos",
+  "info": {
+    "displayName": "external_video",
+    "icon": "cast"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "caption": {
+      "type": "string"
+    }
+  }
+}

@@ -677,90 +677,6 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
-export interface ApiChapterChapter extends Schema.CollectionType {
-  collectionName: 'chapters';
-  info: {
-    singularName: 'chapter';
-    pluralName: 'chapters';
-    displayName: 'chapter';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.UID<'api::chapter.chapter', 'title'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    order: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    unit: Attribute.Relation<
-      'api::chapter.chapter',
-      'manyToOne',
-      'api::unit.unit'
-    >;
-    preconditions: Attribute.Relation<
-      'api::chapter.chapter',
-      'manyToMany',
-      'api::chapter.chapter'
-    >;
-    unlocks: Attribute.Relation<
-      'api::chapter.chapter',
-      'manyToMany',
-      'api::chapter.chapter'
-    >;
-    lessons: Attribute.Relation<
-      'api::chapter.chapter',
-      'oneToMany',
-      'api::lesson.lesson'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::chapter.chapter',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::chapter.chapter',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::chapter.chapter',
-      'oneToMany',
-      'api::chapter.chapter'
-    >;
-    locale: Attribute.String;
-  };
-}
-
 export interface ApiLessonLesson extends Schema.CollectionType {
   collectionName: 'lessons';
   info: {
@@ -783,23 +699,45 @@ export interface ApiLessonLesson extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    chapter: Attribute.Relation<
-      'api::lesson.lesson',
-      'manyToOne',
-      'api::chapter.chapter'
-    >;
     slug: Attribute.UID<'api::lesson.lesson', 'title'> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    unit: Attribute.Relation<
+      'api::lesson.lesson',
+      'manyToOne',
+      'api::unit.unit'
+    >;
     description: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    order: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    tags: Attribute.Component<'a.taglist', true> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    lessonlevel: Attribute.Relation<
+      'api::lesson.lesson',
+      'manyToOne',
+      'api::lessonlevel.lessonlevel'
+    >;
+    sections: Attribute.Relation<
+      'api::lesson.lesson',
+      'oneToMany',
+      'api::section.section'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -818,6 +756,113 @@ export interface ApiLessonLesson extends Schema.CollectionType {
       'api::lesson.lesson',
       'oneToMany',
       'api::lesson.lesson'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
+  collectionName: 'lessonlevels';
+  info: {
+    singularName: 'lessonlevel';
+    pluralName: 'lessonlevels';
+    displayName: 'lessonlevel';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    level: Attribute.String;
+    description: Attribute.String;
+    lessons: Attribute.Relation<
+      'api::lessonlevel.lessonlevel',
+      'oneToMany',
+      'api::lesson.lesson'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::lessonlevel.lessonlevel',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::lessonlevel.lessonlevel',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSectionSection extends Schema.CollectionType {
+  collectionName: 'sections';
+  info: {
+    singularName: 'section';
+    pluralName: 'sections';
+    displayName: 'section';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    lesson: Attribute.Relation<
+      'api::section.section',
+      'manyToOne',
+      'api::lesson.lesson'
+    >;
+    order: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    components: Attribute.DynamicZone<
+      [
+        'a.word-ref',
+        'a.video',
+        'a.sent-ref',
+        'a.quiz',
+        'a.pagebreaker',
+        'a.external-video'
+      ]
+    > &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::section.section',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::section.section',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::section.section',
+      'oneToMany',
+      'api::section.section'
     >;
     locale: Attribute.String;
   };
@@ -876,6 +921,11 @@ export interface ApiSentenceSentence extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    words: Attribute.Relation<
+      'api::sentence.sentence',
+      'manyToMany',
+      'api::word.word'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -950,10 +1000,10 @@ export interface ApiUnitUnit extends Schema.CollectionType {
       'manyToMany',
       'api::unit.unit'
     >;
-    chapters: Attribute.Relation<
+    lessons: Attribute.Relation<
       'api::unit.unit',
       'oneToMany',
-      'api::chapter.chapter'
+      'api::lesson.lesson'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -965,6 +1015,108 @@ export interface ApiUnitUnit extends Schema.CollectionType {
       'api::unit.unit',
       'oneToMany',
       'api::unit.unit'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiWordWord extends Schema.CollectionType {
+  collectionName: 'words';
+  info: {
+    singularName: 'word';
+    pluralName: 'words';
+    displayName: 'word';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    word: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    base_text: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    instruction: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    part_of_speech: Attribute.Enumeration<
+      [
+        'noun',
+        'verb',
+        'adjective',
+        'adverb',
+        'conjunction',
+        'preposition',
+        'interjection',
+        'determiner',
+        'pronoun'
+      ]
+    > &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    gender: Attribute.Enumeration<['masculine', 'feminine', 'neuter']> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    article: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    audio: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    tags: Attribute.Component<'a.taglist', true> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    example_sentences: Attribute.Relation<
+      'api::word.word',
+      'manyToMany',
+      'api::sentence.sentence'
+    >;
+    verb_meta: Attribute.Component<'a.verb-meta'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::word.word',
+      'oneToMany',
+      'api::word.word'
     >;
     locale: Attribute.String;
   };
@@ -986,10 +1138,12 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
-      'api::chapter.chapter': ApiChapterChapter;
       'api::lesson.lesson': ApiLessonLesson;
+      'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
+      'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::unit.unit': ApiUnitUnit;
+      'api::word.word': ApiWordWord;
     }
   }
 }

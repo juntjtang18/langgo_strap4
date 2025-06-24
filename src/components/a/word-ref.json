@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_a_word_refs",
+  "info": {
+    "displayName": "wordRef",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "word": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::word.word"
+    }
+  }
+}

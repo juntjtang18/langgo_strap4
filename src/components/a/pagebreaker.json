@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_a_pagebreakers",
+  "info": {
+    "displayName": "pagebreaker",
+    "icon": "expand"
+  },
+  "options": {},
+  "attributes": {
+    "backbutton": {
+      "type": "boolean",
+      "default": true
+    },
+    "nextbutton": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

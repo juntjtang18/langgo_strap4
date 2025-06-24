@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_a_sent_refs",
+  "info": {
+    "displayName": "sentRef",
+    "icon": "discuss",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "sentence": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sentence.sentence"
+    },
+    "tags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "a.taglist"
+    }
+  }
+}

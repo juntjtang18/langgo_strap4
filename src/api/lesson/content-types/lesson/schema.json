@@ -23,12 +23,6 @@
       },
       "type": "string"
     },
-    "chapter": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::chapter.chapter",
-      "inversedBy": "lessons"
-    },
     "slug": {
       "pluginOptions": {
         "i18n": {
@@ -38,6 +32,12 @@
       "type": "uid",
       "targetField": "title"
     },
+    "unit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::unit.unit",
+      "inversedBy": "lessons"
+    },
     "description": {
       "pluginOptions": {
         "i18n": {
@@ -45,6 +45,36 @@
         }
       },
       "type": "string"
+    },
+    "order": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "tags": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "a.taglist"
+    },
+    "lessonlevel": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::lessonlevel.lessonlevel",
+      "inversedBy": "lessons"
+    },
+    "sections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::section.section",
+      "mappedBy": "lesson"
     }
   }
 }

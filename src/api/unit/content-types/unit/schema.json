@@ -61,10 +61,10 @@
       "target": "api::unit.unit",
       "inversedBy": "preconditions"
     },
-    "chapters": {
+    "lessons": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::chapter.chapter",
+      "target": "api::lesson.lesson",
       "mappedBy": "unit"
     }
   }

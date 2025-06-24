@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lessonlevels",
+  "info": {
+    "singularName": "lessonlevel",
+    "pluralName": "lessonlevels",
+    "displayName": "lessonlevel",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "level": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "lessons": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::lesson.lesson",
+      "mappedBy": "lessonlevel"
+    }
+  }
+}

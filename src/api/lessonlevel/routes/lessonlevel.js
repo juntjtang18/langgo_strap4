@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * chapter router
+ * lessonlevel router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::chapter.chapter');
+module.exports = createCoreRouter('api::lessonlevel.lessonlevel');
