@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reviewlogs",
+  "info": {
+    "singularName": "reviewlog",
+    "pluralName": "reviewlogs",
+    "displayName": "reviewlog"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "reviewlogs"
+    },
+    "reviewd_at": {
+      "type": "datetime"
+    },
+    "level": {
+      "type": "enumeration",
+      "enum": [
+        "daily",
+        "weekly",
+        "monthly"
+      ]
+    },
+    "result": {
+      "type": "enumeration",
+      "enum": [
+        "correct",
+        "wrong"
+      ],
+      "required": true
+    }
+  }
+}

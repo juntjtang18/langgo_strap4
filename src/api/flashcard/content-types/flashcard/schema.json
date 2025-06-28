@@ -36,25 +36,7 @@
         "a.user-word-ref"
       ]
     },
-    "correct_times": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "integer",
-      "default": 0
-    },
-    "wrong_times": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "integer",
-      "default": 0
-    },
-    "lastview_at": {
+    "last_reviewed_at": {
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -67,6 +49,66 @@
       "relation": "manyToOne",
       "target": "api::lesson.lesson",
       "inversedBy": "flashcards"
+    },
+    "daily_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "weekly_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "weekly_wrong_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "monthly_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "monthly_wrong_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "is_remembered": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

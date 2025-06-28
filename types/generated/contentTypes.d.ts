@@ -631,6 +631,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::flashcard.flashcard'
     >;
+    reviewlogs: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::reviewlog.reviewlog'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -722,21 +727,7 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    correct_times: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<0>;
-    wrong_times: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<0>;
-    lastview_at: Attribute.DateTime &
+    last_reviewed_at: Attribute.DateTime &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -747,6 +738,54 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'manyToOne',
       'api::lesson.lesson'
     >;
+    daily_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    weekly_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    weekly_wrong_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    monthly_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    monthly_wrong_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    is_remembered: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -898,6 +937,42 @@ export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::lessonlevel.lessonlevel',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiReviewlogReviewlog extends Schema.CollectionType {
+  collectionName: 'reviewlogs';
+  info: {
+    singularName: 'reviewlog';
+    pluralName: 'reviewlogs';
+    displayName: 'reviewlog';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::reviewlog.reviewlog',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    reviewd_at: Attribute.DateTime;
+    level: Attribute.Enumeration<['daily', 'weekly', 'monthly']>;
+    result: Attribute.Enumeration<['correct', 'wrong']> & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::reviewlog.reviewlog',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::reviewlog.reviewlog',
       'oneToOne',
       'admin::user'
     > &
@@ -1390,6 +1465,7 @@ declare module '@strapi/types' {
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
+      'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::unit.unit': ApiUnitUnit;

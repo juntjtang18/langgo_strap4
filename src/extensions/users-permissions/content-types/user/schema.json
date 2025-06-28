@@ -83,6 +83,12 @@
       "relation": "oneToMany",
       "target": "api::flashcard.flashcard",
       "mappedBy": "user"
+    },
+    "reviewlogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reviewlog.reviewlog",
+      "mappedBy": "user"
     }
   }
 }
