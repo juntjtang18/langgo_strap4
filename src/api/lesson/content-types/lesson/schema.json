@@ -75,6 +75,24 @@
       "relation": "oneToMany",
       "target": "api::section.section",
       "mappedBy": "lesson"
+    },
+    "user_words": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-word.user-word",
+      "mappedBy": "lesson"
+    },
+    "user_sentences": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-sentence.user-sentence",
+      "mappedBy": "lesson"
+    },
+    "flashcards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::flashcard.flashcard",
+      "mappedBy": "lesson"
     }
   }
 }

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_a_user_sent_refs",
+  "info": {
+    "displayName": "UserSentRef",
+    "icon": "command"
+  },
+  "options": {},
+  "attributes": {
+    "user_sentence": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-sentence.user-sentence"
+    }
+  }
+}

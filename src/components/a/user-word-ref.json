@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_a_user_word_refs",
+  "info": {
+    "displayName": "UserWordRef",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "user_word": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-word.user-word"
+    }
+  }
+}

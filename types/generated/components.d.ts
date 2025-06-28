@@ -46,14 +46,7 @@ export interface ASentRef extends Schema.Component {
     icon: 'discuss';
     description: '';
   };
-  attributes: {
-    sentence: Attribute.Relation<
-      'a.sent-ref',
-      'oneToOne',
-      'api::sentence.sentence'
-    >;
-    tags: Attribute.Component<'a.taglist', true>;
-  };
+  attributes: {};
 }
 
 export interface ATaglist extends Schema.Component {
@@ -64,6 +57,36 @@ export interface ATaglist extends Schema.Component {
   };
   attributes: {
     tag: Attribute.String;
+  };
+}
+
+export interface AUserSentRef extends Schema.Component {
+  collectionName: 'components_a_user_sent_refs';
+  info: {
+    displayName: 'UserSentRef';
+    icon: 'command';
+  };
+  attributes: {
+    user_sentence: Attribute.Relation<
+      'a.user-sent-ref',
+      'oneToOne',
+      'api::user-sentence.user-sentence'
+    >;
+  };
+}
+
+export interface AUserWordRef extends Schema.Component {
+  collectionName: 'components_a_user_word_refs';
+  info: {
+    displayName: 'UserWordRef';
+    icon: 'dashboard';
+  };
+  attributes: {
+    user_word: Attribute.Relation<
+      'a.user-word-ref',
+      'oneToOne',
+      'api::user-word.user-word'
+    >;
   };
 }
 
@@ -114,6 +137,8 @@ declare module '@strapi/types' {
       'a.quiz': AQuiz;
       'a.sent-ref': ASentRef;
       'a.taglist': ATaglist;
+      'a.user-sent-ref': AUserSentRef;
+      'a.user-word-ref': AUserWordRef;
       'a.verb-meta': AVerbMeta;
       'a.video': AVideo;
       'a.word-ref': AWordRef;

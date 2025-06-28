@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "flashcards",
+  "info": {
+    "singularName": "flashcard",
+    "pluralName": "flashcards",
+    "displayName": "flashcard",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "flashcards"
+    },
+    "content": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "a.sent-ref",
+        "a.user-sent-ref",
+        "a.word-ref",
+        "a.user-word-ref"
+      ]
+    },
+    "correct_times": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 0
+    },
+    "wrong_times": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 0
+    },
+    "lastview_at": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "datetime"
+    },
+    "lesson": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::lesson.lesson",
+      "inversedBy": "flashcards"
+    }
+  }
+}
