@@ -815,6 +815,7 @@ export interface ApiLessonLesson extends Schema.CollectionType {
     singularName: 'lesson';
     pluralName: 'lessons';
     displayName: 'lesson';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -837,11 +838,6 @@ export interface ApiLessonLesson extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    unit: Attribute.Relation<
-      'api::lesson.lesson',
-      'manyToOne',
-      'api::unit.unit'
-    >;
     description: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -884,6 +880,11 @@ export interface ApiLessonLesson extends Schema.CollectionType {
       'api::lesson.lesson',
       'oneToMany',
       'api::flashcard.flashcard'
+    >;
+    unit: Attribute.Relation<
+      'api::lesson.lesson',
+      'manyToOne',
+      'api::unit.unit'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1173,21 +1174,17 @@ export interface ApiUnitUnit extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    preconditions: Attribute.Relation<
-      'api::unit.unit',
-      'manyToMany',
-      'api::unit.unit'
-    >;
-    unlocks: Attribute.Relation<
-      'api::unit.unit',
-      'manyToMany',
-      'api::unit.unit'
-    >;
     lessons: Attribute.Relation<
       'api::unit.unit',
       'oneToMany',
       'api::lesson.lesson'
     >;
+    precondition: Attribute.Relation<
+      'api::unit.unit',
+      'oneToOne',
+      'api::unit.unit'
+    >;
+    unlocks: Attribute.Relation<'api::unit.unit', 'oneToOne', 'api::unit.unit'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::unit.unit', 'oneToOne', 'admin::user'> &

@@ -49,23 +49,23 @@
       },
       "type": "integer"
     },
-    "preconditions": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::unit.unit",
-      "inversedBy": "unlocks"
-    },
-    "unlocks": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::unit.unit",
-      "inversedBy": "preconditions"
-    },
     "lessons": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::lesson.lesson",
       "mappedBy": "unit"
+    },
+    "precondition": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::unit.unit",
+      "inversedBy": "unlocks"
+    },
+    "unlocks": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::unit.unit",
+      "mappedBy": "precondition"
     }
   }
 }

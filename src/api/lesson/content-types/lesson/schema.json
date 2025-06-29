@@ -4,7 +4,8 @@
   "info": {
     "singularName": "lesson",
     "pluralName": "lessons",
-    "displayName": "lesson"
+    "displayName": "lesson",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -31,12 +32,6 @@
       },
       "type": "uid",
       "targetField": "title"
-    },
-    "unit": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::unit.unit",
-      "inversedBy": "lessons"
     },
     "description": {
       "pluginOptions": {
@@ -93,6 +88,12 @@
       "relation": "oneToMany",
       "target": "api::flashcard.flashcard",
       "mappedBy": "lesson"
+    },
+    "unit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::unit.unit",
+      "inversedBy": "lessons"
     }
   }
 }
