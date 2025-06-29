@@ -35,65 +35,70 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
     strapi.log.debug(`Date cutoffs - 7 days ago: ${sevenDaysAgo.toISOString()}, 30 days ago: ${thirtyDaysAgo.toISOString()}`);
 
     try {
-      // **REFACTOR**: Switched from `strapi.db.query` to `strapi.entityService` for more robust querying.
+      // **PERFORMANCE OPTIMIZATION 1: More Specific Population**
+      // This object now specifies the exact fields needed, avoiding over-fetching of metadata
+      // like user permissions, createdBy, updatedBy, etc., which significantly reduces query complexity.
       const commonPopulate = {
         content: {
-          populate: '*',
+          populate: {
+            word: {
+              populate: ['tags', 'verb_meta', 'audio'],
+            },
+            sentence: {
+              populate: ['tags', 'words', 'target_audio'],
+            },
+            user_word: {
+              populate: {
+                fields: ['word', 'base_text', 'part_of_speech'],
+              },
+            },
+            user_sentence: {
+              populate: {
+                fields: ['target_text', 'base_text'],
+              },
+            },
+          },
         },
       };
 
-      // 3. Query for each tier of flashcards separately
-      strapi.log.info(`[User: ${user.id}] Fetching DAILY review cards...`);
-      const dailyCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
+      // **PERFORMANCE OPTIMIZATION 2: Single Database Query**
+      // Instead of three separate queries, we combine the logic into a single query using $or.
+      // This drastically reduces database overhead.
+      strapi.log.info(`[User: ${user.id}] Fetching all review cards in a single query...`);
+      const allReviewCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
         where: {
           user: user.id,
           is_remembered: { $ne: true },
           $or: [
-            { daily_streak: { $lt: 3 } },
-            { daily_streak: { $null: true } }
+            // Daily tier condition
+            {
+              $or: [
+                { daily_streak: { $lt: 3 } },
+                { daily_streak: { $null: true } }
+              ]
+            },
+            // Weekly tier condition
+            {
+              daily_streak: { $gte: 3 },
+              weekly_streak: { $lt: 3 },
+              last_reviewed_at: { $lte: sevenDaysAgo.toISOString() },
+            },
+            // Monthly tier condition
+            {
+              weekly_streak: { $gte: 3 },
+              monthly_streak: { $lt: 2 },
+              last_reviewed_at: { $lte: thirtyDaysAgo.toISOString() },
+            }
           ]
         },
         populate: commonPopulate,
       });
-      strapi.log.info(`[User: ${user.id}] Found ${dailyCards.length} DAILY cards.`);
 
-      strapi.log.info(`[User: ${user.id}] Fetching WEEKLY review cards...`);
-      const weeklyCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-        where: {
-          user: user.id,
-          is_remembered: { $ne: true },
-          daily_streak: { $gte: 3 },
-          weekly_streak: { $lt: 3 },
-          last_reviewed_at: { $lte: sevenDaysAgo.toISOString() },
-        },
-        populate: commonPopulate,
-      });
-      strapi.log.info(`[User: ${user.id}] Found ${weeklyCards.length} WEEKLY cards.`);
-
-      strapi.log.info(`[User: ${user.id}] Fetching MONTHLY review cards...`);
-      const monthlyCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-        where: {
-          user: user.id,
-          is_remembered: { $ne: true },
-          weekly_streak: { $gte: 3 },
-          monthly_streak: { $lt: 2 },
-          last_reviewed_at: { $lte: thirtyDaysAgo.toISOString() },
-        },
-        populate: commonPopulate,
-      });
-      strapi.log.info(`[User: ${user.id}] Found ${monthlyCards.length} MONTHLY cards.`);
-
-      // 4. Combine and sanitize the results
-      const allReviewCards = [...dailyCards, ...weeklyCards, ...monthlyCards];
-
-      // Use a Map to ensure no duplicates if a card somehow matches multiple criteria
-      const uniqueCards = new Map(allReviewCards.map(card => [card.id, card]));
-      const results = Array.from(uniqueCards.values());
-      
-      strapi.log.info(`[User: ${user.id}] Total unique cards to be returned: ${results.length}`);
+      // The results are already unique since they come from a single query.
+      strapi.log.info(`[User: ${user.id}] Total unique cards to be returned: ${allReviewCards.length}`);
 
       // 5. Return the combined list of cards
-      const sanitizedResults = await this.transformResponse(results);
+      const sanitizedResults = await this.transformResponse(allReviewCards);
       return sanitizedResults;
 
     } catch (err) {

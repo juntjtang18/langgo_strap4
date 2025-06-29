@@ -6,5 +6,11 @@
     "description": ""
   },
   "options": {},
-  "attributes": {}
+  "attributes": {
+    "sentence": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sentence.sentence"
+    }
+  }
 }

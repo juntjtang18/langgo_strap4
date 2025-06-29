@@ -46,7 +46,13 @@ export interface ASentRef extends Schema.Component {
     icon: 'discuss';
     description: '';
   };
-  attributes: {};
+  attributes: {
+    sentence: Attribute.Relation<
+      'a.sent-ref',
+      'oneToOne',
+      'api::sentence.sentence'
+    >;
+  };
 }
 
 export interface ATaglist extends Schema.Component {
