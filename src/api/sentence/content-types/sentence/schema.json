@@ -76,6 +76,20 @@
       "relation": "manyToMany",
       "target": "api::word.word",
       "mappedBy": "example_sentences"
+    },
+    "register": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Formal",
+        "Informal",
+        "Neutral"
+      ],
+      "default": "Neutral"
     }
   }
 }

@@ -1110,6 +1110,13 @@ export interface ApiSentenceSentence extends Schema.CollectionType {
       'manyToMany',
       'api::word.word'
     >;
+    register: Attribute.Enumeration<['Formal', 'Informal', 'Neutral']> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<'Neutral'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1347,6 +1354,7 @@ export interface ApiWordWord extends Schema.CollectionType {
     singularName: 'word';
     pluralName: 'words';
     displayName: 'word';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1428,6 +1436,13 @@ export interface ApiWordWord extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    register: Attribute.Enumeration<['Formal', 'Informal', 'Neutral']> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<'Neutral'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &

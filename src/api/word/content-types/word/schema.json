@@ -4,7 +4,8 @@
   "info": {
     "singularName": "word",
     "pluralName": "words",
-    "displayName": "word"
+    "displayName": "word",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -80,11 +81,12 @@
       "type": "string"
     },
     "audio": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "audios"
       ],
-      "type": "media",
-      "multiple": false,
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -116,6 +118,20 @@
         }
       },
       "component": "a.verb-meta"
+    },
+    "register": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Formal",
+        "Informal",
+        "Neutral"
+      ],
+      "default": "Neutral"
     }
   }
 }
