@@ -16,4 +16,15 @@ module.exports = () => ({
         },
       },
     },
+      // Add the new configuration for users-permissions alongside the upload config
+  'users-permissions': {
+    config: {
+      register: {
+        // This explicitly tells Strapi that no extra fields can be
+        // passed during user registration, resolving the warning.
+        allowedFields: [],
+      },
+    },
+  },
+
   });
