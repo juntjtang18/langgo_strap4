@@ -932,6 +932,7 @@ export interface ApiReviewTireReviewTire extends Schema.CollectionType {
     singularName: 'review-tire';
     pluralName: 'review-tires';
     displayName: 'reviewTire';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -943,7 +944,7 @@ export interface ApiReviewTireReviewTire extends Schema.CollectionType {
   };
   attributes: {
     tier: Attribute.Enumeration<
-      ['daily', 'warmup', 'weekly', 'monthly', 'remembered']
+      ['new', 'warmup', 'weekly', 'monthly', 'remembered']
     > &
       Attribute.Required &
       Attribute.SetPluginOptions<{

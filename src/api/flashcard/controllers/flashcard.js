@@ -15,12 +15,9 @@ const findTierForStreak = (streak, tiers) => {
 
 // Helper function to determine the review level for logging
 const getReviewLevel = (tier) => {
-  if (!tier || !tier.tier) return null;
-  const tierName = tier.tier.toLowerCase();
-  if (["daily", "warmup"].includes(tierName)) return "daily";
-  if (["weekly", "monthly"].includes(tierName)) return "weekly"; // Corrected from monthly
-  if (["monthly"].includes(tierName)) return "monthly";
-  return null;
+  // If the tier exists, return its name directly.
+  // Otherwise, return null.
+  return tier?.tier?.toLowerCase() || null;
 };
 
 module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) => ({

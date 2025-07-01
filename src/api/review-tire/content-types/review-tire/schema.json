@@ -4,7 +4,8 @@
   "info": {
     "singularName": "review-tire",
     "pluralName": "review-tires",
-    "displayName": "reviewTire"
+    "displayName": "reviewTire",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -23,7 +24,7 @@
       },
       "type": "enumeration",
       "enum": [
-        "daily",
+        "new",
         "warmup",
         "weekly",
         "monthly",
