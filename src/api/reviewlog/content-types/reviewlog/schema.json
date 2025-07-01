@@ -18,7 +18,7 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "reviewlogs"
     },
-    "reviewd_at": {
+    "reviewed_at": {
       "type": "datetime"
     },
     "level": {

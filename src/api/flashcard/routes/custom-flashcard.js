@@ -26,5 +26,15 @@ module.exports = {
         policies: [],
       },
     },
+    // --- ADD THIS NEW ROUTE DEFINITION ---
+    {
+      method: 'GET',
+      path: '/flashcard-stat',                 // The new, non-conflicting path
+      handler: 'flashcard.getStatistics',      // Points to the new controller action
+      config: {
+        policies: [], // Add authentication policies here
+      },
+    },
+
   ],
 };

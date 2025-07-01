@@ -1020,7 +1020,7 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    reviewd_at: Attribute.DateTime;
+    reviewed_at: Attribute.DateTime;
     level: Attribute.Enumeration<['daily', 'weekly', 'monthly']>;
     result: Attribute.Enumeration<['correct', 'wrong']> & Attribute.Required;
     flashcard: Attribute.Relation<
