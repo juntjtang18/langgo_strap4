@@ -738,7 +738,7 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'manyToOne',
       'api::lesson.lesson'
     >;
-    daily_streak: Attribute.Integer &
+    correct_streak: Attribute.Integer &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -746,31 +746,7 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<0>;
-    weekly_streak: Attribute.Integer &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<0>;
-    weekly_wrong_streak: Attribute.Integer &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<0>;
-    monthly_streak: Attribute.Integer &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<0>;
-    monthly_wrong_streak: Attribute.Integer &
+    wrong_streak: Attribute.Integer &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -786,6 +762,11 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<false>;
+    reviewlogs: Attribute.Relation<
+      'api::flashcard.flashcard',
+      'oneToMany',
+      'api::reviewlog.reviewlog'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -945,12 +926,90 @@ export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
   };
 }
 
+export interface ApiReviewTireReviewTire extends Schema.CollectionType {
+  collectionName: 'review_tires';
+  info: {
+    singularName: 'review-tire';
+    pluralName: 'review-tires';
+    displayName: 'reviewTire';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    tier: Attribute.Enumeration<
+      ['daily', 'warmup', 'weekly', 'monthly', 'remembered']
+    > &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    min_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    max_streak: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    cooldown_hours: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    demote_bar: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Attribute.DefaultTo<2>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::review-tire.review-tire',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::review-tire.review-tire',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::review-tire.review-tire',
+      'oneToMany',
+      'api::review-tire.review-tire'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiReviewlogReviewlog extends Schema.CollectionType {
   collectionName: 'reviewlogs';
   info: {
     singularName: 'reviewlog';
     pluralName: 'reviewlogs';
     displayName: 'reviewlog';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -964,6 +1023,11 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
     reviewd_at: Attribute.DateTime;
     level: Attribute.Enumeration<['daily', 'weekly', 'monthly']>;
     result: Attribute.Enumeration<['correct', 'wrong']> & Attribute.Required;
+    flashcard: Attribute.Relation<
+      'api::reviewlog.reviewlog',
+      'manyToOne',
+      'api::flashcard.flashcard'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1477,6 +1541,7 @@ declare module '@strapi/types' {
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
+      'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;

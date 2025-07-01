@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "review_tires",
+  "info": {
+    "singularName": "review-tire",
+    "pluralName": "review-tires",
+    "displayName": "reviewTire"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "tier": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "daily",
+        "warmup",
+        "weekly",
+        "monthly",
+        "remembered"
+      ],
+      "required": true
+    },
+    "min_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "required": true
+    },
+    "max_streak": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "required": true
+    },
+    "cooldown_hours": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "required": true
+    },
+    "demote_bar": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "required": true,
+      "default": 2
+    }
+  }
+}

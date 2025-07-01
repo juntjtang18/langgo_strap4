@@ -4,7 +4,8 @@
   "info": {
     "singularName": "reviewlog",
     "pluralName": "reviewlogs",
-    "displayName": "reviewlog"
+    "displayName": "reviewlog",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -35,6 +36,12 @@
         "wrong"
       ],
       "required": true
+    },
+    "flashcard": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::flashcard.flashcard",
+      "inversedBy": "reviewlogs"
     }
   }
 }

@@ -50,7 +50,7 @@
       "target": "api::lesson.lesson",
       "inversedBy": "flashcards"
     },
-    "daily_streak": {
+    "correct_streak": {
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -60,7 +60,7 @@
       "default": 0,
       "required": true
     },
-    "weekly_streak": {
+    "wrong_streak": {
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -69,36 +69,6 @@
       "type": "integer",
       "default": 0,
       "required": true
-    },
-    "weekly_wrong_streak": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "integer",
-      "default": 0,
-      "required": true
-    },
-    "monthly_streak": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "integer",
-      "required": true,
-      "default": 0
-    },
-    "monthly_wrong_streak": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "integer",
-      "required": true,
-      "default": 0
     },
     "is_remembered": {
       "pluginOptions": {
@@ -109,6 +79,12 @@
       "type": "boolean",
       "default": false,
       "required": true
+    },
+    "reviewlogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reviewlog.reviewlog",
+      "mappedBy": "flashcard"
     }
   }
 }

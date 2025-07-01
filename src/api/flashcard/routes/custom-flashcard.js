@@ -15,5 +15,16 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      // --- NEW ROUTE ---
+      method: 'POST',
+      path: '/flashcards/:id/review', // Handles a review for a specific card
+      handler: 'flashcard.review',     // Points to the new 'review' controller action
+      config: {
+        // IMPORTANT: Add policies to ensure only authenticated users can access this
+        // e.g., policies: ['global::is-authenticated']
+        policies: [],
+      },
+    },
   ],
 };
