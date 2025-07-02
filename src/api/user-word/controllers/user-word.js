@@ -57,8 +57,21 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
         });
         strapi.log.info(`Flashcard created for new user_word ID: ${userWordId}`);
         
-        // If flashcard creation is successful, return the created user_word
-        return { data: createdUserWord };
+        // Instead of returning the raw 'createdUserWord', format it to match the standard Strapi API response for a single entry
+        return {
+          data: {
+            id: createdUserWord.id,
+            attributes: {
+              word: createdUserWord.word,
+              base_text: createdUserWord.base_text,
+              part_of_speech: createdUserWord.part_of_speech,
+              createdAt: createdUserWord.createdAt,
+              updatedAt: createdUserWord.updatedAt,
+              locale: createdUserWord.locale,
+              // Do NOT include 'user' here if you want to match the existing Swift struct
+            }
+          }
+        };
 
       } catch (flashcardError) {
         strapi.log.error(`Failed to create flashcard for user_word ID ${userWordId}:`, flashcardError);
