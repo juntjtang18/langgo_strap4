@@ -1329,7 +1329,7 @@ export interface ApiUserSentenceUserSentence extends Schema.CollectionType {
     };
   };
   attributes: {
-    users: Attribute.Relation<
+    user: Attribute.Relation<
       'api::user-sentence.user-sentence',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1391,7 +1391,7 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
     };
   };
   attributes: {
-    users: Attribute.Relation<
+    user: Attribute.Relation<
       'api::user-word.user-word',
       'manyToOne',
       'plugin::users-permissions.user'
