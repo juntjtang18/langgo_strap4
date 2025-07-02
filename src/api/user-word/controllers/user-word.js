@@ -43,7 +43,7 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
             user_word: userWordId, // Link to the newly created user_word
           },
         ],
-        last_reviewed_at: new Date().toISOString(), // Set initial review time
+        last_reviewed_at: null,
         correct_streak: 0,
         wrong_streak: 0,
         is_remembered: false,
