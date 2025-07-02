@@ -4,7 +4,8 @@
   "info": {
     "singularName": "user-sentence",
     "pluralName": "user-sentences",
-    "displayName": "user_sentence"
+    "displayName": "user_sentence",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -15,7 +16,7 @@
     }
   },
   "attributes": {
-    "users_permissions_user": {
+    "users": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",

@@ -66,18 +66,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "user_words": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-word.user-word",
-      "mappedBy": "users_permissions_user"
-    },
-    "user_sentences": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-sentence.user-sentence",
-      "mappedBy": "users_permissions_user"
-    },
     "flashcards": {
       "type": "relation",
       "relation": "oneToMany",
@@ -89,6 +77,24 @@
       "relation": "oneToMany",
       "target": "api::reviewlog.reviewlog",
       "mappedBy": "user"
+    },
+    "user_profile": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-profile.user-profile",
+      "mappedBy": "user"
+    },
+    "user_words": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-word.user-word",
+      "mappedBy": "users"
+    },
+    "user_sentences": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-sentence.user-sentence",
+      "mappedBy": "users"
     }
   }
 }

@@ -616,16 +616,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    user_words: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::user-word.user-word'
-    >;
-    user_sentences: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::user-sentence.user-sentence'
-    >;
     flashcards: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
@@ -635,6 +625,21 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'oneToMany',
       'api::reviewlog.reviewlog'
+    >;
+    user_profile: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::user-profile.user-profile'
+    >;
+    user_words: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::user-word.user-word'
+    >;
+    user_sentences: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::user-sentence.user-sentence'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1272,12 +1277,48 @@ export interface ApiUnitUnit extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserProfileUserProfile extends Schema.CollectionType {
+  collectionName: 'user_profiles';
+  info: {
+    singularName: 'user-profile';
+    pluralName: 'user-profiles';
+    displayName: 'userProfile';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::user-profile.user-profile',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    telephone: Attribute.String;
+    baseLanguage: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-profile.user-profile',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-profile.user-profile',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiUserSentenceUserSentence extends Schema.CollectionType {
   collectionName: 'user_sentences';
   info: {
     singularName: 'user-sentence';
     pluralName: 'user-sentences';
     displayName: 'user_sentence';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1288,7 +1329,7 @@ export interface ApiUserSentenceUserSentence extends Schema.CollectionType {
     };
   };
   attributes: {
-    users_permissions_user: Attribute.Relation<
+    users: Attribute.Relation<
       'api::user-sentence.user-sentence',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1350,7 +1391,7 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
     };
   };
   attributes: {
-    users_permissions_user: Attribute.Relation<
+    users: Attribute.Relation<
       'api::user-word.user-word',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1547,6 +1588,7 @@ declare module '@strapi/types' {
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::unit.unit': ApiUnitUnit;
+      'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
       'api::user-word.user-word': ApiUserWordUserWord;
       'api::word.word': ApiWordWord;

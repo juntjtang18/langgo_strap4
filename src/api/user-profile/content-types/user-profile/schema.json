@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_profiles",
+  "info": {
+    "singularName": "user-profile",
+    "pluralName": "user-profiles",
+    "displayName": "userProfile"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_profile"
+    },
+    "telephone": {
+      "type": "string"
+    },
+    "baseLanguage": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
