@@ -1396,7 +1396,8 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    word: Attribute.String &
+    target_text: Attribute.String &
+      Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: false;

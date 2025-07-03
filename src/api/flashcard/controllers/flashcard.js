@@ -19,7 +19,6 @@ const getReviewLevel = (tier) => {
   // Otherwise, return null.
   return tier?.tier?.toLowerCase() || null;
 };
-
 module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) => ({
   /**
    * REVISED: Uses corrected application-level filtering to ensure accurate review lists.
@@ -43,7 +42,7 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
           populate: {
             word: { populate: ['tags', 'verb_meta', 'audio'] },
             sentence: { populate: ['tags', 'words', 'target_audio'] },
-            user_word: { populate: { fields: ['word', 'base_text', 'part_of_speech'] } },
+            user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
             user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
           },
         },
@@ -132,9 +131,21 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
     strapi.log.info(`Review started for card ${id} by user ${user.id} with result: ${result}`);
 
     try {
-      const [updatedFlashcard] = await strapi.db.transaction(async () => {
-        const flashcard = await strapi.db.query('api::flashcard.flashcard').findOne({ where: { id, user: user.id } });
-        const reviewTiers = await strapi.db.query('api::review-tire.review-tire').findMany({ orderBy: { min_streak: 'asc' } });
+      // Define the detailed population object, just like in your findForReview function.
+      const commonPopulate = {
+        content: {
+          populate: {
+            word: { populate: ['tags', 'verb_meta', 'audio'] },
+            sentence: { populate: ['tags', 'words', 'target_audio'] },
+            user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
+            user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
+          },
+        },
+      };
+      
+      const [updatedFlashcard] = await strapi.db.transaction(async ({ trx }) => {
+        const flashcard = await strapi.db.query('api::flashcard.flashcard').findOne({ where: { id, user: user.id } }, trx);
+        const reviewTiers = await strapi.db.query('api::review-tire.review-tire').findMany({ orderBy: { min_streak: 'asc' } }, trx);
 
         if (!flashcard) {
           throw new Error('Flashcard not found or user mismatch.');
@@ -194,18 +205,22 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
             result: result,
             level: getReviewLevel(currentTier),
           }
-        });
+        }, trx);
 
         if (Object.keys(updateData).length > 0) {
-            const updated = await strapi.db.query('api::flashcard.flashcard').update({
+            await strapi.db.query('api::flashcard.flashcard').update({
                 where: { id },
                 data: updateData,
-                populate: ['content']
-            });
-            return [updated];
+            }, trx);
         }
 
-        return [flashcard];
+        // --- FIX: Always re-fetch the card with full population after any changes ---
+        const finalCard = await strapi.db.query('api::flashcard.flashcard').findOne({
+            where: { id },
+            populate: commonPopulate, // Use the detailed population object
+        }, trx);
+
+        return [finalCard];
       });
 
       return this.transformResponse(updatedFlashcard);
@@ -215,7 +230,7 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
       return ctx.internalServerError('An error occurred during the review process.');
     }
   },
-
+  
     // --- NEW STATISTICS ENDPOINT ---
     async getStatistics(ctx) {
       const { user } = ctx.state;

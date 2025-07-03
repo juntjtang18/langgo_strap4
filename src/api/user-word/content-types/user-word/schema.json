@@ -22,13 +22,14 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "user_words"
     },
-    "word": {
+    "target_text": {
       "pluginOptions": {
         "i18n": {
           "localized": false
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "base_text": {
       "pluginOptions": {

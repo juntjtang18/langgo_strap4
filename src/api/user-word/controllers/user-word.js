@@ -62,7 +62,7 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
           data: {
             id: createdUserWord.id,
             attributes: {
-              word: createdUserWord.word,
+              target_text: createdUserWord.target_text,
               base_text: createdUserWord.base_text,
               part_of_speech: createdUserWord.part_of_speech,
               createdAt: createdUserWord.createdAt,
