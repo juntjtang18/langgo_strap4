@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vocabooks",
+  "info": {
+    "singularName": "vocabook",
+    "pluralName": "vocabooks",
+    "displayName": "vocabook"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "vocabook"
+    },
+    "vocapages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::vocapage.vocapage",
+      "mappedBy": "vocabook"
+    }
+  }
+}

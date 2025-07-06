@@ -14,6 +14,7 @@ module.exports = [
         'https://chatbot.geniusparentingai.ca',
         'http://192.168.1.66:8080',
         'http://192.168.1.73',
+	'http://localhost:1338',
       ],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       headers: '*',

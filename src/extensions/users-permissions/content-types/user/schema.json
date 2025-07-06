@@ -95,6 +95,12 @@
       "relation": "oneToMany",
       "target": "api::user-sentence.user-sentence",
       "mappedBy": "user"
+    },
+    "vocabook": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::vocabook.vocabook",
+      "mappedBy": "user"
     }
   }
 }
