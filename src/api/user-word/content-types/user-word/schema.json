@@ -63,6 +63,22 @@
       "relation": "manyToOne",
       "target": "api::lesson.lesson",
       "inversedBy": "user_words"
+    },
+    "exam_base": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "exam_target": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "json"
     }
   }
 }

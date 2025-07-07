@@ -25,3 +25,13 @@ curl -X POST "http://localhost:1338/api/auth/local" \
   "password": "SecurePassword123!"
 }' \
 | jq .
+
+
+curl -X POST "http://localhost:8080/api/auth/local/register" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "produser_july6",
+  "email": "prod_july6@example.com",
+  "password": "SecurePassword123!"
+}' \
+| jq .

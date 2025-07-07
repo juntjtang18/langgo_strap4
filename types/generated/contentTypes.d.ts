@@ -1192,6 +1192,18 @@ export interface ApiSentenceSentence extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<'Neutral'>;
+    exam_base: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    exam_target: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1437,6 +1449,18 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
       'manyToOne',
       'api::lesson.lesson'
     >;
+    exam_base: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    exam_target: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1535,8 +1559,10 @@ export interface ApiVocapageVocapage extends Schema.CollectionType {
       'manyToOne',
       'api::vocabook.vocabook'
     >;
-    components: Attribute.DynamicZone<
-      ['a.sent-ref', 'a.user-word-ref', 'a.word-ref']
+    flashcards: Attribute.Relation<
+      'api::vocapage.vocapage',
+      'oneToMany',
+      'api::flashcard.flashcard'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1650,6 +1676,18 @@ export interface ApiWordWord extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<'Neutral'>;
+    exam_base: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    exam_target: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &

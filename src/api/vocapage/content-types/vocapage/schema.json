@@ -25,13 +25,10 @@
       "target": "api::vocabook.vocabook",
       "inversedBy": "vocapages"
     },
-    "components": {
-      "type": "dynamiczone",
-      "components": [
-        "a.sent-ref",
-        "a.user-word-ref",
-        "a.word-ref"
-      ]
+    "flashcards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::flashcard.flashcard"
     }
   }
 }
