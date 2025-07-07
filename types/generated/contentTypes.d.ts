@@ -1452,7 +1452,7 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
     exam_base: Attribute.JSON &
       Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     exam_target: Attribute.JSON &
@@ -1490,23 +1490,13 @@ export interface ApiVocabookVocabook extends Schema.CollectionType {
     singularName: 'vocabook';
     pluralName: 'vocabooks';
     displayName: 'vocabook';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    title: Attribute.String & Attribute.Required;
     user: Attribute.Relation<
       'api::vocabook.vocabook',
       'oneToOne',
@@ -1531,12 +1521,6 @@ export interface ApiVocabookVocabook extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::vocabook.vocabook',
-      'oneToMany',
-      'api::vocabook.vocabook'
-    >;
-    locale: Attribute.String;
   };
 }
 

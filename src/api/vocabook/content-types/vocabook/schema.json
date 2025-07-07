@@ -4,23 +4,16 @@
   "info": {
     "singularName": "vocabook",
     "pluralName": "vocabooks",
-    "displayName": "vocabook"
+    "displayName": "vocabook",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "type": "string",
       "required": true
     },

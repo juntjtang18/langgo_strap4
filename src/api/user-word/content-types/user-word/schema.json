@@ -67,7 +67,7 @@
     "exam_base": {
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "type": "json"

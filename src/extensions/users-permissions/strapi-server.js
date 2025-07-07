@@ -162,6 +162,44 @@ module.exports = (plugin) => {
         }
       }
 
+      // --- NEW LOGIC FOR VOCABOOK AND VOCAPAGE ---
+      try {
+        // Check if a vocabook already exists for this user
+        const existingVocabook = await strapi.entityService.findMany('api::vocabook.vocabook', {
+          filters: { user: newUser.id },
+        });
+
+        if (existingVocabook.length === 0) {
+          // Create a new vocabook for the user
+          const newVocabook = await strapi.entityService.create('api::vocabook.vocabook', {
+            data: {
+              title: `${newUser.username}'s Vocab Book`,
+              user: newUser.id,
+              // Removed 'locale' as it's no longer in the schema
+            },
+          });
+          console.log(`Vocabook created for user ${newUser.id}: ${newVocabook.id}`);
+
+          // Create the first vocapage for the new vocabook
+          const firstVocapage = await strapi.entityService.create('api::vocapage.vocapage', {
+            data: {
+              title: 'Page 1',
+              order: 1,
+              vocabook: newVocabook.id,
+            },
+          });
+          console.log(`First Vocapage created for vocabook ${newVocabook.id}: ${firstVocapage.id}`);
+        } else {
+          console.log(`Vocabook already exists for user ${newUser.id}. Skipping creation.`);
+        }
+      } catch (vocabError) {
+        console.error("Error creating vocabook or vocapage:", vocabError);
+        // Decide how to handle this error. You might want to remove the user
+        // or just log the error and let the registration proceed without vocabook/page.
+        // For now, it will just log and proceed.
+      }
+      // --- END NEW LOGIC ---
+
       const userWithRole = await strapi.entityService.findOne(
         "plugin::users-permissions.user",
         newUser.id,
