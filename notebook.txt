@@ -11,9 +11,9 @@ curl -X POST "http://localhost:1338/api/auth/local/register" \
 curl -X POST "http://localhost:1338/api/auth/local/register" \
 -H "Content-Type: application/json" \
 -d '{
-  "username": "produser_july6",
-  "email": "prod_july6@example.com",
-  "password": "SecurePassword123!"
+  "username": "july7",
+  "email": "july7@example.com",
+  "password": "123456"
 }' \
 | jq .
 
@@ -21,8 +21,8 @@ curl -X POST "http://localhost:1338/api/auth/local/register" \
 curl -X POST "http://localhost:1338/api/auth/local" \
 -H "Content-Type: application/json" \
 -d '{
-  "identifier": "prod_july6@example.com",
-  "password": "SecurePassword123!"
+  "identifier": "july7@example.com",
+  "password": "123456"
 }' \
 | jq .
 
@@ -35,3 +35,4 @@ curl -X POST "http://localhost:8080/api/auth/local/register" \
   "password": "SecurePassword123!"
 }' \
 | jq .
+

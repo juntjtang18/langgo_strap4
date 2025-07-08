@@ -28,7 +28,8 @@
     "flashcards": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::flashcard.flashcard"
+      "target": "api::flashcard.flashcard",
+      "mappedBy": "vocapage"
     }
   }
 }

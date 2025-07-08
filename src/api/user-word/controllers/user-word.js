@@ -6,94 +6,89 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::user-word.user-word', ({ strapi }) => ({
   async create(ctx) {
     const userId = ctx.state.user?.id;
-
-    if (!userId) {
-      return ctx.badRequest('Authenticated user not found.');
-    }
+    if (!userId) { return ctx.badRequest('Authenticated user not found.'); }
 
     const incomingData = ctx.request.body?.data || {};
+    const { target_text, base_text, base_locale, target_locale } = incomingData;
+
+    if (!base_text || !target_text || !base_locale || !target_locale) {
+      return ctx.badRequest('Missing base_text, target_text, base_locale, or target_locale in request data.');
+    }
 
     let createdUserWord;
+    let createdFlashcard;
+
     try {
-      // 1. Manually create the user_word entry with the user ID
       createdUserWord = await strapi.entityService.create('api::user-word.user-word', {
         data: {
           ...incomingData,
-          user: userId, // Link to the authenticated user
+          user: userId,
+          exam_base: null,
+          exam_target: null,
         },
-        populate: ['user'], // Populate if you need the user data in the response
+        populate: ['user'],
       });
       strapi.log.info(`User word created: ${createdUserWord.id}`);
 
-    } catch (userWordError) {
-      strapi.log.error(`Failed to create user_word:`, userWordError);
-      return ctx.internalServerError('Failed to create user word.', { details: userWordError.message });
-    }
-
-    // Ensure the user_word was successfully created before attempting flashcard creation
-    if (createdUserWord && createdUserWord.id) {
-      const userWordId = createdUserWord.id;
-
-      // 2. Prepare data for the new flashcard
       const flashcardData = {
-        user: userId, // Associate the flashcard with the same user
+        user: userId,
         content: [
           {
-            __component: 'a.user-word-ref', // This must match your component identifier
-            user_word: userWordId, // Link to the newly created user_word
+            __component: 'a.user-word-ref',
+            user_word: createdUserWord.id,
           },
         ],
         last_reviewed_at: null,
         correct_streak: 0,
         wrong_streak: 0,
         is_remembered: false,
-        // lesson: <optional: if you want to link to a lesson>
       };
+      createdFlashcard = await strapi.entityService.create('api::flashcard.flashcard', {
+        data: flashcardData,
+      });
+      strapi.log.info(`Flashcard created for new user_word ID: ${createdUserWord.id}, Flashcard ID: ${createdFlashcard.id}`);
 
-      try {
-        // 3. Create the flashcard entry
-        await strapi.entityService.create('api::flashcard.flashcard', {
-          data: flashcardData,
-        });
-        strapi.log.info(`Flashcard created for new user_word ID: ${userWordId}`);
-        
-        // Instead of returning the raw 'createdUserWord', format it to match the standard Strapi API response for a single entry
-        return {
-          data: {
-            id: createdUserWord.id,
-            attributes: {
-              target_text: createdUserWord.target_text,
-              base_text: createdUserWord.base_text,
-              part_of_speech: createdUserWord.part_of_speech,
-              createdAt: createdUserWord.createdAt,
-              updatedAt: createdUserWord.updatedAt,
-              locale: createdUserWord.locale,
-              // Do NOT include 'user' here if you want to match the existing Swift struct
-            }
-          }
-        };
-
-      } catch (flashcardError) {
-        strapi.log.error(`Failed to create flashcard for user_word ID ${userWordId}:`, flashcardError);
-
-        // 4. Rollback: Attempt to delete the user_word if flashcard creation failed
-        try {
-          await strapi.entityService.delete('api::user-word.user-word', userWordId);
-          strapi.log.info(`Successfully rolled back user_word ID: ${userWordId} due to flashcard creation failure.`);
-        } catch (rollbackError) {
-          strapi.log.error(`Failed to rollback user_word ID: ${userWordId} after flashcard creation failed:`, rollbackError);
-          // This is a critical error: user_word exists but flashcard doesn't, AND rollback failed.
-          // You might need an external monitoring/alerting system here.
-        }
-
-        // Return an error to the client, indicating the overall operation failed
-        return ctx.internalServerError('Failed to create flashcard, user word rolled back.', { details: flashcardError.message });
-      }
+    } catch (initialCreationError) {
+      strapi.log.error(`Failed initial creation of user_word or flashcard:`, initialCreationError);
+      return ctx.internalServerError('Failed initial word creation.', { details: initialCreationError.message });
     }
 
-    // This line should ideally not be reached if createdUserWord is null/undefined,
-    // as the initial try-catch for user_word creation handles it.
-    // However, as a fallback, we return an error if somehow we get here without a createdUserWord.
-    return ctx.internalServerError('Unexpected error: User word not created or ID missing.');
+    if (createdUserWord && createdUserWord.id && createdFlashcard && createdFlashcard.id) {
+        const wordProcessingQueueService = strapi.service('word-processing-queue'); // Access the service instance
+
+        if (!wordProcessingQueueService || typeof wordProcessingQueueService.addJob !== 'function') {
+            strapi.log.error('word-processing-queue service is not correctly loaded or does not have addJob method.');
+            return ctx.internalServerError('Background processing service is unavailable or misconfigured.');
+        }
+
+        // --- KEY CHANGE HERE ---
+        wordProcessingQueueService.addJob({ // Call the addJob method on the service
+            userWordId: createdUserWord.id,
+            flashcardId: createdFlashcard.id,
+            userId: userId,
+            incomingData: { base_text, target_text, base_locale, target_locale }
+        });
+        // --- END KEY CHANGE ---
+        
+        strapi.log.info(`Job enqueued for user_word ID ${createdUserWord.id}.`);
+    } else {
+        strapi.log.error('Failed to enqueue background job: Missing created user_word or flashcard ID.');
+    }
+
+    return {
+      data: {
+        id: createdUserWord.id,
+        attributes: {
+          target_text: createdUserWord.target_text,
+          base_text: createdUserWord.base_text,
+          part_of_speech: createdUserWord.part_of_speech,
+          exam_base: null,
+          exam_target: null,
+          createdAt: createdUserWord.createdAt,
+          updatedAt: createdUserWord.updatedAt,
+          locale: createdUserWord.locale,
+        }
+      }
+    };
   },
 }));

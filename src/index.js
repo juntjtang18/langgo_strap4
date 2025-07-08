@@ -1,20 +1,25 @@
+// Path: src/index.js
 'use strict';
 
 module.exports = {
-  /**
-   * An asynchronous register function that runs before
-   * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
-   */
   register(/*{ strapi }*/) {},
 
-  /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
-   */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap({ strapi }) {
+    const initWordProcessingQueueService = require('./services/word-processing-queue');
+
+    // Initialize the service instance (it now returns an object with an addJob method)
+    const wordProcessingQueueService = initWordProcessingQueueService({ strapi });
+
+    // Explicitly add the service to Strapi's service container
+    // This makes it accessible via strapi.service('word-processing-queue')
+    strapi.container.get('services').set('word-processing-queue', wordProcessingQueueService);
+
+    if (wordProcessingQueueService) {
+      strapi.log.info('Word processing queue service initialized during bootstrap.');
+      // No need to call .resume() for async.queue; it starts processing when jobs are pushed
+      strapi.log.info('Word processing queue (in-process) is ready.');
+    } else {
+      strapi.log.error('Failed to initialize word-processing-queue service during bootstrap.');
+    }
+  },
 };

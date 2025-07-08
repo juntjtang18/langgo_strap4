@@ -777,6 +777,11 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'oneToMany',
       'api::reviewlog.reviewlog'
     >;
+    vocapage: Attribute.Relation<
+      'api::flashcard.flashcard',
+      'manyToOne',
+      'api::vocapage.vocapage'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
