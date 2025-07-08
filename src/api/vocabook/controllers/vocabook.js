@@ -10,23 +10,22 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::vocabook.vocabook', ({ strapi }) => ({
   /**
    * Fetches the vocabook and its pages for the authenticated user.
-   * @param {object} ctx The Koa context object.
-   * @returns {object} The user's vocabook with its vocapages.
    */
   async findMyVocabook(ctx) {
-    const { id } = ctx.state.user; // Get the authenticated user's ID
+    const { id: userId } = ctx.state.user;
 
-    // Find the vocabook that belongs to the current user and populate its vocapages
-    const entity = await strapi.db.query('api::vocabook.vocabook').findOne({
-      where: { user: id },
+    // We use findMany with a limit of 1 since we're filtering by a relation, not the ID.
+    const entities = await strapi.entityService.findMany('api::vocabook.vocabook', {
+      filters: { user: { id: userId } },
       populate: { vocapages: true },
+      limit: 1,
     });
 
-    if (!entity) {
+    if (!entities || entities.length === 0) {
       return ctx.notFound('No vocabook found for the current user.');
     }
 
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+    const sanitizedEntity = await this.sanitizeOutput(entities[0], ctx);
     return this.transformResponse(sanitizedEntity);
-  }
+  },
 }));

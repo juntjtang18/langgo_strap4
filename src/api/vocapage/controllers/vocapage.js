@@ -9,47 +9,33 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::vocapage.vocapage', ({ strapi }) => ({
   /**
-   * Fetches a single vocapage with its deeply nested flashcards
-   * and component data, ensuring it belongs to the authenticated user.
-   * @param {object} ctx The Koa context object.
-   * @returns {object} The user's vocapage with its nested data.
+   * Fetches a single vocapage, ensuring it belongs to the authenticated user,
+   * and deeply populates its nested data.
    */
   async findMyVocapage(ctx) {
-    const { id: userId } = ctx.state.user; // Authenticated user's ID
-    const { id: vocapageId } = ctx.params; // Vocapage ID from the URL
+    const { id: userId } = ctx.state.user;
+    const { id: vocapageId } = ctx.params;
 
-    // This is the deep population query object.
-    const populateQuery = {
-      flashcards: {
-        populate: {
-          content: {
-            populate: {
-              // Populate the relation within the 'wordRef' component
-              word: true,
-              // Populate the relation within the 'UserWordRef' component
-              user_word: true,
-              // Populate the relation within the 'sentRef' component
-              sentence: true,
-              // Assuming you have a 'userSentRef' component
-              user_sentence: true,
-            },
-          },
-        },
-      },
-    };
-
-    // Find the vocapage, but only if its parent vocabook belongs to the current user.
-    // This is a critical security check.
-    const entity = await strapi.db.query('api::vocapage.vocapage').findOne({
-      where: {
-        id: vocapageId,
+    // Here we use findOne because we have the vocapage's primary key (ID).
+    // The filter is used as a security check to ensure ownership.
+    const entity = await strapi.entityService.findOne('api::vocapage.vocapage', vocapageId, {
+      filters: {
         vocabook: {
           user: {
             id: userId,
           },
         },
       },
-      populate: populateQuery,
+      populate: {
+        flashcards: {
+          populate: {
+            content: {
+              // Populates relations within the dynamic zone's components
+              populate: ['word', 'user_word', 'sentence'],
+            },
+          },
+        },
+      },
     });
 
     if (!entity) {
