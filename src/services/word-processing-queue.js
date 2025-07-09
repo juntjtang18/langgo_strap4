@@ -103,7 +103,7 @@ module.exports = ({ strapi }) => {
 
         const lastVocapage = vocapages[0];
 
-        if (lastVocapage && lastVocapage.flashcards && lastVocapage.flashcards.length < 30) {
+        if (lastVocapage && lastVocapage.flashcards && lastVocapage.flashcards.length < process.env.WORDS_PER_VOCAPAGE) {
           targetVocapage = lastVocapage;
           strapi.log.info(`Background Job: Using existing vocapage ID: ${targetVocapage.id} with ${targetVocapage.flashcards.length} words.`);
         } else {
