@@ -58,9 +58,7 @@ module.exports = (plugin) => {
 
     const { email, username, password, baseLanguage, telephone } = ctx.request.body;
     if (!username || !email || !password || !baseLanguage) {
-      throw new ApplicationError(
-        'Username, email, password and baseLanguage are all required.'
-      );
+      throw new ApplicationError('Username, email, password and baseLanguage are all required.');
     }
 
     // Find default role
@@ -131,36 +129,7 @@ module.exports = (plugin) => {
         console.warn('Subscription env vars missing; skipping subscription step.');
       }
 
-      // 3) Vocabook & Vocapage creation (non-fatal)
-      try {
-        const existingVocabook = await strapi.entityService.findMany(
-          'api::vocabook.vocabook',
-          { filters: { user: newUser.id } }
-        );
-        if (existingVocabook.length === 0) {
-          const newVocabook = await strapi.entityService.create(
-            'api::vocabook.vocabook',
-            {
-              data: {
-                title: `${newUser.username}'s Vocab Book`,
-                user: newUser.id,
-              },
-            }
-          );
-          console.log(`Vocabook ${newVocabook.id} created for user ${newUser.id}`);
-          await strapi.entityService.create('api::vocapage.vocapage', {
-            data: {
-              title: 'Page 1',
-              order: 1,
-              vocabook: newVocabook.id,
-            },
-          });
-        }
-      } catch (vocabError) {
-        console.error('Vocabook/Vocapage error:', vocabError);
-      }
-
-      // 4) VBSetting creation (fatal on error)
+      // 3) VBSetting creation (fatal on error)
       const existingSetting = await strapi.entityService.findMany(
         'api::vbsetting.vbsetting',
         { filters: { user: newUser.id } }
@@ -172,7 +141,7 @@ module.exports = (plugin) => {
         console.log(`VBSetting created for user ${newUser.id}`);
       }
 
-      // 5) UserProfile creation (fatal on error)
+      // 4) UserProfile creation (fatal on error)
       await strapi.entityService.create('api::user-profile.user-profile', {
         data: {
           user: newUser.id,
@@ -182,7 +151,7 @@ module.exports = (plugin) => {
       });
       console.log(`UserProfile created for user ${newUser.id}`);
 
-      // 6) Fetch & sanitize final user
+      // 5) Fetch & sanitize final user
       const userWithRole = await strapi.entityService.findOne(
         'plugin::users-permissions.user',
         newUser.id,
@@ -191,7 +160,7 @@ module.exports = (plugin) => {
       const userSchema    = strapi.getModel('plugin::users-permissions.user');
       const sanitizedUser = await sanitize.contentAPI.output(userWithRole, userSchema);
 
-      // 7) Respond
+      // 6) Respond
       ctx.send({
         jwt: jwtService.issue({ id: sanitizedUser.id }),
         user: sanitizedUser,

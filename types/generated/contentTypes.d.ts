@@ -641,11 +641,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::user-sentence.user-sentence'
     >;
-    vocabook: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'api::vocabook.vocabook'
-    >;
     vbsetting: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -781,11 +776,6 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'api::flashcard.flashcard',
       'oneToMany',
       'api::reviewlog.reviewlog'
-    >;
-    vocapage: Attribute.Relation<
-      'api::flashcard.flashcard',
-      'manyToOne',
-      'api::vocapage.vocapage'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1534,87 +1524,6 @@ export interface ApiVbsettingVbsetting extends Schema.CollectionType {
   };
 }
 
-export interface ApiVocabookVocabook extends Schema.CollectionType {
-  collectionName: 'vocabooks';
-  info: {
-    singularName: 'vocabook';
-    pluralName: 'vocabooks';
-    displayName: 'vocabook';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    user: Attribute.Relation<
-      'api::vocabook.vocabook',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    vocapages: Attribute.Relation<
-      'api::vocabook.vocabook',
-      'oneToMany',
-      'api::vocapage.vocapage'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::vocabook.vocabook',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::vocabook.vocabook',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiVocapageVocapage extends Schema.CollectionType {
-  collectionName: 'vocapages';
-  info: {
-    singularName: 'vocapage';
-    pluralName: 'vocapages';
-    displayName: 'vocapage';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    order: Attribute.Integer;
-    vocabook: Attribute.Relation<
-      'api::vocapage.vocapage',
-      'manyToOne',
-      'api::vocabook.vocabook'
-    >;
-    flashcards: Attribute.Relation<
-      'api::vocapage.vocapage',
-      'oneToMany',
-      'api::flashcard.flashcard'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::vocapage.vocapage',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::vocapage.vocapage',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiWordWord extends Schema.CollectionType {
   collectionName: 'words';
   info: {
@@ -1765,8 +1674,6 @@ declare module '@strapi/types' {
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
       'api::user-word.user-word': ApiUserWordUserWord;
       'api::vbsetting.vbsetting': ApiVbsettingVbsetting;
-      'api::vocabook.vocabook': ApiVocabookVocabook;
-      'api::vocapage.vocapage': ApiVocapageVocapage;
       'api::word.word': ApiWordWord;
     }
   }

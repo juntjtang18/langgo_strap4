@@ -231,58 +231,111 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
     }
   },
   
-    // --- NEW STATISTICS ENDPOINT ---
-    async getStatistics(ctx) {
-      const { user } = ctx.state;
-      if (!user) {
-        return ctx.unauthorized('You must be logged in to view statistics.');
+  // --- NEW STATISTICS ENDPOINT ---
+  async getStatistics(ctx) {
+    const { user } = ctx.state;
+    if (!user) {
+      return ctx.unauthorized('You must be logged in to view statistics.');
+    }
+
+    strapi.log.info(`Fetching statistics for user: ${user.id}`);
+
+    try {
+      const allUserCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
+        where: { user: user.id },
+        fields: ['is_remembered', 'correct_streak', 'wrong_streak'],
+      });
+
+      if (!allUserCards) {
+        return ctx.notFound('Could not find flashcards for the user.');
       }
+      
+      const totalCards = allUserCards.length;
+
+      // --- MODIFICATION START ---
+      // A card is "remembered" if the flag is true OR its streak is 11 or higher.
+      // This handles inconsistent data like Card ID #2.
+      const remembered = allUserCards.filter(c => c.is_remembered || c.correct_streak >= 11).length;
+
+      // "Active" cards are now strictly those that do not meet the new remembered definition.
+      const activeCards = allUserCards.filter(c => !c.is_remembered && c.correct_streak < 11);
+      // --- MODIFICATION END ---
+      
+      // These calculations now operate on a correctly filtered set of active cards.
+      const newCards = activeCards.filter(c => c.correct_streak >= 0 && c.correct_streak <= 3).length;
+      const warmUp = activeCards.filter(c => c.correct_streak >= 4 && c.correct_streak <= 6).length;
+      const weekly = activeCards.filter(c => c.correct_streak >= 7 && c.correct_streak <= 8).length;
+      const monthly = activeCards.filter(c => c.correct_streak >= 9 && c.correct_streak <= 10).length;
+      const hardToRemember = activeCards.filter(c => c.wrong_streak >= 3).length;
+
+      const stats = {
+        totalCards,
+        remembered,
+        newCards,
+        warmUp,
+        weekly,
+        monthly,
+        hardToRemember,
+      };
+      
+      return ctx.send({ data: stats });
+
+    } catch (err) {
+      strapi.log.error(`Error fetching statistics for user ${user.id}: ${err.message}`);
+      return ctx.internalServerError('An error occurred while fetching statistics.');
+    }
+  },
+
+  /**
+   * GET /flashcards/mine?pagination[page]=1&pagination[pageSize]=10
+   * REVISED to ensure consistent data structure with findForReview.
+   */
+  async findMine(ctx) {
+    const user = ctx.state.user;
+    if (!user) {
+      return ctx.unauthorized('You must be logged in to access your flashcards.');
+    }
   
-      strapi.log.info(`Fetching statistics for user: ${user.id}`);
+    // Sanitize pagination parameters from the query string
+    const page = Math.max(1, parseInt(ctx.query.pagination?.page || '1', 10));
+    const pageSize = Math.max(1, parseInt(ctx.query.pagination?.pageSize || '10', 10));
+    const start = (page - 1) * pageSize;
   
-      try {
-        const allUserCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-          where: { user: user.id },
-          fields: ['is_remembered', 'correct_streak', 'wrong_streak'],
-        });
+    // Use the exact same population object as findForReview for consistency
+    const commonPopulate = {
+      content: {
+        populate: {
+          word: { populate: ['tags', 'verb_meta', 'audio'] },
+          sentence: { populate: ['tags', 'words', 'target_audio'] },
+          user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
+          user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
+        },
+      },
+    };
   
-        if (!allUserCards) {
-          return ctx.notFound('Could not find flashcards for the user.');
-        }
-        
-        const totalCards = allUserCards.length;
+    // Use findMany and count to replicate findPage's functionality with consistent output
+    const [results, total] = await Promise.all([
+      strapi.entityService.findMany('api::flashcard.flashcard', {
+        filters: { user: user.id },
+        populate: commonPopulate,
+        sort: { id: 'asc' },
+        start: start,
+        limit: pageSize,
+      }),
+      strapi.entityService.count('api::flashcard.flashcard', {
+        filters: { user: user.id },
+      }),
+    ]);
   
-        // --- MODIFICATION START ---
-        // A card is "remembered" if the flag is true OR its streak is 11 or higher.
-        // This handles inconsistent data like Card ID #2.
-        const remembered = allUserCards.filter(c => c.is_remembered || c.correct_streak >= 11).length;
+    // Construct the pagination object manually
+    const pagination = {
+      page,
+      pageSize,
+      pageCount: Math.ceil(total / pageSize),
+      total,
+    };
   
-        // "Active" cards are now strictly those that do not meet the new remembered definition.
-        const activeCards = allUserCards.filter(c => !c.is_remembered && c.correct_streak < 11);
-        // --- MODIFICATION END ---
-        
-        // These calculations now operate on a correctly filtered set of active cards.
-        const newCards = activeCards.filter(c => c.correct_streak >= 0 && c.correct_streak <= 3).length;
-        const warmUp = activeCards.filter(c => c.correct_streak >= 4 && c.correct_streak <= 6).length;
-        const weekly = activeCards.filter(c => c.correct_streak >= 7 && c.correct_streak <= 8).length;
-        const monthly = activeCards.filter(c => c.correct_streak >= 9 && c.correct_streak <= 10).length;
-        const hardToRemember = activeCards.filter(c => c.wrong_streak >= 3).length;
-  
-        const stats = {
-          totalCards,
-          remembered,
-          newCards,
-          warmUp,
-          weekly,
-          monthly,
-          hardToRemember,
-        };
-        
-        return ctx.send({ data: stats });
-  
-      } catch (err) {
-        strapi.log.error(`Error fetching statistics for user ${user.id}: ${err.message}`);
-        return ctx.internalServerError('An error occurred while fetching statistics.');
-      }
-    },
+    // Use the core transformResponse to ensure the final data has the nested structure
+    return this.transformResponse(results, { pagination });
+  },
 }));

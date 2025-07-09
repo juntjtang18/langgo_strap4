@@ -85,12 +85,6 @@
       "relation": "oneToMany",
       "target": "api::reviewlog.reviewlog",
       "mappedBy": "flashcard"
-    },
-    "vocapage": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::vocapage.vocapage",
-      "inversedBy": "flashcards"
     }
   }
 }

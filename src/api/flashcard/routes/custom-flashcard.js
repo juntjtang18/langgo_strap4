@@ -35,6 +35,15 @@ module.exports = {
         policies: [], // Add authentication policies here
       },
     },
-
+    {
+      method: 'GET',
+      path: '/flashcards/mine',
+      handler: 'flashcard.findMine',
+      config: {
+        auth: {},      // must be an object to enforce JWT auth
+        policies: [],  // you can add global::is-authenticated here if desired
+        middlewares: [],
+      },
+    },
   ],
 };
