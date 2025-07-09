@@ -4242,6 +4242,84 @@ COPY public.components_a_user_word_refs (id) FROM stdin;
 47
 48
 49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
 \.
 
 
@@ -4299,6 +4377,84 @@ COPY public.components_a_user_word_refs_user_word_links (id, user_word_ref_id, u
 47	47	57
 48	48	58
 49	49	59
+50	50	60
+51	51	61
+52	52	62
+53	53	63
+54	54	64
+55	55	65
+56	56	66
+57	57	67
+58	58	68
+59	59	69
+60	60	70
+61	61	71
+62	62	72
+63	63	73
+64	64	74
+65	65	75
+66	66	76
+67	67	77
+68	68	78
+69	69	79
+70	70	80
+71	71	81
+72	72	82
+73	73	83
+74	74	84
+75	75	85
+76	76	86
+77	77	87
+78	78	88
+79	79	89
+80	80	90
+81	81	91
+82	82	92
+83	83	93
+84	84	94
+85	85	95
+86	86	96
+87	87	97
+88	88	98
+89	89	99
+90	90	100
+91	91	101
+92	92	102
+93	93	103
+94	94	104
+95	95	105
+96	96	106
+97	97	107
+98	98	108
+99	99	109
+100	100	110
+101	101	111
+102	102	112
+103	103	113
+104	104	114
+105	105	115
+106	106	116
+107	107	117
+108	108	118
+109	109	119
+110	110	120
+111	111	121
+112	112	122
+113	113	123
+114	114	124
+115	115	125
+116	116	126
+117	117	127
+118	118	128
+119	119	129
+120	120	130
+121	121	131
+122	122	132
+123	123	133
+124	124	134
+125	125	135
+126	126	136
+127	127	137
 \.
 
 
@@ -4386,7 +4542,6 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 35	2025-07-06 00:54:28.143	2025-07-06 21:18:29.085	\N	\N	en	2025-07-06 21:18:28.915	f	1	0
 36	2025-07-06 00:54:53.245	2025-07-06 21:26:32.621	\N	\N	en	2025-07-06 21:26:32.362	f	1	0
 37	2025-07-06 01:19:02.38	2025-07-06 21:26:35.846	\N	\N	en	2025-07-06 21:26:35.668	f	0	1
-49	2025-07-07 15:52:20.828	2025-07-07 15:52:21.296	\N	\N	en	\N	f	0	0
 13	2025-07-02 00:43:22.852	2025-07-06 21:26:37.79	\N	1	en	2025-07-06 21:26:37.622	f	3	0
 20	2025-07-02 12:15:22.24	2025-07-02 23:36:23.781	\N	\N	en	2025-06-22 23:36:23.602	f	1	1
 21	2025-07-02 12:32:50.67	2025-07-02 23:36:25.448	\N	\N	en	2025-06-22 23:36:25.275	f	1	1
@@ -4419,10 +4574,89 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 2	2025-06-28 22:05:15.739	2025-07-02 23:44:57.863	1	1	en	2025-06-22 23:44:57.68	f	0	1
 50	2025-07-07 15:56:13.37	2025-07-07 15:56:13.814	\N	\N	en	\N	f	0	0
 51	2025-07-07 15:57:47.635	2025-07-07 15:57:48.078	\N	\N	en	\N	f	0	0
+52	2025-07-07 16:50:32.835	2025-07-07 16:50:32.835	\N	\N	en	\N	f	0	0
+53	2025-07-07 16:55:22.4	2025-07-07 16:55:22.4	\N	\N	en	\N	f	0	0
+54	2025-07-07 16:59:13.186	2025-07-07 16:59:13.186	\N	\N	en	\N	f	0	0
+55	2025-07-07 17:07:18.436	2025-07-07 17:07:18.436	\N	\N	en	\N	f	0	0
+56	2025-07-07 17:19:23.797	2025-07-07 17:19:23.797	\N	\N	en	\N	f	0	0
+57	2025-07-07 17:32:54.674	2025-07-07 17:32:58.398	\N	\N	en	\N	f	0	0
+58	2025-07-07 17:36:38.724	2025-07-07 17:36:39.464	\N	\N	en	\N	f	0	0
+59	2025-07-07 17:45:53.697	2025-07-07 17:45:57.052	\N	\N	en	\N	f	0	0
 5	2025-06-29 00:21:56.157	2025-07-03 00:01:20.851	1	1	en	2025-07-03 00:01:20.688	f	4	0
 1	2025-06-27 09:06:57.998	2025-07-03 00:10:49.637	1	1	en	2025-07-03 00:10:49.446	f	6	1
 47	2025-07-07 15:48:22.237	2025-07-07 15:48:22.838	\N	\N	en	\N	f	0	0
 48	2025-07-07 15:49:16.501	2025-07-07 15:49:16.978	\N	\N	en	\N	f	0	0
+60	2025-07-07 17:54:28.269	2025-07-07 17:54:32.047	\N	\N	en	\N	f	0	0
+61	2025-07-07 17:54:29.235	2025-07-07 17:54:32.262	\N	\N	en	\N	f	0	0
+62	2025-07-07 17:54:30.398	2025-07-07 17:54:35.589	\N	\N	en	\N	f	0	0
+63	2025-07-07 17:54:31.344	2025-07-07 17:54:35.662	\N	\N	en	\N	f	0	0
+64	2025-07-07 23:47:04.406	2025-07-07 23:47:08.241	\N	\N	en	\N	f	0	0
+65	2025-07-07 23:47:05.401	2025-07-07 23:47:08.812	\N	\N	en	\N	f	0	0
+67	2025-07-07 23:47:07.271	2025-07-07 23:47:11.822	\N	\N	en	\N	f	0	0
+66	2025-07-07 23:47:06.321	2025-07-07 23:47:12.292	\N	\N	en	\N	f	0	0
+69	2025-07-07 23:47:09.191	2025-07-07 23:47:15.295	\N	\N	en	\N	f	0	0
+68	2025-07-07 23:47:08.243	2025-07-07 23:47:15.541	\N	\N	en	\N	f	0	0
+70	2025-07-07 23:47:10.186	2025-07-07 23:47:21.131	\N	\N	en	\N	f	0	0
+71	2025-07-08 00:08:52.693	2025-07-08 00:08:57.325	\N	\N	en	\N	f	0	0
+72	2025-07-08 00:08:53.728	2025-07-08 00:08:58.295	\N	\N	en	\N	f	0	0
+74	2025-07-08 00:08:55.672	2025-07-08 00:09:01.157	\N	\N	en	\N	f	0	0
+73	2025-07-08 00:08:54.748	2025-07-08 00:09:01.742	\N	\N	en	\N	f	0	0
+75	2025-07-08 00:08:56.675	2025-07-08 00:09:03.915	\N	\N	en	\N	f	0	0
+76	2025-07-08 00:08:57.685	2025-07-08 00:09:04.773	\N	\N	en	\N	f	0	0
+77	2025-07-08 00:08:58.657	2025-07-08 00:09:06.908	\N	\N	en	\N	f	0	0
+78	2025-07-08 00:08:59.591	2025-07-08 00:09:07.533	\N	\N	en	\N	f	0	0
+79	2025-07-08 00:09:00.52	2025-07-08 00:09:10.092	\N	\N	en	\N	f	0	0
+80	2025-07-08 00:09:01.463	2025-07-08 00:09:10.247	\N	\N	en	\N	f	0	0
+81	2025-07-08 00:09:02.399	2025-07-08 00:09:13.244	\N	\N	en	\N	f	0	0
+82	2025-07-08 00:09:03.438	2025-07-08 00:09:13.574	\N	\N	en	\N	f	0	0
+83	2025-07-08 00:09:04.462	2025-07-08 00:09:17.006	\N	\N	en	\N	f	0	0
+84	2025-07-08 00:09:05.412	2025-07-08 00:09:17.314	\N	\N	en	\N	f	0	0
+85	2025-07-08 00:09:27.594	2025-07-08 00:09:30.192	\N	\N	en	\N	f	0	0
+86	2025-07-08 00:09:28.558	2025-07-08 00:09:31.985	\N	\N	en	\N	f	0	0
+87	2025-07-08 00:09:29.548	2025-07-08 00:09:33.242	\N	\N	en	\N	f	0	0
+88	2025-07-08 00:09:30.443	2025-07-08 00:09:35.648	\N	\N	en	\N	f	0	0
+89	2025-07-08 00:09:31.381	2025-07-08 00:09:36.134	\N	\N	en	\N	f	0	0
+90	2025-07-08 00:09:32.353	2025-07-08 00:09:38.907	\N	\N	en	\N	f	0	0
+92	2025-07-08 00:09:34.248	2025-07-08 00:09:41.594	\N	\N	en	\N	f	0	0
+93	2025-07-08 00:09:35.199	2025-07-08 00:09:42.916	\N	\N	en	\N	f	0	0
+49	2025-07-07 15:52:20.828	2025-07-08 20:53:38.368	\N	\N	en	2025-07-08 20:53:38.172	f	1	0
+91	2025-07-08 00:09:33.304	2025-07-08 00:09:38.64	\N	\N	en	\N	f	0	0
+94	2025-07-08 00:09:36.192	2025-07-08 00:09:44.994	\N	\N	en	\N	f	0	0
+95	2025-07-08 00:09:37.112	2025-07-08 00:09:45.561	\N	\N	en	\N	f	0	0
+96	2025-07-08 00:09:38.039	2025-07-08 00:09:47.417	\N	\N	en	\N	f	0	0
+97	2025-07-08 00:09:39.008	2025-07-08 00:09:48.059	\N	\N	en	\N	f	0	0
+98	2025-07-08 00:09:39.931	2025-07-08 00:09:50.957	\N	\N	en	\N	f	0	0
+99	2025-07-08 00:10:41.741	2025-07-08 00:10:44.706	\N	\N	en	\N	f	0	0
+100	2025-07-08 00:13:06.936	2025-07-08 00:13:10.387	\N	\N	en	\N	f	0	0
+101	2025-07-08 00:13:07.875	2025-07-08 00:13:11.52	\N	\N	en	\N	f	0	0
+102	2025-07-08 00:13:08.835	2025-07-08 00:13:12.949	\N	\N	en	\N	f	0	0
+103	2025-07-08 00:13:09.818	2025-07-08 00:13:15.06	\N	\N	en	\N	f	0	0
+104	2025-07-08 00:13:10.828	2025-07-08 00:13:15.802	\N	\N	en	\N	f	0	0
+105	2025-07-08 00:13:11.798	2025-07-08 00:13:18.317	\N	\N	en	\N	f	0	0
+106	2025-07-08 00:13:12.757	2025-07-08 00:13:19.502	\N	\N	en	\N	f	0	0
+107	2025-07-08 00:13:13.738	2025-07-08 00:13:21.075	\N	\N	en	\N	f	0	0
+108	2025-07-08 00:13:14.691	2025-07-08 00:13:23.911	\N	\N	en	\N	f	0	0
+109	2025-07-08 00:13:15.642	2025-07-08 00:13:24.091	\N	\N	en	\N	f	0	0
+110	2025-07-08 00:13:16.602	2025-07-08 00:13:27.223	\N	\N	en	\N	f	0	0
+111	2025-07-08 00:13:17.575	2025-07-08 00:13:27.591	\N	\N	en	\N	f	0	0
+112	2025-07-08 00:13:18.591	2025-07-08 00:13:30.354	\N	\N	en	\N	f	0	0
+113	2025-07-08 00:13:19.565	2025-07-08 00:13:30.746	\N	\N	en	\N	f	0	0
+114	2025-07-08 00:13:20.543	2025-07-08 00:13:33.224	\N	\N	en	\N	f	0	0
+115	2025-07-08 00:13:21.48	2025-07-08 00:13:34.852	\N	\N	en	\N	f	0	0
+116	2025-07-08 00:13:22.44	2025-07-08 00:13:36.812	\N	\N	en	\N	f	0	0
+117	2025-07-08 00:13:23.373	2025-07-08 00:13:37.467	\N	\N	en	\N	f	0	0
+118	2025-07-08 00:13:24.412	2025-07-08 00:13:39.982	\N	\N	en	\N	f	0	0
+119	2025-07-08 00:13:25.381	2025-07-08 00:13:41.376	\N	\N	en	\N	f	0	0
+120	2025-07-08 00:13:26.375	2025-07-08 00:13:43.96	\N	\N	en	\N	f	0	0
+121	2025-07-08 00:13:27.288	2025-07-08 00:13:44.774	\N	\N	en	\N	f	0	0
+123	2025-07-08 00:13:29.164	2025-07-08 00:13:48.355	\N	\N	en	\N	f	0	0
+122	2025-07-08 00:13:28.193	2025-07-08 00:13:48.984	\N	\N	en	\N	f	0	0
+124	2025-07-08 00:13:30.091	2025-07-08 00:13:52.591	\N	\N	en	\N	f	0	0
+125	2025-07-08 00:13:31.045	2025-07-08 00:13:52.968	\N	\N	en	\N	f	0	0
+126	2025-07-08 00:13:32.037	2025-07-08 00:13:55.483	\N	\N	en	\N	f	0	0
+127	2025-07-08 00:13:32.974	2025-07-08 00:13:56.168	\N	\N	en	\N	f	0	0
+128	2025-07-08 00:13:33.977	2025-07-08 00:13:58.355	\N	\N	en	\N	f	0	0
+129	2025-07-08 00:13:34.946	2025-07-08 00:13:59.534	\N	\N	en	\N	f	0	0
 \.
 
 
@@ -4482,6 +4716,84 @@ COPY public.flashcards_components (id, entity_id, component_id, component_type, 
 93	49	47	a.user-word-ref	content	1
 94	50	48	a.user-word-ref	content	1
 95	51	49	a.user-word-ref	content	1
+96	52	50	a.user-word-ref	content	1
+97	53	51	a.user-word-ref	content	1
+98	54	52	a.user-word-ref	content	1
+99	55	53	a.user-word-ref	content	1
+100	56	54	a.user-word-ref	content	1
+101	57	55	a.user-word-ref	content	1
+102	58	56	a.user-word-ref	content	1
+103	59	57	a.user-word-ref	content	1
+104	60	58	a.user-word-ref	content	1
+105	61	59	a.user-word-ref	content	1
+106	62	60	a.user-word-ref	content	1
+107	63	61	a.user-word-ref	content	1
+108	64	62	a.user-word-ref	content	1
+109	65	63	a.user-word-ref	content	1
+110	66	64	a.user-word-ref	content	1
+111	67	65	a.user-word-ref	content	1
+112	68	66	a.user-word-ref	content	1
+113	69	67	a.user-word-ref	content	1
+114	70	68	a.user-word-ref	content	1
+115	71	69	a.user-word-ref	content	1
+116	72	70	a.user-word-ref	content	1
+117	73	71	a.user-word-ref	content	1
+118	74	72	a.user-word-ref	content	1
+119	75	73	a.user-word-ref	content	1
+120	76	74	a.user-word-ref	content	1
+121	77	75	a.user-word-ref	content	1
+122	78	76	a.user-word-ref	content	1
+123	79	77	a.user-word-ref	content	1
+124	80	78	a.user-word-ref	content	1
+125	81	79	a.user-word-ref	content	1
+126	82	80	a.user-word-ref	content	1
+127	83	81	a.user-word-ref	content	1
+128	84	82	a.user-word-ref	content	1
+129	85	83	a.user-word-ref	content	1
+130	86	84	a.user-word-ref	content	1
+131	87	85	a.user-word-ref	content	1
+132	88	86	a.user-word-ref	content	1
+133	89	87	a.user-word-ref	content	1
+134	90	88	a.user-word-ref	content	1
+135	91	89	a.user-word-ref	content	1
+136	92	90	a.user-word-ref	content	1
+137	93	91	a.user-word-ref	content	1
+138	94	92	a.user-word-ref	content	1
+139	95	93	a.user-word-ref	content	1
+140	96	94	a.user-word-ref	content	1
+141	97	95	a.user-word-ref	content	1
+142	98	96	a.user-word-ref	content	1
+143	99	97	a.user-word-ref	content	1
+144	100	98	a.user-word-ref	content	1
+145	101	99	a.user-word-ref	content	1
+146	102	100	a.user-word-ref	content	1
+147	103	101	a.user-word-ref	content	1
+148	104	102	a.user-word-ref	content	1
+149	105	103	a.user-word-ref	content	1
+150	106	104	a.user-word-ref	content	1
+151	107	105	a.user-word-ref	content	1
+152	108	106	a.user-word-ref	content	1
+153	109	107	a.user-word-ref	content	1
+154	110	108	a.user-word-ref	content	1
+155	111	109	a.user-word-ref	content	1
+156	112	110	a.user-word-ref	content	1
+157	113	111	a.user-word-ref	content	1
+158	114	112	a.user-word-ref	content	1
+159	115	113	a.user-word-ref	content	1
+161	117	115	a.user-word-ref	content	1
+162	118	116	a.user-word-ref	content	1
+163	119	117	a.user-word-ref	content	1
+164	120	118	a.user-word-ref	content	1
+165	121	119	a.user-word-ref	content	1
+168	124	122	a.user-word-ref	content	1
+169	125	123	a.user-word-ref	content	1
+171	127	125	a.user-word-ref	content	1
+172	128	126	a.user-word-ref	content	1
+173	129	127	a.user-word-ref	content	1
+160	116	114	a.user-word-ref	content	1
+166	122	120	a.user-word-ref	content	1
+167	123	121	a.user-word-ref	content	1
+170	126	124	a.user-word-ref	content	1
 \.
 
 
@@ -4558,6 +4870,84 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 50	49	30	4
 51	50	30	5
 52	51	30	6
+53	52	30	7
+54	53	30	8
+55	54	30	9
+56	55	30	10
+57	56	30	11
+58	57	30	12
+59	58	30	13
+60	59	30	14
+61	60	30	15
+62	61	30	16
+63	62	30	17
+64	63	30	18
+65	64	30	19
+66	65	30	20
+67	66	30	21
+68	67	30	22
+69	68	30	23
+70	69	30	24
+71	70	30	25
+72	71	30	26
+73	72	30	27
+74	73	30	28
+75	74	30	29
+76	75	30	30
+77	76	30	31
+78	77	30	32
+79	78	30	33
+80	79	30	34
+81	80	30	35
+82	81	30	36
+83	82	30	37
+84	83	30	38
+85	84	30	39
+86	85	30	40
+87	86	30	41
+88	87	30	42
+89	88	30	43
+90	89	30	44
+91	90	30	45
+92	91	30	46
+93	92	30	47
+94	93	30	48
+95	94	30	49
+96	95	30	50
+97	96	30	51
+98	97	30	52
+99	98	30	53
+100	99	30	54
+101	100	30	55
+102	101	30	56
+103	102	30	57
+104	103	30	58
+105	104	30	59
+106	105	30	60
+107	106	30	61
+108	107	30	62
+109	108	30	63
+110	109	30	64
+111	110	30	65
+112	111	30	66
+113	112	30	67
+114	113	30	68
+115	114	30	69
+116	115	30	70
+117	116	30	71
+118	117	30	72
+119	118	30	73
+120	119	30	74
+121	120	30	75
+122	121	30	76
+123	122	30	77
+124	123	30	78
+125	124	30	79
+126	125	30	80
+127	126	30	81
+128	127	30	82
+129	128	30	83
+130	129	30	84
 \.
 
 
@@ -4571,6 +4961,79 @@ COPY public.flashcards_vocapage_links (id, flashcard_id, vocapage_id, flashcard_
 3	49	4	3
 4	50	4	4
 5	51	4	5
+6	57	4	6
+7	58	4	7
+8	59	4	8
+9	60	4	9
+10	61	4	10
+11	62	4	11
+12	63	4	12
+13	64	4	13
+14	65	4	14
+15	67	4	15
+16	66	4	16
+17	69	4	17
+18	68	4	18
+19	70	4	19
+20	71	4	20
+21	72	4	21
+22	74	4	22
+23	73	4	23
+24	75	4	24
+25	76	4	25
+26	77	4	26
+27	78	4	27
+28	79	4	28
+29	80	4	29
+112	90	5	23
+113	89	5	22
+62	113	4	62
+63	114	4	63
+64	115	4	64
+65	116	4	65
+66	117	4	66
+67	118	4	67
+68	119	4	68
+84	124	1	9
+86	122	1	8
+87	121	1	7
+88	120	1	6
+79	129	1	5
+80	128	1	4
+81	127	1	3
+82	126	1	2
+83	125	1	1
+102	100	1	19
+103	99	1	18
+104	98	1	17
+105	97	1	16
+106	96	1	15
+107	95	1	14
+108	94	1	13
+109	93	1	12
+110	92	1	11
+111	91	1	10
+114	88	5	21
+115	87	5	20
+116	86	5	19
+117	85	5	18
+118	84	5	17
+119	83	5	16
+120	82	5	15
+121	81	5	14
+89	123	5	4
+90	112	5	3
+91	111	5	2
+92	110	5	1
+93	109	5	13
+94	108	5	12
+95	107	5	11
+96	106	5	10
+97	105	5	9
+98	104	5	8
+99	103	5	7
+100	102	5	6
+101	101	5	5
 \.
 
 
@@ -4809,6 +5272,7 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 149	new	correct	2025-07-06 21:50:06.373	2025-07-06 21:50:06.373	\N	\N	2025-07-06 21:50:06.373
 150	new	correct	2025-07-06 21:50:07.674	2025-07-06 21:50:07.674	\N	\N	2025-07-06 21:50:07.674
 151	new	correct	2025-07-06 21:50:09.757	2025-07-06 21:50:09.757	\N	\N	2025-07-06 21:50:09.757
+152	new	correct	2025-07-08 20:53:38.174	2025-07-08 20:53:38.174	\N	\N	2025-07-08 20:53:38.172
 \.
 
 
@@ -4941,6 +5405,7 @@ COPY public.reviewlogs_flashcard_links (id, reviewlog_id, flashcard_id, reviewlo
 122	149	17	3
 123	150	18	3
 124	151	19	3
+125	152	49	1
 \.
 
 
@@ -5100,6 +5565,7 @@ COPY public.reviewlogs_user_links (id, reviewlog_id, user_id, reviewlog_order) F
 149	149	8	148
 150	150	8	149
 151	151	8	150
+152	152	30	1
 \.
 
 
@@ -5216,7 +5682,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 27	plugin_content_manager_configuration_components::a.taglist	{"uid":"a.taglist","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"tag","defaultSortBy":"tag","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"tag":{"edit":{"label":"tag","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tag","searchable":true,"sortable":true}}},"layouts":{"list":["id","tag"],"edit":[[{"name":"tag","size":6}]]},"isComponent":true}	object	\N	\N
 15	plugin_upload_settings	{"sizeOptimization":true,"responsiveDimensions":true,"autoOrientation":true}	object	\N	\N
 37	plugin_content_manager_configuration_content_types::api::lesson.lesson	{"uid":"api::lesson.lesson","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"lessonlevel":{"edit":{"label":"lessonlevel","description":"","placeholder":"","visible":true,"editable":true,"mainField":"level"},"list":{"label":"lessonlevel","searchable":true,"sortable":true}},"sections":{"edit":{"label":"sections","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"sections","searchable":false,"sortable":false}},"user_words":{"edit":{"label":"user_words","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_words","searchable":false,"sortable":false}},"user_sentences":{"edit":{"label":"user_sentences","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentences","searchable":false,"sortable":false}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"unit":{"edit":{"label":"unit","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"unit","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","slug","unit"],"edit":[[{"name":"title","size":6},{"name":"slug","size":6}],[{"name":"description","size":6}],[{"name":"order","size":4}],[{"name":"tags","size":12}],[{"name":"lessonlevel","size":6},{"name":"sections","size":6}],[{"name":"user_words","size":6},{"name":"user_sentences","size":6}],[{"name":"flashcards","size":6},{"name":"unit","size":6}]]}}	object	\N	\N
-17	plugin_upload_metrics	{"weeklySchedule":"28 29 19 * * 1","lastWeeklyUpdate":1751336968139}	object	\N	\N
+17	plugin_upload_metrics	{"weeklySchedule":"28 29 19 * * 1","lastWeeklyUpdate":1751941768200}	object	\N	\N
 14	plugin_content_manager_configuration_content_types::plugin::i18n.locale	{"uid":"plugin::i18n.locale","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","code","createdAt"],"edit":[[{"name":"name","size":6},{"name":"code","size":6}]]}}	object	\N	\N
 21	plugin_i18n_default_locale	"en"	string	\N	\N
 38	plugin_content_manager_configuration_content_types::api::section.section	{"uid":"api::section.section","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"components":{"edit":{"label":"components","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"components","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","lesson","order"],"edit":[[{"name":"title","size":6},{"name":"lesson","size":6}],[{"name":"order","size":4}],[{"name":"components","size":12}]]}}	object	\N	\N
@@ -5341,10 +5807,8 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 18	api::flashcard.flashcard.find	2025-06-28 10:53:26.215	2025-06-28 10:53:26.215	\N	\N
 19	api::flashcard.flashcard.create	2025-06-28 10:53:26.215	2025-06-28 10:53:26.215	\N	\N
 20	api::flashcard.flashcard.update	2025-06-28 10:53:26.215	2025-06-28 10:53:26.215	\N	\N
-21	api::flashcard.flashcard.createLocalization	2025-06-28 10:53:26.215	2025-06-28 10:53:26.215	\N	\N
 17	api::flashcard.flashcard.findOne	2025-06-28 10:53:26.215	2025-06-28 10:53:26.215	\N	\N
 22	api::flashcard.flashcard.findForReview	2025-06-28 16:38:34.388	2025-06-28 16:38:34.388	\N	\N
-23	api::flashcard.flashcard.delete	2025-06-28 20:00:03.883	2025-06-28 20:00:03.883	\N	\N
 2	plugin::users-permissions.auth.changePassword	2025-06-23 17:47:30.388	2025-06-23 17:47:30.388	\N	\N
 5	plugin::users-permissions.auth.callback	2025-06-23 17:47:30.589	2025-06-23 17:47:30.589	\N	\N
 26	api::reviewlog.reviewlog.create	2025-06-29 23:26:45.758	2025-06-29 23:26:45.758	\N	\N
@@ -5384,6 +5848,14 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 62	api::word.word.find	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
 63	api::word.word.findOne	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
 68	api::translate-word.translate-word.translate	2025-07-02 08:43:14.09	2025-07-02 08:43:14.09	\N	\N
+77	plugin::users-permissions.user.find	2025-07-07 20:02:08.43	2025-07-07 20:02:08.43	\N	\N
+78	plugin::users-permissions.user.findOne	2025-07-07 20:02:08.43	2025-07-07 20:02:08.43	\N	\N
+79	api::vocabook.vocabook.findMyVocabook	2025-07-07 20:26:54.788	2025-07-07 20:26:54.788	\N	\N
+80	api::vocapage.vocapage.findMyVocapage	2025-07-07 21:08:01.683	2025-07-07 21:08:01.683	\N	\N
+81	api::vocabook.vocabook.findOne	2025-07-07 21:47:27.448	2025-07-07 21:47:27.448	\N	\N
+82	api::vocapage.vocapage.find	2025-07-07 21:47:27.448	2025-07-07 21:47:27.448	\N	\N
+83	api::vocabook.vocabook.find	2025-07-07 21:47:27.448	2025-07-07 21:47:27.448	\N	\N
+84	api::vocapage.vocapage.findOne	2025-07-07 21:47:27.448	2025-07-07 21:47:27.448	\N	\N
 \.
 
 
@@ -5408,9 +5880,7 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 18	17	1	3
 19	19	1	3
 20	20	1	4
-21	21	1	4
 22	22	1	5
-23	23	1	6
 26	27	1	8
 27	26	1	8
 29	29	1	10
@@ -5448,6 +5918,14 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 62	58	1	16
 63	60	1	16
 68	68	1	17
+77	77	1	20
+78	78	1	20
+79	79	1	21
+80	80	1	22
+81	83	1	23
+82	81	1	23
+83	82	1	23
+84	84	1	24
 \.
 
 
@@ -5457,7 +5935,7 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 
 COPY public.up_roles (id, name, description, type, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 2	Public	Default role given to unauthenticated user.	public	2025-06-23 17:47:30.213	2025-07-01 11:43:29.116	\N	\N
-1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-07-02 08:43:13.78	\N	\N
+1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-07-07 22:02:45.441	\N	\N
 \.
 
 
@@ -5621,6 +6099,84 @@ COPY public.user_words (id, base_text, part_of_speech, created_at, updated_at, c
 57	大师	noun	2025-07-07 15:52:20.355	2025-07-07 15:52:20.355	\N	\N	en	master	[{"text": "专家", "isCorrect": false}, {"text": "师傅", "isCorrect": false}, {"text": "翻译", "isCorrect": false}, {"text": "大师", "isCorrect": true}]	[{"text": "virtuoso", "isCorrect": false}, {"text": "champion", "isCorrect": false}, {"text": "savant", "isCorrect": false}, {"text": "master", "isCorrect": true}]
 58	武器	noun	2025-07-07 15:56:12.908	2025-07-07 15:56:12.908	\N	\N	en	weapon	[{"text": "盔甲", "isCorrect": false}, {"text": "武器", "isCorrect": true}, {"text": "战斗", "isCorrect": false}, {"text": "弓箭", "isCorrect": false}]	[{"text": "军火", "isCorrect": false}, {"text": "枪支", "isCorrect": false}, {"text": "护身符", "isCorrect": false}, {"text": "weapon", "isCorrect": true}]
 59	  天上的云好蓝啊。	noun	2025-07-07 15:57:47.127	2025-07-07 15:57:47.127	\N	\N	en	The clouds in the sky are so blue.	[{"text": "雪山的冰很白啊。", "isCorrect": false}, {"text": "水里的鱼很闪啊。", "isCorrect": false}, {"text": "地上的草很绿啊。", "isCorrect": false}, {"text": "  天上的云好蓝啊。", "isCorrect": true}]	[{"text": "The clouds in the sky are so green.", "isCorrect": false}, {"text": "The clouds in the sky are so purple.", "isCorrect": false}, {"text": "The clouds in the sky are so black.", "isCorrect": false}, {"text": "The clouds in the sky are so blue.", "isCorrect": true}]
+60	 驱散	noun	2025-07-07 16:50:32.354	2025-07-07 16:50:32.354	\N	\N	en	Dispel	\N	\N
+61	空难	noun	2025-07-07 16:55:21.927	2025-07-07 16:55:21.927	\N	\N	en	Air crash	\N	\N
+62	解说	noun	2025-07-07 16:59:12.713	2025-07-07 16:59:12.713	\N	\N	en	Commentary	\N	\N
+63	飞驰	noun	2025-07-07 17:07:17.994	2025-07-07 17:07:17.994	\N	\N	en	Flying	\N	\N
+64	废弃	noun	2025-07-07 17:19:23.332	2025-07-07 17:19:23.332	\N	\N	en	Deprecated	\N	\N
+65	现象	noun	2025-07-07 17:32:54.174	2025-07-07 17:32:57.908	\N	\N	en	Phenomenon	[{"text": "实践", "isCorrect": false}, {"text": "推理", "isCorrect": false}, {"text": "表象", "isCorrect": false}, {"text": "现象", "isCorrect": true}]	[{"text": "Occurrence", "isCorrect": false}, {"text": "Phenomenon", "isCorrect": true}, {"text": "Spectacle", "isCorrect": false}, {"text": "Consequence", "isCorrect": false}]
+66	边界	noun	2025-07-07 17:36:38.264	2025-07-07 17:36:39.024	\N	\N	en	boundary	\N	\N
+67	可能性	noun	2025-07-07 17:45:53.225	2025-07-07 17:45:56.589	\N	\N	en	possibility	[{"text": "潜力", "isCorrect": false}, {"text": "或许", "isCorrect": false}, {"text": "可能性", "isCorrect": true}, {"text": "潜在", "isCorrect": false}]	[{"text": "opportunity", "isCorrect": false}, {"text": "likelihood", "isCorrect": false}, {"text": "possibility", "isCorrect": true}, {"text": "potential", "isCorrect": false}]
+68	塔	noun	2025-07-07 17:54:27.796	2025-07-07 17:54:31.601	\N	\N	en	tower	[{"text": "塔", "isCorrect": true}, {"text": "楼", "isCorrect": false}, {"text": "庙", "isCorrect": false}, {"text": "阁", "isCorrect": false}]	[{"text": "castle", "isCorrect": false}, {"text": "building", "isCorrect": false}, {"text": "skyscraper", "isCorrect": false}, {"text": "tower", "isCorrect": true}]
+69	修补	noun	2025-07-07 17:54:28.756	2025-07-07 17:54:31.817	\N	\N	en	repair	[{"text": "装饰", "isCorrect": false}, {"text": "整理", "isCorrect": false}, {"text": "修补", "isCorrect": true}, {"text": "擦拭", "isCorrect": false}]	[{"text": "maintain", "isCorrect": false}, {"text": "fix", "isCorrect": false}, {"text": "repair", "isCorrect": true}, {"text": "restore", "isCorrect": false}]
+70	原始的	noun	2025-07-07 17:54:29.914	2025-07-07 17:54:35.113	\N	\N	en	original	[{"text": "原始的", "isCorrect": true}, {"text": "初始的", "isCorrect": false}, {"text": "古老的", "isCorrect": false}, {"text": "最初的", "isCorrect": false}]	[{"text": "original", "isCorrect": true}, {"text": "authentic", "isCorrect": false}, {"text": "genuine", "isCorrect": false}, {"text": "innovative", "isCorrect": false}]
+71	北方	noun	2025-07-07 17:54:30.865	2025-07-07 17:54:35.175	\N	\N	en	north	[{"text": "西方", "isCorrect": false}, {"text": "北方", "isCorrect": true}, {"text": "东方", "isCorrect": false}, {"text": "南方", "isCorrect": false}]	[{"text": "east", "isCorrect": false}, {"text": "north", "isCorrect": true}, {"text": "up", "isCorrect": false}, {"text": "left", "isCorrect": false}]
+72	森林	noun	2025-07-07 23:47:03.902	2025-07-07 23:47:07.732	\N	\N	en	forest	[{"text": "草原", "isCorrect": false}, {"text": "海洋", "isCorrect": false}, {"text": "森林", "isCorrect": true}, {"text": "红色", "isCorrect": false}]	[{"text": "park", "isCorrect": false}, {"text": "jungle", "isCorrect": false}, {"text": "forest", "isCorrect": true}, {"text": "woods", "isCorrect": false}]
+73	镜子	noun	2025-07-07 23:47:04.952	2025-07-07 23:47:08.358	\N	\N	en	mirror	[{"text": "被子", "isCorrect": false}, {"text": "镜子", "isCorrect": true}, {"text": "窗帘", "isCorrect": false}, {"text": "刷子", "isCorrect": false}]	[{"text": "reflection", "isCorrect": false}, {"text": "glass", "isCorrect": false}, {"text": "duplicate", "isCorrect": false}, {"text": "mirror", "isCorrect": true}]
+75	山	noun	2025-07-07 23:47:06.817	2025-07-07 23:47:11.344	\N	\N	en	mountain	[{"text": "峡谷", "isCorrect": false}, {"text": "草原", "isCorrect": false}, {"text": "沙漠", "isCorrect": false}, {"text": "山", "isCorrect": true}]	[{"text": "valley", "isCorrect": false}, {"text": "mountain", "isCorrect": true}, {"text": "hill", "isCorrect": false}, {"text": "ocean", "isCorrect": false}]
+74	河流	noun	2025-07-07 23:47:05.845	2025-07-07 23:47:11.824	\N	\N	en	river	[{"text": "河流", "isCorrect": true}, {"text": "江河", "isCorrect": false}, {"text": "湖泊", "isCorrect": false}, {"text": "溪流", "isCorrect": false}]	[{"text": "stream", "isCorrect": false}, {"text": "river", "isCorrect": true}, {"text": "lake", "isCorrect": false}, {"text": "pond", "isCorrect": false}]
+77	目标	noun	2025-07-07 23:47:08.72	2025-07-07 23:47:14.787	\N	\N	en	goal	[{"text": "目标", "isCorrect": true}, {"text": "目录", "isCorrect": false}, {"text": "方向", "isCorrect": false}, {"text": "标记", "isCorrect": false}]	[{"text": "aim", "isCorrect": false}, {"text": "destination", "isCorrect": false}, {"text": "goal", "isCorrect": true}, {"text": "purpose", "isCorrect": false}]
+76	想法	noun	2025-07-07 23:47:07.761	2025-07-07 23:47:15.058	\N	\N	en	idea	[{"text": "意见", "isCorrect": false}, {"text": "见解", "isCorrect": false}, {"text": "构想", "isCorrect": false}, {"text": "想法", "isCorrect": true}]	[{"text": "concept", "isCorrect": false}, {"text": "idea", "isCorrect": true}, {"text": "thought", "isCorrect": false}, {"text": "notion", "isCorrect": false}]
+78	选择	noun	2025-07-07 23:47:09.706	2025-07-07 23:47:20.643	\N	\N	en	choice	[{"text": "选择", "isCorrect": true}, {"text": "拒绝", "isCorrect": false}, {"text": "挑选", "isCorrect": false}, {"text": "判定", "isCorrect": false}]	[{"text": "choice", "isCorrect": true}, {"text": "selection", "isCorrect": false}, {"text": "preference", "isCorrect": false}, {"text": "decision", "isCorrect": false}]
+79	自由	noun	2025-07-08 00:08:52.22	2025-07-08 00:08:56.828	\N	\N	en	freedom	[{"text": "独立", "isCorrect": false}, {"text": "自由", "isCorrect": true}, {"text": "束缚", "isCorrect": false}, {"text": "限制", "isCorrect": false}]	[{"text": "autonomy", "isCorrect": false}, {"text": "freedom", "isCorrect": true}, {"text": "independence", "isCorrect": false}, {"text": "bondage", "isCorrect": false}]
+80	勇气	noun	2025-07-08 00:08:53.237	2025-07-08 00:08:57.836	\N	\N	en	courage	[{"text": "勇气", "isCorrect": true}, {"text": "勇武", "isCorrect": false}, {"text": "怯懦", "isCorrect": false}, {"text": "胆怯", "isCorrect": false}]	[{"text": "courage", "isCorrect": true}, {"text": "timidity", "isCorrect": false}, {"text": "cowardice", "isCorrect": false}, {"text": "daring", "isCorrect": false}]
+82	火车	noun	2025-07-08 00:08:55.215	2025-07-08 00:09:00.689	\N	\N	en	train	[{"text": "火车", "isCorrect": true}, {"text": "飞机", "isCorrect": false}, {"text": "公共汽车", "isCorrect": false}, {"text": "自行车", "isCorrect": false}]	[{"text": "commuter", "isCorrect": false}, {"text": "train", "isCorrect": true}, {"text": "subway", "isCorrect": false}, {"text": "carriage", "isCorrect": false}]
+81	窗户	noun	2025-07-08 00:08:54.278	2025-07-08 00:09:01.279	\N	\N	en	window	[{"text": "门窗", "isCorrect": false}, {"text": "窗口", "isCorrect": false}, {"text": "窗帘", "isCorrect": false}, {"text": "窗户", "isCorrect": true}]	[{"text": "door", "isCorrect": false}, {"text": "window", "isCorrect": true}, {"text": "mirror", "isCorrect": false}, {"text": "pane", "isCorrect": false}]
+83	云	noun	2025-07-08 00:08:56.191	2025-07-08 00:09:03.44	\N	\N	en	cloud	[{"text": "风", "isCorrect": false}, {"text": "雨", "isCorrect": false}, {"text": "雪", "isCorrect": false}, {"text": "云", "isCorrect": true}]	[{"text": "fog", "isCorrect": false}, {"text": "cloud", "isCorrect": true}, {"text": "rain", "isCorrect": false}, {"text": "mist", "isCorrect": false}]
+84	花	noun	2025-07-08 00:08:57.188	2025-07-08 00:09:04.318	\N	\N	en	flower	[{"text": "花", "isCorrect": true}, {"text": "蓝", "isCorrect": false}, {"text": "草", "isCorrect": false}, {"text": "树", "isCorrect": false}]	[{"text": "flower", "isCorrect": true}, {"text": "blossom", "isCorrect": false}, {"text": "lily", "isCorrect": false}, {"text": "tree", "isCorrect": false}]
+85	镜子	noun	2025-07-08 00:08:58.178	2025-07-08 00:09:06.447	\N	\N	en	mirror	[{"text": "灯笼", "isCorrect": false}, {"text": "窗户", "isCorrect": false}, {"text": "地板", "isCorrect": false}, {"text": "镜子", "isCorrect": true}]	[{"text": "mirror", "isCorrect": true}, {"text": "echo", "isCorrect": false}, {"text": "glass", "isCorrect": false}, {"text": "duplicate", "isCorrect": false}]
+86	厨房	noun	2025-07-08 00:08:59.15	2025-07-08 00:09:07.07	\N	\N	en	kitchen	[{"text": "洗衣房", "isCorrect": false}, {"text": "餐厅", "isCorrect": false}, {"text": "厨房", "isCorrect": true}, {"text": "浴室", "isCorrect": false}]	[{"text": "kitchen", "isCorrect": true}, {"text": "pantry", "isCorrect": false}, {"text": "bedroom", "isCorrect": false}, {"text": "cabinet", "isCorrect": false}]
+87	苹果	noun	2025-07-08 00:09:00.083	2025-07-08 00:09:09.606	\N	\N	en	apple	[{"text": "桃子", "isCorrect": false}, {"text": "梨", "isCorrect": false}, {"text": "香蕉", "isCorrect": false}, {"text": "苹果", "isCorrect": true}]	[{"text": "apple", "isCorrect": true}, {"text": "pear", "isCorrect": false}, {"text": "banana", "isCorrect": false}, {"text": "orange", "isCorrect": false}]
+88	老师	noun	2025-07-08 00:09:01.001	2025-07-08 00:09:09.758	\N	\N	en	teacher	[{"text": "学生", "isCorrect": false}, {"text": "导师", "isCorrect": false}, {"text": "老师", "isCorrect": true}, {"text": "教练", "isCorrect": false}]	[{"text": "educator", "isCorrect": false}, {"text": "professor", "isCorrect": false}, {"text": "teacher", "isCorrect": true}, {"text": "instructor", "isCorrect": false}]
+89	城市	noun	2025-07-08 00:09:01.955	2025-07-08 00:09:12.794	\N	\N	en	city	[{"text": "山脉", "isCorrect": false}, {"text": "乡村", "isCorrect": false}, {"text": "城市", "isCorrect": true}, {"text": "海洋", "isCorrect": false}]	[{"text": "country", "isCorrect": false}, {"text": "village", "isCorrect": false}, {"text": "town", "isCorrect": false}, {"text": "city", "isCorrect": true}]
+90	学校	noun	2025-07-08 00:09:02.913	2025-07-08 00:09:13.091	\N	\N	en	school	[{"text": "大学", "isCorrect": false}, {"text": "学校", "isCorrect": true}, {"text": "超市", "isCorrect": false}, {"text": "医院", "isCorrect": false}]	[{"text": "classroom", "isCorrect": false}, {"text": "university", "isCorrect": false}, {"text": "library", "isCorrect": false}, {"text": "school", "isCorrect": true}]
+91	太阳	noun	2025-07-08 00:09:03.946	2025-07-08 00:09:16.496	\N	\N	en	sun	[{"text": "台风", "isCorrect": false}, {"text": "月亮", "isCorrect": false}, {"text": "星星", "isCorrect": false}, {"text": "太阳", "isCorrect": true}]	[{"text": "star", "isCorrect": false}, {"text": "sun", "isCorrect": true}, {"text": "moon", "isCorrect": false}, {"text": "rain", "isCorrect": false}]
+92	行星	noun	2025-07-08 00:09:04.954	2025-07-08 00:09:16.845	\N	\N	en	planet	[{"text": "卫星", "isCorrect": false}, {"text": "太阳", "isCorrect": false}, {"text": "星球", "isCorrect": false}, {"text": "行星", "isCorrect": true}]	[{"text": "galaxy", "isCorrect": false}, {"text": "comet", "isCorrect": false}, {"text": "star", "isCorrect": false}, {"text": "planet", "isCorrect": true}]
+93	音乐	noun	2025-07-08 00:09:27.134	2025-07-08 00:09:29.751	\N	\N	en	music	[{"text": "音乐", "isCorrect": true}, {"text": "艺术", "isCorrect": false}, {"text": "文学", "isCorrect": false}, {"text": "声音", "isCorrect": false}]	[{"text": "rhythm", "isCorrect": false}, {"text": "music", "isCorrect": true}, {"text": "melody", "isCorrect": false}, {"text": "painting", "isCorrect": false}]
+94	梦想	noun	2025-07-08 00:09:28.066	2025-07-08 00:09:31.539	\N	\N	en	dream	[{"text": "心情", "isCorrect": false}, {"text": "梦想", "isCorrect": true}, {"text": "愤怒", "isCorrect": false}, {"text": "抱负", "isCorrect": false}]	[{"text": "fantasy", "isCorrect": false}, {"text": "vision", "isCorrect": false}, {"text": "illusion", "isCorrect": false}, {"text": "dream", "isCorrect": true}]
+95	书	noun	2025-07-08 00:09:29.085	2025-07-08 00:09:32.781	\N	\N	en	book	[{"text": "电视", "isCorrect": false}, {"text": "书", "isCorrect": true}, {"text": "报纸", "isCorrect": false}, {"text": "钢笔", "isCorrect": false}]	[{"text": "magazine", "isCorrect": false}, {"text": "book", "isCorrect": true}, {"text": "novel", "isCorrect": false}, {"text": "pen", "isCorrect": false}]
+96	电影	noun	2025-07-08 00:09:30.002	2025-07-08 00:09:35.198	\N	\N	en	movie	[{"text": "电器", "isCorrect": false}, {"text": "影视", "isCorrect": false}, {"text": "影片", "isCorrect": false}, {"text": "电影", "isCorrect": true}]	[{"text": "documentary", "isCorrect": false}, {"text": "movie", "isCorrect": true}, {"text": "play", "isCorrect": false}, {"text": "book", "isCorrect": false}]
+100	自行车	noun	2025-07-08 00:09:33.789	2025-07-08 00:09:41.15	\N	\N	en	bicycle	[{"text": "电动车", "isCorrect": false}, {"text": "自行车", "isCorrect": true}, {"text": "公交车", "isCorrect": false}, {"text": "飞机", "isCorrect": false}]	[{"text": "skateboard", "isCorrect": false}, {"text": "bicycle", "isCorrect": true}, {"text": "car", "isCorrect": false}, {"text": "scooter", "isCorrect": false}]
+101	海洋	noun	2025-07-08 00:09:34.743	2025-07-08 00:09:42.455	\N	\N	en	ocean	[{"text": "湖泊", "isCorrect": false}, {"text": "湿地", "isCorrect": false}, {"text": "海洋", "isCorrect": true}, {"text": "河流", "isCorrect": false}]	[{"text": "lake", "isCorrect": false}, {"text": "sea", "isCorrect": false}, {"text": "river", "isCorrect": false}, {"text": "ocean", "isCorrect": true}]
+102	铅笔	noun	2025-07-08 00:09:35.679	2025-07-08 00:09:44.541	\N	\N	en	pencil	[{"text": "书本", "isCorrect": false}, {"text": "橡皮", "isCorrect": false}, {"text": "讲桌", "isCorrect": false}, {"text": "铅笔", "isCorrect": true}]	[{"text": "eraser", "isCorrect": false}, {"text": "sharpener", "isCorrect": false}, {"text": "pencil", "isCorrect": true}, {"text": "notebook", "isCorrect": false}]
+104	道路	noun	2025-07-08 00:09:37.598	2025-07-08 00:09:46.959	\N	\N	en	road	[{"text": "车站", "isCorrect": false}, {"text": "道路", "isCorrect": true}, {"text": "街道", "isCorrect": false}, {"text": "条纹", "isCorrect": false}]	[{"text": "road", "isCorrect": true}, {"text": "street", "isCorrect": false}, {"text": "path", "isCorrect": false}, {"text": "highway", "isCorrect": false}]
+105	门	noun	2025-07-08 00:09:38.533	2025-07-08 00:09:47.606	\N	\N	en	door	[{"text": "门", "isCorrect": true}, {"text": "窗", "isCorrect": false}, {"text": "墙", "isCorrect": false}, {"text": "楼梯", "isCorrect": false}]	[{"text": "window", "isCorrect": false}, {"text": "entrance", "isCorrect": false}, {"text": "gate", "isCorrect": false}, {"text": "door", "isCorrect": true}]
+106	家庭	noun	2025-07-08 00:09:39.472	2025-07-08 00:09:50.534	\N	\N	en	family	[{"text": "亲戚", "isCorrect": false}, {"text": "住宅", "isCorrect": false}, {"text": "家庭", "isCorrect": true}, {"text": "婚姻", "isCorrect": false}]	[{"text": "relatives", "isCorrect": false}, {"text": "family", "isCorrect": true}, {"text": "home", "isCorrect": false}, {"text": "tribe", "isCorrect": false}]
+97	语言	noun	2025-07-08 00:09:30.935	2025-07-08 00:09:35.589	\N	\N	en	language	[{"text": "语言", "isCorrect": true}, {"text": "词汇", "isCorrect": false}, {"text": "口音", "isCorrect": false}, {"text": "文字", "isCorrect": false}]	[{"text": "lingo", "isCorrect": false}, {"text": "dialect", "isCorrect": false}, {"text": "language", "isCorrect": true}, {"text": "grammar", "isCorrect": false}]
+99	朋友	noun	2025-07-08 00:09:32.844	2025-07-08 00:09:38.16	\N	\N	en	friend	[{"text": "邻居", "isCorrect": false}, {"text": "朋友", "isCorrect": true}, {"text": "家人", "isCorrect": false}, {"text": "同事", "isCorrect": false}]	[{"text": "friend", "isCorrect": true}, {"text": "chum", "isCorrect": false}, {"text": "comrade", "isCorrect": false}, {"text": "acquaintance", "isCorrect": false}]
+98	动物	noun	2025-07-08 00:09:31.908	2025-07-08 00:09:38.406	\N	\N	en	animal	[{"text": "生物", "isCorrect": false}, {"text": "植物", "isCorrect": false}, {"text": "动物", "isCorrect": true}, {"text": "鱼类", "isCorrect": false}]	[{"text": "creature", "isCorrect": false}, {"text": "animal", "isCorrect": true}, {"text": "beast", "isCorrect": false}, {"text": "pet", "isCorrect": false}]
+103	时钟	noun	2025-07-08 00:09:36.684	2025-07-08 00:09:45.103	\N	\N	en	clock	[{"text": "时钟", "isCorrect": true}, {"text": "表", "isCorrect": false}, {"text": "闹钟", "isCorrect": false}, {"text": "尺", "isCorrect": false}]	[{"text": "meter", "isCorrect": false}, {"text": "watch", "isCorrect": false}, {"text": "calendar", "isCorrect": false}, {"text": "clock", "isCorrect": true}]
+107	历史	noun	2025-07-08 00:10:41.284	2025-07-08 00:10:44.244	\N	\N	en	history	[{"text": "科学", "isCorrect": false}, {"text": "过去", "isCorrect": false}, {"text": "历史", "isCorrect": true}, {"text": "传统", "isCorrect": false}]	[{"text": "archaeology", "isCorrect": false}, {"text": "geography", "isCorrect": false}, {"text": "culture", "isCorrect": false}, {"text": "history", "isCorrect": true}]
+108	森林	noun	2025-07-08 00:13:06.475	2025-07-08 00:13:09.934	\N	\N	en	forest	[{"text": "丛林", "isCorrect": false}, {"text": "森林", "isCorrect": true}, {"text": "田野", "isCorrect": false}, {"text": "草原", "isCorrect": false}]	[{"text": "forest", "isCorrect": true}, {"text": "jungle", "isCorrect": false}, {"text": "desert", "isCorrect": false}, {"text": "woods", "isCorrect": false}]
+109	镜子	noun	2025-07-08 00:13:07.42	2025-07-08 00:13:11.039	\N	\N	en	mirror	[{"text": "窗帘", "isCorrect": false}, {"text": "玻璃", "isCorrect": false}, {"text": "镜子", "isCorrect": true}, {"text": "相机", "isCorrect": false}]	[{"text": "reflection", "isCorrect": false}, {"text": "mirror", "isCorrect": true}, {"text": "glass", "isCorrect": false}, {"text": "window", "isCorrect": false}]
+110	河流	noun	2025-07-08 00:13:08.351	2025-07-08 00:13:12.476	\N	\N	en	river	[{"text": "河流", "isCorrect": true}, {"text": "小溪", "isCorrect": false}, {"text": "山脉", "isCorrect": false}, {"text": "湖泊", "isCorrect": false}]	[{"text": "river", "isCorrect": true}, {"text": "stream", "isCorrect": false}, {"text": "lake", "isCorrect": false}, {"text": "ocean", "isCorrect": false}]
+111	山	noun	2025-07-08 00:13:09.339	2025-07-08 00:13:14.589	\N	\N	en	mountain	[{"text": "河", "isCorrect": false}, {"text": "岛", "isCorrect": false}, {"text": "山", "isCorrect": true}, {"text": "湖", "isCorrect": false}]	[{"text": "valley", "isCorrect": false}, {"text": "mountain", "isCorrect": true}, {"text": "hill", "isCorrect": false}, {"text": "plateau", "isCorrect": false}]
+112	想法	noun	2025-07-08 00:13:10.293	2025-07-08 00:13:15.339	\N	\N	en	idea	[{"text": "想法", "isCorrect": true}, {"text": "观念", "isCorrect": false}, {"text": "心情", "isCorrect": false}, {"text": "计划", "isCorrect": false}]	[{"text": "guess", "isCorrect": false}, {"text": "idea", "isCorrect": true}, {"text": "thought", "isCorrect": false}, {"text": "concept", "isCorrect": false}]
+113	目标	noun	2025-07-08 00:13:11.323	2025-07-08 00:13:17.823	\N	\N	en	goal	[{"text": "目的", "isCorrect": false}, {"text": "目标", "isCorrect": true}, {"text": "任务", "isCorrect": false}, {"text": "方向", "isCorrect": false}]	[{"text": "objective", "isCorrect": false}, {"text": "intention", "isCorrect": false}, {"text": "purpose", "isCorrect": false}, {"text": "goal", "isCorrect": true}]
+114	选择	noun	2025-07-08 00:13:12.289	2025-07-08 00:13:19.028	\N	\N	en	choice	[{"text": "选择", "isCorrect": true}, {"text": "抉择", "isCorrect": false}, {"text": "拒绝", "isCorrect": false}, {"text": "挑选", "isCorrect": false}]	[{"text": "decision", "isCorrect": false}, {"text": "alternatives", "isCorrect": false}, {"text": "choice", "isCorrect": true}, {"text": "option", "isCorrect": false}]
+115	自由	noun	2025-07-08 00:13:13.259	2025-07-08 00:13:20.606	\N	\N	en	freedom	[{"text": "自由", "isCorrect": true}, {"text": "繁荣", "isCorrect": false}, {"text": "平等", "isCorrect": false}, {"text": "束缚", "isCorrect": false}]	[{"text": "oppression", "isCorrect": false}, {"text": "liberty", "isCorrect": false}, {"text": "freedom", "isCorrect": true}, {"text": "independence", "isCorrect": false}]
+116	勇气	noun	2025-07-08 00:13:14.225	2025-07-08 00:13:23.426	\N	\N	en	courage	[{"text": "勇气", "isCorrect": true}, {"text": "胆怯", "isCorrect": false}, {"text": "勇敢", "isCorrect": false}, {"text": "胆量", "isCorrect": false}]	[{"text": "courage", "isCorrect": true}, {"text": "fear", "isCorrect": false}, {"text": "recklessness", "isCorrect": false}, {"text": "cowardice", "isCorrect": false}]
+117	窗户	noun	2025-07-08 00:13:15.186	2025-07-08 00:13:23.578	\N	\N	en	window	[{"text": "楼梯", "isCorrect": false}, {"text": "窗户", "isCorrect": true}, {"text": "门", "isCorrect": false}, {"text": "墙壁", "isCorrect": false}]	[{"text": "mirror", "isCorrect": false}, {"text": "window", "isCorrect": true}, {"text": "glass", "isCorrect": false}, {"text": "door", "isCorrect": false}]
+118	火车	noun	2025-07-08 00:13:16.146	2025-07-08 00:13:26.798	\N	\N	en	train	[{"text": "汽车", "isCorrect": false}, {"text": "自行车", "isCorrect": false}, {"text": "火车", "isCorrect": true}, {"text": "飞机", "isCorrect": false}]	[{"text": "bus", "isCorrect": false}, {"text": "locomotive", "isCorrect": false}, {"text": "train", "isCorrect": true}, {"text": "carriage", "isCorrect": false}]
+121	厨房	noun	2025-07-08 00:13:19.092	2025-07-08 00:13:30.285	\N	\N	en	kitchen	[{"text": "厨房", "isCorrect": true}, {"text": "卧室", "isCorrect": false}, {"text": "客厅", "isCorrect": false}, {"text": "书房", "isCorrect": false}]	[{"text": "living room", "isCorrect": false}, {"text": "kitchen", "isCorrect": true}, {"text": "cabinet", "isCorrect": false}, {"text": "pantry", "isCorrect": false}]
+128	音乐	noun	2025-07-08 00:13:25.901	2025-07-08 00:13:43.488	\N	\N	en	music	[{"text": "运动", "isCorrect": false}, {"text": "电影", "isCorrect": false}, {"text": "画画", "isCorrect": false}, {"text": "音乐", "isCorrect": true}]	[{"text": "tune", "isCorrect": false}, {"text": "lyrics", "isCorrect": false}, {"text": "music", "isCorrect": true}, {"text": "harmony", "isCorrect": false}]
+119	云	noun	2025-07-08 00:13:17.094	2025-07-08 00:13:27.107	\N	\N	en	cloud	[{"text": "风", "isCorrect": false}, {"text": "雪", "isCorrect": false}, {"text": "雨", "isCorrect": false}, {"text": "云", "isCorrect": true}]	[{"text": "fog", "isCorrect": false}, {"text": "cloud", "isCorrect": true}, {"text": "rainbow", "isCorrect": false}, {"text": "mist", "isCorrect": false}]
+131	电影	noun	2025-07-08 00:13:28.703	2025-07-08 00:13:47.862	\N	\N	en	movie	[{"text": "音乐", "isCorrect": false}, {"text": "电视剧", "isCorrect": false}, {"text": "电影", "isCorrect": true}, {"text": "数学", "isCorrect": false}]	[{"text": "cinema", "isCorrect": false}, {"text": "movie", "isCorrect": true}, {"text": "series", "isCorrect": false}, {"text": "film", "isCorrect": false}]
+132	语言	noun	2025-07-08 00:13:29.637	2025-07-08 00:13:52.133	\N	\N	en	language	[{"text": "词汇", "isCorrect": false}, {"text": "发音", "isCorrect": false}, {"text": "文化", "isCorrect": false}, {"text": "语言", "isCorrect": true}]	[{"text": "linguistics", "isCorrect": false}, {"text": "dialect", "isCorrect": false}, {"text": "language", "isCorrect": true}, {"text": "vocabulary", "isCorrect": false}]
+135	海洋	noun	2025-07-08 00:13:32.533	2025-07-08 00:13:55.724	\N	\N	en	ocean	[{"text": "渔村", "isCorrect": false}, {"text": "海洋", "isCorrect": true}, {"text": "航空", "isCorrect": false}, {"text": "湖泊", "isCorrect": false}]	[{"text": "river", "isCorrect": false}, {"text": "pond", "isCorrect": false}, {"text": "lake", "isCorrect": false}, {"text": "ocean", "isCorrect": true}]
+120	花	noun	2025-07-08 00:13:18.067	2025-07-08 00:13:29.872	\N	\N	en	flower	[{"text": "草莓", "isCorrect": false}, {"text": "草", "isCorrect": false}, {"text": "树", "isCorrect": false}, {"text": "花", "isCorrect": true}]	[{"text": "petal", "isCorrect": false}, {"text": "flower", "isCorrect": true}, {"text": "twig", "isCorrect": false}, {"text": "blossom", "isCorrect": false}]
+123	老师	noun	2025-07-08 00:13:21.044	2025-07-08 00:13:34.379	\N	\N	en	teacher	[{"text": "老师", "isCorrect": true}, {"text": "警察", "isCorrect": false}, {"text": "学生", "isCorrect": false}, {"text": "医生", "isCorrect": false}]	[{"text": "educator", "isCorrect": false}, {"text": "instructor", "isCorrect": false}, {"text": "professor", "isCorrect": false}, {"text": "teacher", "isCorrect": true}]
+124	城市	noun	2025-07-08 00:13:21.975	2025-07-08 00:13:36.326	\N	\N	en	city	[{"text": "村庄", "isCorrect": false}, {"text": "地方", "isCorrect": false}, {"text": "都市", "isCorrect": false}, {"text": "城市", "isCorrect": true}]	[{"text": "city", "isCorrect": true}, {"text": "village", "isCorrect": false}, {"text": "town", "isCorrect": false}, {"text": "hamlet", "isCorrect": false}]
+129	梦想	noun	2025-07-08 00:13:26.85	2025-07-08 00:13:44.314	\N	\N	en	dream	[{"text": "希望", "isCorrect": false}, {"text": "愿望", "isCorrect": false}, {"text": "梦想", "isCorrect": true}, {"text": "目标", "isCorrect": false}]	[{"text": "dream", "isCorrect": true}, {"text": "fantastic", "isCorrect": false}, {"text": "illusion", "isCorrect": false}, {"text": "fantasy", "isCorrect": false}]
+136	铅笔	noun	2025-07-08 00:13:33.514	2025-07-08 00:13:57.89	\N	\N	en	pencil	[{"text": "文件夹", "isCorrect": false}, {"text": "书包", "isCorrect": false}, {"text": "钢笔", "isCorrect": false}, {"text": "铅笔", "isCorrect": true}]	[{"text": "crayon", "isCorrect": false}, {"text": "pen", "isCorrect": false}, {"text": "pencil", "isCorrect": true}, {"text": "notebook", "isCorrect": false}]
+122	苹果	noun	2025-07-08 00:13:20.054	2025-07-08 00:13:32.76	\N	\N	en	apple	[{"text": "西瓜", "isCorrect": false}, {"text": "桃子", "isCorrect": false}, {"text": "香蕉", "isCorrect": false}, {"text": "苹果", "isCorrect": true}]	[{"text": "banana", "isCorrect": false}, {"text": "apple", "isCorrect": true}, {"text": "grape", "isCorrect": false}, {"text": "orange", "isCorrect": false}]
+125	学校	noun	2025-07-08 00:13:22.92	2025-07-08 00:13:36.98	\N	\N	en	school	[{"text": "医院", "isCorrect": false}, {"text": "教室", "isCorrect": false}, {"text": "学校", "isCorrect": true}, {"text": "超市", "isCorrect": false}]	[{"text": "school", "isCorrect": true}, {"text": "academy", "isCorrect": false}, {"text": "institution", "isCorrect": false}, {"text": "university", "isCorrect": false}]
+126	太阳	noun	2025-07-08 00:13:23.879	2025-07-08 00:13:39.511	\N	\N	en	sun	[{"text": "阳光", "isCorrect": false}, {"text": "月亮", "isCorrect": false}, {"text": "星星", "isCorrect": false}, {"text": "太阳", "isCorrect": true}]	[{"text": "star", "isCorrect": false}, {"text": "sun", "isCorrect": true}, {"text": "lamp", "isCorrect": false}, {"text": "moon", "isCorrect": false}]
+127	行星	noun	2025-07-08 00:13:24.915	2025-07-08 00:13:40.914	\N	\N	en	planet	[{"text": "太空", "isCorrect": false}, {"text": "行星", "isCorrect": true}, {"text": "恒星", "isCorrect": false}, {"text": "宇宙", "isCorrect": false}]	[{"text": "galaxy", "isCorrect": false}, {"text": "comet", "isCorrect": false}, {"text": "orbit", "isCorrect": false}, {"text": "planet", "isCorrect": true}]
+130	书	noun	2025-07-08 00:13:27.753	2025-07-08 00:13:48.598	\N	\N	en	book	[{"text": "亭", "isCorrect": false}, {"text": "笔", "isCorrect": false}, {"text": "画", "isCorrect": false}, {"text": "书", "isCorrect": true}]	[{"text": "novel", "isCorrect": false}, {"text": "magazine", "isCorrect": false}, {"text": "article", "isCorrect": false}, {"text": "book", "isCorrect": true}]
+133	动物	noun	2025-07-08 00:13:30.601	2025-07-08 00:13:52.473	\N	\N	en	animal	[{"text": "花园", "isCorrect": false}, {"text": "生物", "isCorrect": false}, {"text": "动物", "isCorrect": true}, {"text": "食物", "isCorrect": false}]	[{"text": "beast", "isCorrect": false}, {"text": "creature", "isCorrect": false}, {"text": "animal", "isCorrect": true}, {"text": "mammal", "isCorrect": false}]
+134	朋友	noun	2025-07-08 00:13:31.53	2025-07-08 00:13:55.008	\N	\N	en	friend	[{"text": "同学", "isCorrect": false}, {"text": "陌生人", "isCorrect": false}, {"text": "朋友", "isCorrect": true}, {"text": "家人", "isCorrect": false}]	[{"text": "buddy", "isCorrect": false}, {"text": "friend", "isCorrect": true}, {"text": "companion", "isCorrect": false}, {"text": "acquaintance", "isCorrect": false}]
+137	市场	noun	2025-07-08 00:13:34.469	2025-07-08 00:13:59.06	\N	\N	en	market	[{"text": "市场", "isCorrect": true}, {"text": "超级市场", "isCorrect": false}, {"text": "商店", "isCorrect": false}, {"text": "商城", "isCorrect": false}]	[{"text": "market", "isCorrect": true}, {"text": "grocery", "isCorrect": false}, {"text": "plaza", "isCorrect": false}, {"text": "bazaar", "isCorrect": false}]
 \.
 
 
@@ -5693,6 +6249,84 @@ COPY public.user_words_user_links (id, user_word_id, user_id, user_word_order) F
 49	57	30	4
 50	58	30	5
 51	59	30	6
+52	60	30	7
+53	61	30	8
+54	62	30	9
+55	63	30	10
+56	64	30	11
+57	65	30	12
+58	66	30	13
+59	67	30	14
+60	68	30	15
+61	69	30	16
+62	70	30	17
+63	71	30	18
+64	72	30	19
+65	73	30	20
+66	74	30	21
+67	75	30	22
+68	76	30	23
+69	77	30	24
+70	78	30	25
+71	79	30	26
+72	80	30	27
+73	81	30	28
+74	82	30	29
+75	83	30	30
+76	84	30	31
+77	85	30	32
+78	86	30	33
+79	87	30	34
+80	88	30	35
+81	89	30	36
+82	90	30	37
+83	91	30	38
+84	92	30	39
+85	93	30	40
+86	94	30	41
+87	95	30	42
+88	96	30	43
+89	97	30	44
+90	98	30	45
+91	99	30	46
+92	100	30	47
+93	101	30	48
+94	102	30	49
+95	103	30	50
+96	104	30	51
+97	105	30	52
+98	106	30	53
+99	107	30	54
+100	108	30	55
+101	109	30	56
+102	110	30	57
+103	111	30	58
+104	112	30	59
+105	113	30	60
+106	114	30	61
+107	115	30	62
+108	116	30	63
+109	117	30	64
+110	118	30	65
+111	119	30	66
+112	120	30	67
+113	121	30	68
+114	122	30	69
+115	123	30	70
+116	124	30	71
+117	125	30	72
+118	126	30	73
+119	127	30	74
+120	128	30	75
+121	129	30	76
+122	130	30	77
+123	131	30	78
+124	132	30	79
+125	133	30	80
+126	134	30	81
+127	135	30	82
+128	136	30	83
+129	137	30	84
 \.
 
 
@@ -5723,10 +6357,11 @@ COPY public.vocabooks_user_links (id, vocabook_id, user_id) FROM stdin;
 --
 
 COPY public.vocapages (id, title, "order", created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
-1	Page 1	1	2025-07-06 11:28:30.577	2025-07-06 11:28:30.577	1	1
 2	First Vocapage	1	2025-07-07 08:53:43.565	2025-07-07 08:53:43.565	\N	\N
 3	Page 1	1	2025-07-07 14:31:35.005	2025-07-07 14:33:05.247	1	1
-4	Page 1	1	2025-07-07 15:35:49.427	2025-07-07 15:35:49.427	\N	\N
+4	Page 1	1	2025-07-07 15:35:49.427	2025-07-08 20:32:12.535	\N	1
+5	Page 2	2	2025-07-08 20:33:24.092	2025-07-08 20:38:24.093	1	1
+1	Page 3	3	2025-07-06 11:28:30.577	2025-07-08 20:38:41.595	1	1
 \.
 
 
@@ -5738,6 +6373,8 @@ COPY public.vocapages_vocabook_links (id, vocapage_id, vocabook_id, vocapage_ord
 1	2	1	1
 2	3	2	1
 3	4	3	1
+4	1	3	2
+5	5	3	3
 \.
 
 
@@ -5874,14 +6511,14 @@ SELECT pg_catalog.setval('public.components_a_user_sent_refs_user_sentence_links
 -- Name: components_a_user_word_refs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_user_word_refs_id_seq', 49, true);
+SELECT pg_catalog.setval('public.components_a_user_word_refs_id_seq', 127, true);
 
 
 --
 -- Name: components_a_user_word_refs_user_word_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_user_word_refs_user_word_links_id_seq', 49, true);
+SELECT pg_catalog.setval('public.components_a_user_word_refs_user_word_links_id_seq', 127, true);
 
 
 --
@@ -5937,14 +6574,14 @@ SELECT pg_catalog.setval('public.files_related_morphs_id_seq', 1, false);
 -- Name: flashcards_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_components_id_seq', 95, true);
+SELECT pg_catalog.setval('public.flashcards_components_id_seq', 173, true);
 
 
 --
 -- Name: flashcards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_id_seq', 51, true);
+SELECT pg_catalog.setval('public.flashcards_id_seq', 129, true);
 
 
 --
@@ -5965,14 +6602,14 @@ SELECT pg_catalog.setval('public.flashcards_localizations_links_id_seq', 1, fals
 -- Name: flashcards_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 52, true);
+SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 130, true);
 
 
 --
 -- Name: flashcards_vocapage_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_vocapage_links_id_seq', 5, true);
+SELECT pg_catalog.setval('public.flashcards_vocapage_links_id_seq', 121, true);
 
 
 --
@@ -6042,21 +6679,21 @@ SELECT pg_catalog.setval('public.review_tires_localizations_links_id_seq', 1, fa
 -- Name: reviewlogs_flashcard_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 124, true);
+SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 125, true);
 
 
 --
 -- Name: reviewlogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_id_seq', 151, true);
+SELECT pg_catalog.setval('public.reviewlogs_id_seq', 152, true);
 
 
 --
 -- Name: reviewlogs_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 151, true);
+SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 152, true);
 
 
 --
@@ -6203,14 +6840,14 @@ SELECT pg_catalog.setval('public.units_precondition_links_id_seq', 2, true);
 -- Name: up_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_id_seq', 68, true);
+SELECT pg_catalog.setval('public.up_permissions_id_seq', 84, true);
 
 
 --
 -- Name: up_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 68, true);
+SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 84, true);
 
 
 --
@@ -6294,7 +6931,7 @@ SELECT pg_catalog.setval('public.user_sentences_user_links_id_seq', 1, false);
 -- Name: user_words_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_words_id_seq', 59, true);
+SELECT pg_catalog.setval('public.user_words_id_seq', 137, true);
 
 
 --
@@ -6315,7 +6952,7 @@ SELECT pg_catalog.setval('public.user_words_localizations_links_id_seq', 1, fals
 -- Name: user_words_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_words_user_links_id_seq', 51, true);
+SELECT pg_catalog.setval('public.user_words_user_links_id_seq', 129, true);
 
 
 --
@@ -6336,14 +6973,14 @@ SELECT pg_catalog.setval('public.vocabooks_user_links_id_seq', 3, true);
 -- Name: vocapages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.vocapages_id_seq', 4, true);
+SELECT pg_catalog.setval('public.vocapages_id_seq', 5, true);
 
 
 --
 -- Name: vocapages_vocabook_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.vocapages_vocabook_links_id_seq', 3, true);
+SELECT pg_catalog.setval('public.vocapages_vocabook_links_id_seq', 5, true);
 
 
 --
