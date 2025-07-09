@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vbsettings",
+  "info": {
+    "singularName": "vbsetting",
+    "pluralName": "vbsettings",
+    "displayName": "vbsetting"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "vbsetting"
+    },
+    "wordsPerPage": {
+      "type": "integer",
+      "default": 12,
+      "required": true
+    },
+    "interval1": {
+      "type": "decimal",
+      "default": 1.5
+    },
+    "interval2": {
+      "type": "decimal",
+      "default": 2
+    },
+    "interval3": {
+      "type": "decimal",
+      "default": 2
+    }
+  }
+}

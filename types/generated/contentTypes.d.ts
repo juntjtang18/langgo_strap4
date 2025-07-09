@@ -646,6 +646,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::vocabook.vocabook'
     >;
+    vbsetting: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::vbsetting.vbsetting'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1305,6 +1310,7 @@ export interface ApiUserProfileUserProfile extends Schema.CollectionType {
     singularName: 'user-profile';
     pluralName: 'user-profiles';
     displayName: 'userProfile';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1486,6 +1492,45 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
       'api::user-word.user-word'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiVbsettingVbsetting extends Schema.CollectionType {
+  collectionName: 'vbsettings';
+  info: {
+    singularName: 'vbsetting';
+    pluralName: 'vbsettings';
+    displayName: 'vbsetting';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::vbsetting.vbsetting',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    wordsPerPage: Attribute.Integer &
+      Attribute.Required &
+      Attribute.DefaultTo<12>;
+    interval1: Attribute.Decimal & Attribute.DefaultTo<1.5>;
+    interval2: Attribute.Decimal & Attribute.DefaultTo<2>;
+    interval3: Attribute.Decimal & Attribute.DefaultTo<2>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::vbsetting.vbsetting',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::vbsetting.vbsetting',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -1719,6 +1764,7 @@ declare module '@strapi/types' {
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
       'api::user-word.user-word': ApiUserWordUserWord;
+      'api::vbsetting.vbsetting': ApiVbsettingVbsetting;
       'api::vocabook.vocabook': ApiVocabookVocabook;
       'api::vocapage.vocapage': ApiVocapageVocapage;
       'api::word.word': ApiWordWord;

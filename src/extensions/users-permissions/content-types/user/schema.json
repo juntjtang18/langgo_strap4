@@ -101,6 +101,12 @@
       "relation": "oneToOne",
       "target": "api::vocabook.vocabook",
       "mappedBy": "user"
+    },
+    "vbsetting": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::vbsetting.vbsetting",
+      "mappedBy": "user"
     }
   }
 }
