@@ -10,14 +10,13 @@ module.exports = (plugin) => {
   // =================================================================
   plugin.controllers.user.me = async (ctx) => {
     if (!ctx.state.user || !ctx.state.user.id) {
-      ctx.response.status = 401; // Unauthorized
+      ctx.response.status = 401;
       return;
     }
 
     const populate = {
       role: true,
-      // Add other relations here if needed, e.g.:
-      // user_profile: { populate: { children: true } },
+      // add other relations here if needed
     };
 
     const user = await strapi.entityService.findOne(
@@ -57,11 +56,14 @@ module.exports = (plugin) => {
       throw new ApplicationError('Register action is currently disabled');
     }
 
-    const { email, username, password } = ctx.request.body;
-    if (!username || !email || !password) {
-      throw new ApplicationError('Username, email, and password are required.');
+    const { email, username, password, baseLanguage, telephone } = ctx.request.body;
+    if (!username || !email || !password || !baseLanguage) {
+      throw new ApplicationError(
+        'Username, email, password and baseLanguage are all required.'
+      );
     }
 
+    // Find default role
     const role = await strapi
       .query('plugin::users-permissions.role')
       .findOne({ where: { type: settings.default_role } });
@@ -69,6 +71,7 @@ module.exports = (plugin) => {
       throw new ApplicationError('Impossible to find the default role.');
     }
 
+    // Check email uniqueness
     const existing = await strapi
       .query('plugin::users-permissions.user')
       .findOne({ where: { email: email.toLowerCase() } });
@@ -77,7 +80,6 @@ module.exports = (plugin) => {
     }
 
     let newUser;
-
     try {
       // 1) Create the Strapi user
       newUser = await userService.add({
@@ -88,12 +90,11 @@ module.exports = (plugin) => {
         confirmed: true,
         role: role.id,
       });
-      console.log(`Strapi user ${newUser.email} (ID: ${newUser.id}) created.`);
+      console.log(`User ${newUser.email} (ID: ${newUser.id}) created.`);
 
-      // 2) External subscription call
+      // 2) External subscription call (unchanged)
       const subsysBaseUrl             = process.env.SUBSYS_BASE_URL;
       const subscriptionServiceSecret = process.env.SUBSCRIPTION_SERVICE_SECRET;
-
       if (subsysBaseUrl && subscriptionServiceSecret) {
         try {
           const response = await fetch(
@@ -107,21 +108,18 @@ module.exports = (plugin) => {
               body: JSON.stringify({ userId: newUser.id }),
             }
           );
-
           if (!response.ok) {
-            const errorData = await response.json();
             console.error(
-              `Subscription call failed for user ${newUser.id}. Status: ${response.status}.`,
-              errorData
+              `Subscription failed for user ${newUser.id} (status ${response.status})`
             );
             await userService.remove({ id: newUser.id });
             throw new ApplicationError(
               'Account could not be created due to a subscription system error.'
             );
           }
-          console.log(`User ${newUser.id} successfully subscribed to free plan.`);
+          console.log(`User ${newUser.id} subscribed to free plan.`);
         } catch (subError) {
-          console.error('Error during subscription call:', subError);
+          console.error('Subscription error:', subError);
           if (newUser && newUser.id) {
             await userService.remove({ id: newUser.id });
           }
@@ -130,16 +128,15 @@ module.exports = (plugin) => {
           );
         }
       } else {
-        console.warn('Subscription environment variables not set. Skipping call.');
+        console.warn('Subscription env vars missing; skipping subscription step.');
       }
 
-      // 3) Vocabook & Vocapage creation
+      // 3) Vocabook & Vocapage creation (non-fatal)
       try {
         const existingVocabook = await strapi.entityService.findMany(
           'api::vocabook.vocabook',
           { filters: { user: newUser.id } }
         );
-
         if (existingVocabook.length === 0) {
           const newVocabook = await strapi.entityService.create(
             'api::vocabook.vocabook',
@@ -150,8 +147,7 @@ module.exports = (plugin) => {
               },
             }
           );
-          console.log(`Vocabook created for user ${newUser.id}: ${newVocabook.id}`);
-
+          console.log(`Vocabook ${newVocabook.id} created for user ${newUser.id}`);
           await strapi.entityService.create('api::vocapage.vocapage', {
             data: {
               title: 'Page 1',
@@ -159,13 +155,9 @@ module.exports = (plugin) => {
               vocabook: newVocabook.id,
             },
           });
-          console.log(`First Vocapage created for vocabook ${newVocabook.id}`);
-        } else {
-          console.log(`Vocabook already exists for user ${newUser.id}. Skipping creation.`);
         }
       } catch (vocabError) {
-        console.error('Error creating vocabook or vocapage:', vocabError);
-        // non-fatal: allow registration to proceed
+        console.error('Vocabook/Vocapage error:', vocabError);
       }
 
       // 4) VBSetting creation (fatal on error)
@@ -180,31 +172,40 @@ module.exports = (plugin) => {
         console.log(`VBSetting created for user ${newUser.id}`);
       }
 
-      // 5) Fetch user with role for sanitization
+      // 5) UserProfile creation (fatal on error)
+      await strapi.entityService.create('api::user-profile.user-profile', {
+        data: {
+          user: newUser.id,
+          baseLanguage,
+          telephone: telephone || null,
+        },
+      });
+      console.log(`UserProfile created for user ${newUser.id}`);
+
+      // 6) Fetch & sanitize final user
       const userWithRole = await strapi.entityService.findOne(
         'plugin::users-permissions.user',
         newUser.id,
         { populate: { role: true } }
       );
-
       const userSchema    = strapi.getModel('plugin::users-permissions.user');
       const sanitizedUser = await sanitize.contentAPI.output(userWithRole, userSchema);
 
-      // 6) Send response
+      // 7) Respond
       ctx.send({
         jwt: jwtService.issue({ id: sanitizedUser.id }),
         user: sanitizedUser,
       });
 
     } catch (error) {
-      console.error('An error occurred during custom registration:', error);
+      console.error('Registration error:', error);
 
-      // Roll back the user if already created
+      // Roll back if user was created
       if (newUser && newUser.id) {
         try {
           await userService.remove({ id: newUser.id });
         } catch (cleanupErr) {
-          console.error('Failed to clean up user after registration error:', cleanupErr);
+          console.error('Cleanup failed:', cleanupErr);
         }
       }
 
