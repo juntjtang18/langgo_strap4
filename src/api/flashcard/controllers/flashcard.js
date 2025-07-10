@@ -1,351 +1,344 @@
 'use strict';
 
-/**
- * flashcard controller
- */
-
 const { createCoreController } = require('@strapi/strapi').factories;
 
-// Helper function to find the correct review tier based on a streak
+// Helper: find the correct review tier for a given streak
 const findTierForStreak = (streak, tiers) => {
-  // Ensure streak is a number, default to 0 if null/undefined
-  const currentStreak = streak || 0;
-  return tiers.find(tier => currentStreak >= tier.min_streak && currentStreak <= tier.max_streak) || tiers[tiers.length - 1];
+  const currentStreak = streak ?? 0;
+  return (
+    tiers.find(
+      (tier) => currentStreak >= tier.min_streak && currentStreak <= tier.max_streak
+    ) || tiers[tiers.length - 1]
+  );
 };
 
-// Helper function to determine the review level for logging
+// Helper: derive the log level string
 const getReviewLevel = (tier) => {
-  // If the tier exists, return its name directly.
-  // Otherwise, return null.
   return tier?.tier?.toLowerCase() || null;
 };
-module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) => ({
-  /**
-   * REVISED: Uses corrected application-level filtering to ensure accurate review lists.
-   */
-  async findForReview(ctx) {
-    const { user } = ctx.state;
-    if (!user) {
-      return ctx.unauthorized('You must be logged in to review flashcards.');
-    }
-    strapi.log.info(`Starting review session fetch for user: ${user.id}`);
 
-    try {
-      const reviewTiers = await strapi.db.query('api::review-tire.review-tire').findMany({
-        orderBy: { min_streak: 'asc' },
-      });
+// Helper: shorten cooldowns for testing in development environment
+const getEffectiveCooldown = (hours) => {
+  // If in development mode, divide cooldown by a large number to make it seconds/minutes long.
+  // Set NODE_ENV=development in your .env file to enable.
+  if (process.env.NODE_ENV === 'development') {
+    return (hours || 0) / 3600; // e.g., 6 hours becomes 6 seconds
+  }
+  return hours || 0;
+};
 
-      strapi.log.debug(`[Trace] Fetched ${reviewTiers.length} review tiers from the database.`);
-
-      const commonPopulate = {
+module.exports = createCoreController(
+  'api::flashcard.flashcard',
+  ({ strapi }) => ({
+    // Centralized populate to include review_tire relation everywhere
+    _commonPopulate() {
+      return {
         content: {
           populate: {
-            word: { populate: ['tags', 'verb_meta', 'audio'] },
-            sentence: { populate: ['tags', 'words', 'target_audio'] },
+            word:      { populate: ['tags', 'verb_meta', 'audio'] },
+            sentence:  { populate: ['tags', 'words', 'target_audio'] },
             user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
             user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
           },
         },
-      };
-
-      if (!reviewTiers || reviewTiers.length === 0) {
-        strapi.log.warn(`No review tiers configured. Returning all flashcards for user ${user.id} as a fallback.`);
-        const allUserCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-            where: { user: user.id },
-            populate: commonPopulate,
-        });
-        strapi.log.info(`[Fallback] Found ${allUserCards.length} cards for user ${user.id}.`);
-        return this.transformResponse(allUserCards);
-      }
-
-      // --- NEW, CORRECTED LOGIC ---
-      // 1. Fetch ALL cards for the user. We will do all filtering in the application.
-      strapi.log.debug(`[Trace] Fetching all cards for user ${user.id} to filter in application.`);
-      const allUserCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-        where: { user: user.id },
-        populate: commonPopulate,
-      });
-      strapi.log.debug(`[Trace] Fetched ${allUserCards.length} candidate cards. Now filtering...`);
-
-      const now = new Date();
-      const allReviewCards = allUserCards.filter(card => {
-        // First, find the correct tier for the card based on its streak.
-        const tier = findTierForStreak(card.correct_streak, reviewTiers);
-
-        // --- FIX: Use unified logic for all tiers ---
-        // If a card's streak is so high it doesn't fit into any defined tier, exclude it.
-        if (!tier) {
-          strapi.log.debug(`[Trace] Excluding card #${card.id} (streak ${card.correct_streak} is out of all tier ranges).`);
-          return false;
-        }
-        // The specific check for `tier.tier === 'remembered'` is now removed to apply the same cooldown rule to all tiers.
-
-        // If the card has never been reviewed, it's always due.
-        if (!card.last_reviewed_at) {
-          strapi.log.debug(`[Trace] Including card #${card.id} (new card).`);
-          return true;
-        }
-
-        // Finally, check if the cooldown has passed for its tier.
-        const cooldownDate = new Date(now.getTime() - tier.cooldown_hours * 3600 * 1000);
-        const lastReviewed = new Date(card.last_reviewed_at);
-
-        if (lastReviewed <= cooldownDate) {
-          strapi.log.debug(`[Trace] Including card #${card.id} (cooldown passed).`);
-          return true;
-        }
-        
-        // If none of the above, exclude it.
-        strapi.log.debug(`[Trace] Excluding card #${card.id} (cooldown not met).`);
-        return false;
-      });
-      // --- END NEW LOGIC ---
-
-      strapi.log.debug(`[Trace] Final filtered list contains ${allReviewCards.length} cards.`);
-      strapi.log.info(`[User: ${user.id}] Found ${allReviewCards.length} cards due for review.`);
-      
-      return this.transformResponse(allReviewCards);
-
-    } catch (err) {
-      strapi.log.error(`[User: ${user.id}] Error fetching review flashcards: ${err.message}`, { stack: err.stack });
-      return ctx.internalServerError('An error occurred while fetching review flashcards.');
-    }
-  },
-  
-  /**
-   * Handles a review action for a single flashcard.
-   * REVISED to use strapi.entityService instead of db.query.
-   */
-  async review(ctx) {
-    const { user } = ctx.state;
-    if (!user) {
-      return ctx.unauthorized('Authentication required.');
-    }
-
-    const { id } = ctx.params;
-    const { result } = ctx.request.body;
-
-    if (!['correct', 'wrong'].includes(result)) {
-      return ctx.badRequest('Invalid "result" parameter. Must be "correct" or "wrong".');
-    }
-
-    strapi.log.info(`Review started for card ${id} by user ${user.id} with result: ${result}`);
-
-    try {
-      const commonPopulate = {
-        content: {
-          populate: {
-            word: { populate: ['tags', 'verb_meta', 'audio'] },
-            sentence: { populate: ['tags', 'words', 'target_audio'] },
-            user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
-            user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
-          },
+        review_tire: {
+          populate: ['tier', 'min_streak', 'max_streak', 'cooldown_hours', 'demote_bar'],
         },
       };
-      
-      // The entityService is automatically transaction-aware when used inside this block.
-      const updatedFlashcard = await strapi.db.transaction(async () => {
-        // --- MODIFICATION: Use entityService to find the flashcard ---
-        const [flashcard] = await strapi.entityService.findMany('api::flashcard.flashcard', {
-            filters: { id, user: user.id },
-            limit: 1,
+    },
+
+    /**
+     * GET /flashcards/:id
+     */
+    async findOne(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('You must be logged in.');
+
+      const { id } = ctx.params;
+      const entity = await strapi.entityService.findOne(
+        'api::flashcard.flashcard',
+        id,
+        { populate: this._commonPopulate(), filters: { user: user.id } }
+      );
+      return this.transformResponse(entity);
+    },
+
+    /**
+     * GET /flashcards/findForReview
+     */
+    async findForReview(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('You must be logged in.');
+
+      // 1. Get pagination params from query string, with defaults
+      const page = parseInt(ctx.query.pagination?.page || '1', 10);
+      const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
+
+      try {
+        const allTiers = await strapi.entityService.findMany('api::review-tire.review-tire', {
+          sort: { min_streak: 'asc' },
         });
 
-        // --- MODIFICATION: Use entityService to find review tiers ---
-        const reviewTiers = await strapi.entityService.findMany('api::review-tire.review-tire', {
-            sort: { min_streak: 'asc' },
-            limit: -1, // Ensure all tiers are fetched
-        });
-
-        if (!flashcard) {
-          throw new Error('Flashcard not found or user mismatch.');
-        }
+        // Fetch all cards lightweight to determine which are due
+        const allCards = await strapi.entityService.findMany(
+          'api::flashcard.flashcard',
+          { 
+            filters: { user: user.id },
+            populate: { review_tire: true }
+          }
+        );
 
         const now = new Date();
-        const currentTier = findTierForStreak(flashcard.correct_streak, reviewTiers);
-        if (!currentTier) {
-            throw new Error(`No valid review tier found for correct_streak: ${flashcard.correct_streak}`);
-        }
-
-        const cooldownHours = currentTier.cooldown_hours;
-        const lastReviewedAt = flashcard.last_reviewed_at ? new Date(flashcard.last_reviewed_at) : null;
-        const hoursSinceLastReview = lastReviewedAt ? (now - lastReviewedAt) / (1000 * 60 * 60) : Infinity;
-        const isEffective = !lastReviewedAt || hoursSinceLastReview > cooldownHours;
-
-        const updateData = {};
-
-        if (isEffective) {
-          strapi.log.info(`Effective review for card ${id}. Updating streaks.`);
-          updateData.last_reviewed_at = now.toISOString();
-
-          if (result === 'correct') {
-            const newCorrectStreak = (flashcard.correct_streak || 0) + 1;
-            updateData.correct_streak = newCorrectStreak;
-            updateData.wrong_streak = 0;
-            const newTier = findTierForStreak(newCorrectStreak, reviewTiers);
-            if (newTier) {
-                updateData.review_tire = newTier.id;
-                if (newTier.tier === 'remembered') {
-                    updateData.is_remembered = true;
-                    strapi.log.info(`Card ${id} has been promoted to 'remembered' tier.`);
-                }
+        const dueCardIds = allCards
+          .filter((card) => {
+            let tierForCheck;
+            if (card.review_tire) {
+              tierForCheck = card.review_tire;
+            } else {
+              tierForCheck = findTierForStreak(card.correct_streak, allTiers);
             }
-          } else { // result === 'wrong'
-            const newWrongStreak = (flashcard.wrong_streak || 0) + 1;
-            updateData.wrong_streak = newWrongStreak;
-            if (newWrongStreak >= currentTier.demote_bar) {
-              strapi.log.info(`Demotion triggered for card ${id}.`);
-              const currentTierIndex = reviewTiers.findIndex(t => t.id === currentTier.id);
-              const previousTier = currentTierIndex > 0 ? reviewTiers[currentTierIndex - 1] : reviewTiers[0];
-              updateData.correct_streak = previousTier.min_streak;
-              updateData.wrong_streak = 0;
-              updateData.is_remembered = false;
-              updateData.review_tire = previousTier.id;
-            }
-          }
-        } else {
-            strapi.log.warn(`Ineffective review for card ${id}. Cooldown not met. Logging only.`);
+
+            if (!tierForCheck) return false;
+            if (!card.last_reviewed_at) return true;
+            
+            const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
+            const cutoff = new Date(now - effectiveCooldown * 3600e3);
+            return new Date(card.last_reviewed_at) <= cutoff;
+          })
+          .map(card => card.id);
+
+        // 2. Paginate the list of due card IDs
+        const totalDue = dueCardIds.length;
+        if (totalDue === 0) {
+          return this.transformResponse([], {
+            pagination: { page, pageSize, pageCount: 0, total: 0 },
+          });
         }
+        
+        const pageCount = Math.ceil(totalDue / pageSize);
+        const start = (page - 1) * pageSize;
+        const paginatedDueCardIds = dueCardIds.slice(start, start + pageSize);
 
-        // --- MODIFICATION: Use entityService to create the log ---
-        await strapi.entityService.create('api::reviewlog.reviewlog', {
-          data: {
-            user: user.id,
-            flashcard: id,
-            reviewed_at: now.toISOString(),
-            result: result,
-            level: getReviewLevel(currentTier),
-          }
-        });
-
-        if (Object.keys(updateData).length > 0) {
-            // --- MODIFICATION: Use entityService to update the card ---
-            await strapi.entityService.update('api::flashcard.flashcard', id, {
-                data: updateData,
-            });
+        if (paginatedDueCardIds.length === 0) {
+          return this.transformResponse([], {
+            pagination: { page, pageSize, pageCount, total: totalDue },
+          });
         }
-
-        // --- MODIFICATION: Re-fetch the final card state with entityService ---
-        const finalCard = await strapi.entityService.findOne('api::flashcard.flashcard', id, {
-            populate: commonPopulate,
+        
+        // 3. Fetch only the fully populated cards for the current page
+        const populatedDueCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
+            filters: { id: { $in: paginatedDueCardIds } },
+            populate: this._commonPopulate()
         });
+        
+        // 4. Return the paginated data and metadata
+        const pagination = { page, pageSize, pageCount, total: totalDue };
+        return this.transformResponse(populatedDueCards, { pagination });
 
-        return finalCard;
-      });
-
-      return this.transformResponse(updatedFlashcard);
-
-    } catch (err) {
-      strapi.log.error(`Error during review for card ${id}: ${err.message}`, err.stack);
-      return ctx.internalServerError('An error occurred during the review process.');
-    }
-  },
-    
-  // --- NEW STATISTICS ENDPOINT ---
-  async getStatistics(ctx) {
-    const { user } = ctx.state;
-    if (!user) {
-      return ctx.unauthorized('You must be logged in to view statistics.');
-    }
-
-    strapi.log.info(`Fetching statistics for user: ${user.id}`);
-
-    try {
-      const allUserCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-        where: { user: user.id },
-        fields: ['is_remembered', 'correct_streak', 'wrong_streak'],
-      });
-
-      if (!allUserCards) {
-        return ctx.notFound('Could not find flashcards for the user.');
+      } catch (err) {
+        strapi.log.error(`findForReview error: ${err.message}`, { stack: err.stack });
+        return ctx.internalServerError('Error fetching review flashcards.');
       }
-      
-      const totalCards = allUserCards.length;
+    },
 
-      // --- MODIFICATION START ---
-      // A card is "remembered" if the flag is true OR its streak is 11 or higher.
-      // This handles inconsistent data like Card ID #2.
-      const remembered = allUserCards.filter(c => c.is_remembered || c.correct_streak >= 11).length;
+    /**
+     * POST /flashcards/:id/review
+     */
+    async review(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('Authentication required.');
 
-      // "Active" cards are now strictly those that do not meet the new remembered definition.
-      const activeCards = allUserCards.filter(c => !c.is_remembered && c.correct_streak < 11);
-      // --- MODIFICATION END ---
-      
-      // These calculations now operate on a correctly filtered set of active cards.
-      const newCards = activeCards.filter(c => c.correct_streak >= 0 && c.correct_streak <= 3).length;
-      const warmUp = activeCards.filter(c => c.correct_streak >= 4 && c.correct_streak <= 6).length;
-      const weekly = activeCards.filter(c => c.correct_streak >= 7 && c.correct_streak <= 8).length;
-      const monthly = activeCards.filter(c => c.correct_streak >= 9 && c.correct_streak <= 10).length;
-      const hardToRemember = activeCards.filter(c => c.wrong_streak >= 3).length;
+      const { id } = ctx.params;
+      const { result } = ctx.request.body;
+      if (!['correct', 'wrong'].includes(result)) {
+        return ctx.badRequest('result must be "correct" or "wrong".');
+      }
 
-      const stats = {
-        totalCards,
-        remembered,
-        newCards,
-        warmUp,
-        weekly,
-        monthly,
-        hardToRemember,
+      try {
+        const finalCard = await strapi.db.transaction(async () => {
+          const flashcard = await strapi.entityService.findOne(
+            'api::flashcard.flashcard',
+            id,
+            {
+              filters: { user: user.id },
+              populate: { review_tire: true },
+            }
+          );
+
+          if (!flashcard) throw new Error('Flashcard not found.');
+          
+          const reviewTiers = await strapi.entityService.findMany(
+            'api::review-tire.review-tire',
+            { sort: { min_streak: 'asc' } }
+          );
+
+          // Fallback Logic to Determine the Current Tier
+          let currentTier;
+          if (flashcard.review_tire) {
+            // 1. If the tier exists, use it.
+            currentTier = flashcard.review_tire;
+          } else {
+            // 2. If it's null, fall back to calculating it from the streak.
+            currentTier = findTierForStreak(flashcard.correct_streak, reviewTiers);
+          }
+          
+          // The effective check now uses the correctly determined tier and respects development mode
+          const effectiveCooldown = getEffectiveCooldown(currentTier?.cooldown_hours);
+          const reviewIsOnCooldown = currentTier && flashcard.last_reviewed_at
+            ? (new Date() - new Date(flashcard.last_reviewed_at)) / 3600e3 <= effectiveCooldown
+            : false;
+            
+          const effective = !reviewIsOnCooldown;
+            
+          const now = new Date();
+          const updateData = {};
+            
+          if (effective) {
+            updateData.last_reviewed_at = now.toISOString();
+
+            if (result === 'correct') {
+              const newStreak = (flashcard.correct_streak ?? 0) + 1;
+              updateData.correct_streak = newStreak;
+              updateData.wrong_streak = 0;
+
+              const newTier = findTierForStreak(newStreak, reviewTiers);
+              if (newTier && newTier.id !== currentTier?.id) {
+                updateData.review_tire = newTier.id;
+              }
+              if (newTier?.tier === 'remembered') {
+                updateData.is_remembered = true;
+              }
+            } else { // result === 'wrong'
+              const newWrong = (flashcard.wrong_streak ?? 0) + 1;
+              updateData.wrong_streak = newWrong;
+
+              if (currentTier && newWrong >= currentTier.demote_bar) {
+                const idx = reviewTiers.findIndex((t) => t.id === currentTier.id);
+                const prevTier = idx > 0 ? reviewTiers[idx - 1] : reviewTiers[0];
+                updateData.correct_streak = prevTier.min_streak;
+                updateData.wrong_streak = 0;
+                updateData.review_tire = prevTier.id;
+                updateData.is_remembered = false;
+              }
+            }
+          }
+
+          // Always log the review
+          await strapi.entityService.create('api::reviewlog.reviewlog', {
+            data: {
+              user: user.id,
+              flashcard: id,
+              reviewed_at: now.toISOString(),
+              result,
+              level: getReviewLevel(currentTier),
+            },
+          });
+
+          if (Object.keys(updateData).length > 0) {
+            await strapi.entityService.update(
+              'api::flashcard.flashcard',
+              id,
+              { data: updateData }
+            );
+          }
+
+          return strapi.entityService.findOne(
+            'api::flashcard.flashcard',
+            id,
+            { populate: this._commonPopulate() }
+          );
+        });
+
+        return this.transformResponse(finalCard);
+      } catch (err) {
+        strapi.log.error(`review error: ${err.message}`, err.stack);
+        return ctx.internalServerError('Error during review.');
+      }
+    },
+
+    /**
+     * GET /flashcards/statistics
+     */
+    async getStatistics(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('You must be logged in to view statistics.');
+
+      try {
+        const allCards = await strapi.entityService.findMany(
+          'api::flashcard.flashcard',
+          {
+            where: { user: user.id },
+            fields: ['is_remembered', 'correct_streak', 'wrong_streak'],
+          }
+        );
+
+        const total = allCards.length;
+        const remembered = allCards.filter(
+          (c) => c.is_remembered || c.correct_streak >= 11
+        ).length;
+
+        const active = allCards.filter(
+          (c) => !c.is_remembered && c.correct_streak < 11
+        );
+        const newCards = active.filter((c) => c.correct_streak <= 3).length;
+        const warmUp = active.filter((c) => c.correct_streak <= 6).length;
+        const weekly = active.filter((c) => c.correct_streak <= 8).length;
+        const monthly = active.filter((c) => c.correct_streak <= 10).length;
+        const hardToRemember = active.filter((c) => c.wrong_streak >= 3).length;
+
+        return ctx.send({ data: { totalCards: total, remembered, newCards, warmUp, weekly, monthly, hardToRemember } });
+      } catch (err) {
+        strapi.log.error(`getStatistics error: ${err.message}`);
+        return ctx.internalServerError('An error occurred while fetching statistics.');
+      }
+    },
+
+    /**
+     * GET /flashcards/mine?pagination[page]&pagination[pageSize]
+     */
+    async findMine(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('You must be logged in.');
+
+      const page = Math.max(1, parseInt(ctx.query.pagination?.page || '1', 10));
+      const pageSize = Math.max(1, parseInt(ctx.query.pagination?.pageSize || '10', 10));
+      const start = (page - 1) * pageSize;
+
+      // common populate to include review_tire
+      const commonPopulate = this._commonPopulate();
+
+      // fetch page of flashcards
+      const [results, total] = await Promise.all([
+        strapi.entityService.findMany('api::flashcard.flashcard', {
+          filters: { user: user.id },
+          populate: commonPopulate,
+          sort: { createdAt: 'asc' },
+          start,
+          limit: pageSize,
+        }),
+        strapi.entityService.count('api::flashcard.flashcard', {
+          filters: { user: user.id },
+        }),
+      ]);
+
+      // ensure every card has a review_tire (compute for new ones)
+      const allTiers = await strapi.entityService.findMany('api::review-tire.review-tire', { sort: { min_streak: 'asc' } });
+      const enriched = results.map((card) => {
+        if (!card.review_tire) {
+          const tier = findTierForStreak(card.correct_streak, allTiers);
+          card.review_tire = tier;
+        }
+        return card;
+      });
+
+      const pagination = {
+        page,
+        pageSize,
+        pageCount: Math.ceil(total / pageSize),
+        total,
       };
-      
-      return ctx.send({ data: stats });
 
-    } catch (err) {
-      strapi.log.error(`Error fetching statistics for user ${user.id}: ${err.message}`);
-      return ctx.internalServerError('An error occurred while fetching statistics.');
-    }
-  },
-
-  /**
-   * GET /flashcards/mine?pagination[page]=1&pagination[pageSize]=10
-   * REVISED to ensure consistent data structure with findForReview.
-   */
-  async findMine(ctx) {
-    const user = ctx.state.user;
-    if (!user) {
-      return ctx.unauthorized('You must be logged in to access your flashcards.');
-    }
-  
-    // Sanitize pagination parameters from the query string
-    const page = Math.max(1, parseInt(ctx.query.pagination?.page || '1', 10));
-    const pageSize = Math.max(1, parseInt(ctx.query.pagination?.pageSize || '10', 10));
-    const start = (page - 1) * pageSize;
-  
-    // Use the exact same population object as findForReview for consistency
-    const commonPopulate = {
-      content: {
-        populate: {
-          word: { populate: ['tags', 'verb_meta', 'audio'] },
-          sentence: { populate: ['tags', 'words', 'target_audio'] },
-          user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
-          user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
-        },
-      },
-    };
-  
-    // Use findMany and count to replicate findPage's functionality with consistent output
-    const [results, total] = await Promise.all([
-      strapi.entityService.findMany('api::flashcard.flashcard', {
-        filters: { user: user.id },
-        populate: commonPopulate,
-        sort: { createdAt: 'asc' }, // --- THIS IS THE FIX ---
-        start: start,
-        limit: pageSize,
-      }),
-      strapi.entityService.count('api::flashcard.flashcard', {
-        filters: { user: user.id },
-      }),
-    ]);
-  
-    // Construct the pagination object manually
-    const pagination = {
-      page,
-      pageSize,
-      pageCount: Math.ceil(total / pageSize),
-      total,
-    };
-  
-    // Use the core transformResponse to ensure the final data has the nested structure
-    return this.transformResponse(results, { pagination });
-  },
-}));
+      return this.transformResponse(enriched, { pagination });
+    },
+  })
+);
