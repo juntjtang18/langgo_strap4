@@ -68,6 +68,12 @@
       "type": "integer",
       "required": true,
       "default": 2
+    },
+    "flashcards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::flashcard.flashcard",
+      "mappedBy": "review_tire"
     }
   }
 }

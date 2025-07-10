@@ -85,6 +85,12 @@
       "relation": "oneToMany",
       "target": "api::reviewlog.reviewlog",
       "mappedBy": "flashcard"
+    },
+    "review_tire": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::review-tire.review-tire",
+      "inversedBy": "flashcards"
     }
   }
 }

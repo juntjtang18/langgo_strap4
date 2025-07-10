@@ -777,6 +777,11 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'oneToMany',
       'api::reviewlog.reviewlog'
     >;
+    review_tire: Attribute.Relation<
+      'api::flashcard.flashcard',
+      'manyToOne',
+      'api::review-tire.review-tire'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -991,6 +996,11 @@ export interface ApiReviewTireReviewTire extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<2>;
+    flashcards: Attribute.Relation<
+      'api::review-tire.review-tire',
+      'oneToMany',
+      'api::flashcard.flashcard'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

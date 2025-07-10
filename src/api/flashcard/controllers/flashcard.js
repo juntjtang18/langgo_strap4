@@ -114,6 +114,7 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
   
   /**
    * Handles a review action for a single flashcard.
+   * REVISED to use strapi.entityService instead of db.query.
    */
   async review(ctx) {
     const { user } = ctx.state;
@@ -131,7 +132,6 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
     strapi.log.info(`Review started for card ${id} by user ${user.id} with result: ${result}`);
 
     try {
-      // Define the detailed population object, just like in your findForReview function.
       const commonPopulate = {
         content: {
           populate: {
@@ -143,9 +143,19 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
         },
       };
       
-      const [updatedFlashcard] = await strapi.db.transaction(async ({ trx }) => {
-        const flashcard = await strapi.db.query('api::flashcard.flashcard').findOne({ where: { id, user: user.id } }, trx);
-        const reviewTiers = await strapi.db.query('api::review-tire.review-tire').findMany({ orderBy: { min_streak: 'asc' } }, trx);
+      // The entityService is automatically transaction-aware when used inside this block.
+      const updatedFlashcard = await strapi.db.transaction(async () => {
+        // --- MODIFICATION: Use entityService to find the flashcard ---
+        const [flashcard] = await strapi.entityService.findMany('api::flashcard.flashcard', {
+            filters: { id, user: user.id },
+            limit: 1,
+        });
+
+        // --- MODIFICATION: Use entityService to find review tiers ---
+        const reviewTiers = await strapi.entityService.findMany('api::review-tire.review-tire', {
+            sort: { min_streak: 'asc' },
+            limit: -1, // Ensure all tiers are fetched
+        });
 
         if (!flashcard) {
           throw new Error('Flashcard not found or user mismatch.');
@@ -172,32 +182,33 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
             const newCorrectStreak = (flashcard.correct_streak || 0) + 1;
             updateData.correct_streak = newCorrectStreak;
             updateData.wrong_streak = 0;
-
             const newTier = findTierForStreak(newCorrectStreak, reviewTiers);
-            if (newTier && newTier.tier === 'remembered') {
-                updateData.is_remembered = true;
-                strapi.log.info(`Card ${id} has been promoted to 'remembered' tier.`);
+            if (newTier) {
+                updateData.review_tire = newTier.id;
+                if (newTier.tier === 'remembered') {
+                    updateData.is_remembered = true;
+                    strapi.log.info(`Card ${id} has been promoted to 'remembered' tier.`);
+                }
             }
-
           } else { // result === 'wrong'
             const newWrongStreak = (flashcard.wrong_streak || 0) + 1;
             updateData.wrong_streak = newWrongStreak;
-
             if (newWrongStreak >= currentTier.demote_bar) {
               strapi.log.info(`Demotion triggered for card ${id}.`);
               const currentTierIndex = reviewTiers.findIndex(t => t.id === currentTier.id);
               const previousTier = currentTierIndex > 0 ? reviewTiers[currentTierIndex - 1] : reviewTiers[0];
-              
               updateData.correct_streak = previousTier.min_streak;
               updateData.wrong_streak = 0;
               updateData.is_remembered = false;
+              updateData.review_tire = previousTier.id;
             }
           }
         } else {
             strapi.log.warn(`Ineffective review for card ${id}. Cooldown not met. Logging only.`);
         }
 
-        await strapi.db.query('api::reviewlog.reviewlog').create({
+        // --- MODIFICATION: Use entityService to create the log ---
+        await strapi.entityService.create('api::reviewlog.reviewlog', {
           data: {
             user: user.id,
             flashcard: id,
@@ -205,22 +216,21 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
             result: result,
             level: getReviewLevel(currentTier),
           }
-        }, trx);
+        });
 
         if (Object.keys(updateData).length > 0) {
-            await strapi.db.query('api::flashcard.flashcard').update({
-                where: { id },
+            // --- MODIFICATION: Use entityService to update the card ---
+            await strapi.entityService.update('api::flashcard.flashcard', id, {
                 data: updateData,
-            }, trx);
+            });
         }
 
-        // --- FIX: Always re-fetch the card with full population after any changes ---
-        const finalCard = await strapi.db.query('api::flashcard.flashcard').findOne({
-            where: { id },
-            populate: commonPopulate, // Use the detailed population object
-        }, trx);
+        // --- MODIFICATION: Re-fetch the final card state with entityService ---
+        const finalCard = await strapi.entityService.findOne('api::flashcard.flashcard', id, {
+            populate: commonPopulate,
+        });
 
-        return [finalCard];
+        return finalCard;
       });
 
       return this.transformResponse(updatedFlashcard);
@@ -230,7 +240,7 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
       return ctx.internalServerError('An error occurred during the review process.');
     }
   },
-  
+    
   // --- NEW STATISTICS ENDPOINT ---
   async getStatistics(ctx) {
     const { user } = ctx.state;
@@ -318,7 +328,7 @@ module.exports = createCoreController('api::flashcard.flashcard', ({ strapi }) =
       strapi.entityService.findMany('api::flashcard.flashcard', {
         filters: { user: user.id },
         populate: commonPopulate,
-        sort: { id: 'asc' },
+        sort: { createdAt: 'asc' }, // --- THIS IS THE FIX ---
         start: start,
         limit: pageSize,
       }),
