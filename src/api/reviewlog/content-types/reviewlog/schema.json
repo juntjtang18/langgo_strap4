@@ -24,9 +24,12 @@
     "level": {
       "type": "enumeration",
       "enum": [
+        "new",
+        "warmup",
         "daily",
         "weekly",
-        "monthly"
+        "monthly",
+        "remembered"
       ]
     },
     "result": {

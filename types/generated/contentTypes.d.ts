@@ -1042,7 +1042,9 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     reviewed_at: Attribute.DateTime;
-    level: Attribute.Enumeration<['daily', 'weekly', 'monthly']>;
+    level: Attribute.Enumeration<
+      ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered']
+    >;
     result: Attribute.Enumeration<['correct', 'wrong']> & Attribute.Required;
     flashcard: Attribute.Relation<
       'api::reviewlog.reviewlog',
