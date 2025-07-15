@@ -185,5 +185,117 @@ module.exports = (plugin) => {
     }
   };
 
+  // =================================================================
+  // 3. CUSTOMIZATION FOR THE 'LOGIN' ENDPOINT (/auth/local)
+  // =================================================================
+  // We are overriding the default 'callback' function to add our custom logic.
+  const originalCallback = plugin.controllers.auth.callback;
+
+  plugin.controllers.auth.callback = async (ctx) => {
+    const provider = ctx.params.provider || 'local';
+
+    // If the provider is not 'local', we call the original function which handles OAuth providers.
+    if (provider !== 'local') {
+      return originalCallback(ctx);
+    }
+
+    // --- Start of re-implemented logic for the 'local' provider ---
+    const userService = strapi.plugin('users-permissions').service('user');
+    const jwtService = strapi.plugin('users-permissions').service('jwt');
+    const { identifier, password } = ctx.request.body;
+
+    if (!identifier || !password) {
+      throw new ApplicationError('Missing identifier or password');
+    }
+
+    // Find the user by username or email
+    const user = await strapi.query('plugin::users-permissions.user').findOne({
+      where: {
+        provider: 'local',
+        $or: [{ email: identifier.toLowerCase() }, { username: identifier }],
+      },
+    });
+
+    if (!user) {
+      throw new ApplicationError('Invalid identifier or password');
+    }
+
+    if (user.blocked) {
+      throw new ApplicationError('Your account has been blocked by an administrator');
+    }
+
+    // The registration function sets confirmed to true, but we check anyway for safety.
+    if (!user.confirmed) {
+      throw new ApplicationError('Your account email is not confirmed');
+    }
+
+    const validPassword = await userService.validatePassword(password, user.password);
+    if (!validPassword) {
+      throw new ApplicationError('Invalid identifier or password');
+    }
+    
+    console.log(`User ${user.email} (ID: ${user.id}) authenticated successfully.`);
+
+    // --- START: Custom logic to ensure vbsetting and user-profile exist ---
+    
+    // 1) Check for and create VBSetting if it doesn't exist
+    const existingSetting = await strapi.entityService.findMany('api::vbsetting.vbsetting', {
+      filters: { user: user.id },
+      limit: 1,
+    });
+
+    if (existingSetting.length === 0) {
+      try {
+        await strapi.entityService.create('api::vbsetting.vbsetting', {
+          data: { user: user.id }, // Relies on default values from the schema
+        });
+        console.log(`VBSetting created on login for user ${user.id}`);
+      } catch (err) {
+        console.error(`Failed to create VBSetting for user ${user.id} on login:`, err);
+        // This is treated as a non-fatal error. The user can still log in.
+      }
+    }
+
+    // 2) Check for and create UserProfile if it doesn't exist
+    const existingProfile = await strapi.entityService.findMany('api::user-profile.user-profile', {
+      filters: { user: user.id },
+      limit: 1,
+    });
+
+    if (existingProfile.length === 0) {
+      try {
+        // WARNING: This creates a user-profile with only the user relation.
+        // The registration process requires a 'baseLanguage', which is not available here.
+        // If 'baseLanguage' is a required field in your user-profile schema, this will fail.
+        // This logic assumes it's not required or can be null.
+        await strapi.entityService.create('api::user-profile.user-profile', {
+          data: { user: user.id },
+        });
+        console.log(`UserProfile created on login for user ${user.id}`);
+      } catch (err) {
+        console.error(`Failed to create UserProfile for user ${user.id} on login:`, err);
+        // Also treated as a non-fatal error.
+      }
+    }
+    
+    // --- END: Custom logic ---
+
+    // Fetch the full user with role to sanitize and return to the client
+    const userWithRole = await strapi.entityService.findOne(
+      'plugin::users-permissions.user',
+      user.id,
+      { populate: { role: true } }
+    );
+    
+    const userSchema = strapi.getModel('plugin::users-permissions.user');
+    const sanitizedUser = await sanitize.contentAPI.output(userWithRole, userSchema);
+
+    // Issue JWT and send the response
+    ctx.send({
+      jwt: jwtService.issue({ id: user.id }),
+      user: sanitizedUser,
+    });
+  };
+
   return plugin;
 };

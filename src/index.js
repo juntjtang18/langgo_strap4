@@ -5,21 +5,21 @@ module.exports = {
   register(/*{ strapi }*/) {},
 
   bootstrap({ strapi }) {
+    // Initialize and register the word processing queue
     const initWordProcessingQueueService = require('./services/word-processing-queue');
-
-    // Initialize the service instance (it now returns an object with an addJob method)
     const wordProcessingQueueService = initWordProcessingQueueService({ strapi });
-
-    // Explicitly add the service to Strapi's service container
-    // This makes it accessible via strapi.service('word-processing-queue')
     strapi.container.get('services').set('word-processing-queue', wordProcessingQueueService);
 
-    if (wordProcessingQueueService) {
-      strapi.log.info('Word processing queue service initialized during bootstrap.');
-      // No need to call .resume() for async.queue; it starts processing when jobs are pushed
+    // Initialize and register the new OpenAI service
+    const initOpenAIService = require('./services/openai');
+    const openAIService = initOpenAIService({ strapi });
+    strapi.container.get('services').set('openai', openAIService);
+
+    if (wordProcessingQueueService && openAIService) {
+      strapi.log.info('All custom services initialized successfully during bootstrap.');
       strapi.log.info('Word processing queue (in-process) is ready.');
     } else {
-      strapi.log.error('Failed to initialize word-processing-queue service during bootstrap.');
+      strapi.log.error('Failed to initialize one or more custom services during bootstrap.');
     }
   },
 };

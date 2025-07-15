@@ -65,6 +65,8 @@ module.exports = createCoreController(
 
     /**
      * GET /flashcards/findForReview
+     * return the flashcards that are due for review based on the user's streak and review tire settings.
+     * This method handles pagination and returns only the cards that are due for review.
      */
     async findForReview(ctx) {
       const { user } = ctx.state;
@@ -295,6 +297,8 @@ module.exports = createCoreController(
 
     /**
      * GET /flashcards/mine?pagination[page]&pagination[pageSize]
+     * This function return all flashcard belonging to the current user.
+     * It supports pagination via query parameters.
      */
     async findMine(ctx) {
       const { user } = ctx.state;
