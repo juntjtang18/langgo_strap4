@@ -12,7 +12,7 @@ const getEffectiveCooldown = (hours) => {
   // If in development mode, divide cooldown by a large number to make it seconds/minutes long.
   // Set NODE_ENV=development in your .env file to enable.
   if (process.env.NODE_ENV === 'development') {
-    return (hours || 0) / 3600; // e.g., 6 hours becomes 6 seconds
+    return (hours || 0) / 360000; // e.g., 6 hours becomes 0.06 seconds
   }
   return hours || 0;
 };
@@ -231,10 +231,25 @@ module.exports = createCoreController(
             );
           }
 
-          return strapi.entityService.findOne(
+          // Refetch the card with all relations populated to ensure the response is complete.
+          return await strapi.entityService.findOne(
             'api::flashcard.flashcard',
             id,
-            { populate: this._commonPopulate() }
+            {
+              populate: {
+                content: {
+                  populate: {
+                    word: { populate: ['tags', 'verb_meta', 'audio'] },
+                    sentence: { populate: ['tags', 'words', 'target_audio'] },
+                    user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
+                    user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
+                  },
+                },
+                review_tire: {
+                  populate: ['tier', 'min_streak', 'max_streak', 'cooldown_hours', 'demote_bar'],
+                },
+              },
+            }
           );
         });
 
