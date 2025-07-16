@@ -2,16 +2,6 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-// Helper: find the correct review tier for a given streak
-const findTierForStreak = (streak, tiers) => {
-  const currentStreak = streak ?? 0;
-  return (
-    tiers.find(
-      (tier) => currentStreak >= tier.min_streak && currentStreak <= tier.max_streak
-    ) || tiers[tiers.length - 1]
-  );
-};
-
 // Helper: derive the log level string
 const getReviewLevel = (tier) => {
   return tier?.tier?.toLowerCase() || null;
@@ -77,14 +67,13 @@ module.exports = createCoreController(
       const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
 
       try {
-        const allTiers = await strapi.entityService.findMany('api::review-tire.review-tire', {
-          sort: { min_streak: 'asc' },
-        });
+        const tierService = strapi.service('tier-service');
+        const allTiers = await tierService.getAllTiers();
 
         // Fetch all cards lightweight to determine which are due
         const allCards = await strapi.entityService.findMany(
           'api::flashcard.flashcard',
-          { 
+          {
             filters: { user: user.id },
             populate: { review_tire: true }
           }
@@ -97,12 +86,12 @@ module.exports = createCoreController(
             if (card.review_tire) {
               tierForCheck = card.review_tire;
             } else {
-              tierForCheck = findTierForStreak(card.correct_streak, allTiers);
+              tierForCheck = tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
             }
 
             if (!tierForCheck) return false;
             if (!card.last_reviewed_at) return true;
-            
+
             const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
             const cutoff = new Date(now - effectiveCooldown * 3600e3);
             return new Date(card.last_reviewed_at) <= cutoff;
@@ -116,7 +105,7 @@ module.exports = createCoreController(
             pagination: { page, pageSize, pageCount: 0, total: 0 },
           });
         }
-        
+
         const pageCount = Math.ceil(totalDue / pageSize);
         const start = (page - 1) * pageSize;
         const paginatedDueCardIds = dueCardIds.slice(start, start + pageSize);
@@ -126,13 +115,13 @@ module.exports = createCoreController(
             pagination: { page, pageSize, pageCount, total: totalDue },
           });
         }
-        
+
         // 3. Fetch only the fully populated cards for the current page
         const populatedDueCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
             filters: { id: { $in: paginatedDueCardIds } },
             populate: this._commonPopulate()
         });
-        
+
         // 4. Return the paginated data and metadata
         const pagination = { page, pageSize, pageCount, total: totalDue };
         return this.transformResponse(populatedDueCards, { pagination });
@@ -168,11 +157,9 @@ module.exports = createCoreController(
           );
 
           if (!flashcard) throw new Error('Flashcard not found.');
-          
-          const reviewTiers = await strapi.entityService.findMany(
-            'api::review-tire.review-tire',
-            { sort: { min_streak: 'asc' } }
-          );
+
+          const tierService = strapi.service('tier-service');
+          const reviewTiers = await tierService.getAllTiers();
 
           // Fallback Logic to Determine the Current Tier
           let currentTier;
@@ -181,20 +168,20 @@ module.exports = createCoreController(
             currentTier = flashcard.review_tire;
           } else {
             // 2. If it's null, fall back to calculating it from the streak.
-            currentTier = findTierForStreak(flashcard.correct_streak, reviewTiers);
+            currentTier = tierService.findTierForStreakWithRules(flashcard.correct_streak, reviewTiers);
           }
-          
+
           // The effective check now uses the correctly determined tier and respects development mode
           const effectiveCooldown = getEffectiveCooldown(currentTier?.cooldown_hours);
           const reviewIsOnCooldown = currentTier && flashcard.last_reviewed_at
             ? (new Date() - new Date(flashcard.last_reviewed_at)) / 3600e3 <= effectiveCooldown
             : false;
-            
+
           const effective = !reviewIsOnCooldown;
-            
+
           const now = new Date();
           const updateData = {};
-            
+
           if (effective) {
             updateData.last_reviewed_at = now.toISOString();
 
@@ -203,7 +190,7 @@ module.exports = createCoreController(
               updateData.correct_streak = newStreak;
               updateData.wrong_streak = 0;
 
-              const newTier = findTierForStreak(newStreak, reviewTiers);
+              const newTier = tierService.findTierForStreakWithRules(newStreak, reviewTiers);
               if (newTier && newTier.id !== currentTier?.id) {
                 updateData.review_tire = newTier.id;
               }
@@ -326,10 +313,11 @@ module.exports = createCoreController(
       ]);
 
       // ensure every card has a review_tire (compute for new ones)
-      const allTiers = await strapi.entityService.findMany('api::review-tire.review-tire', { sort: { min_streak: 'asc' } });
+      const tierService = strapi.service('tier-service');
+      const allTiers = await tierService.getAllTiers();
       const enriched = results.map((card) => {
         if (!card.review_tire) {
-          const tier = findTierForStreak(card.correct_streak, allTiers);
+          const tier = tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
           card.review_tire = tier;
         }
         return card;
@@ -343,6 +331,28 @@ module.exports = createCoreController(
       };
 
       return this.transformResponse(enriched, { pagination });
+    },
+
+   /**
+   * POST /flashcards/:id/validate
+   * New endpoint to trigger validation and fixing of a flashcard.
+   */
+    async validate(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('Authentication required.');
+
+      const { id } = ctx.params;
+      
+      try {
+        const validationService = strapi.service('flashcard-validate');
+        const updatedFlashcard = await validationService.validateAndFix(id);
+        
+        return this.transformResponse(updatedFlashcard);
+
+      } catch (err) {
+        strapi.log.error(`Flashcard validation error: ${err.message}`, { stack: err.stack });
+        return ctx.internalServerError('An error occurred during flashcard validation.');
+      }
     },
   })
 );
