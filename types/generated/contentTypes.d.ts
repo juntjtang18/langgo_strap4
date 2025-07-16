@@ -1474,6 +1474,13 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
           localized: false;
         };
       }>;
+    target_locale: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

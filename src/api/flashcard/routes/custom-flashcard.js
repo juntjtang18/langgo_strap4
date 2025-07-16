@@ -45,5 +45,14 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/flashcards/:id/validate',
+      handler: 'flashcard.validate',
+      config: {
+        // It's highly recommended to protect this endpoint
+        policies: ['global::is-authenticated'],
+      },
+    },
   ],
 };

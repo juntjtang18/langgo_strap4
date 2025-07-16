@@ -1,12 +1,14 @@
 // Path: src/extensions/users-permissions/strapi-server.js
+"use strict";
+console.log("[DEBUG] ==> Loading custom users-permissions strapi-server.js");
 
-// Import necessary utilities from Strapi
-const { ApplicationError } = require('@strapi/utils').errors;
+const axios = require("axios");
+const { ApplicationError, ValidationError } = require('@strapi/utils').errors;
 const { sanitize } = require('@strapi/utils');
 
 module.exports = (plugin) => {
   // =================================================================
-  // 1. CUSTOMIZATION FOR THE 'ME' ENDPOINT
+  // 1. 'ME' ENDPOINT - WITH SUBSCRIPTION & USER PROFILE
   // =================================================================
   plugin.controllers.user.me = async (ctx) => {
     if (!ctx.state.user || !ctx.state.user.id) {
@@ -16,11 +18,11 @@ module.exports = (plugin) => {
 
     const populate = {
       role: true,
-      // add other relations here if needed
+      user_profile: true,
     };
 
     const user = await strapi.entityService.findOne(
-      'plugin::users-permissions.user',
+      "plugin::users-permissions.user",
       ctx.state.user.id,
       { populate }
     );
@@ -29,8 +31,41 @@ module.exports = (plugin) => {
       return ctx.notFound();
     }
 
+    // --- Subscription Fetching Logic ---
+    let subscription = null;
+    try {
+      console.log("[DEBUG] Entering subscription fetching logic for 'me' endpoint.");
+      const subscriptionUrl = process.env.SUBSYS_BASE_URL;
+      const secret = process.env.SUBSCRIPTION_SERVICE_SECRET;
+      
+      if (!subscriptionUrl || !secret) {
+        console.error("[ERROR] Subscription environment variables not set. Skipping call.");
+      } else {
+        const userId = ctx.state.user.id;
+        console.log(`[DEBUG] Calling subscription endpoint for user ${userId}`);
+        const response = await axios.get(
+          `${subscriptionUrl}/api/v1/subscription-of-a-user/${userId}`,
+          { headers: { Authorization: `Bearer ${secret}` } }
+        );
+        subscription = response.data;
+        console.log(`[DEBUG] Subscription data fetched successfully for user ${userId}.`);
+      }
+    } catch (error) {
+      console.error("[ERROR] Failed to fetch subscription data for user.", error.message);
+      subscription = null;
+    }
+    // --- End Subscription Logic ---
+
     const cleanRole = user.role
       ? (({ id, name, description, type }) => ({ id, name, description, type }))(user.role)
+      : null;
+
+    const cleanUserProfile = user.user_profile
+      ? {
+          id: user.user_profile.id,
+          telephone: user.user_profile.telephone,
+          baseLanguage: user.user_profile.baseLanguage,
+        }
       : null;
 
     ctx.body = {
@@ -40,261 +75,192 @@ module.exports = (plugin) => {
       confirmed: user.confirmed,
       blocked: user.blocked,
       role: cleanRole,
+      user_profile: cleanUserProfile,
+      subscription: subscription,
     };
   };
 
   // =================================================================
-  // 2. CUSTOMIZATION FOR THE 'REGISTER' ENDPOINT
+  // 2. 'LOGIN' ENDPOINT (/api/auth/local) - WITH SUBSCRIPTION & ROLE
+  // =================================================================
+  const originalCallback = plugin.controllers.auth.callback;
+  plugin.controllers.auth.callback = async (ctx) => {
+    // Let the original controller handle the authentication
+    await originalCallback(ctx);
+
+    // If authentication was successful, ctx.body will have jwt and user
+    if (ctx.body.jwt && ctx.body.user) {
+      const user = ctx.body.user;
+      let subscription = null;
+      
+      // Re-fetch the user to populate the role and profile
+      const userWithDetails = await strapi.entityService.findOne(
+        "plugin::users-permissions.user",
+        user.id,
+        { populate: { role: true, user_profile: true } }
+      );
+
+      const subscriptionUrl = process.env.SUBSYS_BASE_URL;
+      const secret = process.env.SUBSCRIPTION_SERVICE_SECRET;
+
+      if (!subscriptionUrl || !secret) {
+        console.error("[ERROR] Subscription environment variables not set for login. Skipping call.");
+      } else {
+        try {
+          // First, try to fetch the existing subscription
+          console.log(`[DEBUG] Login successful for user ${user.id}. Fetching subscription.`);
+          const response = await axios.get(
+            `${subscriptionUrl}/api/v1/subscription-of-a-user/${user.id}`,
+            { headers: { Authorization: `Bearer ${secret}` } }
+          );
+          subscription = response.data;
+          console.log(`[DEBUG] Subscription data fetched for user ${user.id}.`);
+        } catch (error) {
+          console.warn(`[WARN] Could not fetch subscription for user ${user.id}. Attempting creation...`, error.message);
+
+          try {
+            // Create the free plan. The response from this endpoint is already complete.
+            const creationResponse = await axios.post(
+              `${subscriptionUrl}/api/v1/subscriptions/subscribe-free-plan`,
+              { userId: user.id }, 
+              { headers: { Authorization: `Bearer ${secret}` } }
+            );
+            subscription = creationResponse.data;
+            console.log(`[DEBUG] Successfully created new subscription for user ${user.id}.`);
+
+          } catch (creationError) {
+            console.error(`[ERROR] CRITICAL: A failure occurred during the subscription creation process for user ${user.id}.`, creationError.message);
+          }
+        }
+      }
+      
+      // Sanitize the user with the role, then attach the subscription and profile
+      const userSchema = strapi.getModel('plugin::users-permissions.user');
+      const sanitizedUser = await sanitize.contentAPI.output(userWithDetails, userSchema);
+      sanitizedUser.subscription = subscription;
+      
+      // Replace the original user object in the response with our new, detailed one
+      ctx.body.user = sanitizedUser;
+    }
+  };
+
+  // =================================================================
+  // 3. 'REGISTER' ENDPOINT - WITH SUBSCRIPTION & ROLE
   // =================================================================
   plugin.controllers.auth.register = async (ctx) => {
-    const userService    = strapi.plugin('users-permissions').service('user');
-    const jwtService     = strapi.plugin('users-permissions').service('jwt');
-    const pluginStore    = await strapi.store({ type: 'plugin', name: 'users-permissions' });
-    const settings       = await pluginStore.get({ key: 'advanced' });
+    console.log("[DEBUG] ==> Starting custom /register controller.");
+
+    const userService = strapi.plugin("users-permissions").service("user");
+    const jwtService = strapi.plugin("users-permissions").service("jwt");
+
+    const pluginStore = await strapi.store({ type: "plugin", name: "users-permissions" });
+    const settings = await pluginStore.get({ key: "advanced" });
 
     if (!settings.allow_register) {
-      throw new ApplicationError('Register action is currently disabled');
+      throw new ApplicationError("Register action is currently disabled");
     }
 
-    const { email, username, password, baseLanguage, telephone } = ctx.request.body;
+    const { email, username, password, baseLanguage } = ctx.request.body;
     if (!username || !email || !password || !baseLanguage) {
-      throw new ApplicationError('Username, email, password and baseLanguage are all required.');
+        throw new ApplicationError("Username, email, password, and baseLanguage are required.");
     }
-
-    // Find default role
+    
     const role = await strapi
       .query('plugin::users-permissions.role')
       .findOne({ where: { type: settings.default_role } });
+
     if (!role) {
       throw new ApplicationError('Impossible to find the default role.');
     }
 
-    // Check email uniqueness
-    const existing = await strapi
-      .query('plugin::users-permissions.user')
+    const userWithSameEmail = await strapi
+      .query("plugin::users-permissions.user")
       .findOne({ where: { email: email.toLowerCase() } });
-    if (existing) {
-      throw new ApplicationError('Email is already taken');
+
+    if (userWithSameEmail) {
+      throw new ApplicationError("Email is already taken");
     }
 
     let newUser;
+    let userProfile;
     try {
-      // 1) Create the Strapi user
-      newUser = await userService.add({
-        username,
-        email: email.toLowerCase(),
-        password,
-        provider: 'local',
-        confirmed: true,
-        role: role.id,
-      });
-      console.log(`User ${newUser.email} (ID: ${newUser.id}) created.`);
-
-      // 2) External subscription call (unchanged)
-      const subsysBaseUrl             = process.env.SUBSYS_BASE_URL;
-      const subscriptionServiceSecret = process.env.SUBSCRIPTION_SERVICE_SECRET;
-      if (subsysBaseUrl && subscriptionServiceSecret) {
-        try {
-          const response = await fetch(
-            `${subsysBaseUrl}/api/subscriptions/subscribe-free-plan`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${subscriptionServiceSecret}`,
-              },
-              body: JSON.stringify({ userId: newUser.id }),
-            }
-          );
-          if (!response.ok) {
-            console.error(
-              `Subscription failed for user ${newUser.id} (status ${response.status})`
-            );
-            await userService.remove({ id: newUser.id });
-            throw new ApplicationError(
-              'Account could not be created due to a subscription system error.'
-            );
-          }
-          console.log(`User ${newUser.id} subscribed to free plan.`);
-        } catch (subError) {
-          console.error('Subscription error:', subError);
-          if (newUser && newUser.id) {
-            await userService.remove({ id: newUser.id });
-          }
-          throw new ApplicationError(
-            'Account could not be created due to a subscription system error.'
-          );
-        }
-      } else {
-        console.warn('Subscription env vars missing; skipping subscription step.');
-      }
-
-      // 3) VBSetting creation (fatal on error)
-      const existingSetting = await strapi.entityService.findMany(
-        'api::vbsetting.vbsetting',
-        { filters: { user: newUser.id } }
-      );
-      if (existingSetting.length === 0) {
-        await strapi.entityService.create('api::vbsetting.vbsetting', {
-          data: { user: newUser.id },
+      // Create the user in a transaction to ensure atomicity
+      await strapi.db.transaction(async () => {
+        newUser = await userService.add({
+          username,
+          email: email.toLowerCase(),
+          password,
+          provider: "local",
+          confirmed: true,
+          role: role.id,
         });
-        console.log(`VBSetting created for user ${newUser.id}`);
-      }
+        console.log(`[DEBUG] User ${newUser.email} (ID: ${newUser.id}) created in main Strapi.`);
+  
+        userProfile = await strapi.entityService.create('api::user-profile.user-profile', {
+            data: { user: newUser.id, baseLanguage },
+        });
+        console.log(`[DEBUG] UserProfile created for user ${newUser.id}.`);
 
-      // 4) UserProfile creation (fatal on error)
-      await strapi.entityService.create('api::user-profile.user-profile', {
-        data: {
-          user: newUser.id,
-          baseLanguage,
-          telephone: telephone || null,
-        },
+        await strapi.entityService.create('api::vbsetting.vbsetting', {
+            data: { user: newUser.id },
+        });
+        console.log(`[DEBUG] VBSetting created for user ${newUser.id}.`);
       });
-      console.log(`UserProfile created for user ${newUser.id}`);
 
-      // 5) Fetch & sanitize final user
-      const userWithRole = await strapi.entityService.findOne(
-        'plugin::users-permissions.user',
+      let subscription = null;
+      try {
+        // Create the subscription in SUBSYS
+        console.log(`[DEBUG] Calling subscription endpoint to create free plan for user ${newUser.id}.`);
+        const subscriptionUrl = process.env.SUBSYS_BASE_URL;
+        const secret = process.env.SUBSCRIPTION_SERVICE_SECRET;
+        
+        if (!subscriptionUrl || !secret) {
+          console.error("[ERROR] Subscription environment variables not set. Skipping call.");
+        } else {
+          const creationResponse = await axios.post(
+            `${subscriptionUrl}/api/v1/subscriptions/subscribe-free-plan`,
+            { userId: newUser.id }, 
+            { headers: { Authorization: `Bearer ${secret}` } }
+          );
+          subscription = creationResponse.data;
+          console.log(`[DEBUG] Subscription creation/fetch completed for user ${newUser.id}.`);
+        }
+      } catch (subError) {
+        console.error("[ERROR] Subscription call failed. Rolling back user creation.", subError);
+        await userService.remove({ id: newUser.id });
+        throw new ApplicationError("Account could not be created due to a subscription system error.");
+      }      
+      
+      // Re-fetch the user to ensure all relations are populated for the response.
+      const userWithDetails = await strapi.entityService.findOne(
+        "plugin::users-permissions.user",
         newUser.id,
         { populate: { role: true } }
       );
-      const userSchema    = strapi.getModel('plugin::users-permissions.user');
-      const sanitizedUser = await sanitize.contentAPI.output(userWithRole, userSchema);
 
-      // 6) Respond
-      ctx.send({
+      // Sanitize user data and manually add the subscription object to the response
+      const userSchema = strapi.getModel('plugin::users-permissions.user');
+      const sanitizedUser = await sanitize.contentAPI.output(userWithDetails, userSchema);
+
+      // **Manually attach the user profile and subscription to the sanitized response**
+      sanitizedUser.user_profile = userProfile;
+      sanitizedUser.subscription = subscription;
+
+      return ctx.send({
         jwt: jwtService.issue({ id: sanitizedUser.id }),
         user: sanitizedUser,
       });
 
     } catch (error) {
-      console.error('Registration error:', error);
-
-      // Roll back if user was created
-      if (newUser && newUser.id) {
-        try {
-          await userService.remove({ id: newUser.id });
-        } catch (cleanupErr) {
-          console.error('Cleanup failed:', cleanupErr);
-        }
+      console.error("[ERROR] An error during registration:", error);
+      if (newUser && newUser.id) { // Rollback user if created
+        await userService.remove({ id: newUser.id });
       }
-
       if (error instanceof ApplicationError) {
-        throw error;
+          throw error;
       }
-      throw new ApplicationError('An unexpected error occurred during registration.');
+      throw new ApplicationError("An error occurred during the registration process.");
     }
-  };
-
-  // =================================================================
-  // 3. CUSTOMIZATION FOR THE 'LOGIN' ENDPOINT (/auth/local)
-  // =================================================================
-  // We are overriding the default 'callback' function to add our custom logic.
-  const originalCallback = plugin.controllers.auth.callback;
-
-  plugin.controllers.auth.callback = async (ctx) => {
-    const provider = ctx.params.provider || 'local';
-
-    // If the provider is not 'local', we call the original function which handles OAuth providers.
-    if (provider !== 'local') {
-      return originalCallback(ctx);
-    }
-
-    // --- Start of re-implemented logic for the 'local' provider ---
-    const userService = strapi.plugin('users-permissions').service('user');
-    const jwtService = strapi.plugin('users-permissions').service('jwt');
-    const { identifier, password } = ctx.request.body;
-
-    if (!identifier || !password) {
-      throw new ApplicationError('Missing identifier or password');
-    }
-
-    // Find the user by username or email
-    const user = await strapi.query('plugin::users-permissions.user').findOne({
-      where: {
-        provider: 'local',
-        $or: [{ email: identifier.toLowerCase() }, { username: identifier }],
-      },
-    });
-
-    if (!user) {
-      throw new ApplicationError('Invalid identifier or password');
-    }
-
-    if (user.blocked) {
-      throw new ApplicationError('Your account has been blocked by an administrator');
-    }
-
-    // The registration function sets confirmed to true, but we check anyway for safety.
-    if (!user.confirmed) {
-      throw new ApplicationError('Your account email is not confirmed');
-    }
-
-    const validPassword = await userService.validatePassword(password, user.password);
-    if (!validPassword) {
-      throw new ApplicationError('Invalid identifier or password');
-    }
-    
-    console.log(`User ${user.email} (ID: ${user.id}) authenticated successfully.`);
-
-    // --- START: Custom logic to ensure vbsetting and user-profile exist ---
-    
-    // 1) Check for and create VBSetting if it doesn't exist
-    const existingSetting = await strapi.entityService.findMany('api::vbsetting.vbsetting', {
-      filters: { user: user.id },
-      limit: 1,
-    });
-
-    if (existingSetting.length === 0) {
-      try {
-        await strapi.entityService.create('api::vbsetting.vbsetting', {
-          data: { user: user.id }, // Relies on default values from the schema
-        });
-        console.log(`VBSetting created on login for user ${user.id}`);
-      } catch (err) {
-        console.error(`Failed to create VBSetting for user ${user.id} on login:`, err);
-        // This is treated as a non-fatal error. The user can still log in.
-      }
-    }
-
-    // 2) Check for and create UserProfile if it doesn't exist
-    const existingProfile = await strapi.entityService.findMany('api::user-profile.user-profile', {
-      filters: { user: user.id },
-      limit: 1,
-    });
-
-    if (existingProfile.length === 0) {
-      try {
-        // WARNING: This creates a user-profile with only the user relation.
-        // The registration process requires a 'baseLanguage', which is not available here.
-        // If 'baseLanguage' is a required field in your user-profile schema, this will fail.
-        // This logic assumes it's not required or can be null.
-        await strapi.entityService.create('api::user-profile.user-profile', {
-          data: { user: user.id },
-        });
-        console.log(`UserProfile created on login for user ${user.id}`);
-      } catch (err) {
-        console.error(`Failed to create UserProfile for user ${user.id} on login:`, err);
-        // Also treated as a non-fatal error.
-      }
-    }
-    
-    // --- END: Custom logic ---
-
-    // Fetch the full user with role to sanitize and return to the client
-    const userWithRole = await strapi.entityService.findOne(
-      'plugin::users-permissions.user',
-      user.id,
-      { populate: { role: true } }
-    );
-    
-    const userSchema = strapi.getModel('plugin::users-permissions.user');
-    const sanitizedUser = await sanitize.contentAPI.output(userWithRole, userSchema);
-
-    // Issue JWT and send the response
-    ctx.send({
-      jwt: jwtService.issue({ id: user.id }),
-      user: sanitizedUser,
-    });
   };
 
   return plugin;

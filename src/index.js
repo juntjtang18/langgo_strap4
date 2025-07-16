@@ -15,7 +15,18 @@ module.exports = {
     const openAIService = initOpenAIService({ strapi });
     strapi.container.get('services').set('openai', openAIService);
 
-    if (wordProcessingQueueService && openAIService) {
+    // Initialize and register the new Tier service
+    const initTierService = require('./services/tier-service');
+    const tierService = initTierService({ strapi });
+    strapi.container.get('services').set('tier-service', tierService);
+    
+    // Initialize and register the flashcard-validate service
+    const initFlashcardValidateService = require('./services/flashcard-validate');
+    const flashcardValidateService = initFlashcardValidateService({ strapi });
+    strapi.container.get('services').set('flashcard-validate', flashcardValidateService);
+
+
+    if (wordProcessingQueueService && openAIService && tierService && flashcardValidateService) {
       strapi.log.info('All custom services initialized successfully during bootstrap.');
       strapi.log.info('Word processing queue (in-process) is ready.');
     } else {
