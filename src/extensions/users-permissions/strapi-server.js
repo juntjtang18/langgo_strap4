@@ -94,11 +94,29 @@ module.exports = (plugin) => {
       let subscription = null;
       
       // Re-fetch the user to populate the role and profile
-      const userWithDetails = await strapi.entityService.findOne(
+      let userWithDetails = await strapi.entityService.findOne(
         "plugin::users-permissions.user",
         user.id,
         { populate: { role: true, user_profile: true } }
       );
+
+      // --- CREATE USER PROFILE IF IT DOESN'T EXIST ---
+      if (!userWithDetails.user_profile) {
+        console.log(`[DEBUG] User profile not found for user ${user.id}. Creating one.`);
+        try {
+          const newUserProfile = await strapi.entityService.create('api::user-profile.user-profile', {
+            data: {
+              baseLanguage: process.env.TARGET_LOCALE || 'en', // Use env variable, fallback to 'en'
+              user: user.id
+            },
+          });
+          userWithDetails.user_profile = newUserProfile;
+          console.log(`[DEBUG] Successfully created new user profile for user ${user.id}.`);
+        } catch (profileError) {
+          console.error(`[ERROR] Failed to create user profile for user ${user.id}.`, profileError.message);
+        }
+      }
+      // --- END PROFILE CREATION LOGIC ---
 
       const subscriptionUrl = process.env.SUBSYS_BASE_URL;
       const secret = process.env.SUBSCRIPTION_SERVICE_SECRET;

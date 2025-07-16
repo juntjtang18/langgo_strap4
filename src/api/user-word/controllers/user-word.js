@@ -26,7 +26,7 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
           exam_base: null,
           exam_target: null,
         },
-        populate: ['user'],
+        // populate: ['user'], // This line is removed
       });
       strapi.log.info(`User word created: ${createdUserWord.id}`);
 

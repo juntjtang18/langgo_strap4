@@ -64,8 +64,9 @@ module.exports = ({ strapi }) => ({
     const baseLocale = userProfile.baseLanguage;
 
     let targetLocale = userWord.target_locale;
+    // --- If target_locale is missing, set it from the environment variable ---
     if (!targetLocale) {
-        targetLocale = process.env.TARGET_LOCCALE;
+        targetLocale = process.env.TARGET_LOCALE;
         if (targetLocale) {
           userWordUpdateData.target_locale = targetLocale;
         }
