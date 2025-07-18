@@ -82,3 +82,13 @@ curl -X GET 'http://localhost:1338/api/user-words/154' \
 curl -X POST 'http://localhost:1338/api/user-word/copyToZh' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyNzE2MjI4LCJleHAiOjE3NTUzMDgyMjh9.SU0NJEpuq6THvaDXaBQwqcgXOihasjYJ1oC2AfAtPKs" \
 -H "Content-Type: application/json"
+
+
+curl -X POST http://localhost:1338/api/user-words -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODI4MTg2LCJleHAiOjE3NTU0MjAxODZ9.h3EUvnbWHI6BpyIEhTBJKPqgHNXw-Dvp8hWHZat8AJc" \
+-d '{ "data": { "target_text": "gun", "base_text": "枪", "base_locale": "zh", "target_locale": "en", "part_of_speech": "noun" } }' | jq .
+
+curl -X POST "http://localhost:1338/api/auth/local" \
+-H "Content-Type: application/json" \
+-d '{  "identifier": "vivian@langgo.com",  "password": "123456"}' \
+| jq .
