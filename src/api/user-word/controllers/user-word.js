@@ -4,44 +4,66 @@
 const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::user-word.user-word', ({ strapi }) => ({
+  /**
+   * Creates a new user_word entry, automatically assigning the correct
+   * locale based on the authenticated user's profile.
+   */
   async create(ctx) {
-    const userId = ctx.state.user?.id;
-    if (!userId) { return ctx.badRequest('Authenticated user not found.'); }
+    const { user } = ctx.state;
+    if (!user) {
+      return ctx.unauthorized('Authenticated user not found.');
+    }
 
+    // 1. Get the user's baseLanguage from their profile using entityService
+    // Note: We expect one profile per user.
+    const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
+      filters: { user: user.id },
+      fields: ['baseLanguage'],
+    });
+
+    if (!profiles || profiles.length === 0 || !profiles[0].baseLanguage) {
+      return ctx.badRequest("User profile with a baseLanguage is required to create a word.");
+    }
+    const baseLocale = profiles[0].baseLanguage;
+
+    // 2. Prepare the data for the new user_word
     const incomingData = ctx.request.body?.data || {};
-    const { target_text, base_text, base_locale, target_locale } = incomingData;
+    const { target_text, base_text } = incomingData; // a simplified example of required fields
 
-    if (!base_text || !target_text || !base_locale || !target_locale) {
-      return ctx.badRequest('Missing base_text, target_text, base_locale, or target_locale in request data.');
+    if (!base_text || !target_text) {
+      return ctx.badRequest('Missing base_text or target_text in request data.');
     }
 
     let createdUserWord;
     let createdFlashcard;
 
+    // 3. Create user_word and its flashcard
     try {
+      // Create the user_word with the automatically determined locale
       createdUserWord = await strapi.entityService.create('api::user-word.user-word', {
         data: {
           ...incomingData,
-          user: userId,
+          user: user.id,
+          locale: baseLocale, // Set the locale from the user's profile
           exam_base: null,
           exam_target: null,
         },
-        // populate: ['user'], // This line is removed
       });
-      strapi.log.info(`User word created: ${createdUserWord.id}`);
+      strapi.log.info(`User word created: ${createdUserWord.id} with locale: ${baseLocale}`);
 
+      // Create the associated flashcard
       const flashcardData = {
-        user: userId,
-        content: [
-          {
-            __component: 'a.user-word-ref',
-            user_word: createdUserWord.id,
-          },
-        ],
+        user: user.id,
+        content: [{
+          __component: 'a.user-word-ref',
+          user_word: createdUserWord.id,
+        }, ],
         last_reviewed_at: null,
         correct_streak: 0,
         wrong_streak: 0,
         is_remembered: false,
+        // The locale for the flashcard will also be set from the user's context
+        locale: baseLocale,
       };
       createdFlashcard = await strapi.entityService.create('api::flashcard.flashcard', {
         data: flashcardData,
@@ -50,48 +72,49 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
 
     } catch (initialCreationError) {
       strapi.log.error(`Failed initial creation of user_word or flashcard:`, initialCreationError);
-      return ctx.internalServerError('Failed initial word creation.', { details: initialCreationError.message });
+      return ctx.internalServerError('Failed initial word creation.', {
+        details: initialCreationError.message
+      });
     }
 
+    // 4. Enqueue background job for exam generation
     if (createdUserWord && createdUserWord.id && createdFlashcard && createdFlashcard.id) {
-        const wordProcessingQueueService = strapi.service('word-processing-queue'); // Access the service instance
+      const wordProcessingQueueService = strapi.service('word-processing-queue');
+      const {
+        target_locale
+      } = incomingData; // Still needed for the background job
 
-        if (!wordProcessingQueueService || typeof wordProcessingQueueService.addJob !== 'function') {
-            strapi.log.error('word-processing-queue service is not correctly loaded or does not have addJob method.');
-            return ctx.internalServerError('Background processing service is unavailable or misconfigured.');
+      wordProcessingQueueService.addJob({
+        userWordId: createdUserWord.id,
+        flashcardId: createdFlashcard.id,
+        userId: user.id,
+        incomingData: {
+          base_text,
+          target_text,
+          base_locale: baseLocale, // Pass the correct base locale to the job
+          target_locale
         }
-
-        // --- KEY CHANGE HERE ---
-        wordProcessingQueueService.addJob({ // Call the addJob method on the service
-            userWordId: createdUserWord.id,
-            flashcardId: createdFlashcard.id,
-            userId: userId,
-            incomingData: { base_text, target_text, base_locale, target_locale }
-        });
-        // --- END KEY CHANGE ---
-        
-        strapi.log.info(`Job enqueued for user_word ID ${createdUserWord.id}.`);
+      });
+      strapi.log.info(`Job enqueued for user_word ID ${createdUserWord.id}.`);
     } else {
-        strapi.log.error('Failed to enqueue background job: Missing created user_word or flashcard ID.');
+      strapi.log.error('Failed to enqueue background job: Missing created user_word or flashcard ID.');
     }
 
-    return {
-      data: {
-        id: createdUserWord.id,
-        attributes: {
-          target_text: createdUserWord.target_text,
-          base_text: createdUserWord.base_text,
-          part_of_speech: createdUserWord.part_of_speech,
-          exam_base: null,
-          exam_target: null,
-          createdAt: createdUserWord.createdAt,
-          updatedAt: createdUserWord.updatedAt,
-          locale: createdUserWord.locale,
-        }
-      }
-    };
+    // 5. Return the sanitized response
+    // Using entityService.findOne to ensure all populated fields are correct
+    const finalUserWord = await strapi.entityService.findOne('api::user-word.user-word', createdUserWord.id, {
+        fields: ['target_text', 'base_text', 'part_of_speech', 'locale', 'createdAt', 'updatedAt'],
+    });
+
+    return this.transformResponse(finalUserWord);
   },
+
+  /**
+   * The copyToZh function remains unchanged as it has a very specific
+   * batch-processing purpose that is separate from individual user actions.
+   */
   async copyToZh(ctx) {
+    // ... existing copyToZh code ...
     strapi.log.info('The /api/user-word/copyToZh endpoint was called.');
 
     try {
