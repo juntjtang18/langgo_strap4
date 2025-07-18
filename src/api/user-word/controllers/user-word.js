@@ -91,4 +91,69 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
       }
     };
   },
+  async copyToZh(ctx) {
+    strapi.log.info('The /api/user-word/copyToZh endpoint was called.');
+
+    try {
+        const sourceWords = await strapi.entityService.findMany('api::user-word.user-word', {
+            locale: 'all',
+            filters: {
+                $or: [
+                    { locale: 'en' },
+                    { locale: { $null: true } }
+                ]
+            },
+            populate: { localizations: true },
+        });
+
+        strapi.log.info(`Found a total of ${sourceWords.length} source user_word entries to process.`);
+
+        if (sourceWords.length === 0) {
+            ctx.send({ message: "No 'en' or 'null' locale entries found to process." });
+            return;
+        }
+
+        let createdCount = 0;
+        let skippedCount = 0;
+
+        for (const word of sourceWords) {
+            const allRelatedWords = [word, ...word.localizations];
+            const hasZhLocalization = allRelatedWords.some(w => w.locale === 'zh');
+
+            if (hasZhLocalization) {
+                skippedCount++;
+            } else {
+                // THE FIX: Explicitly include all required fields
+                const newLocalizationData = {
+                    // Localized fields
+                    base_text: word.base_text,
+                    part_of_speech: word.part_of_speech,
+                    locale: 'zh',
+                    
+                    // Non-localized but REQUIRED fields
+                    target_text: word.target_text,
+                    target_locale: word.target_locale,
+
+                    // Relational data
+                    localizations: [word.id, ...word.localizations.map(l => l.id)],
+                    user: word.user, // Important for ownership
+                };
+
+                await strapi.entityService.create('api::user-word.user-word', {
+                    data: newLocalizationData,
+                });
+                createdCount++;
+            }
+        }
+
+        ctx.send({
+            message: `Processing complete. Created ${createdCount} new Chinese localizations. Skipped ${skippedCount} entries that already had a 'zh' version.`,
+        });
+
+    } catch (error) {
+        // BETTER LOGGING: Print the detailed error message
+        strapi.log.error('Error in copyToZh function:', error.details || error);
+        ctx.internalServerError('An error occurred during the copy process.', error.details);
+    }
+  },
 }));
