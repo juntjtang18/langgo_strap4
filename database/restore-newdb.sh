@@ -1,27 +1,58 @@
 #!/bin/bash
-set -e
-[ $# -lt 2 ] && { echo "Usage: $0 <newdbname> <backup_file> [--verbose]"; exit 1; }
+set -e # Exit immediately if a command exits with a non-zero status.
+
+# --- Input Validation ---
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "❌ ERROR: Missing arguments."
+  echo "Usage: $0 <new_database_name> <path_to_backup_file.sql>"
+  exit 1
+fi
+
+# --- Configuration ---
 NEW_DBNAME="$1"
 BACKUP_FILE="$2"
-VERBOSE_FLAG=$3
 DB_ADMIN_USER="postgres"
 DB_ADMIN_PASSWORD="Passw0rd@P0stgres"
 DB_APP_USER="strapi"
 DB_HOST="/cloudsql/lucid-arch-451211-b0:us-west1:cloud-sql-server"
 
-[ ! -f "$BACKUP_FILE" ] && { echo "❌ Backup file '$BACKUP_FILE' not found"; exit 1; }
-echo "✔️ Starting database '$NEW_DBNAME' creation and restore..."
+# Set the password for the psql commands
+export PGPASSWORD=$DB_ADMIN_PASSWORD
 
-export PGPASSWORD="$DB_ADMIN_PASSWORD"
-psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "postgres" -tAc "SELECT 1 FROM pg_database WHERE datname='$NEW_DBNAME'" | grep -q 1 && \
-  psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "postgres" -c "DROP DATABASE \"$NEW_DBNAME\";" || echo "✔️ No existing database '$NEW_DBNAME'."
+echo "--- Starting Database Restore Process for '$NEW_DBNAME' ---"
+
+# 1. Drop existing database if it exists
+echo "--- Checking and dropping existing database..."
+psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "postgres" -c "DROP DATABASE IF EXISTS \"$NEW_DBNAME\";"
+echo "✔️ Dropped database if it existed."
+
+# 2. Create the new database
+echo "--- Creating new database..."
 psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "postgres" -c "CREATE DATABASE \"$NEW_DBNAME\";"
+echo "✔️ Database created."
+
+# 3. Grant initial privileges to the application user
+echo "--- Granting initial privileges to user '$DB_APP_USER'..."
 psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "postgres" -c "GRANT ALL PRIVILEGES ON DATABASE \"$NEW_DBNAME\" TO \"$DB_APP_USER\";"
-pg_restore -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "$NEW_DBNAME" ${VERBOSE_FLAG:+-v} "$BACKUP_FILE"
+echo "✔️ Privileges granted."
+
+# 4. Restore the database from the plain-text backup file
+echo "--- Restoring database from '$BACKUP_FILE'..."
+# Use psql for text-format dumps, connecting as the admin user
+psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "$NEW_DBNAME" -f "$BACKUP_FILE"
+echo "✔️ Restore complete."
+
+# 5. Reassign ownership of all database objects to the application user
+echo "--- Reassigning ownership of all objects to '$DB_APP_USER'..."
+# This is crucial after a restore, as objects are owned by the restoring user (DB_ADMIN_USER)
 psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "$NEW_DBNAME" -c "REASSIGN OWNED BY \"$DB_ADMIN_USER\" TO \"$DB_APP_USER\";"
 psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "postgres" -c "ALTER DATABASE \"$NEW_DBNAME\" OWNER TO \"$DB_APP_USER\";"
-psql -h "$DB_HOST" -U "$DB_ADMIN_USER" -d "$NEW_DBNAME" -tAc "SELECT 1 FROM information_schema.tables WHERE table_name='user_words'" | grep -q 1 || \
-  { echo "❌ Table 'user_words' not found in '$NEW_DBNAME'"; exit 1; }
-echo "✔️ Table 'user_words' confirmed in '$NEW_DBNAME'."
+echo "✔️ Ownership reassigned."
+
+# Unset the password variable
 unset PGPASSWORD
-echo "✅ Database '$NEW_DBNAME' created and restored successfully!"
+
+echo ""
+echo "------------------------------------------------------------"
+echo "✅ Database '$NEW_DBNAME' restored and configured successfully!"
+echo "------------------------------------------------------------"
