@@ -5,8 +5,8 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::user-word.user-word', ({ strapi }) => ({
   /**
-   * Creates a new user_word entry, automatically assigning the correct
-   * locale based on the authenticated user's profile.
+   * Creates a new user_word entry. The user's base language is automatically
+   * fetched from their profile for use in background processing.
    */
   async create(ctx) {
     const { user } = ctx.state;
@@ -14,21 +14,9 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
       return ctx.unauthorized('Authenticated user not found.');
     }
 
-    // 1. Get the user's baseLanguage from their profile using entityService
-    // Note: We expect one profile per user.
-    const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
-      filters: { user: user.id },
-      fields: ['baseLanguage'],
-    });
-
-    if (!profiles || profiles.length === 0 || !profiles[0].baseLanguage) {
-      return ctx.badRequest("User profile with a baseLanguage is required to create a word.");
-    }
-    const baseLocale = profiles[0].baseLanguage;
-
-    // 2. Prepare the data for the new user_word
+    // 1. Prepare the data for the new user_word
     const incomingData = ctx.request.body?.data || {};
-    const { target_text, base_text } = incomingData; // a simplified example of required fields
+    const { target_text, base_text } = incomingData;
 
     if (!base_text || !target_text) {
       return ctx.badRequest('Missing base_text or target_text in request data.');
@@ -37,21 +25,18 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
     let createdUserWord;
     let createdFlashcard;
 
-    // 3. Create user_word and its flashcard
+    // 2. Create user_word and its flashcard
     try {
-      // Create the user_word with the automatically determined locale
       createdUserWord = await strapi.entityService.create('api::user-word.user-word', {
         data: {
           ...incomingData,
           user: user.id,
-          locale: baseLocale, // Set the locale from the user's profile
           exam_base: null,
           exam_target: null,
         },
       });
-      strapi.log.info(`User word created: ${createdUserWord.id} with locale: ${baseLocale}`);
+      strapi.log.info(`User word created: ${createdUserWord.id}`);
 
-      // Create the associated flashcard
       const flashcardData = {
         user: user.id,
         content: [{
@@ -62,8 +47,6 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
         correct_streak: 0,
         wrong_streak: 0,
         is_remembered: false,
-        // The locale for the flashcard will also be set from the user's context
-        locale: baseLocale,
       };
       createdFlashcard = await strapi.entityService.create('api::flashcard.flashcard', {
         data: flashcardData,
@@ -77,13 +60,9 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
       });
     }
 
-    // 4. Enqueue background job for exam generation
+    // 3. Enqueue background job for exam generation
     if (createdUserWord && createdUserWord.id && createdFlashcard && createdFlashcard.id) {
       const wordProcessingQueueService = strapi.service('word-processing-queue');
-      const {
-        target_locale
-      } = incomingData; // Still needed for the background job
-
       wordProcessingQueueService.addJob({
         userWordId: createdUserWord.id,
         flashcardId: createdFlashcard.id,
@@ -91,8 +70,6 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
         incomingData: {
           base_text,
           target_text,
-          base_locale: baseLocale, // Pass the correct base locale to the job
-          target_locale
         }
       });
       strapi.log.info(`Job enqueued for user_word ID ${createdUserWord.id}.`);
@@ -100,8 +77,7 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
       strapi.log.error('Failed to enqueue background job: Missing created user_word or flashcard ID.');
     }
 
-    // 5. Return the sanitized response
-    // Using entityService.findOne to ensure all populated fields are correct
+    // 4. Return the sanitized response
     const finalUserWord = await strapi.entityService.findOne('api::user-word.user-word', createdUserWord.id, {
         fields: ['target_text', 'base_text', 'part_of_speech', 'locale', 'createdAt', 'updatedAt'],
     });
@@ -114,7 +90,6 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
    * batch-processing purpose that is separate from individual user actions.
    */
   async copyToZh(ctx) {
-    // ... existing copyToZh code ...
     strapi.log.info('The /api/user-word/copyToZh endpoint was called.');
 
     try {
@@ -146,20 +121,14 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
             if (hasZhLocalization) {
                 skippedCount++;
             } else {
-                // THE FIX: Explicitly include all required fields
                 const newLocalizationData = {
-                    // Localized fields
                     base_text: word.base_text,
                     part_of_speech: word.part_of_speech,
                     locale: 'zh',
-                    
-                    // Non-localized but REQUIRED fields
                     target_text: word.target_text,
                     target_locale: word.target_locale,
-
-                    // Relational data
                     localizations: [word.id, ...word.localizations.map(l => l.id)],
-                    user: word.user, // Important for ownership
+                    user: word.user,
                 };
 
                 await strapi.entityService.create('api::user-word.user-word', {
@@ -174,7 +143,6 @@ module.exports = createCoreController('api::user-word.user-word', ({ strapi }) =
         });
 
     } catch (error) {
-        // BETTER LOGGING: Print the detailed error message
         strapi.log.error('Error in copyToZh function:', error.details || error);
         ctx.internalServerError('An error occurred during the copy process.', error.details);
     }

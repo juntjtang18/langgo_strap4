@@ -5,16 +5,27 @@ const async = require('async');
 module.exports = ({ strapi }) => {
   // Define the worker function that will process jobs from the queue
   const processUserWordJob = async (job) => {
-    // ✅ CORRECTION: Get the service inside the function, not at the top level.
     const openAIService = strapi.service('openai');
-    const { userWordId, incomingData, flashcardId } = job;
+    const { userWordId, incomingData, flashcardId, userId } = job;
 
     try {
-      const { target_text, base_text, base_locale, target_locale } = incomingData;
+      // Fetch user's base language from their profile
+      const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
+        filters: { user: userId },
+        fields: ['baseLanguage'],
+      });
+      const baseLocale = profiles[0]?.baseLanguage;
+      const targetLocale = process.env.TARGET_LOCALE;
+
+      if (!baseLocale || !targetLocale) {
+        throw new Error(`Cannot process job for user_word ${userWordId}: baseLocale or targetLocale is missing.`);
+      }
+
+      const { target_text, base_text } = incomingData;
 
       // 1. Generate exam options
-      const examBaseOptions = await openAIService.generateExamOptions(base_text, base_locale, userWordId);
-      const examTargetOptions = await openAIService.generateExamOptions(target_text, target_locale, userWordId);
+      const examBaseOptions = await openAIService.generateExamOptions(base_text, baseLocale, userWordId);
+      const examTargetOptions = await openAIService.generateExamOptions(target_text, targetLocale, userWordId);
       strapi.log.info(`Background Job: Generated exam data for user_word ${userWordId}`);
 
       // 2. Update the user_word with exam data

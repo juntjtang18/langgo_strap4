@@ -1,4 +1,3 @@
-// Path: src/index.js
 'use strict';
 
 module.exports = {
@@ -32,5 +31,28 @@ module.exports = {
     } else {
       strapi.log.error('Failed to initialize one or more custom services during bootstrap.');
     }
+
+    // Initialize and register the new Topic Generator service
+    const initTopicGeneratorService = require('./services/topic-generator');
+    const topicGeneratorService = initTopicGeneratorService({ strapi });
+    strapi.container.get('services').set('topic-generator', topicGeneratorService);
+
+    if (topicGeneratorService) {
+      strapi.log.info('Custom topic-generator service initialized successfully.');
+    } else {
+      strapi.log.error('Failed to initialize topic-generator service.');
+    }
+
+    strapi.cron.add({
+      '0 0 * * * *': async () => {
+        try {
+          strapi.log.info("🚀 Running topic generator job every 30 seconds...");
+          //await strapi.service('topic-generator').generateProgressiveLesson();
+          strapi.log.info("✅ Topic generation job completed successfully.");
+        } catch (error) {
+          strapi.log.error("❌ An error occurred during the topic generation job:", error);
+        }
+      },
+    });
   },
 };
