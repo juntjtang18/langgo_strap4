@@ -5,6 +5,43 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 module.exports = ({ strapi }) => ({
   /**
+   * Generates a natural, conversational reply based on the chat history.
+   * @param {Array<object>} history - The conversation history (e.g., [{ role: 'user', content: '...' }]).
+   * @param {object|null} topic - An optional topic object from Strapi to provide context.
+   * @returns {Promise<string>} - The AI-generated conversational response.
+   */
+  async generateConversationalReply(history, topic = null) {
+    strapi.log.info('Generating conversational reply...');
+
+    // --- REVISED SYSTEM MESSAGE ---
+    let systemMessage = `You are an AI English learning partner. Your goal is to keep the conversation going naturally and help the user practice. Keep your replies friendly, encouraging, and relatively short. IMPORTANT: To keep it simple for the learner, if you ask a question, ask only ONE single question at a time.`;
+
+    if (topic) {
+      systemMessage += ` The current topic is "${topic.title}". You can use the topic's description ("${topic.description}") or its predefined questions as inspiration, but do not just list the questions. Weave them into the conversation naturally.`;
+    }
+
+    const messages = [
+      { role: 'system', content: systemMessage },
+      ...history,
+    ];
+
+    try {
+      const chatCompletion = await openai.chat.completions.create({
+        model: 'gpt-4-turbo',
+        messages: messages,
+      });
+
+      const reply = chatCompletion.choices[0].message.content;
+      strapi.log.info(`AI generated reply: "${reply}"`);
+      return reply;
+
+    } catch (error) {
+      strapi.log.error('Error calling OpenAI for conversational reply:', error.message);
+      return "I'm sorry, I'm having a little trouble thinking of a reply right now. Could you say that again?";
+    }
+  },
+    
+  /**
    * Generates multiple-choice exam options for a given word.
    * @param {string} correctWord - The correct word for the question.
    * @param {string} language - The language of the word (e.g., 'en', 'es').
