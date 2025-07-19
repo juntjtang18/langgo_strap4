@@ -75,7 +75,8 @@ module.exports = createCoreController(
           'api::flashcard.flashcard',
           {
             filters: { user: user.id },
-            populate: { review_tire: true }
+            populate: { review_tire: true },
+            locale: 'all', // The fix is here
           }
         );
 

@@ -1475,6 +1475,7 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
         };
       }>;
     target_locale: Attribute.String &
+      Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
