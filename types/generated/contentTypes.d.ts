@@ -707,6 +707,67 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiDifficultyLevelDifficultyLevel
+  extends Schema.CollectionType {
+  collectionName: 'difficulty_levels';
+  info: {
+    singularName: 'difficulty-level';
+    pluralName: 'difficulty-levels';
+    displayName: 'difficulty_level';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    level: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    topics: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToMany',
+      'api::topic.topic'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToMany',
+      'api::difficulty-level.difficulty-level'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiFlashcardFlashcard extends Schema.CollectionType {
   collectionName: 'flashcards';
   info: {
@@ -1239,6 +1300,44 @@ export interface ApiSentenceSentence extends Schema.CollectionType {
   };
 }
 
+export interface ApiTopicTopic extends Schema.CollectionType {
+  collectionName: 'topics';
+  info: {
+    singularName: 'topic';
+    pluralName: 'topics';
+    displayName: 'topic';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    difficulty_level: Attribute.Relation<
+      'api::topic.topic',
+      'manyToOne',
+      'api::difficulty-level.difficulty-level'
+    >;
+    description: Attribute.String;
+    questions: Attribute.Component<'a.question', true>;
+    tags: Attribute.String;
+    is_active: Attribute.Boolean & Attribute.DefaultTo<true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::topic.topic',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::topic.topic',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiUnitUnit extends Schema.CollectionType {
   collectionName: 'units';
   info: {
@@ -1474,13 +1573,6 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    target_locale: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1681,6 +1773,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
@@ -1688,6 +1781,7 @@ declare module '@strapi/types' {
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
+      'api::topic.topic': ApiTopicTopic;
       'api::unit.unit': ApiUnitUnit;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;

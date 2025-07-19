@@ -11,7 +11,7 @@ const getReviewLevel = (tier) => {
 const getEffectiveCooldown = (hours) => {
   // If in development mode, divide cooldown by a large number to make it seconds/minutes long.
   // Set NODE_ENV=development in your .env file to enable.
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
     return (hours || 0) / 360000; // e.g., 6 hours becomes 0.06 seconds
   }
   return hours || 0;

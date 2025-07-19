@@ -62,18 +62,17 @@ module.exports = ({ strapi }) => ({
 
     const userWordUpdateData = {};
     const baseLocale = userProfile.baseLanguage;
-
-    let targetLocale = userWord.target_locale;
+    const targetLocale = process.env.TARGET_LOCALE; // Use environment variable directly
 
     if (!targetLocale) {
-        strapi.log.warn(`Skipping translation for user_word ${userWord.id} because target_locale is missing.`);
+        strapi.log.warn(`Skipping translation for user_word ${userWord.id} because TARGET_LOCALE environment variable is not set.`);
     } else if (!userWord.base_text && userWord.target_text) {
         const projectId = process.env.GOOGLE_PROJECT_ID;
         const [response] = await translationClient.translateText({
             parent: `projects/${projectId}/locations/global`,
             contents: [userWord.target_text],
             mimeType: 'text/plain',
-            sourceLanguageCode: targetLocale,
+            sourceLanguageCode: targetLocale, // Use env variable
             targetLanguageCode: baseLocale,
         });
         userWordUpdateData.base_text = response.translations[0]?.translatedText;
@@ -83,6 +82,7 @@ module.exports = ({ strapi }) => ({
     if (!userWord.exam_base && baseTextForExam) {
       userWordUpdateData.exam_base = await openAIService.generateExamOptions(baseTextForExam, baseLocale, userWord.id);
     }
+    // Check for targetLocale before generating target exam
     if (!userWord.exam_target && userWord.target_text && targetLocale) {
       userWordUpdateData.exam_target = await openAIService.generateExamOptions(userWord.target_text, targetLocale, userWord.id);
     }

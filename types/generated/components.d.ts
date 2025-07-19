@@ -24,6 +24,18 @@ export interface APagebreaker extends Schema.Component {
   };
 }
 
+export interface AQuestion extends Schema.Component {
+  collectionName: 'components_a_questions';
+  info: {
+    displayName: 'question';
+    icon: 'question';
+  };
+  attributes: {
+    prompt: Attribute.String & Attribute.Required;
+    expected_answer: Attribute.String;
+  };
+}
+
 export interface AQuiz extends Schema.Component {
   collectionName: 'components_a_quizzes';
   info: {
@@ -140,6 +152,7 @@ declare module '@strapi/types' {
     export interface Components {
       'a.external-video': AExternalVideo;
       'a.pagebreaker': APagebreaker;
+      'a.question': AQuestion;
       'a.quiz': AQuiz;
       'a.sent-ref': ASentRef;
       'a.taglist': ATaglist;

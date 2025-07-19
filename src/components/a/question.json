@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_a_questions",
+  "info": {
+    "displayName": "question",
+    "icon": "question"
+  },
+  "options": {},
+  "attributes": {
+    "prompt": {
+      "type": "string",
+      "required": true
+    },
+    "expected_answer": {
+      "type": "string"
+    }
+  }
+}
