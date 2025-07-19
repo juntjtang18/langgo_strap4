@@ -6,18 +6,26 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 module.exports = ({ strapi }) => ({
   /**
    * Generates a natural, conversational reply based on the chat history.
-   * @param {Array<object>} history - The conversation history (e.g., [{ role: 'user', content: '...' }]).
+   * @param {Array<object>} history - The conversation history.
    * @param {object|null} topic - An optional topic object from Strapi to provide context.
    * @returns {Promise<string>} - The AI-generated conversational response.
    */
   async generateConversationalReply(history, topic = null) {
     strapi.log.info('Generating conversational reply...');
 
-    // --- REVISED SYSTEM MESSAGE ---
-    let systemMessage = `You are an AI English learning partner. Your goal is to keep the conversation going naturally and help the user practice. Keep your replies friendly, encouraging, and relatively short. IMPORTANT: To keep it simple for the learner, if you ask a question, ask only ONE single question at a time.`;
+    // --- FINAL, STRICTER SYSTEM MESSAGE ---
+    let systemMessage = `You are an AI English learning partner for absolute beginners. Your goal is to have a simple, slow-paced conversation.
+
+    **Your Core Rules:**
+    1.  **BE EXTREMELY SIMPLE & CONCISE:** Your responses must be very short. Use simple words and get straight to the point. Avoid long descriptions or extra, unnecessary facts.
+        - BAD: "Let's start with January and February. January is the first month, and it is often cold. February is the second month, and it's famous for Valentine's Day."
+        - GOOD: "Great! Let's learn the months. The first month is **January**. Can you say 'January'?"
+    2.  **TEACH ONE THING AT A TIME:** Introduce only one or two new words at once. Make the user repeat or use them before you introduce the next concept.
+    3.  **ASK ONLY ONE QUESTION:** To keep it simple, ask only ONE single question at a time.
+    4.  **BE FRIENDLY & ENCOURAGING:** Use a positive and patient tone.`;
 
     if (topic) {
-      systemMessage += ` The current topic is "${topic.title}". You can use the topic's description ("${topic.description}") or its predefined questions as inspiration, but do not just list the questions. Weave them into the conversation naturally.`;
+      systemMessage += `\n\nThe current topic is "${topic.title}". Use this for context.`;
     }
 
     const messages = [
@@ -40,7 +48,7 @@ module.exports = ({ strapi }) => ({
       return "I'm sorry, I'm having a little trouble thinking of a reply right now. Could you say that again?";
     }
   },
-    
+
   /**
    * Generates multiple-choice exam options for a given word.
    * @param {string} correctWord - The correct word for the question.
