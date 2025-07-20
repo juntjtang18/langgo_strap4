@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_a_illustrations",
+  "info": {
+    "displayName": "illustrations",
+    "icon": "picture"
+  },
+  "options": {},
+  "attributes": {
+    "caption": {
+      "type": "string"
+    },
+    "alt_text": {
+      "type": "string"
+    },
+    "media": {
+      "allowedTypes": [
+        "images",
+        "videos"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "paragraph": {
+      "type": "integer"
+    }
+  }
+}

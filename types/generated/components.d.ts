@@ -12,6 +12,20 @@ export interface AExternalVideo extends Schema.Component {
   };
 }
 
+export interface AIllustrations extends Schema.Component {
+  collectionName: 'components_a_illustrations';
+  info: {
+    displayName: 'illustrations';
+    icon: 'picture';
+  };
+  attributes: {
+    caption: Attribute.String;
+    alt_text: Attribute.String;
+    media: Attribute.Media;
+    paragraph: Attribute.Integer;
+  };
+}
+
 export interface APagebreaker extends Schema.Component {
   collectionName: 'components_a_pagebreakers';
   info: {
@@ -151,6 +165,7 @@ declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'a.external-video': AExternalVideo;
+      'a.illustrations': AIllustrations;
       'a.pagebreaker': APagebreaker;
       'a.question': AQuestion;
       'a.quiz': AQuiz;

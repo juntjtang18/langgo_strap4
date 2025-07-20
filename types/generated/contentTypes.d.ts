@@ -1331,6 +1331,89 @@ export interface ApiSentenceSentence extends Schema.CollectionType {
   };
 }
 
+export interface ApiStoryStory extends Schema.CollectionType {
+  collectionName: 'stories';
+  info: {
+    singularName: 'story';
+    pluralName: 'stories';
+    displayName: 'story';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    author: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    brief: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    text: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    slug: Attribute.UID<'api::story.story', 'title'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    order: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    word_count: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::story.story',
+      'oneToMany',
+      'api::story.story'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiTopicTopic extends Schema.CollectionType {
   collectionName: 'topics';
   info: {
@@ -1813,6 +1896,7 @@ declare module '@strapi/types' {
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
+      'api::story.story': ApiStoryStory;
       'api::topic.topic': ApiTopicTopic;
       'api::unit.unit': ApiUnitUnit;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
