@@ -737,6 +737,37 @@ export interface ApiConversationConversation extends Schema.CollectionType {
   };
 }
 
+export interface ApiConversationLogConversationLog
+  extends Schema.CollectionType {
+  collectionName: 'conversation_logs';
+  info: {
+    singularName: 'conversation-log';
+    pluralName: 'conversation-logs';
+    displayName: 'conversation-log';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    sessionid: Attribute.String & Attribute.Required;
+    history: Attribute.JSON;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::conversation-log.conversation-log',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::conversation-log.conversation-log',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiDifficultyLevelDifficultyLevel
   extends Schema.CollectionType {
   collectionName: 'difficulty_levels';
@@ -1804,6 +1835,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::conversation.conversation': ApiConversationConversation;
+      'api::conversation-log.conversation-log': ApiConversationLogConversationLog;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::lesson.lesson': ApiLessonLesson;
