@@ -64,10 +64,10 @@ curl -X GET 'http://192.168.1.66:1338/api/review-flashcards?pagination%5Bpage%5D
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyNzE2MjI4LCJleHAiOjE3NTUzMDgyMjh9.SU0NJEpuq6THvaDXaBQwqcgXOihasjYJ1oC2AfAtPKs" \
   -H "Content-Type: application/json" | \
 jq 'if .data == null or (.data | length) == 0 then {} else
-      [.data[] | (.attributes.review_tire.data?.attributes.tier // "null")]
+      %5B.data%5B%5D | (.attributes.review_tire.data?.attributes.tier // "null")%5D
       | sort
       | group_by(.)
-      | map({(.[0]): length})
+      | map({(.%5B0%5D): length})
       | add
     end'
 
@@ -92,3 +92,89 @@ curl -X POST "http://localhost:1338/api/auth/local" \
 -H "Content-Type: application/json" \
 -d '{  "identifier": "vivian@langgo.com",  "password": "123456"}' \
 | jq .
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo
+
+curl -X POST http://localhost:1338/api/user-words -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-d '{ "data": { "target_text": "tree", "base_text": "树", "base_locale": "zh", "target_locale": "en", "part_of_speech": "noun" } }' | jq .
+
+curl -X POST http://localhost:1338/api/user-words -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-d '{ "data": { "target_text": "water", "base_text": "水", "base_locale": "zh", "target_locale": "en", "part_of_speech": "noun" } }' | jq .
+
+curl -X POST http://localhost:1338/api/user-words -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-d '{ "data": { "target_text": "run", "base_text": "跑", "base_locale": "zh", "part_of_speech": "verb" } }' | jq .
+
+curl -X GET "http://localhost:1338/api/user-words?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=10" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET "http://localhost:1338/api/user-words?pagination%5Bpage%5D=15&pagination%5BpageSize%5D=10&locale=all" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X POST http://localhost:1338/api/user-words -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-d '{ "data": { "target_text": "happy", "base_text": "高兴", "base_locale": "zh", "part_of_speech": "adjective" } }' | jq .
+
+curl -X POST http://localhost:1338/api/user-words -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-d '{ "data": { "target_text": "eat", "base_text": "吃", "part_of_speech": "verb" } }' | jq .
+
+
+curl http://localhost:1338/api/v1/conversation/start \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" 
+
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{
+  "history": [
+    {
+      "role": "assistant",
+      "content": "Hello! How about we talk about \"Common Courtesy Phrases\"? Or, you can suggest a topic."
+    },
+    {
+      "role": "user",
+      "content": "Ok"
+    }
+  ],
+  "topic_title": "Basic Greetings and Introductions",
+  "sessionId": "891ac677-952b-4597-bc47-92431c4c8eb1"
+}' \
+http://localhost:1338/api/v1/conversation/nextprompt \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo"
+
+
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{
+  "history": [
+    {
+      "role": "assistant",
+      "content": "Hello, I am your learning partner. Glad to help you practice English. How about we talk about \"Food\"? Or, you can tell me what you have in mind."
+    },
+    {
+      "role": "user",
+      "content": "Okay, let''s talk about food. "
+    },
+    {
+      "role": "assistant",
+      "content": "Great! Food is a wonderful topic. What kind of food do you like? "
+    },
+    {
+      "role": "user",
+      "content": "I do not know what to say. I like food, but I do not know how to talk about it in English."
+    }
+  ],
+  "topic_title": "Food",
+  "sessionId": "d87b12cf-8a11-4180-9148-0197bc823e23"
+}' \
+http://localhost:1338/api/v1/conversation/nextprompt \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+| jq .
+

@@ -1,18 +1,22 @@
 {
-    "kind": "collectionType",
-    "collectionName": "conversations",
-    "info": {
-      "singularName": "conversation",
-      "pluralName": "conversations",
-      "displayName": "Conversation",
-      "description": "Custom API for conversation endpoints"
+  "kind": "collectionType",
+  "collectionName": "conversations",
+  "info": {
+    "singularName": "conversation",
+    "pluralName": "conversations",
+    "displayName": "Conversation",
+    "description": "Custom API for conversation endpoints"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "sessionId": {
+      "type": "string",
+      "required": true
     },
-    "options": {
-      "draftAndPublish": false
-    },
-    "attributes": {
-      "dummy": {
-        "type": "string"
-      }
+    "history": {
+      "type": "json"
     }
   }
+}
