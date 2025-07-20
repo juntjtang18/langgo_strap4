@@ -776,6 +776,24 @@ export interface ApiDifficultyLevelDifficultyLevel
       'oneToMany',
       'api::topic.topic'
     >;
+    code: Attribute.Enumeration<['A1', 'A2', 'B1', 'B2', 'C1', 'C2']> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    description: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    stories: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToMany',
+      'api::story.story'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1337,6 +1355,7 @@ export interface ApiStoryStory extends Schema.CollectionType {
     singularName: 'story';
     pluralName: 'stories';
     displayName: 'story';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1391,6 +1410,11 @@ export interface ApiStoryStory extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    difficulty_level: Attribute.Relation<
+      'api::story.story',
+      'manyToOne',
+      'api::difficulty-level.difficulty-level'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

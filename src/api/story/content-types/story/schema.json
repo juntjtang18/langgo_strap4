@@ -4,7 +4,8 @@
   "info": {
     "singularName": "story",
     "pluralName": "stories",
-    "displayName": "story"
+    "displayName": "story",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -73,6 +74,12 @@
         }
       },
       "type": "integer"
+    },
+    "difficulty_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::difficulty-level.difficulty-level",
+      "inversedBy": "stories"
     }
   }
 }
