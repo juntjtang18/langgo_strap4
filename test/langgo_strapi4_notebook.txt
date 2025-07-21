@@ -133,7 +133,7 @@ curl http://localhost:1338/api/v1/conversation/start \
 curl -X POST \
 -H "Content-Type: application/json" \
 -d '{
-  "history": [
+  "history": %5B
     {
       "role": "assistant",
       "content": "Hello! How about we talk about \"Common Courtesy Phrases\"? Or, you can suggest a topic."
@@ -142,7 +142,7 @@ curl -X POST \
       "role": "user",
       "content": "Ok"
     }
-  ],
+  %5D,
   "topic_title": "Basic Greetings and Introductions",
   "sessionId": "891ac677-952b-4597-bc47-92431c4c8eb1"
 }' \
@@ -153,7 +153,7 @@ http://localhost:1338/api/v1/conversation/nextprompt \
 curl -X POST \
 -H "Content-Type: application/json" \
 -d '{
-  "history": [
+  "history": %5B
     {
       "role": "assistant",
       "content": "Hello, I am your learning partner. Glad to help you practice English. How about we talk about \"Food\"? Or, you can tell me what you have in mind."
@@ -170,7 +170,7 @@ curl -X POST \
       "role": "user",
       "content": "I do not know what to say. I like food, but I do not know how to talk about it in English."
     }
-  ],
+  %5D,
   "topic_title": "Food",
   "sessionId": "d87b12cf-8a11-4180-9148-0197bc823e23"
 }' \
@@ -178,3 +178,57 @@ http://localhost:1338/api/v1/conversation/nextprompt \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
 | jq .
 
+
+curl -X POST 'http://localhost:1338/api/stories/fetch-from-author' \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-d '{
+  "author": "O. Henry",
+  "limit": 2
+}' \
+| jq .
+
+curl -X POST 'http://localhost:1338/api/stories/8/generate-prompts' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" | jq .
+
+
+curl -X GET 'http://localhost:1338/api/stories/8' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" | jq .
+
+
+curl -X GET 'http://localhost:1338/api/stories' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" | jq .
+
+
+curl -X GET 'http://localhost:1338/api/difficulty-levels' \
+ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+ -H "Content-Type: application/json" | jq .
+
+
+curl -X GET 'http://localhost:1338/api/difficulty-levels'  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo"  -H "Content-Type: application/json"
+{"data":%5B{"id":1,"attributes":{"name":"Beginner","level":1,"createdAt":"2025-07-19T05:50:11.786Z","updatedAt":"2025-07-20T19:36:01.447Z","locale":"en","code":"A1","description":"Can understand and use familiar everyday expressions."}},{"id":2,"attributes":{"name":"Elementary","level":2,"createdAt":"2025-07-19T05:50:30.370Z","updatedAt":"2025-07-20T19:36:19.896Z","locale":"en","code":"A2","description":"Can communicate in simple and routine tasks."}},{"id":3,"attributes":{"name":"Intermediate","level":3,"createdAt":"2025-07-19T05:50:47.267Z","updatedAt":"2025-07-20T19:36:52.044Z","locale":"en","code":"B1","description":"Can deal with most situations while traveling."}},{"id":4,"attributes":{"name":"Upper-Intermediate","level":4,"createdAt":"2025-07-20T19:37:26.938Z","updatedAt":"2025-07-20T19:37:26.938Z","locale":"en","code":"B2","description":"Can interact with a degree of fluency and spontaneity."}},{"id":5,"attributes":{"name":"Advanced","level":5,"createdAt":"2025-07-20T19:38:04.676Z","updatedAt":"2025-07-20T19:38:04.676Z","locale":"en","code":"C1","description":"Can produce clear, well-structured text on complex topics."}},{"id":6,"attributes":{"name":"Proficient","level":6,"createdAt":"2025-07-20T19:38:57.158Z","updatedAt":"2025-07-20T19:38:57.158Z","locale":"en","code":"C2","description":"Can understand virtually everything heard or read."}}%5D,"meta":{"pagination":{"page":1,"pageSize":25,"pageCount":1,"total":6}}}
+
+
+
+
+curl -X GET 'http://localhost:1338/api/stories/8?populate%5Bdifficulty_level%5D=*&populate%5Billustrations%5D%5Bpopulate%5D=media' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+ -H "Content-Type: application/json" | jq .
+
+
+curl -X GET 'http://localhost:1338/api/stories?fields%5B0%5D=title&fields%5B1%5D=author&fields%5B2%5D=brief&fields%5B3%5D=slug&fields%5B4%5D=order&fields%5B5%5D=word_count&fields%5B6%5D=createdAt&fields%5B7%5D=updatedAt&fields%5B8%5D=locale&populate%5Bdifficulty_level%5D=*&populate%5Billustrations%5D%5Bpopulate%5D=media' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" | jq .
+
+
+
+curl -X POST 'http://localhost:1338/api/stories/8/like' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" | jq .
+
+curl -X GET 'http://localhost:1338/api/stories/recommended?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=6' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+-H "Content-Type: application/json" | jq .

@@ -101,6 +101,12 @@
       "relation": "oneToOne",
       "target": "api::vbsetting.vbsetting",
       "mappedBy": "user"
+    },
+    "story_likes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::story-like.story-like",
+      "mappedBy": "user"
     }
   }
 }

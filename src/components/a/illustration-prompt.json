@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_a_illustration_prompts",
+  "info": {
+    "displayName": "illustration prompt",
+    "icon": "layer"
+  },
+  "options": {},
+  "attributes": {
+    "prompt": {
+      "type": "text"
+    }
+  }
+}

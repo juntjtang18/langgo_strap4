@@ -80,6 +80,41 @@
       "relation": "manyToOne",
       "target": "api::difficulty-level.difficulty-level",
       "inversedBy": "stories"
+    },
+    "illustrations": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "component": "a.illustrations"
+    },
+    "generation_prompts": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "a.generation-prompts"
+    },
+    "like_count": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 0
+    },
+    "story_likes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::story-like.story-like",
+      "mappedBy": "story"
     }
   }
 }
