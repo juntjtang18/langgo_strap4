@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_a_generation_prompts",
+  "info": {
+    "displayName": "generation prompts",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "cover_image_prompt": {
+      "type": "text"
+    },
+    "brief_video_prompt": {
+      "type": "text"
+    },
+    "illustration_prompts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "a.illustration-prompt"
+    }
+  }
+}

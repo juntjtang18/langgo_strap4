@@ -646,6 +646,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::vbsetting.vbsetting'
     >;
+    story_likes: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::story-like.story-like'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1415,6 +1420,30 @@ export interface ApiStoryStory extends Schema.CollectionType {
       'manyToOne',
       'api::difficulty-level.difficulty-level'
     >;
+    illustrations: Attribute.Component<'a.illustrations', true> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    generation_prompts: Attribute.Component<'a.generation-prompts'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    like_count: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Attribute.DefaultTo<0>;
+    story_likes: Attribute.Relation<
+      'api::story.story',
+      'oneToMany',
+      'api::story-like.story-like'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1435,6 +1464,44 @@ export interface ApiStoryStory extends Schema.CollectionType {
       'api::story.story'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiStoryLikeStoryLike extends Schema.CollectionType {
+  collectionName: 'story_likes';
+  info: {
+    singularName: 'story-like';
+    pluralName: 'story-likes';
+    displayName: 'story like';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::story-like.story-like',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    story: Attribute.Relation<
+      'api::story-like.story-like',
+      'manyToOne',
+      'api::story.story'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::story-like.story-like',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::story-like.story-like',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -1921,6 +1988,7 @@ declare module '@strapi/types' {
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::story.story': ApiStoryStory;
+      'api::story-like.story-like': ApiStoryLikeStoryLike;
       'api::topic.topic': ApiTopicTopic;
       'api::unit.unit': ApiUnitUnit;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;

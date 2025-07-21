@@ -1,0 +1,388 @@
+curl -X GET 'http://localhost:1338/api/stories/8?populate%5Bdifficulty_level%5D=*&populate%5Billustrations%5D%5Bpopulate%5D=media' \
+> -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+>  -H "Content-Type: application/json" | jq .
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 11489  100 11489    0     0  35555      0 --:--:-- --:--:-- --:--:-- 35569
+{
+  "data": {
+    "id": 8,
+    "attributes": {
+      "title": "A Retrieved Reformation",
+      "author": "O. Henry",
+      "brief": "Jimmy Valentine, a...",
+      "text": "A guard came to the...",
+      "slug": null,
+      "order": null,
+      "word_count": 1478,
+      "createdAt": "2025-07-20T19:06:33.803Z",
+      "updatedAt": "2025-07-20T23:43:06.376Z",
+      "locale": "en",
+      "difficulty_level": {
+        "data": {
+          "id": 3,
+          "attributes": {
+            "name": "Intermediate",
+            "level": 3,
+            "createdAt": "2025-07-19T05:50:47.267Z",
+            "updatedAt": "2025-07-20T19:36:52.044Z",
+            "locale": "en",
+            "code": "B1",
+            "description": "Can deal with most situations while traveling."
+          }
+        }
+      },
+      "illustrations": %5B
+        {
+          "id": 1,
+          "caption": "illustrate 1",
+          "alt_text": null,
+          "paragraph": 1,
+          "media": {
+            "data": {
+              "id": 1,
+              "attributes": {
+                "name": "girl1-close.png",
+                "alternativeText": null,
+                "caption": null,
+                "width": 1024,
+                "height": 1024,
+                "formats": {
+                  "large": {
+                    "ext": ".png",
+                    "url": "https://storage.googleapis.com/langgo-en-storage/large_girl1_close_06730201c1/large_girl1_close_06730201c1.png",
+                    "hash": "large_girl1_close_06730201c1",
+                    "mime": "image/png",
+                    "name": "large_girl1-close.png",
+                    "path": null,
+                    "size": 1524.79,
+                    "width": 1000,
+                    "height": 1000
+                  },
+                  "small": {
+                    "ext": ".png",
+                    "url": "https://storage.googleapis.com/langgo-en-storage/small_girl1_close_06730201c1/small_girl1_close_06730201c1.png",
+                    "hash": "small_girl1_close_06730201c1",
+                    "mime": "image/png",
+                    "name": "small_girl1-close.png",
+                    "path": null,
+                    "size": 456.77,
+                    "width": 500,
+                    "height": 500
+                  },
+                  "medium": {
+                    "ext": ".png",
+                    "url": "https://storage.googleapis.com/langgo-en-storage/medium_girl1_close_06730201c1/medium_girl1_close_06730201c1.png",
+                    "hash": "medium_girl1_close_06730201c1",
+                    "mime": "image/png",
+                    "name": "medium_girl1-close.png",
+                    "path": null,
+                    "size": 961.63,
+                    "width": 750,
+                    "height": 750
+                  },
+                  "thumbnail": {
+                    "ext": ".png",
+                    "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_girl1_close_06730201c1/thumbnail_girl1_close_06730201c1.png",
+                    "hash": "thumbnail_girl1_close_06730201c1",
+                    "mime": "image/png",
+                    "name": "thumbnail_girl1-close.png",
+                    "path": null,
+                    "size": 58.82,
+                    "width": 156,
+                    "height": 156
+                  }
+                },
+                "hash": "girl1_close_06730201c1",
+                "ext": ".png",
+                "mime": "image/png",
+                "size": 355.26,
+                "url": "https://storage.googleapis.com/langgo-en-storage/girl1_close_06730201c1/girl1_close_06730201c1.png",
+                "previewUrl": null,
+                "provider": "@strapi-community/strapi-provider-upload-google-cloud-storage",
+                "provider_metadata": null,
+                "createdAt": "2025-07-20T23:42:46.817Z",
+                "updatedAt": "2025-07-20T23:42:46.817Z"
+              }
+            }
+          }
+        }
+      %5D
+    }
+  },
+  "meta": {}
+}
+
+
+curl -X GET 'http://localhost:1338/api/difficulty-levels' \
+>  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+>  -H "Content-Type: application/json" | jq .
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1442  100  1442    0     0   4924      0 --:--:-- --:--:-- --:--:--  4938
+{
+  "data": %5B
+    {
+      "id": 1,
+      "attributes": {
+        "name": "Beginner",
+        "level": 1,
+        "createdAt": "2025-07-19T05:50:11.786Z",
+        "updatedAt": "2025-07-20T19:36:01.447Z",
+        "locale": "en",
+        "code": "A1",
+        "description": "Can understand and use familiar everyday expressions."
+      }
+    },
+    {
+      "id": 2,
+      "attributes": {
+        "name": "Elementary",
+        "level": 2,
+        "createdAt": "2025-07-19T05:50:30.370Z",
+        "updatedAt": "2025-07-20T19:36:19.896Z",
+        "locale": "en",
+        "code": "A2",
+        "description": "Can communicate in simple and routine tasks."
+      }
+    },
+    {
+      "id": 3,
+      "attributes": {
+        "name": "Intermediate",
+        "level": 3,
+        "createdAt": "2025-07-19T05:50:47.267Z",
+        "updatedAt": "2025-07-20T19:36:52.044Z",
+        "locale": "en",
+        "code": "B1",
+        "description": "Can deal with most situations while traveling."
+      }
+    },
+    {
+      "id": 4,
+      "attributes": {
+        "name": "Upper-Intermediate",
+        "level": 4,
+        "createdAt": "2025-07-20T19:37:26.938Z",
+        "updatedAt": "2025-07-20T19:37:26.938Z",
+        "locale": "en",
+        "code": "B2",
+        "description": "Can interact with a degree of fluency and spontaneity."
+      }
+    },
+    {
+      "id": 5,
+      "attributes": {
+        "name": "Advanced",
+        "level": 5,
+        "createdAt": "2025-07-20T19:38:04.676Z",
+        "updatedAt": "2025-07-20T19:38:04.676Z",
+        "locale": "en",
+        "code": "C1",
+        "description": "Can produce clear, well-structured text on complex topics."
+      }
+    },
+    {
+      "id": 6,
+      "attributes": {
+        "name": "Proficient",
+        "level": 6,
+        "createdAt": "2025-07-20T19:38:57.158Z",
+        "updatedAt": "2025-07-20T19:38:57.158Z",
+        "locale": "en",
+        "code": "C2",
+        "description": "Can understand virtually everything heard or read."
+      }
+    }
+  %5D,
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 6
+    }
+  }
+}
+
+
+curl -X GET 'http://localhost:1338/api/stories?fields%5B0%5D=title&fields%5B1%5D=author&fields%5B2%5D=brief&fields%5B3%5D=slug&fields%5B4%5D=order&fields%5B5%5D=word_count&fields%5B6%5D=createdAt&fields%5B7%5D=updatedAt&fields%5B8%5D=locale&populate%5Bdifficulty_level%5D=*&populate%5Billustrations%5D%5Bpopulate%5D=media' \
+> -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
+> -H "Content-Type: application/json" | jq .
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 10236  100 10236    0     0  26147      0 --:--:-- --:--:-- --:--:-- 26179
+{
+  "data": [
+    {
+      "id": 9,
+      "attributes": {
+        "title": "A Blackjack Bargainer",
+        "author": "O. Henry",
+        "brief": null,
+        "slug": null,
+        "order": null,
+        "word_count": 2055,
+        "createdAt": "2025-07-20T19:15:23.027Z",
+        "updatedAt": "2025-07-20T19:52:42.569Z",
+        "locale": "en",
+        "difficulty_level": {
+          "data": {
+            "id": 3,
+            "attributes": {
+              "name": "Intermediate",
+              "level": 3,
+              "createdAt": "2025-07-19T05:50:47.267Z",
+              "updatedAt": "2025-07-20T19:36:52.044Z",
+              "locale": "en",
+              "code": "B1",
+              "description": "Can deal with most situations while traveling."
+            }
+          }
+        },
+        "illustrations": []
+      }
+    },
+    {
+      "id": 5,
+      "attributes": {
+        "title": "The Gift of the Magi",
+        "author": "O. Henry",
+        "brief": "In 'The Gift of the Magi,' a young couple, Della and Jim Young, grapple with financial hardship in their modest flat as Christmas approaches. Della, determined to buy a special gift for Jim, sells her prized long hair to afford a platinum fob chain for Jim's cherished heirloom watch. Unbeknownst to her, Jim faces his own sacrifice to secure a gift for Della. The story unfolds in a modest urban setting, capturing themes of love, sacrifice, and the irony of giving.",
+        "slug": null,
+        "order": null,
+        "word_count": 2067,
+        "createdAt": "2025-07-20T18:52:08.471Z",
+        "updatedAt": "2025-07-20T22:14:54.297Z",
+        "locale": "en",
+        "difficulty_level": {
+          "data": {
+            "id": 3,
+            "attributes": {
+              "name": "Intermediate",
+              "level": 3,
+              "createdAt": "2025-07-19T05:50:47.267Z",
+              "updatedAt": "2025-07-20T19:36:52.044Z",
+              "locale": "en",
+              "code": "B1",
+              "description": "Can deal with most situations while traveling."
+            }
+          }
+        },
+        "illustrations": []
+      }
+    },
+    {
+      "id": 8,
+      "attributes": {
+        "title": "A Retrieved Reformation",
+        "author": "O. Henry",
+        "brief": "Jimmy Valentine, a skilled safecracker, is released from prison with a pardon from the governor after serving ten months of a four-year sentence. Despite the warden's advice to reform, Jimmy immediately returns to his criminal activities, retrieving his specialized burglary tools from a hidden location. He resumes his life of crime under the guise of a respectable businessman, committing several successful burglaries. However, his past catches up to him as detective Ben Price begins to track his movements, recognizing the unique methods used in the recent burglaries. Jimmy's life takes an unexpected turn when he arrives in Elmore, Arkansas, and encounters Annabel Adams, a young lady whose presence challenges his criminal identity.",
+        "slug": null,
+        "order": null,
+        "word_count": 1478,
+        "createdAt": "2025-07-20T19:06:33.803Z",
+        "updatedAt": "2025-07-20T23:43:06.376Z",
+        "locale": "en",
+        "difficulty_level": {
+          "data": {
+            "id": 3,
+            "attributes": {
+              "name": "Intermediate",
+              "level": 3,
+              "createdAt": "2025-07-19T05:50:47.267Z",
+              "updatedAt": "2025-07-20T19:36:52.044Z",
+              "locale": "en",
+              "code": "B1",
+              "description": "Can deal with most situations while traveling."
+            }
+          }
+        },
+        "illustrations": [
+          {
+            "id": 1,
+            "caption": "illustrate 1",
+            "alt_text": null,
+            "paragraph": 1,
+            "media": {
+              "data": {
+                "id": 1,
+                "attributes": {
+                  "name": "girl1-close.png",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 1024,
+                  "height": 1024,
+                  "formats": {
+                    "large": {
+                      "ext": ".png",
+                      "url": "https://storage.googleapis.com/langgo-en-storage/large_girl1_close_06730201c1/large_girl1_close_06730201c1.png",
+                      "hash": "large_girl1_close_06730201c1",
+                      "mime": "image/png",
+                      "name": "large_girl1-close.png",
+                      "path": null,
+                      "size": 1524.79,
+                      "width": 1000,
+                      "height": 1000
+                    },
+                    "small": {
+                      "ext": ".png",
+                      "url": "https://storage.googleapis.com/langgo-en-storage/small_girl1_close_06730201c1/small_girl1_close_06730201c1.png",
+                      "hash": "small_girl1_close_06730201c1",
+                      "mime": "image/png",
+                      "name": "small_girl1-close.png",
+                      "path": null,
+                      "size": 456.77,
+                      "width": 500,
+                      "height": 500
+                    },
+                    "medium": {
+                      "ext": ".png",
+                      "url": "https://storage.googleapis.com/langgo-en-storage/medium_girl1_close_06730201c1/medium_girl1_close_06730201c1.png",
+                      "hash": "medium_girl1_close_06730201c1",
+                      "mime": "image/png",
+                      "name": "medium_girl1-close.png",
+                      "path": null,
+                      "size": 961.63,
+                      "width": 750,
+                      "height": 750
+                    },
+                    "thumbnail": {
+                      "ext": ".png",
+                      "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_girl1_close_06730201c1/thumbnail_girl1_close_06730201c1.png",
+                      "hash": "thumbnail_girl1_close_06730201c1",
+                      "mime": "image/png",
+                      "name": "thumbnail_girl1-close.png",
+                      "path": null,
+                      "size": 58.82,
+                      "width": 156,
+                      "height": 156
+                    }
+                  },
+                  "hash": "girl1_close_06730201c1",
+                  "ext": ".png",
+                  "mime": "image/png",
+                  "size": 355.26,
+                  "url": "https://storage.googleapis.com/langgo-en-storage/girl1_close_06730201c1/girl1_close_06730201c1.png",
+                  "previewUrl": null,
+                  "provider": "@strapi-community/strapi-provider-upload-google-cloud-storage",
+                  "provider_metadata": null,
+                  "createdAt": "2025-07-20T23:42:46.817Z",
+                  "updatedAt": "2025-07-20T23:42:46.817Z"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 10
+    }
+  }
+}

@@ -12,6 +12,30 @@ export interface AExternalVideo extends Schema.Component {
   };
 }
 
+export interface AGenerationPrompts extends Schema.Component {
+  collectionName: 'components_a_generation_prompts';
+  info: {
+    displayName: 'generation prompts';
+    icon: 'bulletList';
+  };
+  attributes: {
+    cover_image_prompt: Attribute.Text;
+    brief_video_prompt: Attribute.Text;
+    illustration_prompts: Attribute.Component<'a.illustration-prompt', true>;
+  };
+}
+
+export interface AIllustrationPrompt extends Schema.Component {
+  collectionName: 'components_a_illustration_prompts';
+  info: {
+    displayName: 'illustration prompt';
+    icon: 'layer';
+  };
+  attributes: {
+    prompt: Attribute.Text;
+  };
+}
+
 export interface AIllustrations extends Schema.Component {
   collectionName: 'components_a_illustrations';
   info: {
@@ -165,6 +189,8 @@ declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'a.external-video': AExternalVideo;
+      'a.generation-prompts': AGenerationPrompts;
+      'a.illustration-prompt': AIllustrationPrompt;
       'a.illustrations': AIllustrations;
       'a.pagebreaker': APagebreaker;
       'a.question': AQuestion;
