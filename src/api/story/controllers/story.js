@@ -203,10 +203,10 @@ module.exports = createCoreController('api::story.story', ({ strapi }) => ({
     }
   },
 
-  /**
+  /********************************************************************************************************
    * Handles "liking" or "unliking" a story.
    * Ensures a user can only like a story once and returns a concise response.
-   */
+   *********************************************************************************************************/
   async like(ctx) {
     const { user } = ctx.state;
     const { id } = ctx.params;
@@ -260,38 +260,26 @@ module.exports = createCoreController('api::story.story', ({ strapi }) => ({
   },
 
   /**
-   * Fetches stories sorted by popularity, omitting the 'text' field
-   * and correctly applying pagination.
+   * Fetches stories sorted by popularity, including the full text and populated relations.
    */
   async findRecommended(ctx) {
-    const storyModel = strapi.getModel('api::story.story');
-    const { attributes } = storyModel;
-
-    // Dynamically get all fields except for relations and the 'text' field
-    const fieldsToFetch = Object.keys(attributes)
-      .filter(attr => {
-        const attrInfo = attributes[attr];
-        // Exclude relations, components, and dynamic zones from the 'fields' array
-        return !['relation', 'component', 'dynamiczone'].includes(attrInfo.type);
-      })
-      .filter(attr => attr !== 'text'); // Also explicitly exclude 'text'
-
-    // Parse query parameters to ensure they are numbers, with defaults
+    // Parse query parameters for pagination
     const page = parseInt(ctx.query.pagination?.page || '1', 10);
     const pageSize = parseInt(ctx.query.pagination?.pageSize || '10', 10);
 
-    // Use the findPage method for proper pagination
+    // Use findPage for proper pagination
     const { results, pagination } = await strapi.entityService.findPage('api::story.story', {
-        fields: fieldsToFetch,
+        // Populate all the relations you need for the detailed view
         populate: {
             difficulty_level: true,
+            illustrations: true,
         },
         sort: { like_count: 'desc' },
         page,
         pageSize,
     });
     
-    // Return the results with the correct pagination metadata
+    // Return the full story objects with pagination metadata
     return this.transformResponse(results, { pagination });
   },
   
