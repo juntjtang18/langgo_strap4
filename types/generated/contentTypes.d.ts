@@ -1056,6 +1056,27 @@ export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
   };
 }
 
+export interface ApiPingPing extends Schema.CollectionType {
+  collectionName: 'pings';
+  info: {
+    singularName: 'ping';
+    pluralName: 'pings';
+    displayName: 'ping';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    status: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::ping.ping', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::ping.ping', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface ApiReviewTireReviewTire extends Schema.CollectionType {
   collectionName: 'review_tires';
   info: {
@@ -1983,6 +2004,7 @@ declare module '@strapi/types' {
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
+      'api::ping.ping': ApiPingPing;
       'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
       'api::section.section': ApiSectionSection;
