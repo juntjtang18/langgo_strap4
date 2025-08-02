@@ -1,4 +1,5 @@
 'use strict';
+const { keepSubsysWarm } = require('./utils/cron-jobs');
 
 module.exports = {
   register(/*{ strapi }*/) {},
@@ -52,6 +53,12 @@ module.exports = {
         } catch (error) {
           strapi.log.error("❌ An error occurred during the topic generation job:", error);
         }
+      },
+    });
+    // --- SUBSYS PING CRON JOB ---
+    strapi.cron.add({
+      '*/5 * * * *': async () => {
+        await keepSubsysWarm(strapi);
       },
     });
   },
