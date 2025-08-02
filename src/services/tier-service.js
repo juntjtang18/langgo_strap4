@@ -14,15 +14,17 @@ module.exports = ({ strapi }) => {
      */
     async getAllTiers() {
       if (_cachedTiers) {
-        strapi.log.debug('Returning cached review tiers.');
+        //strapi.log.debug(`Returning cached review tiers: ${JSON.stringify(_cachedTiers)}`);
         return _cachedTiers;
       }
 
       strapi.log.info('Fetching and caching review tiers from database.');
       const tiers = await strapi.entityService.findMany('api::review-tire.review-tire', {
+        locale: 'en',              // or locale: 'all'
         sort: { min_streak: 'asc' },
       });
       _cachedTiers = tiers;
+      //strapi.log.debug(`Tiers cached: ${JSON.stringify(_cachedTiers)}`);
       return _cachedTiers;
     },
 
@@ -34,7 +36,9 @@ module.exports = ({ strapi }) => {
      */
     async findTierForStreak(streak) {
       const tiers = await this.getAllTiers();
-      return this.findTierForStreakWithRules(streak, tiers);
+      const tierFound =  this.findTierForStreakWithRules(streak, tiers);
+      strapi.log.debug('Found tier for streak:', tierFound);
+      return tierFound;
     },
 
     /**
@@ -46,6 +50,8 @@ module.exports = ({ strapi }) => {
      * @returns {object|null} - The matching tier object or null.
      */
     findTierForStreakWithRules(streak, tiers) {
+      //strapi.log.debug(`Finding tier for streak: ${streak}`);
+      //strapi.log.debug(`Available tiers: ${JSON.stringify(tiers)}`);
       const currentStreak = streak ?? 0;
       if (!tiers || tiers.length === 0) return null;
       // Tiers should be sorted by min_streak ascending.

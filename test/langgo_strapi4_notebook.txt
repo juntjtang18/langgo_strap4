@@ -229,6 +229,40 @@ curl -X POST 'http://localhost:1338/api/stories/8/like' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
 -H "Content-Type: application/json" | jq .
 
-curl -X GET 'http://localhost:1338/api/stories/recommended?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=6' \
+curl -X GET 'http://localhost:1338/api/stories/recommended?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUyODczODI4LCJleHAiOjE3NTU0NjU4Mjh9.ms7O8uqKbbZxuX0R8EMnBl7-7ru9iC8ohP68SpYIcgo" \
 -H "Content-Type: application/json" | jq .
+
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I
+
+July 31
+curl -X GET http://192.168.1.69:1338/api/flashcard-stat \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
+-H "Content-Type: application/json" | jq .
+
+
+PGPASSWORD='Passw0rd@Strapi' psql "host=/cloudsql/lucid-arch-451211-b0:us-west1:cloud-sql-server dbname=langgo-en-dev1 user=strapi"
+
+
+select u.user_id, f.id, f.last_reviewed_at, f.correct_streak, f.wrong_streak, f.is_remembered, t.review_tire_id 
+from flashcards f, flashcards_user_links u, flashcards_review_tire_links t 
+where u.user_id = 8 and u.flashcard_id = f.id and f.id = t.flashcard_id
+order by f.correct_streak;
+
+
+curl -X GET 'http://localhost:1338/api/flashcards/mine' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
+-H "Content-Type: application/json" | jq .
+
+curl -X POST 'http://localhost:1338/api/flashcards/138/review' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
+-H "Content-Type: application/json" \
+-d '{"result":"correct"}' | jq .
+
+
+curl -X GET 'http://localhost:1338/api/review-tires' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
+-H "Content-Type: application/json" | jq .
+
