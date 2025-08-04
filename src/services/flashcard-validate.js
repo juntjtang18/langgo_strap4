@@ -5,9 +5,11 @@ const translationClient = new TranslationServiceClient();
 
 module.exports = ({ strapi }) => ({
   /**
-   * Validates and fixes a flashcard.
-   * @param {number} flashcardId - The ID of the flashcard to validate.
-   * @returns {object} - The updated flashcard.
+   * Fetches a flashcard and its related data.
+   * Assigns a review tier if missing.
+   * Translates the word definition and generates an example sentence if they don't exist.
+   * Generates multiple-choice exam questions for both base and target text if missing.
+   * Saves all changes and returns the updated flashcard.
    */
   async validateAndFix(flashcardId) {
     const openAIService = strapi.service('openai');
@@ -15,7 +17,8 @@ module.exports = ({ strapi }) => ({
 
     let flashcard = await strapi.entityService.findOne('api::flashcard.flashcard', flashcardId, {
       populate: {
-        content: { populate: { user_word: { populate: ['user'] } } },
+        word_definition: { populate: ['word'] },
+        user: { populate: ['user_profile'] },
         review_tire: true
       },
     });
@@ -26,7 +29,6 @@ module.exports = ({ strapi }) => ({
 
     const flashcardUpdateData = {};
 
-    // --- New Logic: Set review_tire if it's null ---
     if (!flashcard.review_tire) {
         const tier = await tierService.findTierForStreak(flashcard.correct_streak);
         if (tier) {
@@ -34,71 +36,68 @@ module.exports = ({ strapi }) => ({
         }
     }
 
-    const userWordRef = flashcard.content.find(c => c.__component === 'a.user-word-ref');
-    if (!userWordRef || !userWordRef.user_word) {
-        // If there were updates to the flashcard (like setting the tier), perform them before returning.
+    if (!flashcard.word_definition || !flashcard.word_definition.word) {
         if (Object.keys(flashcardUpdateData).length > 0) {
             await strapi.entityService.update('api::flashcard.flashcard', flashcard.id, { data: flashcardUpdateData });
         }
-        return { status: 'skipped', message: 'Flashcard does not contain a valid user_word reference.' };
+        return { status: 'skipped', message: 'Flashcard does not have a valid word_definition or associated word reference.' };
     }
 
-    const userWord = userWordRef.user_word;
-    const user = userWord.user;
+    const word_definition = flashcard.word_definition;
+    const target_text = flashcard.word_definition.word.target_text;
+    const user = flashcard.user;
 
-    const userProfiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
-        filters: { user: user.id },
-        limit: 1
-    });
-
-    if (!userProfiles || userProfiles.length === 0) {
+    if (!user || !user.user_profile) {
         throw new Error(`Cannot find a user profile for user ${user.id}`);
     }
-    const userProfile = userProfiles[0];
+    const userProfile = user.user_profile;
 
     if (!userProfile.baseLanguage) {
       throw new Error(`User profile for user ${user.id} is missing a baseLanguage.`);
     }
 
-    const userWordUpdateData = {};
+    const wordDefinitionUpdateData = {};
     const baseLocale = userProfile.baseLanguage;
-    const targetLocale = process.env.TARGET_LOCALE; // Use environment variable directly
+    const targetLocale = process.env.TARGET_LOCALE;
 
     if (!targetLocale) {
-        strapi.log.warn(`Skipping translation for user_word ${userWord.id} because TARGET_LOCALE environment variable is not set.`);
-    } else if (!userWord.base_text && userWord.target_text) {
+        strapi.log.warn(`Skipping translation for word_definition ${word_definition.id} because TARGET_LOCALE environment variable is not set.`);
+    } else if (!word_definition.base_text && target_text) {
         const projectId = process.env.GOOGLE_PROJECT_ID;
         const [response] = await translationClient.translateText({
             parent: `projects/${projectId}/locations/global`,
-            contents: [userWord.target_text],
+            contents: [target_text],
             mimeType: 'text/plain',
-            sourceLanguageCode: targetLocale, // Use env variable
+            sourceLanguageCode: targetLocale,
             targetLanguageCode: baseLocale,
         });
-        userWordUpdateData.base_text = response.translations[0]?.translatedText;
+        wordDefinitionUpdateData.base_text = response.translations[0]?.translatedText;
     }
 
-    const baseTextForExam = userWordUpdateData.base_text || userWord.base_text;
-    if (!userWord.exam_base && baseTextForExam) {
-      userWordUpdateData.exam_base = await openAIService.generateExamOptions(baseTextForExam, baseLocale, userWord.id);
-    }
-    // Check for targetLocale before generating target exam
-    if (!userWord.exam_target && userWord.target_text && targetLocale) {
-      userWordUpdateData.exam_target = await openAIService.generateExamOptions(userWord.target_text, targetLocale, userWord.id);
+    // --- New Logic: Generate example sentence ---
+    if (!word_definition.example_sentence && target_text && targetLocale) {
+        wordDefinitionUpdateData.example_sentence = await openAIService.generateExampleSentence(target_text, targetLocale, word_definition.id);
     }
 
-    // --- Perform updates if there's anything to change ---
-    if (Object.keys(userWordUpdateData).length > 0) {
-      await strapi.entityService.update('api::user-word.user-word', userWord.id, { data: userWordUpdateData });
+    const baseTextForExam = wordDefinitionUpdateData.base_text || word_definition.base_text;
+    if (!word_definition.exam_base && baseTextForExam) {
+      wordDefinitionUpdateData.exam_base = await openAIService.generateExamOptions(baseTextForExam, baseLocale, word_definition.id);
+    }
+
+    if (!word_definition.exam_target && target_text && targetLocale) {
+      wordDefinitionUpdateData.exam_target = await openAIService.generateExamOptions(target_text, targetLocale, word_definition.id);
+    }
+
+    if (Object.keys(wordDefinitionUpdateData).length > 0) {
+      await strapi.entityService.update('api::word-definition.word-definition', word_definition.id, { data: wordDefinitionUpdateData });
     }
     if (Object.keys(flashcardUpdateData).length > 0) {
         await strapi.entityService.update('api::flashcard.flashcard', flashcard.id, { data: flashcardUpdateData });
     }
 
-    // --- Return the final, fully populated flashcard ---
     return strapi.entityService.findOne('api::flashcard.flashcard', flashcardId, {
       populate: {
-        content: { populate: { user_word: true } },
+        word_definition: { populate: ['word'] },
         review_tire: true
       },
     });

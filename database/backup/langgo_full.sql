@@ -851,41 +851,6 @@ ALTER SEQUENCE public.components_a_word_refs_id_seq OWNED BY public.components_a
 
 
 --
--- Name: components_a_word_refs_word_links; Type: TABLE; Schema: public; Owner: strapi
---
-
-CREATE TABLE public.components_a_word_refs_word_links (
-    id integer NOT NULL,
-    word_ref_id integer,
-    word_id integer
-);
-
-
-ALTER TABLE public.components_a_word_refs_word_links OWNER TO strapi;
-
---
--- Name: components_a_word_refs_word_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
---
-
-CREATE SEQUENCE public.components_a_word_refs_word_links_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.components_a_word_refs_word_links_id_seq OWNER TO strapi;
-
---
--- Name: components_a_word_refs_word_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
---
-
-ALTER SEQUENCE public.components_a_word_refs_word_links_id_seq OWNED BY public.components_a_word_refs_word_links.id;
-
-
---
 -- Name: conversations; Type: TABLE; Schema: public; Owner: strapi
 --
 
@@ -1149,44 +1114,6 @@ CREATE TABLE public.flashcards (
 ALTER TABLE public.flashcards OWNER TO strapi;
 
 --
--- Name: flashcards_components; Type: TABLE; Schema: public; Owner: strapi
---
-
-CREATE TABLE public.flashcards_components (
-    id integer NOT NULL,
-    entity_id integer,
-    component_id integer,
-    component_type character varying(255),
-    field character varying(255),
-    "order" double precision
-);
-
-
-ALTER TABLE public.flashcards_components OWNER TO strapi;
-
---
--- Name: flashcards_components_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
---
-
-CREATE SEQUENCE public.flashcards_components_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.flashcards_components_id_seq OWNER TO strapi;
-
---
--- Name: flashcards_components_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
---
-
-ALTER SEQUENCE public.flashcards_components_id_seq OWNED BY public.flashcards_components.id;
-
-
---
 -- Name: flashcards_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
 --
 
@@ -1206,42 +1133,6 @@ ALTER TABLE public.flashcards_id_seq OWNER TO strapi;
 --
 
 ALTER SEQUENCE public.flashcards_id_seq OWNED BY public.flashcards.id;
-
-
---
--- Name: flashcards_lesson_links; Type: TABLE; Schema: public; Owner: strapi
---
-
-CREATE TABLE public.flashcards_lesson_links (
-    id integer NOT NULL,
-    flashcard_id integer,
-    lesson_id integer,
-    flashcard_order double precision
-);
-
-
-ALTER TABLE public.flashcards_lesson_links OWNER TO strapi;
-
---
--- Name: flashcards_lesson_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
---
-
-CREATE SEQUENCE public.flashcards_lesson_links_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.flashcards_lesson_links_id_seq OWNER TO strapi;
-
---
--- Name: flashcards_lesson_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
---
-
-ALTER SEQUENCE public.flashcards_lesson_links_id_seq OWNED BY public.flashcards_lesson_links.id;
 
 
 --
@@ -1350,6 +1241,42 @@ ALTER TABLE public.flashcards_user_links_id_seq OWNER TO strapi;
 --
 
 ALTER SEQUENCE public.flashcards_user_links_id_seq OWNED BY public.flashcards_user_links.id;
+
+
+--
+-- Name: flashcards_word_definition_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.flashcards_word_definition_links (
+    id integer NOT NULL,
+    flashcard_id integer,
+    word_definition_id integer,
+    flashcard_order double precision
+);
+
+
+ALTER TABLE public.flashcards_word_definition_links OWNER TO strapi;
+
+--
+-- Name: flashcards_word_definition_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.flashcards_word_definition_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.flashcards_word_definition_links_id_seq OWNER TO strapi;
+
+--
+-- Name: flashcards_word_definition_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.flashcards_word_definition_links_id_seq OWNED BY public.flashcards_word_definition_links.id;
 
 
 --
@@ -1616,6 +1543,158 @@ ALTER TABLE public.lessons_unit_links_id_seq OWNER TO strapi;
 --
 
 ALTER SEQUENCE public.lessons_unit_links_id_seq OWNED BY public.lessons_unit_links.id;
+
+
+--
+-- Name: modules; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.modules (
+    id integer NOT NULL,
+    name character varying(255),
+    description character varying(255),
+    goal character varying(255),
+    created_at timestamp(6) without time zone,
+    updated_at timestamp(6) without time zone,
+    created_by_id integer,
+    updated_by_id integer,
+    locale character varying(255)
+);
+
+
+ALTER TABLE public.modules OWNER TO strapi;
+
+--
+-- Name: modules_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.modules_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.modules_id_seq OWNER TO strapi;
+
+--
+-- Name: modules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.modules_id_seq OWNED BY public.modules.id;
+
+
+--
+-- Name: modules_localizations_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.modules_localizations_links (
+    id integer NOT NULL,
+    module_id integer,
+    inv_module_id integer,
+    module_order double precision
+);
+
+
+ALTER TABLE public.modules_localizations_links OWNER TO strapi;
+
+--
+-- Name: modules_localizations_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.modules_localizations_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.modules_localizations_links_id_seq OWNER TO strapi;
+
+--
+-- Name: modules_localizations_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.modules_localizations_links_id_seq OWNED BY public.modules_localizations_links.id;
+
+
+--
+-- Name: part_of_speeches; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.part_of_speeches (
+    id integer NOT NULL,
+    name character varying(255),
+    created_at timestamp(6) without time zone,
+    updated_at timestamp(6) without time zone,
+    created_by_id integer,
+    updated_by_id integer,
+    locale character varying(255)
+);
+
+
+ALTER TABLE public.part_of_speeches OWNER TO strapi;
+
+--
+-- Name: part_of_speeches_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.part_of_speeches_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.part_of_speeches_id_seq OWNER TO strapi;
+
+--
+-- Name: part_of_speeches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.part_of_speeches_id_seq OWNED BY public.part_of_speeches.id;
+
+
+--
+-- Name: part_of_speeches_localizations_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.part_of_speeches_localizations_links (
+    id integer NOT NULL,
+    part_of_speech_id integer,
+    inv_part_of_speech_id integer,
+    part_of_speech_order double precision
+);
+
+
+ALTER TABLE public.part_of_speeches_localizations_links OWNER TO strapi;
+
+--
+-- Name: part_of_speeches_localizations_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.part_of_speeches_localizations_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.part_of_speeches_localizations_links_id_seq OWNER TO strapi;
+
+--
+-- Name: part_of_speeches_localizations_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.part_of_speeches_localizations_links_id_seq OWNED BY public.part_of_speeches_localizations_links.id;
 
 
 --
@@ -2957,6 +3036,42 @@ ALTER SEQUENCE public.units_localizations_links_id_seq OWNED BY public.units_loc
 
 
 --
+-- Name: units_module_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.units_module_links (
+    id integer NOT NULL,
+    unit_id integer,
+    module_id integer,
+    unit_order double precision
+);
+
+
+ALTER TABLE public.units_module_links OWNER TO strapi;
+
+--
+-- Name: units_module_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.units_module_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.units_module_links_id_seq OWNER TO strapi;
+
+--
+-- Name: units_module_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.units_module_links_id_seq OWNED BY public.units_module_links.id;
+
+
+--
 -- Name: units_precondition_links; Type: TABLE; Schema: public; Owner: strapi
 --
 
@@ -3712,35 +3827,34 @@ ALTER SEQUENCE public.vbsettings_user_links_id_seq OWNED BY public.vbsettings_us
 
 
 --
--- Name: words; Type: TABLE; Schema: public; Owner: strapi
+-- Name: word_definitions; Type: TABLE; Schema: public; Owner: strapi
 --
 
-CREATE TABLE public.words (
+CREATE TABLE public.word_definitions (
     id integer NOT NULL,
-    word character varying(255),
     base_text character varying(255),
     instruction character varying(255),
-    part_of_speech character varying(255),
-    gender character varying(255),
-    article character varying(255),
     created_at timestamp(6) without time zone,
     updated_at timestamp(6) without time zone,
     created_by_id integer,
     updated_by_id integer,
     locale character varying(255),
-    register character varying(255),
+    gender character varying(255),
+    article character varying(255),
+    example_sentence character varying(255),
     exam_base jsonb,
-    exam_target jsonb
+    exam_target jsonb,
+    register character varying(255)
 );
 
 
-ALTER TABLE public.words OWNER TO strapi;
+ALTER TABLE public.word_definitions OWNER TO strapi;
 
 --
--- Name: words_components; Type: TABLE; Schema: public; Owner: strapi
+-- Name: word_definitions_components; Type: TABLE; Schema: public; Owner: strapi
 --
 
-CREATE TABLE public.words_components (
+CREATE TABLE public.word_definitions_components (
     id integer NOT NULL,
     entity_id integer,
     component_id integer,
@@ -3750,13 +3864,13 @@ CREATE TABLE public.words_components (
 );
 
 
-ALTER TABLE public.words_components OWNER TO strapi;
+ALTER TABLE public.word_definitions_components OWNER TO strapi;
 
 --
--- Name: words_components_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+-- Name: word_definitions_components_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
 --
 
-CREATE SEQUENCE public.words_components_id_seq
+CREATE SEQUENCE public.word_definitions_components_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -3765,35 +3879,56 @@ CREATE SEQUENCE public.words_components_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.words_components_id_seq OWNER TO strapi;
+ALTER TABLE public.word_definitions_components_id_seq OWNER TO strapi;
 
 --
--- Name: words_components_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+-- Name: word_definitions_components_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
 --
 
-ALTER SEQUENCE public.words_components_id_seq OWNED BY public.words_components.id;
+ALTER SEQUENCE public.word_definitions_components_id_seq OWNED BY public.word_definitions_components.id;
 
 
 --
--- Name: words_example_sentences_links; Type: TABLE; Schema: public; Owner: strapi
+-- Name: word_definitions_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
 --
 
-CREATE TABLE public.words_example_sentences_links (
+CREATE SEQUENCE public.word_definitions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.word_definitions_id_seq OWNER TO strapi;
+
+--
+-- Name: word_definitions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.word_definitions_id_seq OWNED BY public.word_definitions.id;
+
+
+--
+-- Name: word_definitions_localizations_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.word_definitions_localizations_links (
     id integer NOT NULL,
-    word_id integer,
-    sentence_id integer,
-    sentence_order double precision,
-    word_order double precision
+    word_definition_id integer,
+    inv_word_definition_id integer,
+    word_definition_order double precision
 );
 
 
-ALTER TABLE public.words_example_sentences_links OWNER TO strapi;
+ALTER TABLE public.word_definitions_localizations_links OWNER TO strapi;
 
 --
--- Name: words_example_sentences_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+-- Name: word_definitions_localizations_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
 --
 
-CREATE SEQUENCE public.words_example_sentences_links_id_seq
+CREATE SEQUENCE public.word_definitions_localizations_links_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -3802,14 +3937,138 @@ CREATE SEQUENCE public.words_example_sentences_links_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.words_example_sentences_links_id_seq OWNER TO strapi;
+ALTER TABLE public.word_definitions_localizations_links_id_seq OWNER TO strapi;
 
 --
--- Name: words_example_sentences_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+-- Name: word_definitions_localizations_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
 --
 
-ALTER SEQUENCE public.words_example_sentences_links_id_seq OWNED BY public.words_example_sentences_links.id;
+ALTER SEQUENCE public.word_definitions_localizations_links_id_seq OWNED BY public.word_definitions_localizations_links.id;
 
+
+--
+-- Name: word_definitions_part_of_speech_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.word_definitions_part_of_speech_links (
+    id integer NOT NULL,
+    word_definition_id integer,
+    part_of_speech_id integer,
+    word_definition_order double precision
+);
+
+
+ALTER TABLE public.word_definitions_part_of_speech_links OWNER TO strapi;
+
+--
+-- Name: word_definitions_part_of_speech_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.word_definitions_part_of_speech_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.word_definitions_part_of_speech_links_id_seq OWNER TO strapi;
+
+--
+-- Name: word_definitions_part_of_speech_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.word_definitions_part_of_speech_links_id_seq OWNED BY public.word_definitions_part_of_speech_links.id;
+
+
+--
+-- Name: word_definitions_section_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.word_definitions_section_links (
+    id integer NOT NULL,
+    word_definition_id integer,
+    section_id integer,
+    word_definition_order double precision
+);
+
+
+ALTER TABLE public.word_definitions_section_links OWNER TO strapi;
+
+--
+-- Name: word_definitions_section_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.word_definitions_section_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.word_definitions_section_links_id_seq OWNER TO strapi;
+
+--
+-- Name: word_definitions_section_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.word_definitions_section_links_id_seq OWNED BY public.word_definitions_section_links.id;
+
+
+--
+-- Name: word_definitions_word_links; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.word_definitions_word_links (
+    id integer NOT NULL,
+    word_definition_id integer,
+    word_id integer,
+    word_definition_order double precision
+);
+
+
+ALTER TABLE public.word_definitions_word_links OWNER TO strapi;
+
+--
+-- Name: word_definitions_word_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
+--
+
+CREATE SEQUENCE public.word_definitions_word_links_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.word_definitions_word_links_id_seq OWNER TO strapi;
+
+--
+-- Name: word_definitions_word_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
+--
+
+ALTER SEQUENCE public.word_definitions_word_links_id_seq OWNED BY public.word_definitions_word_links.id;
+
+
+--
+-- Name: words; Type: TABLE; Schema: public; Owner: strapi
+--
+
+CREATE TABLE public.words (
+    id integer NOT NULL,
+    target_text character varying(255),
+    created_at timestamp(6) without time zone,
+    updated_at timestamp(6) without time zone,
+    created_by_id integer,
+    updated_by_id integer
+);
+
+
+ALTER TABLE public.words OWNER TO strapi;
 
 --
 -- Name: words_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
@@ -3831,42 +4090,6 @@ ALTER TABLE public.words_id_seq OWNER TO strapi;
 --
 
 ALTER SEQUENCE public.words_id_seq OWNED BY public.words.id;
-
-
---
--- Name: words_localizations_links; Type: TABLE; Schema: public; Owner: strapi
---
-
-CREATE TABLE public.words_localizations_links (
-    id integer NOT NULL,
-    word_id integer,
-    inv_word_id integer,
-    word_order double precision
-);
-
-
-ALTER TABLE public.words_localizations_links OWNER TO strapi;
-
---
--- Name: words_localizations_links_id_seq; Type: SEQUENCE; Schema: public; Owner: strapi
---
-
-CREATE SEQUENCE public.words_localizations_links_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.words_localizations_links_id_seq OWNER TO strapi;
-
---
--- Name: words_localizations_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: strapi
---
-
-ALTER SEQUENCE public.words_localizations_links_id_seq OWNED BY public.words_localizations_links.id;
 
 
 --
@@ -4031,13 +4254,6 @@ ALTER TABLE ONLY public.components_a_word_refs ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- Name: components_a_word_refs_word_links id; Type: DEFAULT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.components_a_word_refs_word_links ALTER COLUMN id SET DEFAULT nextval('public.components_a_word_refs_word_links_id_seq'::regclass);
-
-
---
 -- Name: conversations id; Type: DEFAULT; Schema: public; Owner: strapi
 --
 
@@ -4087,20 +4303,6 @@ ALTER TABLE ONLY public.flashcards ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
--- Name: flashcards_components id; Type: DEFAULT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_components ALTER COLUMN id SET DEFAULT nextval('public.flashcards_components_id_seq'::regclass);
-
-
---
--- Name: flashcards_lesson_links id; Type: DEFAULT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_lesson_links ALTER COLUMN id SET DEFAULT nextval('public.flashcards_lesson_links_id_seq'::regclass);
-
-
---
 -- Name: flashcards_localizations_links id; Type: DEFAULT; Schema: public; Owner: strapi
 --
 
@@ -4119,6 +4321,13 @@ ALTER TABLE ONLY public.flashcards_review_tire_links ALTER COLUMN id SET DEFAULT
 --
 
 ALTER TABLE ONLY public.flashcards_user_links ALTER COLUMN id SET DEFAULT nextval('public.flashcards_user_links_id_seq'::regclass);
+
+
+--
+-- Name: flashcards_word_definition_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.flashcards_word_definition_links ALTER COLUMN id SET DEFAULT nextval('public.flashcards_word_definition_links_id_seq'::regclass);
 
 
 --
@@ -4168,6 +4377,34 @@ ALTER TABLE ONLY public.lessons_localizations_links ALTER COLUMN id SET DEFAULT 
 --
 
 ALTER TABLE ONLY public.lessons_unit_links ALTER COLUMN id SET DEFAULT nextval('public.lessons_unit_links_id_seq'::regclass);
+
+
+--
+-- Name: modules id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules ALTER COLUMN id SET DEFAULT nextval('public.modules_id_seq'::regclass);
+
+
+--
+-- Name: modules_localizations_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules_localizations_links ALTER COLUMN id SET DEFAULT nextval('public.modules_localizations_links_id_seq'::regclass);
+
+
+--
+-- Name: part_of_speeches id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches ALTER COLUMN id SET DEFAULT nextval('public.part_of_speeches_id_seq'::regclass);
+
+
+--
+-- Name: part_of_speeches_localizations_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches_localizations_links ALTER COLUMN id SET DEFAULT nextval('public.part_of_speeches_localizations_links_id_seq'::regclass);
 
 
 --
@@ -4416,6 +4653,13 @@ ALTER TABLE ONLY public.units_localizations_links ALTER COLUMN id SET DEFAULT ne
 
 
 --
+-- Name: units_module_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.units_module_links ALTER COLUMN id SET DEFAULT nextval('public.units_module_links_id_seq'::regclass);
+
+
+--
 -- Name: units_precondition_links id; Type: DEFAULT; Schema: public; Owner: strapi
 --
 
@@ -4556,31 +4800,52 @@ ALTER TABLE ONLY public.vbsettings_user_links ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: word_definitions id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions ALTER COLUMN id SET DEFAULT nextval('public.word_definitions_id_seq'::regclass);
+
+
+--
+-- Name: word_definitions_components id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_components ALTER COLUMN id SET DEFAULT nextval('public.word_definitions_components_id_seq'::regclass);
+
+
+--
+-- Name: word_definitions_localizations_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_localizations_links ALTER COLUMN id SET DEFAULT nextval('public.word_definitions_localizations_links_id_seq'::regclass);
+
+
+--
+-- Name: word_definitions_part_of_speech_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_part_of_speech_links ALTER COLUMN id SET DEFAULT nextval('public.word_definitions_part_of_speech_links_id_seq'::regclass);
+
+
+--
+-- Name: word_definitions_section_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_section_links ALTER COLUMN id SET DEFAULT nextval('public.word_definitions_section_links_id_seq'::regclass);
+
+
+--
+-- Name: word_definitions_word_links id; Type: DEFAULT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_word_links ALTER COLUMN id SET DEFAULT nextval('public.word_definitions_word_links_id_seq'::regclass);
+
+
+--
 -- Name: words id; Type: DEFAULT; Schema: public; Owner: strapi
 --
 
 ALTER TABLE ONLY public.words ALTER COLUMN id SET DEFAULT nextval('public.words_id_seq'::regclass);
-
-
---
--- Name: words_components id; Type: DEFAULT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_components ALTER COLUMN id SET DEFAULT nextval('public.words_components_id_seq'::regclass);
-
-
---
--- Name: words_example_sentences_links id; Type: DEFAULT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_example_sentences_links ALTER COLUMN id SET DEFAULT nextval('public.words_example_sentences_links_id_seq'::regclass);
-
-
---
--- Name: words_localizations_links id; Type: DEFAULT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_localizations_links ALTER COLUMN id SET DEFAULT nextval('public.words_localizations_links_id_seq'::regclass);
 
 
 --
@@ -4663,9 +4928,6 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 320	plugin::content-manager.explorer.update	{}	api::vbsetting.vbsetting	{"fields": ["user", "wordsPerPage", "interval1", "interval2", "interval3"]}	[]	2025-07-08 22:18:21.001	2025-07-08 22:18:21.001	\N	\N
 321	plugin::content-manager.explorer.delete	{}	api::vbsetting.vbsetting	{}	[]	2025-07-08 22:18:21.196	2025-07-08 22:18:21.196	\N	\N
 195	plugin::content-manager.explorer.delete	{}	api::reviewlog.reviewlog	{}	[]	2025-06-28 13:06:40.586	2025-06-28 13:06:40.586	\N	\N
-236	plugin::content-manager.explorer.create	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-06-30 22:19:36.813	2025-06-30 22:19:36.813	\N	\N
-237	plugin::content-manager.explorer.read	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-06-30 22:19:37.011	2025-06-30 22:19:37.011	\N	\N
-238	plugin::content-manager.explorer.update	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-06-30 22:19:37.189	2025-06-30 22:19:37.189	\N	\N
 245	plugin::content-manager.explorer.delete	{}	api::user-profile.user-profile	{}	[]	2025-07-01 11:10:40.682	2025-07-01 11:10:40.682	\N	\N
 424	plugin::content-manager.explorer.create	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.486	2025-08-02 12:29:28.486	\N	\N
 312	plugin::content-manager.explorer.create	{}	api::user-profile.user-profile	{"fields": ["user", "telephone", "baseLanguage"]}	[]	2025-07-08 22:11:55.483	2025-07-08 22:11:55.483	\N	\N
@@ -4674,39 +4936,17 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 425	plugin::content-manager.explorer.read	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.669	2025-08-02 12:29:28.669	\N	\N
 426	plugin::content-manager.explorer.update	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.846	2025-08-02 12:29:28.846	\N	\N
 427	plugin::content-manager.explorer.delete	{}	api::ping.ping	{}	[]	2025-08-02 12:29:29.012	2025-08-02 12:29:29.012	\N	\N
-299	plugin::content-manager.explorer.create	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "words", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:04.588	2025-07-18 11:15:04.588	\N	\N
-215	plugin::content-manager.explorer.read	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:04.769	2025-07-18 11:15:04.769	\N	\N
-210	plugin::content-manager.explorer.read	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "flashcards", "unit"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:04.952	2025-07-18 11:15:04.952	\N	\N
-296	plugin::content-manager.explorer.create	{}	api::word.word	{"fields": ["word", "base_text", "instruction", "part_of_speech", "gender", "article", "audio", "tags.tag", "example_sentences", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.134	2025-07-18 11:15:05.134	\N	\N
-214	plugin::content-manager.explorer.create	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.313	2025-07-18 11:15:05.313	\N	\N
 226	plugin::content-manager.explorer.delete	{}	api::review-tire.review-tire	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.495	2025-07-18 11:15:05.495	\N	\N
 172	plugin::content-manager.explorer.delete	{}	api::user-sentence.user-sentence	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.68	2025-07-18 11:15:05.68	\N	\N
-300	plugin::content-manager.explorer.read	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "words", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.874	2025-07-18 11:15:05.874	\N	\N
-212	plugin::content-manager.explorer.update	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "flashcards", "unit"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.054	2025-07-18 11:15:06.054	\N	\N
-341	plugin::content-manager.explorer.update	{}	api::flashcard.flashcard	{"fields": ["user", "content", "last_reviewed_at", "lesson", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.239	2025-07-18 11:15:06.239	\N	\N
 269	plugin::content-manager.explorer.update	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.424	2025-07-18 11:15:06.424	\N	\N
-338	plugin::content-manager.explorer.create	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.609	2025-07-18 11:15:06.609	\N	\N
-107	plugin::content-manager.explorer.delete	{}	api::word.word	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.791	2025-07-18 11:15:06.791	\N	\N
 97	plugin::content-manager.explorer.delete	{}	api::sentence.sentence	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.968	2025-07-18 11:15:06.968	\N	\N
 265	plugin::content-manager.explorer.create	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.152	2025-07-18 11:15:07.152	\N	\N
 149	plugin::content-manager.explorer.delete	{}	api::section.section	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.336	2025-07-18 11:15:07.336	\N	\N
-301	plugin::content-manager.explorer.update	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "words", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.523	2025-07-18 11:15:07.523	\N	\N
-208	plugin::content-manager.explorer.create	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "flashcards", "unit"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.704	2025-07-18 11:15:07.704	\N	\N
-342	plugin::content-manager.explorer.update	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.882	2025-07-18 11:15:07.882	\N	\N
-146	plugin::content-manager.explorer.read	{}	api::section.section	{"fields": ["title", "lesson", "order", "components"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.056	2025-07-18 11:15:08.056	\N	\N
-144	plugin::content-manager.explorer.create	{}	api::section.section	{"fields": ["title", "lesson", "order", "components"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.227	2025-07-18 11:15:08.227	\N	\N
 182	plugin::content-manager.explorer.delete	{}	api::flashcard.flashcard	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.411	2025-07-18 11:15:08.411	\N	\N
 156	plugin::content-manager.explorer.delete	{}	api::user-word.user-word	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.589	2025-07-18 11:15:08.589	\N	\N
-298	plugin::content-manager.explorer.update	{}	api::word.word	{"fields": ["word", "base_text", "instruction", "part_of_speech", "gender", "article", "audio", "tags.tag", "example_sentences", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.764	2025-07-18 11:15:08.764	\N	\N
-297	plugin::content-manager.explorer.read	{}	api::word.word	{"fields": ["word", "base_text", "instruction", "part_of_speech", "gender", "article", "audio", "tags.tag", "example_sentences", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.951	2025-07-18 11:15:08.951	\N	\N
-148	plugin::content-manager.explorer.update	{}	api::section.section	{"fields": ["title", "lesson", "order", "components"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:09.131	2025-07-18 11:15:09.131	\N	\N
 142	plugin::content-manager.explorer.delete	{}	api::lesson.lesson	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:09.301	2025-07-18 11:15:09.301	\N	\N
-340	plugin::content-manager.explorer.read	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:09.484	2025-07-18 11:15:09.484	\N	\N
-337	plugin::content-manager.explorer.create	{}	api::flashcard.flashcard	{"fields": ["user", "content", "last_reviewed_at", "lesson", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:09.845	2025-07-18 11:15:09.845	\N	\N
-339	plugin::content-manager.explorer.read	{}	api::flashcard.flashcard	{"fields": ["user", "content", "last_reviewed_at", "lesson", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:10.196	2025-07-18 11:15:10.196	\N	\N
 267	plugin::content-manager.explorer.read	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:10.559	2025-07-18 11:15:10.559	\N	\N
 73	plugin::content-manager.explorer.delete	{}	api::unit.unit	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:10.743	2025-07-18 11:15:10.743	\N	\N
-216	plugin::content-manager.explorer.update	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:10.928	2025-07-18 11:15:10.928	\N	\N
 349	plugin::content-manager.explorer.create	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 17:50:31.068	2025-07-18 17:50:31.068	\N	\N
 350	plugin::content-manager.explorer.read	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 17:50:31.236	2025-07-18 17:50:31.236	\N	\N
 351	plugin::content-manager.explorer.update	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 17:50:31.413	2025-07-18 17:50:31.413	\N	\N
@@ -4723,16 +4963,53 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 392	plugin::content-manager.explorer.create	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh"]}	[]	2025-07-20 12:51:58.382	2025-07-20 12:51:58.382	\N	\N
 394	plugin::content-manager.explorer.read	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh"]}	[]	2025-07-20 12:51:58.751	2025-07-20 12:51:58.751	\N	\N
 396	plugin::content-manager.explorer.update	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh"]}	[]	2025-07-20 12:51:59.119	2025-07-20 12:51:59.119	\N	\N
-410	plugin::content-manager.explorer.create	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-07-20 20:34:11.604	2025-07-20 20:34:11.604	\N	\N
 411	plugin::content-manager.explorer.create	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh"]}	[]	2025-07-20 20:34:11.79	2025-07-20 20:34:11.79	\N	\N
 412	plugin::content-manager.explorer.create	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:11.964	2025-07-20 20:34:11.964	\N	\N
-413	plugin::content-manager.explorer.read	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-07-20 20:34:12.149	2025-07-20 20:34:12.149	\N	\N
 414	plugin::content-manager.explorer.read	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh"]}	[]	2025-07-20 20:34:12.56	2025-07-20 20:34:12.56	\N	\N
 415	plugin::content-manager.explorer.read	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:12.739	2025-07-20 20:34:12.739	\N	\N
-416	plugin::content-manager.explorer.update	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-07-20 20:34:12.908	2025-07-20 20:34:12.908	\N	\N
 417	plugin::content-manager.explorer.update	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh"]}	[]	2025-07-20 20:34:13.084	2025-07-20 20:34:13.084	\N	\N
 418	plugin::content-manager.explorer.update	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:13.254	2025-07-20 20:34:13.254	\N	\N
 419	plugin::content-manager.explorer.delete	{}	api::story-like.story-like	{}	[]	2025-07-20 20:34:13.423	2025-07-20 20:34:13.423	\N	\N
+428	plugin::content-manager.explorer.create	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-08-03 12:51:52.471	2025-08-03 12:51:52.471	\N	\N
+429	plugin::content-manager.explorer.read	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-08-03 12:51:52.654	2025-08-03 12:51:52.654	\N	\N
+430	plugin::content-manager.explorer.update	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-08-03 12:51:52.832	2025-08-03 12:51:52.832	\N	\N
+434	plugin::content-manager.explorer.delete	{}	api::word.word	{}	[]	2025-08-03 12:54:11.431	2025-08-03 12:54:11.431	\N	\N
+435	plugin::content-manager.explorer.create	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 13:32:06.878	2025-08-03 13:32:06.878	\N	\N
+436	plugin::content-manager.explorer.create	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:07.047	2025-08-03 13:32:07.047	\N	\N
+438	plugin::content-manager.explorer.read	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 13:32:07.406	2025-08-03 13:32:07.406	\N	\N
+439	plugin::content-manager.explorer.read	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:07.582	2025-08-03 13:32:07.582	\N	\N
+441	plugin::content-manager.explorer.update	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 13:32:07.911	2025-08-03 13:32:07.911	\N	\N
+442	plugin::content-manager.explorer.update	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:08.089	2025-08-03 13:32:08.089	\N	\N
+444	plugin::content-manager.explorer.delete	{}	api::word-definition.word-definition	{"locales": ["en", "zh"]}	[]	2025-08-03 13:32:08.45	2025-08-03 13:32:08.45	\N	\N
+452	plugin::content-manager.explorer.delete	{}	api::part-of-speech.part-of-speech	{"locales": ["en", "zh"]}	[]	2025-08-03 13:36:59.363	2025-08-03 13:36:59.363	\N	\N
+453	plugin::content-manager.explorer.create	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 14:05:54.52	2025-08-03 14:05:54.52	\N	\N
+455	plugin::content-manager.explorer.read	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 14:05:54.878	2025-08-03 14:05:54.878	\N	\N
+457	plugin::content-manager.explorer.update	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 14:05:55.234	2025-08-03 14:05:55.234	\N	\N
+478	plugin::content-manager.explorer.create	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:21.608	2025-08-03 15:07:21.608	\N	\N
+479	plugin::content-manager.explorer.create	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:07:21.791	2025-08-03 15:07:21.791	\N	\N
+480	plugin::content-manager.explorer.create	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:21.97	2025-08-03 15:07:21.97	\N	\N
+482	plugin::content-manager.explorer.read	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:22.323	2025-08-03 15:07:22.323	\N	\N
+483	plugin::content-manager.explorer.read	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:07:22.493	2025-08-03 15:07:22.493	\N	\N
+484	plugin::content-manager.explorer.read	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:22.672	2025-08-03 15:07:22.672	\N	\N
+486	plugin::content-manager.explorer.update	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:23.018	2025-08-03 15:07:23.018	\N	\N
+487	plugin::content-manager.explorer.update	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:07:23.202	2025-08-03 15:07:23.202	\N	\N
+488	plugin::content-manager.explorer.update	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:23.383	2025-08-03 15:07:23.383	\N	\N
+490	plugin::content-manager.explorer.create	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:26.91	2025-08-03 15:09:26.91	\N	\N
+491	plugin::content-manager.explorer.create	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.096	2025-08-03 15:09:27.096	\N	\N
+492	plugin::content-manager.explorer.create	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.264	2025-08-03 15:09:27.264	\N	\N
+493	plugin::content-manager.explorer.read	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.444	2025-08-03 15:09:27.444	\N	\N
+494	plugin::content-manager.explorer.read	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.618	2025-08-03 15:09:27.618	\N	\N
+495	plugin::content-manager.explorer.read	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.796	2025-08-03 15:09:27.796	\N	\N
+496	plugin::content-manager.explorer.update	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.973	2025-08-03 15:09:27.973	\N	\N
+497	plugin::content-manager.explorer.update	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:28.151	2025-08-03 15:09:28.151	\N	\N
+498	plugin::content-manager.explorer.update	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:28.335	2025-08-03 15:09:28.335	\N	\N
+502	plugin::content-manager.explorer.delete	{}	api::module.module	{"locales": ["en", "zh"]}	[]	2025-08-03 15:12:48.515	2025-08-03 15:12:48.515	\N	\N
+503	plugin::content-manager.explorer.create	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.161	2025-08-03 15:13:45.161	\N	\N
+504	plugin::content-manager.explorer.create	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.327	2025-08-03 15:13:45.327	\N	\N
+505	plugin::content-manager.explorer.read	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.502	2025-08-03 15:13:45.502	\N	\N
+506	plugin::content-manager.explorer.read	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.673	2025-08-03 15:13:45.673	\N	\N
+507	plugin::content-manager.explorer.update	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.85	2025-08-03 15:13:45.85	\N	\N
+508	plugin::content-manager.explorer.update	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:46.025	2025-08-03 15:13:46.025	\N	\N
 \.
 
 
@@ -4812,14 +5089,11 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 318	318	1	259
 320	320	1	261
 321	321	1	262
-446	410	1	354
 447	411	1	355
 448	412	1	356
 114	114	1	93
-449	413	1	357
 450	414	1	358
 451	415	1	359
-452	416	1	360
 134	134	1	95
 137	137	1	98
 140	140	1	101
@@ -4830,46 +5104,21 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 461	425	1	365
 462	426	1	366
 463	427	1	367
-236	236	1	183
-237	237	1	184
-238	238	1	185
 245	245	1	192
 312	312	1	253
 313	313	1	254
 314	314	1	255
-349	299	1	277
-350	215	1	278
-351	210	1	279
-352	296	1	280
-353	214	1	281
 354	226	1	282
 355	172	1	283
-356	300	1	284
-357	212	1	285
-358	341	1	286
 359	269	1	287
-360	338	1	288
-361	107	1	289
 362	97	1	290
 363	265	1	291
 364	149	1	292
-365	301	1	293
-366	208	1	294
-367	342	1	295
-368	146	1	296
-369	144	1	297
 370	182	1	298
 371	156	1	299
-372	298	1	300
-373	297	1	301
-374	148	1	302
 375	142	1	303
-376	340	1	304
-378	337	1	306
-380	339	1	308
 382	267	1	310
 383	73	1	311
-384	216	1	312
 385	349	1	313
 386	350	1	314
 387	351	1	315
@@ -4886,6 +5135,46 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 428	392	1	349
 430	394	1	351
 432	396	1	353
+464	428	1	368
+465	429	1	369
+466	430	1	370
+470	434	1	374
+471	435	1	375
+472	436	1	376
+474	438	1	378
+475	439	1	379
+477	441	1	381
+478	442	1	382
+480	444	1	384
+488	452	1	388
+489	453	1	389
+491	455	1	391
+493	457	1	393
+514	478	1	394
+515	479	1	395
+516	480	1	396
+518	482	1	398
+519	483	1	399
+520	484	1	400
+522	486	1	402
+523	487	1	403
+524	488	1	404
+526	490	1	405
+527	491	1	406
+528	492	1	407
+529	493	1	408
+530	494	1	409
+531	495	1	410
+532	496	1	411
+533	497	1	412
+534	498	1	413
+538	502	1	417
+539	503	1	418
+540	504	1	419
+541	505	1	420
+542	506	1	421
+543	507	1	422
+544	508	1	423
 \.
 
 
@@ -5454,18 +5743,6 @@ COPY public.components_a_word_refs (id) FROM stdin;
 
 
 --
--- Data for Name: components_a_word_refs_word_links; Type: TABLE DATA; Schema: public; Owner: strapi
---
-
-COPY public.components_a_word_refs_word_links (id, word_ref_id, word_id) FROM stdin;
-1	2	1
-2	1	2
-3	3	2
-4	4	3
-\.
-
-
---
 -- Data for Name: conversations; Type: TABLE DATA; Schema: public; Owner: strapi
 --
 
@@ -5572,319 +5849,285 @@ COPY public.files_related_morphs (id, file_id, related_id, related_type, field, 
 --
 
 COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id, locale, last_reviewed_at, is_remembered, correct_streak, wrong_streak) FROM stdin;
-15	2025-07-02 00:49:19.437	2025-07-03 00:19:41.7	\N	\N	en	2025-07-03 00:19:41.519	f	2	1
-14	2025-07-02 00:46:03.056	2025-07-03 00:19:54.903	\N	1	en	2025-07-03 00:19:54.721	f	3	0
-33	2025-07-06 00:30:36.668	2025-07-06 20:49:25.656	\N	\N	en	2025-07-06 20:49:25.462	f	1	0
-31	2025-07-03 00:33:13	2025-07-06 21:14:21.543	\N	\N	en	2025-07-06 21:14:21.352	f	1	0
-32	2025-07-03 00:34:21.477	2025-07-06 21:14:23.683	\N	\N	en	2025-07-06 21:14:23.498	f	1	0
-34	2025-07-06 00:31:27.887	2025-07-06 21:18:27.363	\N	\N	en	2025-07-06 21:18:27.181	f	1	0
-35	2025-07-06 00:54:28.143	2025-07-06 21:18:29.085	\N	\N	en	2025-07-06 21:18:28.915	f	1	0
-36	2025-07-06 00:54:53.245	2025-07-06 21:26:32.621	\N	\N	en	2025-07-06 21:26:32.362	f	1	0
-37	2025-07-06 01:19:02.38	2025-07-06 21:26:35.846	\N	\N	en	2025-07-06 21:26:35.668	f	0	1
-50	2025-07-07 15:56:13.37	2025-07-10 02:09:29.605	\N	\N	en	2025-07-10 02:09:29.242	f	1	0
-13	2025-07-02 00:43:22.852	2025-07-06 21:26:37.79	\N	1	en	2025-07-06 21:26:37.622	f	3	0
-20	2025-07-02 12:15:22.24	2025-07-02 23:36:23.781	\N	\N	en	2025-06-22 23:36:23.602	f	1	1
-21	2025-07-02 12:32:50.67	2025-07-02 23:36:25.448	\N	\N	en	2025-06-22 23:36:25.275	f	1	1
-12	2025-07-02 00:27:11.407	2025-07-06 21:26:40.615	\N	1	en	2025-07-06 21:26:40.437	f	3	0
-11	2025-07-02 00:19:46.977	2025-07-06 21:26:42.279	\N	1	en	2025-07-06 21:26:42.11	f	2	0
-16	2025-07-02 10:04:23.193	2025-07-06 21:26:58.124	\N	\N	en	2025-07-06 21:26:57.954	f	2	0
-38	2025-07-06 21:28:53.219	2025-07-06 21:50:03.169	\N	\N	en	2025-07-06 21:50:02.988	f	1	0
-39	2025-07-06 21:49:40.573	2025-07-06 21:50:05.236	\N	\N	en	2025-07-06 21:50:05.056	f	0	1
-17	2025-07-02 10:16:30.841	2025-07-06 21:50:06.542	\N	\N	en	2025-07-06 21:50:06.373	f	3	0
-18	2025-07-02 10:31:41.445	2025-07-06 21:50:07.863	\N	\N	en	2025-07-06 21:50:07.674	f	2	0
-19	2025-07-02 10:32:16.142	2025-07-06 21:50:09.939	\N	\N	en	2025-07-06 21:50:09.757	f	2	0
-41	2025-07-07 14:40:25.851	2025-07-07 14:40:25.851	\N	\N	en	\N	f	0	0
-22	2025-07-02 12:37:06.574	2025-07-02 23:36:26.918	\N	\N	en	2025-06-22 23:36:26.747	f	1	1
-48	2025-07-07 15:49:16.501	2025-07-10 11:17:56.872	\N	1	en	2025-07-10 11:17:23.684	f	12	0
-23	2025-07-02 12:40:13.5	2025-07-02 23:36:27.78	\N	\N	en	2025-06-22 23:36:27.621	f	2	0
-24	2025-07-02 12:46:07.357	2025-07-02 23:36:29.445	\N	\N	en	2025-06-22 23:36:29.277	f	1	1
-25	2025-07-02 12:59:39.843	2025-07-02 23:36:33.103	\N	\N	en	2025-06-22 23:36:32.934	f	2	0
-46	2025-07-07 15:37:09.202	2025-07-10 12:14:04.272	\N	\N	en	2025-07-10 12:14:03.955	f	7	0
-54	2025-07-07 16:59:13.186	2025-07-07 16:59:13.186	\N	\N	en	\N	f	0	0
-55	2025-07-07 17:07:18.436	2025-07-07 17:07:18.436	\N	\N	en	\N	f	0	0
-56	2025-07-07 17:19:23.797	2025-07-07 17:19:23.797	\N	\N	en	\N	f	0	0
-57	2025-07-07 17:32:54.674	2025-07-07 17:32:58.398	\N	\N	en	\N	f	0	0
-58	2025-07-07 17:36:38.724	2025-07-07 17:36:39.464	\N	\N	en	\N	f	0	0
-59	2025-07-07 17:45:53.697	2025-07-07 17:45:57.052	\N	\N	en	\N	f	0	0
-47	2025-07-07 15:48:22.237	2025-07-07 15:48:22.838	\N	\N	en	\N	f	0	0
-52	2025-07-07 16:50:32.835	2025-07-10 12:14:50.833	\N	\N	en	2025-07-10 12:14:50.56	f	1	0
-60	2025-07-07 17:54:28.269	2025-07-07 17:54:32.047	\N	\N	en	\N	f	0	0
-61	2025-07-07 17:54:29.235	2025-07-07 17:54:32.262	\N	\N	en	\N	f	0	0
-62	2025-07-07 17:54:30.398	2025-07-07 17:54:35.589	\N	\N	en	\N	f	0	0
-63	2025-07-07 17:54:31.344	2025-07-07 17:54:35.662	\N	\N	en	\N	f	0	0
-64	2025-07-07 23:47:04.406	2025-07-07 23:47:08.241	\N	\N	en	\N	f	0	0
-65	2025-07-07 23:47:05.401	2025-07-07 23:47:08.812	\N	\N	en	\N	f	0	0
-67	2025-07-07 23:47:07.271	2025-07-07 23:47:11.822	\N	\N	en	\N	f	0	0
-66	2025-07-07 23:47:06.321	2025-07-07 23:47:12.292	\N	\N	en	\N	f	0	0
-69	2025-07-07 23:47:09.191	2025-07-07 23:47:15.295	\N	\N	en	\N	f	0	0
-68	2025-07-07 23:47:08.243	2025-07-07 23:47:15.541	\N	\N	en	\N	f	0	0
-70	2025-07-07 23:47:10.186	2025-07-07 23:47:21.131	\N	\N	en	\N	f	0	0
-71	2025-07-08 00:08:52.693	2025-07-08 00:08:57.325	\N	\N	en	\N	f	0	0
-72	2025-07-08 00:08:53.728	2025-07-08 00:08:58.295	\N	\N	en	\N	f	0	0
-74	2025-07-08 00:08:55.672	2025-07-08 00:09:01.157	\N	\N	en	\N	f	0	0
-73	2025-07-08 00:08:54.748	2025-07-08 00:09:01.742	\N	\N	en	\N	f	0	0
-75	2025-07-08 00:08:56.675	2025-07-08 00:09:03.915	\N	\N	en	\N	f	0	0
-76	2025-07-08 00:08:57.685	2025-07-08 00:09:04.773	\N	\N	en	\N	f	0	0
-77	2025-07-08 00:08:58.657	2025-07-08 00:09:06.908	\N	\N	en	\N	f	0	0
-78	2025-07-08 00:08:59.591	2025-07-08 00:09:07.533	\N	\N	en	\N	f	0	0
-79	2025-07-08 00:09:00.52	2025-07-08 00:09:10.092	\N	\N	en	\N	f	0	0
-80	2025-07-08 00:09:01.463	2025-07-08 00:09:10.247	\N	\N	en	\N	f	0	0
-81	2025-07-08 00:09:02.399	2025-07-08 00:09:13.244	\N	\N	en	\N	f	0	0
-82	2025-07-08 00:09:03.438	2025-07-08 00:09:13.574	\N	\N	en	\N	f	0	0
-83	2025-07-08 00:09:04.462	2025-07-08 00:09:17.006	\N	\N	en	\N	f	0	0
-84	2025-07-08 00:09:05.412	2025-07-08 00:09:17.314	\N	\N	en	\N	f	0	0
-85	2025-07-08 00:09:27.594	2025-07-08 00:09:30.192	\N	\N	en	\N	f	0	0
-86	2025-07-08 00:09:28.558	2025-07-08 00:09:31.985	\N	\N	en	\N	f	0	0
-87	2025-07-08 00:09:29.548	2025-07-08 00:09:33.242	\N	\N	en	\N	f	0	0
-88	2025-07-08 00:09:30.443	2025-07-08 00:09:35.648	\N	\N	en	\N	f	0	0
-89	2025-07-08 00:09:31.381	2025-07-08 00:09:36.134	\N	\N	en	\N	f	0	0
-90	2025-07-08 00:09:32.353	2025-07-08 00:09:38.907	\N	\N	en	\N	f	0	0
-92	2025-07-08 00:09:34.248	2025-07-08 00:09:41.594	\N	\N	en	\N	f	0	0
-93	2025-07-08 00:09:35.199	2025-07-08 00:09:42.916	\N	\N	en	\N	f	0	0
-49	2025-07-07 15:52:20.828	2025-07-08 20:53:38.368	\N	\N	en	2025-07-08 20:53:38.172	f	1	0
-53	2025-07-07 16:55:22.4	2025-07-10 12:14:52.2	\N	\N	en	2025-07-10 12:14:51.865	f	1	0
-40	2025-07-07 14:25:52.939	2025-07-15 00:30:45.672	\N	\N	en	2025-07-15 00:30:45.365	f	3	0
-91	2025-07-08 00:09:33.304	2025-07-08 00:09:38.64	\N	\N	en	\N	f	0	0
-94	2025-07-08 00:09:36.192	2025-07-08 00:09:44.994	\N	\N	en	\N	f	0	0
-95	2025-07-08 00:09:37.112	2025-07-08 00:09:45.561	\N	\N	en	\N	f	0	0
-96	2025-07-08 00:09:38.039	2025-07-08 00:09:47.417	\N	\N	en	\N	f	0	0
-97	2025-07-08 00:09:39.008	2025-07-08 00:09:48.059	\N	\N	en	\N	f	0	0
-98	2025-07-08 00:09:39.931	2025-07-08 00:09:50.957	\N	\N	en	\N	f	0	0
-99	2025-07-08 00:10:41.741	2025-07-08 00:10:44.706	\N	\N	en	\N	f	0	0
-10	2025-07-02 00:19:27.722	2025-07-31 13:52:50.833	\N	1	en	2025-07-31 13:52:50.503	f	6	0
-44	2025-07-07 15:27:52.291	2025-08-02 09:45:28.129	\N	\N	en	2025-08-02 09:45:28.1	f	7	1
-3	2025-06-28 22:05:43.533	2025-07-31 13:52:45.483	1	1	en	2025-07-31 13:52:45.158	f	8	0
-27	2025-07-02 14:07:30.586	2025-07-31 00:59:14.724	\N	\N	en	2025-07-31 00:59:14.417	f	3	0
-28	2025-07-02 14:18:58.472	2025-07-31 00:59:15.423	\N	\N	en	2025-07-31 00:59:15.073	f	4	0
-30	2025-07-02 20:55:27.94	2025-07-31 00:59:15.942	\N	\N	en	2025-07-31 00:59:15.645	f	3	0
-7	2025-07-02 00:08:15.505	2025-07-31 13:52:48.874	\N	1	en	2025-07-31 13:52:48.543	f	5	0
-2	2025-06-28 22:05:15.739	2025-07-31 13:52:31.452	1	1	en	2025-07-31 13:52:31.106	f	6	0
-26	2025-07-02 14:06:51.25	2025-07-31 00:59:13.652	\N	\N	en	2025-07-31 00:59:13.33	f	4	0
-4	2025-06-28 22:37:44.743	2025-07-31 13:52:46.465	1	1	en	2025-07-31 13:52:46.131	f	8	0
-6	2025-07-01 01:10:08.461	2025-07-31 13:52:48.069	1	1	en	2025-07-31 13:52:47.727	f	7	0
-9	2025-07-02 00:18:17.982	2025-07-31 13:52:50.257	\N	1	en	2025-07-31 13:52:49.926	f	7	0
-45	2025-07-07 15:34:26.509	2025-08-02 09:45:30.103	\N	\N	en	2025-08-02 09:45:30.065	f	6	1
-43	2025-07-07 15:07:10.695	2025-08-02 09:45:25.752	\N	\N	en	2025-08-02 09:45:25.712	f	6	1
-100	2025-07-08 00:13:06.936	2025-07-08 00:13:10.387	\N	\N	en	\N	f	0	0
-101	2025-07-08 00:13:07.875	2025-07-08 00:13:11.52	\N	\N	en	\N	f	0	0
-102	2025-07-08 00:13:08.835	2025-07-08 00:13:12.949	\N	\N	en	\N	f	0	0
-103	2025-07-08 00:13:09.818	2025-07-08 00:13:15.06	\N	\N	en	\N	f	0	0
-104	2025-07-08 00:13:10.828	2025-07-08 00:13:15.802	\N	\N	en	\N	f	0	0
-105	2025-07-08 00:13:11.798	2025-07-08 00:13:18.317	\N	\N	en	\N	f	0	0
-106	2025-07-08 00:13:12.757	2025-07-08 00:13:19.502	\N	\N	en	\N	f	0	0
-107	2025-07-08 00:13:13.738	2025-07-08 00:13:21.075	\N	\N	en	\N	f	0	0
-108	2025-07-08 00:13:14.691	2025-07-08 00:13:23.911	\N	\N	en	\N	f	0	0
-109	2025-07-08 00:13:15.642	2025-07-08 00:13:24.091	\N	\N	en	\N	f	0	0
-110	2025-07-08 00:13:16.602	2025-07-08 00:13:27.223	\N	\N	en	\N	f	0	0
-111	2025-07-08 00:13:17.575	2025-07-08 00:13:27.591	\N	\N	en	\N	f	0	0
-112	2025-07-08 00:13:18.591	2025-07-08 00:13:30.354	\N	\N	en	\N	f	0	0
-113	2025-07-08 00:13:19.565	2025-07-08 00:13:30.746	\N	\N	en	\N	f	0	0
-114	2025-07-08 00:13:20.543	2025-07-08 00:13:33.224	\N	\N	en	\N	f	0	0
-115	2025-07-08 00:13:21.48	2025-07-08 00:13:34.852	\N	\N	en	\N	f	0	0
-116	2025-07-08 00:13:22.44	2025-07-08 00:13:36.812	\N	\N	en	\N	f	0	0
-117	2025-07-08 00:13:23.373	2025-07-08 00:13:37.467	\N	\N	en	\N	f	0	0
-118	2025-07-08 00:13:24.412	2025-07-08 00:13:39.982	\N	\N	en	\N	f	0	0
-119	2025-07-08 00:13:25.381	2025-07-08 00:13:41.376	\N	\N	en	\N	f	0	0
-120	2025-07-08 00:13:26.375	2025-07-08 00:13:43.96	\N	\N	en	\N	f	0	0
-121	2025-07-08 00:13:27.288	2025-07-08 00:13:44.774	\N	\N	en	\N	f	0	0
-123	2025-07-08 00:13:29.164	2025-07-08 00:13:48.355	\N	\N	en	\N	f	0	0
-122	2025-07-08 00:13:28.193	2025-07-08 00:13:48.984	\N	\N	en	\N	f	0	0
-124	2025-07-08 00:13:30.091	2025-07-08 00:13:52.591	\N	\N	en	\N	f	0	0
-125	2025-07-08 00:13:31.045	2025-07-08 00:13:52.968	\N	\N	en	\N	f	0	0
-126	2025-07-08 00:13:32.037	2025-07-08 00:13:55.483	\N	\N	en	\N	f	0	0
-127	2025-07-08 00:13:32.974	2025-07-08 00:13:56.168	\N	\N	en	\N	f	0	0
-128	2025-07-08 00:13:33.977	2025-07-08 00:13:58.355	\N	\N	en	\N	f	0	0
-129	2025-07-08 00:13:34.946	2025-07-08 00:13:59.534	\N	\N	en	\N	f	0	0
-131	2025-07-09 02:31:19.396	2025-07-09 02:31:19.396	\N	\N	en	\N	f	0	0
-132	2025-07-09 19:47:14.981	2025-07-09 19:47:14.981	\N	\N	en	\N	f	0	0
-51	2025-07-07 15:57:47.635	2025-07-10 02:10:56.552	\N	\N	en	2025-07-10 02:10:56.203	f	1	0
-130	2025-07-09 02:16:30.452	2025-07-10 09:42:34.919	\N	1	en	\N	f	0	0
-141	2025-07-15 18:28:36.869	2025-07-15 18:28:36.869	\N	\N	en	\N	f	0	0
-139	2025-07-15 14:53:00.603	2025-07-15 14:53:00.603	\N	\N	en	\N	f	0	0
-145	2025-07-18 14:29:29.087	2025-07-18 14:29:29.087	\N	\N	zh	\N	f	0	0
-146	2025-07-18 18:07:48.678	2025-07-18 18:07:48.678	\N	\N	zh	\N	f	0	0
-134	2025-07-14 22:43:34.208	2025-08-02 09:45:05.744	\N	\N	en	2025-08-02 09:45:05.696	f	3	0
-42	2025-07-07 14:43:19.693	2025-08-02 09:45:21.536	\N	\N	en	2025-08-02 09:45:21.504	f	8	1
-133	2025-07-14 10:17:29.301	2025-08-02 09:45:32.721	\N	\N	en	2025-08-02 09:45:32.691	f	6	1
-148	2025-08-02 18:53:36.036	2025-08-02 18:53:36.036	\N	\N	en	\N	f	0	0
-29	2025-07-02 14:39:06.405	2025-07-31 00:59:15.803	\N	\N	en	2025-07-31 00:59:15.452	f	4	0
-1	2025-06-27 09:06:57.998	2025-07-31 13:29:21.81	1	1	en	2025-07-31 13:29:21.451	t	11	0
-5	2025-06-29 00:21:56.157	2025-07-31 13:52:47.132	1	1	en	2025-07-31 13:52:46.806	f	9	0
-8	2025-07-02 00:16:17.349	2025-07-31 13:52:49.403	\N	1	en	2025-07-31 13:52:49.089	f	6	0
-135	2025-07-15 14:37:59.731	2025-07-31 14:05:08.141	\N	\N	en	2025-07-31 14:05:07.818	f	1	0
-136	2025-07-15 14:40:58.372	2025-07-31 14:06:16.722	\N	\N	en	2025-07-31 14:06:16.406	f	1	0
-137	2025-07-15 14:42:41.507	2025-07-31 14:06:18.662	\N	\N	en	2025-07-31 14:06:18.341	f	1	0
-138	2025-07-15 14:44:33.972	2025-07-31 14:06:20.764	\N	\N	en	2025-07-31 14:06:20.442	f	5	0
-140	2025-07-15 18:03:56.994	2025-08-02 02:52:12.303	\N	\N	en	2025-08-02 02:52:12.269	f	6	0
-142	2025-07-15 19:57:24.691	2025-08-02 02:52:42.896	\N	\N	en	2025-08-02 02:52:42.864	f	8	0
-143	2025-07-18 01:43:24.736	2025-08-02 02:52:46.133	\N	\N	en	2025-08-02 02:52:46.049	f	8	0
-144	2025-07-18 14:24:16.429	2025-08-02 02:52:48.557	\N	\N	en	2025-08-02 02:52:48.531	f	8	0
-147	2025-07-18 18:45:49.378	2025-08-02 02:52:51.088	\N	\N	en	2025-08-02 02:52:51.053	f	8	0
-\.
-
-
---
--- Data for Name: flashcards_components; Type: TABLE DATA; Schema: public; Owner: strapi
---
-
-COPY public.flashcards_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
-36	1	1	a.user-word-ref	content	1
-37	3	3	a.word-ref	content	1
-38	4	1	a.sent-ref	content	1
-39	5	4	a.word-ref	content	1
-40	6	2	a.user-word-ref	content	1
-49	15	11	a.user-word-ref	content	1
-50	14	10	a.user-word-ref	content	1
-51	13	9	a.user-word-ref	content	1
-52	12	8	a.user-word-ref	content	1
-53	11	7	a.user-word-ref	content	1
-54	10	6	a.user-word-ref	content	1
-55	9	5	a.user-word-ref	content	1
-56	8	4	a.user-word-ref	content	1
-57	7	3	a.user-word-ref	content	1
-58	16	12	a.user-word-ref	content	1
-59	17	13	a.user-word-ref	content	1
-60	18	14	a.user-word-ref	content	1
-61	19	15	a.user-word-ref	content	1
-62	20	16	a.user-word-ref	content	1
-63	21	17	a.user-word-ref	content	1
-64	22	18	a.user-word-ref	content	1
-65	23	19	a.user-word-ref	content	1
-66	24	20	a.user-word-ref	content	1
-67	25	21	a.user-word-ref	content	1
-68	26	22	a.user-word-ref	content	1
-69	27	23	a.user-word-ref	content	1
-70	28	24	a.user-word-ref	content	1
-71	29	25	a.user-word-ref	content	1
-72	30	26	a.user-word-ref	content	1
-74	2	1	a.user-sent-ref	content	1
-75	31	27	a.user-word-ref	content	1
-76	32	28	a.user-word-ref	content	1
-77	33	29	a.user-word-ref	content	1
-78	34	30	a.user-word-ref	content	1
-79	35	31	a.user-word-ref	content	1
-80	36	32	a.user-word-ref	content	1
-81	37	33	a.user-word-ref	content	1
-82	38	36	a.user-word-ref	content	1
-83	39	37	a.user-word-ref	content	1
-84	40	38	a.user-word-ref	content	1
-85	41	39	a.user-word-ref	content	1
-86	42	40	a.user-word-ref	content	1
-87	43	41	a.user-word-ref	content	1
-88	44	42	a.user-word-ref	content	1
-89	45	43	a.user-word-ref	content	1
-90	46	44	a.user-word-ref	content	1
-91	47	45	a.user-word-ref	content	1
-93	49	47	a.user-word-ref	content	1
-94	50	48	a.user-word-ref	content	1
-95	51	49	a.user-word-ref	content	1
-96	52	50	a.user-word-ref	content	1
-97	53	51	a.user-word-ref	content	1
-98	54	52	a.user-word-ref	content	1
-99	55	53	a.user-word-ref	content	1
-100	56	54	a.user-word-ref	content	1
-101	57	55	a.user-word-ref	content	1
-102	58	56	a.user-word-ref	content	1
-103	59	57	a.user-word-ref	content	1
-104	60	58	a.user-word-ref	content	1
-105	61	59	a.user-word-ref	content	1
-106	62	60	a.user-word-ref	content	1
-107	63	61	a.user-word-ref	content	1
-108	64	62	a.user-word-ref	content	1
-109	65	63	a.user-word-ref	content	1
-110	66	64	a.user-word-ref	content	1
-111	67	65	a.user-word-ref	content	1
-112	68	66	a.user-word-ref	content	1
-113	69	67	a.user-word-ref	content	1
-114	70	68	a.user-word-ref	content	1
-115	71	69	a.user-word-ref	content	1
-116	72	70	a.user-word-ref	content	1
-117	73	71	a.user-word-ref	content	1
-118	74	72	a.user-word-ref	content	1
-119	75	73	a.user-word-ref	content	1
-120	76	74	a.user-word-ref	content	1
-121	77	75	a.user-word-ref	content	1
-122	78	76	a.user-word-ref	content	1
-123	79	77	a.user-word-ref	content	1
-124	80	78	a.user-word-ref	content	1
-125	81	79	a.user-word-ref	content	1
-126	82	80	a.user-word-ref	content	1
-127	83	81	a.user-word-ref	content	1
-128	84	82	a.user-word-ref	content	1
-129	85	83	a.user-word-ref	content	1
-130	86	84	a.user-word-ref	content	1
-131	87	85	a.user-word-ref	content	1
-132	88	86	a.user-word-ref	content	1
-133	89	87	a.user-word-ref	content	1
-134	90	88	a.user-word-ref	content	1
-135	91	89	a.user-word-ref	content	1
-136	92	90	a.user-word-ref	content	1
-137	93	91	a.user-word-ref	content	1
-138	94	92	a.user-word-ref	content	1
-139	95	93	a.user-word-ref	content	1
-140	96	94	a.user-word-ref	content	1
-141	97	95	a.user-word-ref	content	1
-142	98	96	a.user-word-ref	content	1
-143	99	97	a.user-word-ref	content	1
-144	100	98	a.user-word-ref	content	1
-145	101	99	a.user-word-ref	content	1
-146	102	100	a.user-word-ref	content	1
-147	103	101	a.user-word-ref	content	1
-148	104	102	a.user-word-ref	content	1
-149	105	103	a.user-word-ref	content	1
-150	106	104	a.user-word-ref	content	1
-151	107	105	a.user-word-ref	content	1
-152	108	106	a.user-word-ref	content	1
-153	109	107	a.user-word-ref	content	1
-154	110	108	a.user-word-ref	content	1
-155	111	109	a.user-word-ref	content	1
-156	112	110	a.user-word-ref	content	1
-157	113	111	a.user-word-ref	content	1
-158	114	112	a.user-word-ref	content	1
-159	115	113	a.user-word-ref	content	1
-161	117	115	a.user-word-ref	content	1
-162	118	116	a.user-word-ref	content	1
-163	119	117	a.user-word-ref	content	1
-164	120	118	a.user-word-ref	content	1
-165	121	119	a.user-word-ref	content	1
-168	124	122	a.user-word-ref	content	1
-169	125	123	a.user-word-ref	content	1
-171	127	125	a.user-word-ref	content	1
-172	128	126	a.user-word-ref	content	1
-173	129	127	a.user-word-ref	content	1
-160	116	114	a.user-word-ref	content	1
-166	122	120	a.user-word-ref	content	1
-167	123	121	a.user-word-ref	content	1
-170	126	124	a.user-word-ref	content	1
-175	131	129	a.user-word-ref	content	1
-176	132	130	a.user-word-ref	content	1
-177	130	128	a.user-word-ref	content	1
-183	48	46	a.user-word-ref	content	1
-184	133	131	a.user-word-ref	content	1
-185	134	132	a.user-word-ref	content	1
-186	135	133	a.user-word-ref	content	1
-187	136	134	a.user-word-ref	content	1
-188	137	135	a.user-word-ref	content	1
-189	138	136	a.user-word-ref	content	1
-190	139	137	a.user-word-ref	content	1
-191	140	138	a.user-word-ref	content	1
-192	141	139	a.user-word-ref	content	1
-193	142	140	a.user-word-ref	content	1
-194	143	141	a.user-word-ref	content	1
-195	144	142	a.user-word-ref	content	1
-196	145	143	a.user-word-ref	content	1
-197	146	144	a.user-word-ref	content	1
-198	147	145	a.user-word-ref	content	1
-199	148	146	a.user-word-ref	content	1
-\.
-
-
---
--- Data for Name: flashcards_lesson_links; Type: TABLE DATA; Schema: public; Owner: strapi
---
-
-COPY public.flashcards_lesson_links (id, flashcard_id, lesson_id, flashcard_order) FROM stdin;
-1	5	1	1
+421	2025-07-07 17:09:39.931	2025-08-03 21:32:25.866	\N	\N	en	\N	f	0	0
+368	2025-07-01 17:27:11.407	2025-08-03 21:31:40.417	\N	\N	en	2025-07-06 14:26:40.437	f	3	0
+425	2025-07-01 17:19:27.722	2025-08-03 21:32:26.045	\N	\N	en	2025-07-31 06:52:50.503	f	6	0
+360	2025-07-05 17:54:28.143	2025-08-03 21:31:40.449	\N	\N	en	2025-07-06 14:18:28.915	f	1	0
+426	2025-07-07 17:09:36.192	2025-08-03 21:32:26.138	\N	\N	en	\N	f	0	0
+364	2025-07-05 17:31:27.887	2025-08-03 21:31:40.751	\N	\N	en	2025-07-06 14:18:27.181	f	1	0
+428	2025-07-07 17:09:39.008	2025-08-03 21:32:26.202	\N	\N	en	\N	f	0	0
+366	2025-07-07 08:56:13.37	2025-08-03 21:31:40.938	\N	\N	en	2025-07-09 19:09:29.242	f	1	0
+427	2025-07-07 17:09:33.304	2025-08-03 21:32:26.266	\N	\N	en	\N	f	0	0
+431	2025-07-01 17:18:17.982	2025-08-03 21:32:31.013	\N	\N	en	2025-07-31 06:52:49.926	f	7	0
+370	2025-07-07 09:59:13.186	2025-08-03 21:31:45.56	\N	\N	en	\N	f	0	0
+434	2025-07-02 13:55:27.94	2025-08-03 21:32:31.106	\N	\N	en	2025-07-30 17:59:15.645	f	3	0
+374	2025-07-07 08:37:09.202	2025-08-03 21:31:45.609	\N	\N	en	2025-07-10 05:14:03.955	f	7	0
+429	2025-06-30 18:10:08.461	2025-08-03 21:32:31.331	\N	\N	en	2025-07-31 06:52:47.727	f	7	0
+377	2025-07-02 03:32:16.142	2025-08-03 21:31:45.778	\N	\N	en	2025-07-06 14:50:09.757	f	2	0
+376	2025-07-02 03:31:41.445	2025-08-03 21:31:45.845	\N	\N	en	2025-07-06 14:50:07.674	f	2	0
+375	2025-07-07 07:40:25.851	2025-08-03 21:31:53.92	\N	\N	en	\N	f	0	0
+437	2025-07-07 08:34:26.509	2025-08-03 21:32:35.063	\N	\N	en	2025-08-02 02:45:30.065	f	6	1
+445	2025-07-02 05:40:13.5	2025-08-03 21:32:35.398	\N	\N	en	2025-08-02 17:00:21.893	f	4	0
+436	2025-07-01 17:49:19.437	2025-08-03 21:32:35.817	\N	\N	en	2025-08-02 16:57:46.156	f	3	0
+380	2025-07-07 10:54:29.235	2025-08-03 21:31:58.088	\N	\N	en	\N	f	0	0
+442	2025-07-02 05:59:39.843	2025-08-03 21:32:35.852	\N	\N	en	2025-08-02 16:57:45.896	f	3	0
+388	2025-07-07 08:48:22.237	2025-08-03 21:31:58.235	\N	\N	en	\N	f	0	0
+444	2025-07-02 05:37:06.574	2025-08-03 21:32:36.926	\N	\N	en	2025-08-02 17:00:02.053	f	2	1
+387	2025-07-07 10:19:23.797	2025-08-03 21:31:58.422	\N	\N	en	\N	f	0	0
+382	2025-07-07 10:45:53.697	2025-08-03 21:31:58.591	\N	\N	en	\N	f	0	0
+386	2025-07-07 10:36:38.724	2025-08-03 21:31:58.969	\N	\N	en	\N	f	0	0
+451	2025-07-07 17:13:08.835	2025-08-03 21:32:40.706	\N	\N	en	\N	f	0	0
+454	2025-07-02 05:15:22.24	2025-08-03 21:32:41.13	\N	\N	en	2025-08-02 16:59:34.136	f	3	0
+455	2025-07-02 17:33:13	2025-08-03 21:32:41.203	\N	\N	en	2025-08-02 16:57:48.55	f	1	1
+398	2025-07-07 16:47:09.191	2025-08-03 21:32:03.268	\N	\N	en	\N	f	0	0
+449	2025-07-07 17:13:11.798	2025-08-03 21:32:41.206	\N	\N	en	\N	f	0	0
+393	2025-07-07 16:47:07.271	2025-08-03 21:32:03.655	\N	\N	en	\N	f	0	0
+453	2025-07-05 17:30:36.668	2025-08-03 21:32:41.397	\N	\N	en	2025-08-02 16:57:46.643	f	2	0
+394	2025-07-07 17:08:55.672	2025-08-03 21:32:03.853	\N	\N	en	\N	f	0	0
+395	2025-07-07 16:47:08.243	2025-08-03 21:32:04.033	\N	\N	en	\N	f	0	0
+396	2025-07-07 16:47:04.406	2025-08-03 21:32:04.126	\N	\N	en	\N	f	0	0
+462	2025-07-07 17:13:18.591	2025-08-03 21:32:45.848	\N	\N	en	\N	f	0	0
+463	2025-07-07 17:13:14.691	2025-08-03 21:32:46.101	\N	\N	en	\N	f	0	0
+461	2025-07-07 17:13:22.44	2025-08-03 21:32:46.229	\N	\N	en	\N	f	0	0
+458	2025-07-07 17:13:17.575	2025-08-03 21:32:46.518	\N	\N	en	\N	f	0	0
+400	2025-07-07 17:08:57.685	2025-08-03 21:32:08.218	\N	\N	en	\N	f	0	0
+465	2025-07-07 17:13:16.602	2025-08-03 21:32:46.609	\N	\N	en	\N	f	0	0
+406	2025-07-07 17:08:54.748	2025-08-03 21:32:08.43	\N	\N	en	\N	f	0	0
+399	2025-07-07 17:08:58.657	2025-08-03 21:32:09.313	\N	\N	en	\N	f	0	0
+408	2025-07-07 17:09:03.438	2025-08-03 21:32:09.313	\N	\N	en	\N	f	0	0
+404	2025-07-07 17:08:56.675	2025-08-03 21:32:12.163	\N	\N	en	\N	f	0	0
+467	2025-07-07 17:13:27.288	2025-08-03 21:32:50.653	\N	\N	en	\N	f	0	0
+469	2025-07-07 17:13:25.381	2025-08-03 21:32:50.652	\N	\N	en	\N	f	0	0
+470	2025-07-07 17:13:23.373	2025-08-03 21:32:50.883	\N	\N	en	\N	f	0	0
+466	2025-07-07 17:13:26.375	2025-08-03 21:32:51.062	\N	\N	en	\N	f	0	0
+409	2025-07-07 17:09:27.594	2025-08-03 21:32:16.132	\N	\N	en	\N	f	0	0
+474	2025-07-07 17:13:30.091	2025-08-03 21:32:53.498	\N	\N	en	\N	f	0	0
+416	2025-07-07 17:09:35.199	2025-08-03 21:32:16.414	\N	\N	en	\N	f	0	0
+411	2025-07-07 17:09:31.381	2025-08-03 21:32:16.511	\N	\N	en	\N	f	0	0
+415	2025-07-07 17:09:05.412	2025-08-03 21:32:16.911	\N	\N	en	\N	f	0	0
+418	2025-07-07 17:09:28.558	2025-08-03 21:32:17.355	\N	\N	en	\N	f	0	0
+477	2025-07-07 17:13:32.974	2025-08-03 21:32:57.731	\N	\N	en	\N	f	0	0
+479	2025-07-15 11:28:36.869	2025-08-03 21:32:57.794	\N	\N	en	\N	f	0	0
+482	2025-08-02 16:44:11.045	2025-08-03 21:32:58.314	\N	\N	en	\N	f	0	0
+484	2025-07-07 08:57:47.635	2025-08-03 21:32:58.622	\N	\N	en	2025-07-09 19:10:56.203	f	1	0
+494	2025-07-17 18:43:24.736	2025-08-03 21:33:10.499	\N	\N	en	2025-08-02 12:43:41.838	f	9	0
+491	2025-07-18 07:24:16.429	2025-08-03 21:33:11.135	\N	\N	en	2025-08-02 12:43:44.396	f	9	0
+485	2025-07-07 07:43:19.693	2025-08-03 21:33:11.226	\N	\N	en	2025-08-02 02:45:21.504	f	8	1
+487	2025-07-14 03:17:29.301	2025-08-03 21:33:11.258	\N	\N	en	2025-08-02 02:45:32.691	f	6	1
+492	2025-08-02 16:44:40.795	2025-08-03 21:33:11.659	\N	\N	en	\N	f	0	0
+500	2025-08-02 16:26:02.995	2025-08-03 21:33:16.026	\N	\N	en	\N	f	0	0
+501	2025-08-02 11:53:36.036	2025-08-03 21:33:16.186	\N	\N	en	2025-08-02 12:49:37.012	f	2	0
+502	2025-07-01 17:16:17.349	2025-08-03 21:33:16.252	\N	\N	en	2025-07-31 06:52:49.089	f	6	0
+499	2025-08-02 16:26:18.946	2025-08-03 21:33:16.569	\N	\N	en	\N	f	0	0
+497	2025-08-02 16:26:53.481	2025-08-03 21:33:17.522	\N	\N	en	\N	f	0	0
+509	2025-08-02 16:28:51.304	2025-08-03 21:33:21.676	\N	\N	en	\N	f	0	0
+510	2025-08-02 16:50:54.958	2025-08-03 21:33:21.739	\N	\N	en	\N	f	0	0
+513	2025-08-02 16:48:23.543	2025-08-03 21:33:21.802	\N	\N	en	\N	f	0	0
+511	2025-08-02 16:30:19.521	2025-08-03 21:33:22.09	\N	\N	en	\N	f	0	0
+506	2025-08-02 16:50:26.252	2025-08-03 21:33:22.277	\N	\N	en	\N	f	0	0
+523	2025-08-02 16:36:45.186	2025-08-03 21:33:26.432	\N	\N	en	\N	f	0	0
+521	2025-07-15 07:44:33.972	2025-08-03 21:33:26.604	\N	\N	en	2025-07-31 07:06:20.442	f	5	0
+515	2025-08-02 16:34:58.661	2025-08-03 21:33:26.918	\N	\N	en	\N	f	0	0
+519	2025-08-02 16:36:53.224	2025-08-03 21:33:27.039	\N	\N	en	\N	f	0	0
+363	2025-07-02 17:34:21.477	2025-08-03 21:31:40.233	\N	\N	en	2025-07-06 14:14:23.498	f	1	0
+518	2025-08-02 16:37:15.526	2025-08-03 21:33:27.914	\N	\N	en	\N	f	0	0
+532	2025-08-02 16:53:36.863	2025-08-03 21:33:33.751	\N	\N	en	\N	f	0	0
+526	2025-08-02 16:38:50.378	2025-08-03 21:33:33.782	\N	\N	en	\N	f	0	0
+528	2025-08-02 16:53:59.614	2025-08-03 21:33:33.878	\N	\N	en	\N	f	0	0
+525	2025-08-02 16:42:51.182	2025-08-03 21:33:34.126	\N	\N	en	\N	f	0	0
+530	2025-08-02 16:54:09.079	2025-08-03 21:33:34.631	\N	\N	en	\N	f	0	0
+538	2025-08-02 20:30:38.313	2025-08-03 21:33:40.553	\N	\N	en	\N	f	0	0
+536	2025-08-02 20:30:00.872	2025-08-03 21:33:41.048	\N	\N	en	\N	f	0	0
+539	2025-08-02 16:55:00.065	2025-08-03 21:33:41.076	\N	\N	en	\N	f	0	0
+535	2025-08-02 16:55:44.065	2025-08-03 21:33:41.167	\N	\N	en	\N	f	0	0
+541	2025-08-02 16:56:32.703	2025-08-03 21:33:41.2	\N	\N	en	\N	f	0	0
+424	2025-07-07 08:27:52.291	2025-08-03 21:32:25.865	\N	\N	en	2025-08-02 02:45:28.1	f	7	1
+361	2025-07-01 17:19:46.977	2025-08-03 21:31:41.097	\N	\N	en	2025-07-06 14:26:42.11	f	2	0
+419	2025-07-07 09:55:22.4	2025-08-03 21:32:25.971	\N	\N	en	2025-07-10 05:14:51.865	f	1	0
+359	2025-07-05 17:54:53.245	2025-08-03 21:31:41.361	\N	\N	en	2025-07-06 14:26:32.362	f	1	0
+423	2025-07-07 17:09:37.112	2025-08-03 21:32:26.168	\N	\N	en	\N	f	0	0
+420	2025-07-07 17:09:38.039	2025-08-03 21:32:26.293	\N	\N	en	\N	f	0	0
+422	2025-07-07 17:10:41.741	2025-08-03 21:32:26.619	\N	\N	en	\N	f	0	0
+372	2025-07-07 08:49:16.501	2025-08-03 21:31:45.324	\N	\N	en	2025-07-10 04:17:23.684	f	12	0
+369	2025-07-07 10:07:18.436	2025-08-03 21:31:45.533	\N	\N	en	\N	f	0	0
+433	2025-07-02 07:18:58.472	2025-08-03 21:32:30.885	\N	\N	en	2025-07-30 17:59:15.073	f	4	0
+371	2025-07-06 14:28:53.219	2025-08-03 21:31:45.561	\N	\N	en	2025-07-06 14:50:02.988	f	1	0
+435	2025-07-02 07:06:51.25	2025-08-03 21:32:30.886	\N	\N	en	2025-07-30 17:59:13.33	f	4	0
+373	2025-07-06 14:49:40.573	2025-08-03 21:31:45.622	\N	\N	en	2025-07-06 14:50:05.056	f	0	1
+430	2025-07-01 17:08:15.505	2025-08-03 21:32:31.124	\N	\N	en	2025-07-31 06:52:48.543	f	5	0
+378	2025-07-02 03:16:30.841	2025-08-03 21:31:46.24	\N	\N	en	2025-07-06 14:50:06.373	f	3	0
+432	2025-07-02 07:07:30.586	2025-08-03 21:32:31.286	\N	\N	en	2025-07-30 17:59:14.417	f	3	0
+384	2025-07-07 10:32:54.674	2025-08-03 21:31:58.091	\N	\N	en	\N	f	0	0
+439	2025-07-01 17:46:03.056	2025-08-03 21:32:34.962	\N	\N	en	2025-08-02 16:57:46.386	f	4	0
+381	2025-07-07 10:54:28.269	2025-08-03 21:31:58.153	\N	\N	en	\N	f	0	0
+443	2025-07-02 05:32:50.67	2025-08-03 21:32:35.367	\N	\N	en	2025-08-02 16:59:37.629	f	2	1
+383	2025-07-07 10:54:30.398	2025-08-03 21:31:58.221	\N	\N	en	\N	f	0	0
+441	2025-07-07 07:25:52.939	2025-08-03 21:32:35.37	\N	\N	en	2025-08-02 17:02:50.676	f	4	0
+385	2025-07-07 09:50:32.835	2025-08-03 21:31:58.593	\N	\N	en	2025-07-10 05:14:50.56	f	1	0
+440	2025-07-02 05:46:07.357	2025-08-03 21:32:35.544	\N	\N	en	2025-08-02 16:57:45.605	f	2	0
+379	2025-07-07 10:54:31.344	2025-08-03 21:31:58.715	\N	\N	en	\N	f	0	0
+438	2025-07-07 08:07:10.695	2025-08-03 21:32:35.677	\N	\N	en	2025-08-02 02:45:25.712	f	6	1
+397	2025-07-07 16:47:06.321	2025-08-03 21:32:02.945	\N	\N	en	\N	f	0	0
+452	2025-07-07 17:13:06.936	2025-08-03 21:32:40.9	\N	\N	en	\N	f	0	0
+389	2025-07-07 16:47:10.186	2025-08-03 21:32:03.299	\N	\N	en	\N	f	0	0
+447	2025-07-07 17:13:12.757	2025-08-03 21:32:40.92	\N	\N	en	\N	f	0	0
+390	2025-07-07 16:47:05.401	2025-08-03 21:32:03.313	\N	\N	en	\N	f	0	0
+448	2025-07-07 17:13:09.818	2025-08-03 21:32:40.988	\N	\N	en	\N	f	0	0
+391	2025-07-07 17:08:53.728	2025-08-03 21:32:03.388	\N	\N	en	\N	f	0	0
+450	2025-07-07 17:13:10.828	2025-08-03 21:32:41.363	\N	\N	en	\N	f	0	0
+392	2025-07-07 17:08:52.693	2025-08-03 21:32:03.433	\N	\N	en	\N	f	0	0
+446	2025-07-07 17:13:07.875	2025-08-03 21:32:41.616	\N	\N	en	\N	f	0	0
+407	2025-07-07 17:09:04.462	2025-08-03 21:32:08.046	\N	\N	en	\N	f	0	0
+464	2025-07-07 17:13:19.565	2025-08-03 21:32:45.689	\N	\N	en	\N	f	0	0
+401	2025-07-07 17:09:00.52	2025-08-03 21:32:08.307	\N	\N	en	\N	f	0	0
+459	2025-07-07 17:13:13.738	2025-08-03 21:32:45.85	\N	\N	en	\N	f	0	0
+402	2025-07-07 17:09:01.463	2025-08-03 21:32:08.308	\N	\N	en	\N	f	0	0
+456	2025-07-07 17:13:21.48	2025-08-03 21:32:46.02	\N	\N	en	\N	f	0	0
+403	2025-07-07 17:08:59.591	2025-08-03 21:32:08.488	\N	\N	en	\N	f	0	0
+460	2025-07-07 17:13:15.642	2025-08-03 21:32:46.102	\N	\N	en	\N	f	0	0
+405	2025-07-07 17:09:02.399	2025-08-03 21:32:09.101	\N	\N	en	\N	f	0	0
+457	2025-07-07 17:13:20.543	2025-08-03 21:32:46.548	\N	\N	en	\N	f	0	0
+410	2025-07-07 17:09:29.548	2025-08-03 21:32:16.101	\N	\N	en	\N	f	0	0
+468	2025-07-07 17:13:32.037	2025-08-03 21:32:50.804	\N	\N	en	\N	f	0	0
+414	2025-07-07 08:52:20.828	2025-08-03 21:32:16.164	\N	\N	en	2025-07-08 13:53:38.172	f	1	0
+472	2025-07-07 17:13:31.045	2025-08-03 21:32:51.123	\N	\N	en	\N	f	0	0
+413	2025-07-07 17:09:34.248	2025-08-03 21:32:16.602	\N	\N	en	\N	f	0	0
+473	2025-07-07 17:13:29.164	2025-08-03 21:32:51.297	\N	\N	en	\N	f	0	0
+417	2025-07-07 17:09:32.353	2025-08-03 21:32:16.755	\N	\N	en	\N	f	0	0
+475	2025-07-07 17:13:28.193	2025-08-03 21:32:52.385	\N	\N	en	\N	f	0	0
+412	2025-07-07 17:09:30.443	2025-08-03 21:32:21.979	\N	\N	en	\N	f	0	0
+471	2025-07-07 17:13:24.412	2025-08-03 21:32:52.629	\N	\N	en	\N	f	0	0
+476	2025-07-07 17:13:33.977	2025-08-03 21:32:57.376	\N	\N	en	\N	f	0	0
+483	2025-07-08 19:31:19.396	2025-08-03 21:32:57.89	\N	\N	en	\N	f	0	0
+478	2025-07-07 17:13:34.946	2025-08-03 21:32:57.918	\N	\N	en	\N	f	0	0
+480	2025-07-09 12:47:14.981	2025-08-03 21:32:58.314	\N	\N	en	\N	f	0	0
+481	2025-07-15 07:53:00.603	2025-08-03 21:33:06.538	\N	\N	en	\N	f	0	0
+493	2025-07-18 11:45:49.378	2025-08-03 21:33:10.434	\N	\N	en	2025-08-02 12:43:47.505	f	9	0
+488	2025-07-02 07:39:06.405	2025-08-03 21:33:10.628	\N	\N	en	2025-07-30 17:59:15.452	f	4	0
+490	2025-07-14 15:43:34.208	2025-08-03 21:33:10.659	\N	\N	en	2025-08-02 02:45:05.696	f	3	0
+486	2025-07-15 11:03:56.994	2025-08-03 21:33:10.853	\N	\N	en	2025-08-02 12:43:34.985	f	7	0
+489	2025-07-15 12:57:24.691	2025-08-03 21:33:11.66	\N	\N	en	2025-08-02 12:43:38.548	f	9	0
+495	2025-08-02 16:27:04.214	2025-08-03 21:33:16.026	\N	\N	en	\N	f	0	0
+503	2025-08-02 16:27:52.062	2025-08-03 21:33:16.381	\N	\N	en	\N	f	0	0
+496	2025-06-27 02:06:57.998	2025-08-03 21:33:16.602	\N	\N	en	2025-07-31 06:29:21.451	t	11	0
+498	2025-08-02 16:45:43.419	2025-08-03 21:33:17.367	\N	\N	en	\N	f	0	0
+507	2025-07-15 07:37:59.731	2025-08-03 21:33:21.677	\N	\N	en	2025-07-31 07:05:07.818	f	1	0
+504	2025-08-02 16:29:35.059	2025-08-03 21:33:21.676	\N	\N	en	\N	f	0	0
+505	2025-08-02 16:29:14.209	2025-08-03 21:33:22.214	\N	\N	en	\N	f	0	0
+508	2025-08-02 16:31:44.481	2025-08-03 21:33:22.247	\N	\N	en	\N	f	0	0
+512	2025-07-15 07:40:58.372	2025-08-03 21:33:22.326	\N	\N	en	2025-07-31 07:06:16.406	f	1	0
+367	2025-07-02 03:04:23.193	2025-08-03 21:31:40.181	\N	\N	en	2025-07-06 14:26:57.954	f	2	0
+362	2025-07-01 17:43:22.852	2025-08-03 21:31:40.45	\N	\N	en	2025-07-06 14:26:37.622	f	3	0
+365	2025-07-05 18:19:02.38	2025-08-03 21:31:41.012	\N	\N	en	2025-07-06 14:26:35.668	f	0	1
+516	2025-08-02 16:38:22.99	2025-08-03 21:33:26.398	\N	\N	en	\N	f	0	0
+520	2025-08-02 16:33:31.993	2025-08-03 21:33:26.754	\N	\N	en	\N	f	0	0
+514	2025-07-15 07:42:41.507	2025-08-03 21:33:27.072	\N	\N	en	2025-07-31 07:06:18.341	f	1	0
+517	2025-08-02 16:38:05.897	2025-08-03 21:33:27.322	\N	\N	en	\N	f	0	0
+522	2025-08-02 16:32:50.473	2025-08-03 21:33:29.261	\N	\N	en	\N	f	0	0
+531	2025-08-02 16:53:26.815	2025-08-03 21:33:33.569	\N	\N	en	\N	f	0	0
+533	2025-08-02 16:42:04.779	2025-08-03 21:33:33.619	\N	\N	en	\N	f	0	0
+529	2025-08-02 16:51:16.963	2025-08-03 21:33:33.875	\N	\N	en	\N	f	0	0
+524	2025-08-02 16:51:30.427	2025-08-03 21:33:33.94	\N	\N	en	\N	f	0	0
+527	2025-08-02 16:40:09.702	2025-08-03 21:33:36.128	\N	\N	en	\N	f	0	0
+543	2025-08-02 20:31:33.839	2025-08-03 21:33:40.206	\N	\N	en	\N	f	0	0
+537	2025-08-02 20:30:18.693	2025-08-03 21:33:40.837	\N	\N	en	\N	f	0	0
+542	2025-08-02 16:54:27.327	2025-08-03 21:33:40.9	\N	\N	en	\N	f	0	0
+551	2025-08-02 20:38:35.01	2025-08-03 21:33:49.652	\N	\N	en	\N	f	0	0
+545	2025-08-02 20:37:21.74	2025-08-03 21:33:49.716	\N	\N	en	\N	f	0	0
+557	2025-08-02 20:43:32.439	2025-08-03 21:33:55.461	\N	\N	en	\N	f	0	0
+534	2025-08-02 20:31:48.397	2025-08-03 21:33:41.506	\N	\N	en	\N	f	0	0
+550	2025-08-02 20:32:22.998	2025-08-03 21:33:49.507	\N	\N	en	\N	f	0	0
+555	2025-08-02 20:45:57.011	2025-08-03 21:33:55.613	\N	\N	en	\N	f	0	0
+565	2025-08-02 20:49:10.508	2025-08-03 21:34:00.739	\N	\N	en	\N	f	0	0
+575	2025-08-02 21:01:05.264	2025-08-03 21:34:06.587	\N	\N	en	\N	f	0	0
+588	2025-08-02 21:05:15.868	2025-08-03 21:34:15.975	\N	\N	en	\N	f	0	0
+596	2025-08-02 21:16:03.762	2025-08-03 21:34:21.601	\N	\N	en	\N	f	0	0
+540	2025-08-02 20:31:14.535	2025-08-03 21:33:44.959	\N	\N	en	\N	f	0	0
+548	2025-08-02 20:32:04.18	2025-08-03 21:33:49.715	\N	\N	en	\N	f	0	0
+561	2025-08-02 20:43:11.978	2025-08-03 21:33:55.414	\N	\N	en	\N	f	0	0
+569	2025-08-02 20:53:08.908	2025-08-03 21:34:01.578	\N	\N	en	\N	f	0	0
+577	2025-08-02 20:53:52.389	2025-08-03 21:34:06.095	\N	\N	en	\N	f	0	0
+584	2025-08-02 21:09:11.432	2025-08-03 21:34:15.942	\N	\N	en	\N	f	0	0
+598	2025-08-02 21:17:00.754	2025-08-03 21:34:21.863	\N	\N	en	\N	f	0	0
+544	2025-08-02 20:38:14.166	2025-08-03 21:33:49.836	\N	\N	en	\N	f	0	0
+559	2025-08-02 20:42:34.023	2025-08-03 21:33:56.148	\N	\N	en	\N	f	0	0
+568	2025-08-02 20:47:12.67	2025-08-03 21:34:01.281	\N	\N	en	\N	f	0	0
+582	2025-08-02 20:57:53.418	2025-08-03 21:34:06.588	\N	\N	en	\N	f	0	0
+591	2025-08-02 21:04:27.949	2025-08-03 21:34:17.429	\N	\N	en	\N	f	0	0
+595	2025-08-02 21:10:18.77	2025-08-03 21:34:22.057	\N	\N	en	\N	f	0	0
+546	2025-08-02 20:35:50.032	2025-08-03 21:33:49.527	\N	\N	en	\N	f	0	0
+554	2025-08-02 20:45:43.822	2025-08-03 21:33:56.711	\N	\N	en	\N	f	0	0
+564	2025-08-02 20:46:45.291	2025-08-03 21:34:01.328	\N	\N	en	\N	f	0	0
+578	2025-08-02 20:54:28.272	2025-08-03 21:34:06.392	\N	\N	en	\N	f	0	0
+585	2025-08-02 21:06:33.371	2025-08-03 21:34:16.115	\N	\N	en	\N	f	0	0
+594	2025-08-02 21:15:13.175	2025-08-03 21:34:22.685	\N	\N	en	\N	f	0	0
+549	2025-08-02 20:35:05.449	2025-08-03 21:33:49.869	\N	\N	en	\N	f	0	0
+556	2025-08-02 20:41:14.486	2025-08-03 21:33:55.399	\N	\N	en	\N	f	0	0
+567	2025-08-02 20:52:16.87	2025-08-03 21:34:01.297	\N	\N	en	\N	f	0	0
+574	2025-08-02 20:57:24.09	2025-08-03 21:34:06.462	\N	\N	en	\N	f	0	0
+589	2025-08-02 21:06:05.165	2025-08-03 21:34:15.947	\N	\N	en	\N	f	0	0
+599	2025-08-02 21:18:08.486	2025-08-03 21:34:23.037	\N	\N	en	\N	f	0	0
+552	2025-08-02 20:40:47.84	2025-08-03 21:33:49.533	\N	\N	en	\N	f	0	0
+562	2025-08-02 20:44:46.129	2025-08-03 21:33:55.674	\N	\N	en	\N	f	0	0
+573	2025-08-02 20:49:01.178	2025-08-03 21:34:01.172	\N	\N	en	\N	f	0	0
+580	2025-08-02 20:58:48.057	2025-08-03 21:34:11.293	\N	\N	en	\N	f	0	0
+590	2025-08-02 21:01:34.227	2025-08-03 21:34:16.767	\N	\N	en	\N	f	0	0
+602	2025-08-02 21:12:04.576	2025-08-03 21:34:35.837	\N	\N	en	\N	f	0	0
+553	2025-08-02 20:37:48.485	2025-08-03 21:33:49.228	\N	\N	en	\N	f	0	0
+558	2025-08-02 20:46:15.076	2025-08-03 21:33:55.765	\N	\N	en	\N	f	0	0
+570	2025-08-02 20:48:35.001	2025-08-03 21:34:01.2	\N	\N	en	\N	f	0	0
+583	2025-08-02 20:58:12.103	2025-08-03 21:34:05.862	\N	\N	en	\N	f	0	0
+593	2025-08-02 21:10:06.888	2025-08-03 21:34:16.329	\N	\N	en	\N	f	0	0
+603	2025-08-02 21:13:13.96	2025-08-03 21:34:21.732	\N	\N	en	\N	f	0	0
+563	2025-08-02 20:44:04.147	2025-08-03 21:33:56.339	\N	\N	en	\N	f	0	0
+572	2025-08-02 20:46:55.723	2025-08-03 21:34:01.173	\N	\N	en	\N	f	0	0
+579	2025-08-02 20:58:30.702	2025-08-03 21:34:06.852	\N	\N	en	\N	f	0	0
+587	2025-08-02 21:01:58.482	2025-08-03 21:34:15.946	\N	\N	en	\N	f	0	0
+600	2025-08-02 21:17:42.129	2025-08-03 21:34:22.685	\N	\N	en	\N	f	0	0
+566	2025-08-02 20:50:53.576	2025-08-03 21:34:00.991	\N	\N	en	\N	f	0	0
+576	2025-08-02 21:00:24.505	2025-08-03 21:34:07.445	\N	\N	en	\N	f	0	0
+586	2025-08-02 21:01:44.116	2025-08-03 21:34:16.162	\N	\N	en	\N	f	0	0
+601	2025-08-02 21:14:19.288	2025-08-03 21:34:23.241	\N	\N	en	\N	f	0	0
+604	2025-08-02 21:23:01.085	2025-08-03 21:34:40.594	\N	\N	en	\N	f	0	0
+619	2025-08-02 21:25:42.043	2025-08-03 21:34:46.404	\N	\N	en	\N	f	0	0
+625	2025-08-02 21:30:32.208	2025-08-03 21:34:52.649	\N	\N	en	\N	f	0	0
+605	2025-08-02 21:20:16.528	2025-08-03 21:34:40.88	\N	\N	en	\N	f	0	0
+621	2025-08-02 21:23:38.474	2025-08-03 21:34:47.256	\N	\N	en	\N	f	0	0
+629	2025-08-02 21:28:45.831	2025-08-03 21:34:53.17	\N	\N	en	\N	f	0	0
+635	2025-08-02 21:31:26.313	2025-08-03 21:35:26.937	\N	\N	en	\N	f	0	0
+606	2025-08-02 21:20:39.293	2025-08-03 21:34:40.879	\N	\N	en	\N	f	0	0
+618	2025-08-02 21:24:55.053	2025-08-03 21:34:46.915	\N	\N	en	\N	f	0	0
+624	2025-08-02 21:29:07.109	2025-08-03 21:34:52.65	\N	\N	en	\N	f	0	0
+607	2025-08-02 21:21:06.275	2025-08-03 21:34:40.439	\N	\N	en	\N	f	0	0
+614	2025-08-02 21:26:51.163	2025-08-03 21:34:46.699	\N	\N	en	\N	f	0	0
+633	2025-08-02 21:30:04.894	2025-08-03 21:34:53.135	\N	\N	en	\N	f	0	0
+634	2025-08-02 21:32:31.776	2025-08-03 21:35:27.375	\N	\N	en	\N	f	0	0
+608	2025-08-02 21:19:58.136	2025-08-03 21:34:40.118	\N	\N	en	\N	f	0	0
+617	2025-08-02 21:27:01.031	2025-08-03 21:34:46.698	\N	\N	en	\N	f	0	0
+627	2025-08-02 21:29:51.797	2025-08-03 21:34:52.964	\N	\N	en	\N	f	0	0
+609	2025-08-02 21:18:54.086	2025-08-03 21:34:40.624	\N	\N	en	\N	f	0	0
+623	2025-08-02 21:25:24.704	2025-08-03 21:34:47.814	\N	\N	en	\N	f	0	0
+632	2025-08-02 21:28:30.903	2025-08-03 21:34:53.136	\N	\N	en	\N	f	0	0
+610	2025-08-02 21:22:17.737	2025-08-03 21:34:42.148	\N	\N	en	\N	f	0	0
+620	2025-08-02 21:23:12.936	2025-08-03 21:34:48.225	\N	\N	en	\N	f	0	0
+631	2025-08-02 21:28:14.015	2025-08-03 21:34:52.809	\N	\N	en	\N	f	0	0
+611	2025-08-02 21:22:39.942	2025-08-03 21:34:40.88	\N	\N	en	\N	f	0	0
+615	2025-08-02 21:24:14.184	2025-08-03 21:34:46.727	\N	\N	en	\N	f	0	0
+630	2025-08-02 21:29:24.926	2025-08-03 21:35:21.912	\N	\N	en	\N	f	0	0
+636	2025-08-02 21:30:58.169	2025-08-03 21:43:20.181	\N	\N	en	2025-08-03 21:43:19.857	f	1	1
+612	2025-08-02 21:21:37.008	2025-08-03 21:34:40.5	\N	\N	en	\N	f	0	0
+616	2025-08-02 21:26:36.729	2025-08-03 21:34:48.342	\N	\N	en	\N	f	0	0
+628	2025-08-02 21:27:56.032	2025-08-03 21:34:52.549	\N	\N	en	\N	f	0	0
+613	2025-08-02 21:19:34.648	2025-08-03 21:34:42.02	\N	\N	en	\N	f	0	0
+622	2025-08-02 21:23:26.234	2025-08-03 21:34:46.53	\N	\N	en	\N	f	0	0
+626	2025-08-02 21:30:14.761	2025-08-03 21:34:52.296	\N	\N	en	\N	f	0	0
+637	2025-08-03 22:57:45.449	2025-08-03 22:57:45.449	\N	\N	en	\N	f	0	0
+547	2025-08-02 20:36:48.452	2025-08-03 21:33:51.323	\N	\N	en	\N	f	0	0
+560	2025-08-02 20:41:04.932	2025-08-03 21:33:55.553	\N	\N	en	\N	f	0	0
+571	2025-08-02 20:49:30.789	2025-08-03 21:34:01.018	\N	\N	en	\N	f	0	0
+581	2025-08-02 20:59:18.521	2025-08-03 21:34:06.132	\N	\N	en	\N	f	0	0
+592	2025-08-02 21:07:43.298	2025-08-03 21:34:17.19	\N	\N	en	\N	f	0	0
+597	2025-08-02 21:11:22.531	2025-08-03 21:34:22.331	\N	\N	en	\N	f	0	0
 \.
 
 
@@ -5901,39 +6144,284 @@ COPY public.flashcards_localizations_links (id, flashcard_id, inv_flashcard_id, 
 --
 
 COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flashcard_order) FROM stdin;
-7	48	5	1
-54	1	5	2
-9	46	3	1
-15	42	3	2
-46	3	3	3
-47	4	3	4
-59	5	4	1
-60	6	3	5
-75	134	1	4
-76	135	1	5
-63	9	3	6
-77	136	1	6
-78	137	1	7
-72	44	3	7
-1	50	1	1
-3	51	1	2
-4	130	1	3
-99	142	3	8
-100	143	3	9
-101	144	3	10
-10	43	2	1
-13	133	2	2
-14	45	2	3
-19	26	2	4
-20	28	2	5
-21	29	2	6
-23	138	2	7
-41	8	2	8
-43	10	2	9
-45	2	2	10
-50	7	2	11
-93	140	2	12
-102	147	3	11
+354	424	3	2
+355	421	1	24
+356	419	1	24
+357	425	2	1
+358	426	1	24
+359	428	1	25
+360	427	1	25
+361	420	1	25
+362	423	1	25
+363	422	1	26
+364	433	2	2
+365	435	2	2
+366	431	3	3
+367	434	1	27
+368	430	2	2
+369	432	1	27
+370	429	3	4
+371	439	2	3
+372	437	2	3
+373	443	1	28
+374	441	2	4
+375	445	2	4
+376	440	1	28
+377	438	2	4
+378	436	1	29
+379	442	1	29
+380	444	1	30
+381	451	1	31
+382	452	1	31
+383	447	1	31
+384	448	1	32
+385	454	1	32
+386	449	1	32
+387	455	1	32
+388	450	1	33
+389	453	1	33
+390	446	1	33
+391	464	1	34
+392	459	1	34
+393	462	1	34
+394	456	1	34
+395	460	1	35
+396	463	1	35
+397	461	1	35
+398	458	1	36
+399	457	1	36
+400	465	1	36
+401	469	1	37
+402	467	1	37
+403	468	1	37
+404	470	1	37
+405	466	1	38
+406	472	1	38
+407	473	1	38
+408	475	1	39
+409	471	1	39
+410	474	1	40
+411	476	1	41
+412	477	1	42
+413	479	1	42
+414	483	1	42
+415	478	1	42
+416	480	1	43
+417	482	1	43
+418	484	1	43
+419	481	1	44
+420	493	4	1
+421	494	4	1
+422	488	2	5
+423	490	1	45
+424	486	3	5
+425	491	4	2
+426	485	3	6
+427	487	2	6
+428	492	1	46
+429	489	4	3
+430	500	1	47
+431	495	1	47
+432	501	1	47
+433	502	2	7
+434	503	1	48
+435	499	1	48
+436	496	5	2
+437	498	1	49
+438	497	1	49
+440	504	1	50
+439	507	1	50
+441	509	1	50
+442	510	1	50
+443	513	1	50
+444	511	1	51
+445	505	1	51
+294	367	1	1
+295	363	1	1
+296	368	1	1
+297	362	1	1
+298	360	1	1
+299	364	1	2
+300	366	1	2
+301	365	1	2
+302	361	1	3
+303	359	1	3
+304	372	5	1
+305	369	1	4
+306	370	1	4
+307	371	1	4
+308	373	1	4
+309	374	3	1
+310	377	1	4
+311	376	1	5
+312	378	1	6
+313	375	1	7
+314	380	1	8
+315	384	1	8
+316	381	1	8
+317	383	1	8
+318	388	1	8
+319	387	1	9
+320	382	1	9
+321	385	1	9
+322	379	1	9
+323	386	1	10
+324	397	1	11
+325	398	1	12
+326	389	1	12
+327	390	1	12
+328	391	1	12
+329	392	1	12
+330	393	1	13
+331	394	1	13
+332	395	1	14
+333	396	1	14
+334	407	1	15
+335	400	1	15
+336	401	1	15
+337	402	1	15
+338	406	1	16
+339	403	1	16
+340	405	1	17
+341	399	1	17
+342	408	1	17
+343	404	1	18
+344	410	1	19
+345	409	1	19
+346	414	1	19
+347	416	1	20
+348	411	1	20
+349	413	1	20
+350	417	1	21
+351	415	1	21
+352	418	1	22
+353	412	1	23
+446	508	1	51
+447	506	1	51
+448	512	1	51
+449	516	1	52
+450	523	1	52
+451	521	2	8
+452	520	1	53
+453	515	1	53
+454	519	1	53
+455	514	1	53
+456	517	1	54
+457	518	1	55
+458	522	1	56
+459	531	1	57
+460	533	1	57
+461	532	1	57
+462	526	1	57
+463	528	1	58
+464	529	1	58
+465	524	1	58
+466	525	1	58
+467	530	1	59
+468	527	1	60
+469	543	1	61
+470	538	1	62
+471	537	1	62
+472	542	1	63
+473	536	1	63
+474	539	1	63
+475	535	1	63
+476	541	1	63
+477	534	1	64
+478	540	1	65
+479	553	1	66
+480	550	1	66
+481	546	1	67
+482	552	1	67
+483	551	1	67
+484	548	1	67
+485	545	1	67
+486	544	1	68
+487	549	1	68
+488	547	1	69
+489	556	1	70
+490	561	1	70
+491	557	1	70
+492	560	1	70
+493	555	1	70
+494	562	1	70
+495	558	1	71
+496	559	1	72
+497	563	1	72
+498	554	1	73
+499	565	1	74
+500	566	1	74
+501	571	1	74
+502	572	1	75
+503	573	1	75
+504	570	1	75
+505	567	1	75
+506	568	1	75
+507	564	1	75
+508	569	1	76
+509	583	1	77
+510	577	1	77
+511	581	1	77
+512	578	1	78
+513	574	1	78
+514	582	1	78
+515	575	1	78
+516	579	1	79
+517	576	1	80
+518	580	1	81
+519	589	1	82
+520	587	1	82
+521	584	1	82
+522	588	1	82
+523	585	1	82
+524	586	1	82
+525	593	1	83
+526	590	1	84
+527	592	1	85
+528	591	1	85
+529	596	1	86
+530	603	1	86
+531	598	1	86
+532	595	1	87
+533	597	1	87
+534	594	1	88
+535	600	1	88
+536	599	1	88
+537	601	1	89
+538	602	1	90
+539	608	1	91
+540	607	1	91
+541	612	1	92
+542	604	1	92
+543	609	1	92
+544	605	1	93
+545	606	1	93
+546	611	1	93
+547	613	1	94
+548	610	1	94
+549	619	1	95
+550	622	1	95
+551	614	1	95
+552	617	1	95
+553	615	1	96
+554	618	1	96
+555	621	1	97
+556	623	1	98
+557	620	1	99
+558	616	1	99
+559	626	1	100
+560	628	1	100
+561	625	1	101
+562	624	1	101
+563	631	1	101
+564	627	1	101
+565	633	1	102
+566	632	1	102
+567	629	1	102
+568	630	1	103
+569	635	1	104
+570	636	1	105
+571	634	1	105
 \.
 
 
@@ -5942,153 +6430,572 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 --
 
 COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) FROM stdin;
-2	1	8	1
-3	2	8	2
-4	3	8	3
-5	4	8	4
-6	5	8	5
-7	6	8	6
-8	7	8	7
-9	8	8	8
-10	9	8	9
-11	10	8	10
-12	11	8	11
-13	12	8	12
-14	13	8	13
-15	14	8	14
-16	15	8	15
-17	16	8	16
-18	17	8	17
-19	18	8	18
-20	19	8	19
-21	20	8	20
-22	21	8	21
-23	22	8	22
-24	23	8	23
-25	24	8	24
-26	25	8	25
-27	26	8	26
-28	27	8	27
-29	28	8	28
-30	29	8	29
-31	30	8	30
-32	31	8	31
-33	32	8	32
-34	33	8	33
-35	34	8	34
-36	35	8	35
-37	36	8	36
-38	37	8	37
-39	38	8	38
-40	39	8	39
-41	40	8	40
-42	41	29	1
-43	42	8	41
-44	43	8	42
-45	44	8	43
-46	45	8	44
-47	46	30	1
-48	47	30	2
-49	48	30	3
-50	49	30	4
-51	50	30	5
-52	51	30	6
-53	52	30	7
-54	53	30	8
-55	54	30	9
-56	55	30	10
-57	56	30	11
-58	57	30	12
-59	58	30	13
-60	59	30	14
-61	60	30	15
-62	61	30	16
-63	62	30	17
-64	63	30	18
-65	64	30	19
-66	65	30	20
-67	66	30	21
-68	67	30	22
-69	68	30	23
-70	69	30	24
-71	70	30	25
-72	71	30	26
-73	72	30	27
-74	73	30	28
-75	74	30	29
-76	75	30	30
-77	76	30	31
-78	77	30	32
-79	78	30	33
-80	79	30	34
-81	80	30	35
-82	81	30	36
-83	82	30	37
-84	83	30	38
-85	84	30	39
-86	85	30	40
-87	86	30	41
-88	87	30	42
-89	88	30	43
-90	89	30	44
-91	90	30	45
-92	91	30	46
-93	92	30	47
-94	93	30	48
-95	94	30	49
-96	95	30	50
-97	96	30	51
-98	97	30	52
-99	98	30	53
-100	99	30	54
-101	100	30	55
-102	101	30	56
-103	102	30	57
-104	103	30	58
-105	104	30	59
-106	105	30	60
-107	106	30	61
-108	107	30	62
-109	108	30	63
-110	109	30	64
-111	110	30	65
-112	111	30	66
-113	112	30	67
-114	113	30	68
-115	114	30	69
-116	115	30	70
-117	116	30	71
-118	117	30	72
-119	118	30	73
-120	119	30	74
-121	120	30	75
-122	121	30	76
-123	122	30	77
-124	123	30	78
-125	124	30	79
-126	125	30	80
-127	126	30	81
-128	127	30	82
-129	128	30	83
-130	129	30	84
-132	131	34	1
-133	132	30	85
-134	133	8	45
-135	134	8	46
-136	135	8	47
-137	136	8	48
-138	137	8	49
-139	138	8	50
-140	139	30	86
-141	140	8	51
-142	141	30	87
-143	142	8	52
-144	143	8	53
-145	144	8	54
-146	145	8	55
-147	146	8	56
-148	147	8	57
-149	148	8	58
+430	429	8	4
+431	430	8	4
+432	431	8	4
+433	433	8	4
+435	435	8	4
+434	432	8	4
+436	434	8	4
+437	436	8	5
+438	438	8	5
+439	437	8	5
+440	445	8	5
+441	440	8	5
+442	441	8	5
+443	444	8	5
+444	439	8	5
+445	442	8	5
+446	443	8	5
+447	446	30	8
+448	447	30	8
+449	449	30	8
+450	448	30	8
+451	450	30	8
+452	452	30	8
+453	451	30	8
+454	453	8	6
+455	454	8	6
+456	455	8	6
+457	457	30	9
+458	456	30	9
+459	458	30	9
+460	462	30	9
+461	461	30	9
+462	460	30	9
+463	459	30	9
+464	463	30	9
+465	464	30	9
+466	465	30	9
+467	466	30	10
+468	468	30	10
+469	467	30	10
+470	471	30	10
+471	469	30	10
+472	470	30	10
+473	472	30	10
+474	473	30	10
+475	474	30	10
+476	475	30	10
+477	477	30	11
+478	476	30	11
+479	479	30	11
+480	478	30	11
+481	483	34	1
+482	480	30	11
+483	481	30	11
+484	484	30	11
+485	482	8	7
+486	485	8	8
+487	486	8	8
+488	487	8	8
+489	488	8	8
+490	491	8	8
+491	493	8	8
+492	489	8	8
+493	494	8	8
+494	490	8	8
+495	492	8	8
+496	496	8	9
+497	495	8	9
+498	501	8	9
+499	498	8	9
+500	497	8	9
+501	499	8	9
+502	500	8	9
+503	502	8	9
+504	503	8	9
+505	504	8	10
+506	509	8	10
+507	507	8	10
+508	508	8	10
+509	506	8	10
+510	505	8	10
+360	359	8	1
+361	360	8	1
+362	363	8	1
+363	362	8	1
+364	361	8	1
+365	364	8	1
+366	365	8	1
+367	366	30	1
+368	367	8	1
+369	368	8	1
+370	371	8	2
+371	370	30	2
+372	369	30	2
+373	372	30	2
+374	373	8	2
+375	375	29	1
+376	376	8	2
+377	374	30	2
+378	378	8	2
+379	377	8	2
+380	380	30	3
+381	379	30	3
+382	383	30	3
+383	384	30	3
+384	381	30	3
+385	385	30	3
+386	386	30	3
+387	382	30	3
+388	387	30	3
+389	388	30	3
+390	389	30	4
+391	394	30	4
+392	390	30	4
+393	392	30	4
+394	398	30	4
+395	397	30	4
+396	393	30	4
+397	396	30	4
+398	395	30	4
+399	391	30	4
+400	399	30	5
+401	400	30	5
+402	403	30	5
+403	401	30	5
+404	402	30	5
+405	405	30	5
+406	404	30	5
+408	407	30	5
+407	406	30	5
+409	408	30	5
+410	413	30	6
+411	409	30	6
+412	412	30	6
+413	410	30	6
+414	411	30	6
+415	416	30	6
+416	414	30	6
+417	415	30	6
+418	417	30	6
+419	418	30	6
+421	419	30	7
+420	424	8	3
+422	421	30	7
+423	420	30	7
+424	422	30	7
+425	425	8	3
+426	423	30	7
+427	426	30	7
+428	428	30	7
+429	427	30	7
+511	510	8	10
+522	519	8	11
+512	511	8	10
+517	515	8	11
+513	512	8	10
+515	514	8	11
+514	513	8	10
+524	523	8	11
+516	517	8	11
+518	516	8	11
+519	518	8	11
+521	521	8	11
+523	522	8	11
+525	524	8	12
+526	532	8	12
+537	541	8	13
+538	540	8	13
+548	549	8	14
+551	548	8	14
+556	556	8	15
+561	561	8	15
+569	569	8	16
+570	567	8	16
+575	574	8	17
+578	577	8	17
+588	589	8	18
+589	584	8	18
+598	598	8	19
+601	599	8	19
+527	531	8	12
+535	534	8	13
+550	550	8	14
+557	555	8	15
+566	565	8	16
+576	575	8	17
+590	588	8	18
+597	596	8	19
+528	526	8	12
+539	538	8	13
+547	544	8	14
+558	559	8	15
+571	568	8	16
+583	582	8	17
+593	591	8	18
+596	595	8	19
+530	527	8	12
+531	530	8	12
+540	539	8	13
+543	542	8	13
+549	547	8	14
+552	551	8	14
+562	560	8	15
+563	563	8	15
+568	572	8	16
+572	571	8	16
+581	579	8	17
+582	581	8	17
+586	587	8	18
+591	592	8	18
+599	597	8	19
+603	600	8	19
+529	525	8	12
+536	535	8	13
+545	546	8	14
+555	554	8	15
+565	564	8	16
+579	578	8	17
+585	585	8	18
+595	594	8	19
+532	533	8	12
+544	543	8	13
+553	552	8	14
+564	562	8	15
+574	573	8	16
+580	580	8	17
+594	590	8	18
+604	602	8	19
+533	529	8	12
+541	537	8	13
+546	545	8	14
+559	557	8	15
+567	566	8	16
+577	576	8	17
+592	586	8	18
+600	601	8	19
+534	528	8	12
+542	536	8	13
+554	553	8	14
+560	558	8	15
+573	570	8	16
+584	583	8	17
+587	593	8	18
+602	603	8	19
+605	605	8	20
+620	621	8	21
+629	629	8	22
+635	635	8	23
+606	606	8	20
+619	618	8	21
+625	624	8	22
+607	604	8	20
+622	619	8	21
+627	625	8	22
+608	610	8	20
+621	620	8	21
+632	631	8	22
+609	608	8	20
+617	617	8	21
+628	627	8	22
+610	607	8	20
+615	614	8	21
+634	633	8	22
+636	634	8	23
+611	611	8	20
+618	615	8	21
+630	630	8	22
+637	636	8	23
+612	613	8	20
+624	622	8	21
+626	626	8	22
+613	612	8	20
+616	616	8	21
+631	628	8	22
+614	609	8	20
+623	623	8	21
+633	632	8	22
+638	637	8	24
+520	520	8	11
+\.
+
+
+--
+-- Data for Name: flashcards_word_definition_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.flashcards_word_definition_links (id, flashcard_id, word_definition_id, flashcard_order) FROM stdin;
+712	429	840	1
+715	434	846	1
+717	432	844	1
+720	436	848	1
+721	437	849	1
+723	439	855	1
+725	443	854	1
+728	444	856	1
+729	447	858	1
+730	449	862	1
+735	450	861	1
+736	453	865	1
+737	454	866	1
+739	457	873	1
+740	460	874	1
+741	462	867	1
+746	463	871	1
+747	465	876	1
+751	467	881	1
+753	471	879	1
+754	470	884	1
+756	473	883	1
+757	474	882	1
+760	477	888	1
+761	476	889	1
+762	479	890	1
+764	483	892	1
+767	482	894	1
+770	487	898	1
+771	493	900	1
+773	494	905	1
+776	489	904	1
+777	491	903	1
+782	502	908	1
+783	500	912	1
+785	497	913	1
+786	498	914	1
+788	505	918	1
+792	510	920	1
+793	509	917	1
+795	512	921	1
+796	513	924	1
+797	514	925	1
+800	520	932	1
+801	518	927	1
+804	519	931	1
+806	523	933	1
+808	531	939	1
+811	525	936	1
+813	528	943	1
+815	530	940	1
+818	534	945	1
+817	535	946	1
+821	539	951	1
+823	536	949	1
+827	546	955	1
+832	547	957	1
+833	550	956	1
+836	553	963	1
+837	554	965	1
+841	555	966	1
+842	558	967	1
+843	560	970	1
+847	564	975	1
+848	565	977	1
+852	571	982	1
+854	570	984	1
+858	575	988	1
+860	578	986	1
+864	581	993	1
+865	583	992	1
+868	585	996	1
+871	588	1002	1
+872	587	997	1
+873	592	1000	1
+874	591	998	1
+875	590	1001	1
+876	593	999	1
+877	594	1006	1
+878	595	1007	1
+879	596	1005	1
+880	599	1009	1
+881	600	1011	1
+882	598	1008	1
+883	601	1010	1
+884	602	1013	1
+885	603	1014	1
+886	597	1012	1
+887	606	1016	1
+888	605	1015	1
+889	604	1017	1
+890	610	1022	1
+891	608	1021	1
+892	607	1018	1
+893	611	1024	1
+894	609	1023	1
+895	613	1019	1
+896	612	1020	1
+897	618	1027	1
+899	614	1028	1
+900	616	1029	1
+901	617	1030	1
+898	615	1031	1
+902	620	1026	1
+903	621	1034	1
+904	619	1025	1
+905	623	1032	1
+906	622	1033	1
+907	624	1035	1
+908	625	1038	1
+909	627	1036	1
+910	630	1044	1
+911	628	1041	1
+912	626	1037	1
+913	629	1040	1
+914	631	1039	1
+915	632	1042	1
+916	633	1043	1
+917	635	1046	1
+918	634	1047	1
+919	636	1045	1
+920	637	1048	1
+714	430	842	1
+642	359	771	1
+643	360	773	1
+644	365	775	1
+645	363	770	1
+646	364	772	1
+647	362	774	1
+648	361	776	1
+649	366	777	1
+650	367	778	1
+651	368	779	1
+652	372	780	1
+653	369	782	1
+654	370	781	1
+655	371	783	1
+656	375	784	1
+657	376	787	1
+658	373	786	1
+659	374	785	1
+660	378	788	1
+661	377	789	1
+662	380	790	1
+663	379	791	1
+664	381	793	1
+665	383	792	1
+666	384	794	1
+667	382	796	1
+668	385	795	1
+670	386	798	1
+669	388	799	1
+671	387	797	1
+672	394	801	1
+673	389	803	1
+674	396	808	1
+675	393	800	1
+676	397	802	1
+677	391	804	1
+678	390	806	1
+679	392	805	1
+680	395	807	1
+681	398	809	1
+682	399	810	1
+683	400	817	1
+684	401	814	1
+685	403	813	1
+686	405	812	1
+687	402	811	1
+688	407	816	1
+689	404	818	1
+690	406	815	1
+691	408	819	1
+692	409	822	1
+694	413	824	1
+693	410	829	1
+695	412	820	1
+696	414	826	1
+697	416	821	1
+698	415	827	1
+699	411	823	1
+700	418	828	1
+701	417	825	1
+702	421	836	1
+703	420	837	1
+704	419	832	1
+705	423	835	1
+706	424	830	1
+707	425	833	1
+708	422	831	1
+709	426	834	1
+710	428	838	1
+711	427	839	1
+713	433	845	1
+716	431	843	1
+718	435	841	1
+719	438	847	1
+722	442	851	1
+724	440	850	1
+727	445	852	1
+726	441	853	1
+731	448	860	1
+732	446	857	1
+733	451	859	1
+734	452	863	1
+738	455	864	1
+742	456	870	1
+743	459	868	1
+744	461	869	1
+745	458	872	1
+748	464	875	1
+749	466	878	1
+750	468	885	1
+752	469	880	1
+755	472	886	1
+758	475	877	1
+759	478	887	1
+763	480	891	1
+765	484	895	1
+766	481	893	1
+768	485	896	1
+769	486	897	1
+772	488	899	1
+774	492	901	1
+775	490	902	1
+778	496	906	1
+779	495	907	1
+780	503	909	1
+781	501	911	1
+784	499	910	1
+787	504	916	1
+789	508	923	1
+790	507	915	1
+791	506	919	1
+794	511	922	1
+798	516	930	1
+799	521	926	1
+802	515	928	1
+803	517	929	1
+805	522	934	1
+807	526	938	1
+810	524	942	1
+809	532	935	1
+812	529	937	1
+814	533	944	1
+816	527	941	1
+819	541	947	1
+820	538	952	1
+822	540	950	1
+824	537	948	1
+825	542	954	1
+826	543	953	1
+828	544	962	1
+829	545	960	1
+830	548	958	1
+831	549	959	1
+834	551	961	1
+835	552	964	1
+838	557	971	1
+839	559	969	1
+840	556	968	1
+844	561	972	1
+845	563	973	1
+846	562	974	1
+849	566	976	1
+850	567	978	1
+851	569	979	1
+853	572	980	1
+855	568	981	1
+856	573	983	1
+857	574	985	1
+859	576	989	1
+861	577	987	1
+862	579	991	1
+863	580	994	1
+866	582	990	1
+867	586	1004	1
+869	584	1003	1
+870	589	995	1
 \.
 
 
@@ -6148,6 +7055,47 @@ COPY public.lessons_localizations_links (id, lesson_id, inv_lesson_id, lesson_or
 --
 
 COPY public.lessons_unit_links (id, lesson_id, unit_id, lesson_order) FROM stdin;
+\.
+
+
+--
+-- Data for Name: modules; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.modules (id, name, description, goal, created_at, updated_at, created_by_id, updated_by_id, locale) FROM stdin;
+\.
+
+
+--
+-- Data for Name: modules_localizations_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.modules_localizations_links (id, module_id, inv_module_id, module_order) FROM stdin;
+\.
+
+
+--
+-- Data for Name: part_of_speeches; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.part_of_speeches (id, name, created_at, updated_at, created_by_id, updated_by_id, locale) FROM stdin;
+1	noun	2025-08-03 13:58:45.536	2025-08-03 13:58:45.536	1	1	en
+2	verb	2025-08-03 13:58:58.152	2025-08-03 13:58:58.152	1	1	en
+3	adjective	2025-08-03 13:59:09.768	2025-08-03 13:59:09.768	1	1	en
+4	adverb	2025-08-03 13:59:21.07	2025-08-03 13:59:21.07	1	1	en
+5	conjunction	2025-08-03 13:59:30.746	2025-08-03 13:59:30.746	1	1	en
+6	preposition	2025-08-03 13:59:41.519	2025-08-03 13:59:41.519	1	1	en
+7	interjection	2025-08-03 13:59:51.722	2025-08-03 13:59:51.722	1	1	en
+8	determiner	2025-08-03 14:00:02.392	2025-08-03 14:00:02.392	1	1	en
+9	pronoun	2025-08-03 14:00:09.704	2025-08-03 14:00:09.704	1	1	en
+\.
+
+
+--
+-- Data for Name: part_of_speeches_localizations_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.part_of_speeches_localizations_links (id, part_of_speech_id, inv_part_of_speech_id, part_of_speech_order) FROM stdin;
 \.
 
 
@@ -6523,6 +7471,9 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 336	weekly	wrong	2025-08-02 09:45:28.107	2025-08-02 09:45:28.107	\N	\N	2025-08-02 09:45:28.1
 337	warmup	wrong	2025-08-02 09:45:30.073	2025-08-02 09:45:30.073	\N	\N	2025-08-02 09:45:30.065
 338	warmup	wrong	2025-08-02 09:45:32.699	2025-08-02 09:45:32.699	\N	\N	2025-08-02 09:45:32.691
+339	new	correct	2025-08-03 17:24:17.613	2025-08-03 17:24:17.613	\N	\N	2025-08-03 17:24:17.547
+340	new	correct	2025-08-03 21:42:58.188	2025-08-03 21:42:58.188	\N	\N	2025-08-03 21:42:58.117
+341	new	wrong	2025-08-03 21:43:19.917	2025-08-03 21:43:19.917	\N	\N	2025-08-03 21:43:19.857
 \.
 
 
@@ -6531,317 +7482,8 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 --
 
 COPY public.reviewlogs_flashcard_links (id, reviewlog_id, flashcard_id, reviewlog_order) FROM stdin;
-1	28	2	1
-2	29	2	2
-3	30	2	3
-4	31	2	4
-5	32	2	5
-6	33	3	1
-7	34	3	2
-8	35	4	1
-9	36	5	1
-10	37	1	1
-11	38	2	6
-12	39	2	7
-13	40	3	3
-14	41	5	2
-15	42	1	2
-16	43	4	2
-17	44	2	8
-18	45	3	4
-19	46	5	3
-20	47	1	3
-21	48	4	3
-22	49	1	4
-23	50	2	9
-24	51	3	5
-25	52	4	4
-26	53	5	4
-27	54	2	10
-28	55	2	11
-29	56	1	5
-30	57	3	6
-31	58	4	5
-32	59	5	5
-33	60	3	7
-34	61	5	6
-35	62	2	12
-36	63	1	6
-37	64	4	6
-38	65	6	1
-39	66	5	7
-40	67	4	7
-41	68	1	7
-42	69	3	8
-43	70	15	1
-44	71	14	1
-45	72	13	1
-46	73	12	1
-47	74	11	1
-48	75	10	1
-49	76	9	1
-50	77	8	1
-51	78	7	1
-52	79	16	1
-53	80	17	1
-54	81	18	1
-55	82	19	1
-56	83	20	1
-57	84	21	1
-58	85	22	1
-59	86	23	1
-60	87	24	1
-61	88	25	1
-62	89	6	2
-63	90	4	8
-64	91	1	8
-65	92	3	9
-66	93	26	1
-67	94	27	1
-68	95	28	1
-69	96	29	1
-70	97	30	1
-71	98	15	2
-72	99	14	2
-73	100	13	2
-74	101	12	2
-75	102	11	2
-76	103	10	2
-77	104	9	2
-78	105	8	2
-79	106	8	2
-80	107	16	2
-81	108	17	2
-82	109	18	2
-83	110	19	2
-84	111	20	2
-85	112	21	2
-86	113	22	2
-87	114	23	2
-88	115	24	2
-89	116	25	2
-90	117	6	3
-91	118	4	9
-92	119	3	10
-93	120	7	2
-94	121	2	13
-95	122	2	14
-96	123	5	8
-97	124	1	9
-98	125	26	2
-99	126	27	2
-100	127	28	2
-101	128	29	2
-102	129	30	2
-103	130	15	3
-104	131	14	3
-105	132	33	1
-106	133	33	2
-107	134	31	1
-108	135	32	1
-109	136	34	1
-110	137	35	1
-111	138	36	1
-112	139	37	1
-113	140	13	3
-114	141	12	3
-115	142	11	3
-116	143	10	3
-117	144	9	3
-118	145	8	3
-119	146	16	3
-120	147	38	1
-121	148	39	1
-122	149	17	3
-123	150	18	3
-124	151	19	3
-125	152	49	1
-126	153	50	1
-127	154	48	1
-128	155	51	1
-129	156	51	2
-130	157	48	2
-131	158	46	1
-132	159	48	3
-133	160	48	4
-134	161	48	5
-135	162	48	6
-136	163	48	7
-137	164	48	8
-138	165	46	2
-139	166	46	3
-140	167	46	4
-141	168	46	5
-142	169	46	6
-143	170	46	7
-144	171	46	8
-145	172	46	9
-146	173	46	10
-147	174	46	11
-148	175	46	12
-149	176	46	13
-150	177	52	1
-151	178	53	1
-152	179	40	1
-153	180	42	1
-154	181	43	1
-155	182	44	1
-156	183	45	1
-157	184	45	2
-158	185	42	2
-159	186	43	2
-160	187	45	3
-161	188	133	1
-162	189	44	2
-163	190	134	1
-164	191	40	2
-165	192	40	3
-166	193	42	3
-167	194	44	3
-168	195	43	3
-169	196	45	4
-170	197	133	2
-171	198	43	4
-172	199	45	5
-173	200	44	4
-174	201	42	4
-175	202	133	3
-176	203	43	5
-177	204	133	4
-178	205	45	6
-179	206	42	5
-180	207	44	5
-181	208	42	6
-182	209	45	7
-183	210	45	8
-184	211	42	7
-185	212	133	5
-186	213	43	6
-187	214	42	8
-188	215	44	6
-189	216	45	9
-190	217	142	1
-191	218	140	1
-192	219	143	1
-193	220	147	1
-194	221	144	1
-195	222	144	2
-196	223	1	10
-197	224	2	15
-198	225	3	11
-199	226	4	10
-200	227	5	9
-201	228	26	3
-202	229	27	3
-203	230	28	3
-204	231	29	3
-205	232	30	3
-206	233	26	4
-207	234	27	4
-208	235	28	4
-209	236	29	4
-210	237	30	4
-211	238	140	2
-212	239	138	1
-213	240	138	2
-214	241	138	3
-215	242	138	4
-216	243	1	11
-217	244	2	16
-218	245	3	12
-219	246	4	11
-220	247	5	10
-221	248	6	4
-222	249	7	3
-223	250	8	4
-224	251	9	4
-225	252	10	4
-226	253	1	12
-227	254	2	17
-228	255	3	13
-229	256	4	12
-230	257	5	11
-231	258	6	5
-232	259	7	4
-233	260	8	5
-234	261	9	5
-235	262	10	5
-236	263	1	13
-237	264	2	18
-238	265	3	14
-239	266	4	13
-240	267	5	12
-241	268	6	6
-242	269	7	5
-243	270	8	6
-244	271	9	6
-245	272	10	6
-246	273	1	14
-247	274	2	19
-248	275	1	15
-249	276	2	20
-250	277	3	15
-251	278	4	14
-252	279	5	13
-253	280	6	7
-254	281	7	6
-255	282	8	7
-256	283	9	7
-257	284	10	7
-258	285	140	3
-259	286	142	2
-260	287	143	2
-261	288	144	3
-262	289	147	2
-263	290	42	9
-264	291	43	7
-265	292	44	7
-266	293	45	10
-267	294	133	6
-268	295	134	2
-269	296	135	1
-270	297	136	1
-271	298	137	1
-272	299	138	5
-273	300	140	4
-274	301	140	5
-275	302	142	3
-276	303	143	3
-277	304	144	4
-278	305	147	3
-279	306	147	4
-280	307	140	6
-281	308	142	4
-282	309	143	4
-283	310	144	5
-284	311	147	5
-285	312	140	7
-286	313	142	5
-287	314	143	5
-288	315	144	6
-289	316	147	6
-290	317	140	8
-291	318	142	6
-292	319	143	6
-293	320	144	7
-294	321	147	7
-295	322	140	9
-296	323	142	7
-297	324	143	7
-298	325	144	8
-299	326	147	8
-300	327	140	10
-301	328	142	8
-302	329	143	8
-303	330	144	9
-304	331	147	9
-305	332	134	3
-306	333	134	4
-307	334	42	10
-308	335	43	8
-309	336	44	8
-310	337	45	11
-311	338	133	7
+313	340	636	1
+314	341	636	2
 \.
 
 
@@ -7188,6 +7830,9 @@ COPY public.reviewlogs_user_links (id, reviewlog_id, user_id, reviewlog_order) F
 336	336	8	288
 337	337	8	289
 338	338	8	290
+339	339	8	291
+340	340	8	292
+341	341	8	293
 \.
 
 
@@ -7389,37 +8034,30 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 20	plugin_users-permissions_advanced	{"unique_email":true,"allow_register":true,"email_confirmation":false,"email_reset_password":null,"email_confirmation_redirection":null,"default_role":"authenticated"}	object	\N	\N
 27	plugin_content_manager_configuration_components::a.taglist	{"uid":"a.taglist","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"tag","defaultSortBy":"tag","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"tag":{"edit":{"label":"tag","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tag","searchable":true,"sortable":true}}},"layouts":{"list":["id","tag"],"edit":[[{"name":"tag","size":6}]]},"isComponent":true}	object	\N	\N
 15	plugin_upload_settings	{"sizeOptimization":true,"responsiveDimensions":true,"autoOrientation":true}	object	\N	\N
-37	plugin_content_manager_configuration_content_types::api::lesson.lesson	{"uid":"api::lesson.lesson","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"lessonlevel":{"edit":{"label":"lessonlevel","description":"","placeholder":"","visible":true,"editable":true,"mainField":"level"},"list":{"label":"lessonlevel","searchable":true,"sortable":true}},"sections":{"edit":{"label":"sections","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"sections","searchable":false,"sortable":false}},"user_words":{"edit":{"label":"user_words","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_words","searchable":false,"sortable":false}},"user_sentences":{"edit":{"label":"user_sentences","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentences","searchable":false,"sortable":false}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"unit":{"edit":{"label":"unit","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"unit","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","slug","unit"],"edit":[[{"name":"title","size":6},{"name":"slug","size":6}],[{"name":"description","size":6}],[{"name":"order","size":4}],[{"name":"tags","size":12}],[{"name":"lessonlevel","size":6},{"name":"sections","size":6}],[{"name":"user_words","size":6},{"name":"user_sentences","size":6}],[{"name":"flashcards","size":6},{"name":"unit","size":6}]]}}	object	\N	\N
 10	plugin_content_manager_configuration_content_types::plugin::upload.file	{"uid":"plugin::upload.file","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"alternativeText":{"edit":{"label":"alternativeText","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"alternativeText","searchable":true,"sortable":true}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}},"width":{"edit":{"label":"width","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"width","searchable":true,"sortable":true}},"height":{"edit":{"label":"height","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"height","searchable":true,"sortable":true}},"formats":{"edit":{"label":"formats","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"formats","searchable":false,"sortable":false}},"hash":{"edit":{"label":"hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"hash","searchable":true,"sortable":true}},"ext":{"edit":{"label":"ext","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"ext","searchable":true,"sortable":true}},"mime":{"edit":{"label":"mime","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"mime","searchable":true,"sortable":true}},"size":{"edit":{"label":"size","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"size","searchable":true,"sortable":true}},"url":{"edit":{"label":"url","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"url","searchable":true,"sortable":true}},"previewUrl":{"edit":{"label":"previewUrl","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"previewUrl","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"provider_metadata":{"edit":{"label":"provider_metadata","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider_metadata","searchable":false,"sortable":false}},"folder":{"edit":{"label":"folder","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"folder","searchable":true,"sortable":true}},"folderPath":{"edit":{"label":"folderPath","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"folderPath","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","alternativeText","caption"],"edit":[[{"name":"name","size":6},{"name":"alternativeText","size":6}],[{"name":"caption","size":6},{"name":"width","size":4}],[{"name":"height","size":4}],[{"name":"formats","size":12}],[{"name":"hash","size":6},{"name":"ext","size":6}],[{"name":"mime","size":6},{"name":"size","size":4}],[{"name":"url","size":6},{"name":"previewUrl","size":6}],[{"name":"provider","size":6}],[{"name":"provider_metadata","size":12}],[{"name":"folder","size":6},{"name":"folderPath","size":6}]]}}	object	\N	\N
 17	plugin_upload_metrics	{"weeklySchedule":"31 39 9 * * 3","lastWeeklyUpdate":1753893571270}	object	\N	\N
 14	plugin_content_manager_configuration_content_types::plugin::i18n.locale	{"uid":"plugin::i18n.locale","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","code","createdAt"],"edit":[[{"name":"name","size":6},{"name":"code","size":6}]]}}	object	\N	\N
 21	plugin_i18n_default_locale	"en"	string	\N	\N
-38	plugin_content_manager_configuration_content_types::api::section.section	{"uid":"api::section.section","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"components":{"edit":{"label":"components","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"components","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","lesson","order"],"edit":[[{"name":"title","size":6},{"name":"lesson","size":6}],[{"name":"order","size":4}],[{"name":"components","size":12}]]}}	object	\N	\N
-23	plugin_content_manager_configuration_content_types::api::unit.unit	{"uid":"api::unit.unit","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"lessons":{"edit":{"label":"lessons","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lessons","searchable":false,"sortable":false}},"precondition":{"edit":{"label":"precondition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"precondition","searchable":true,"sortable":true}},"unlocks":{"edit":{"label":"unlocks","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"unlocks","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","slug","description"],"edit":[[{"name":"title","size":6},{"name":"slug","size":6}],[{"name":"description","size":6},{"name":"order","size":4}],[{"name":"lessons","size":6},{"name":"precondition","size":6}],[{"name":"unlocks","size":6}]]}}	object	\N	\N
 42	plugin_content_manager_configuration_components::a.user-sent-ref	{"uid":"a.user-sent-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"user_sentence":{"edit":{"label":"user_sentence","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentence","searchable":true,"sortable":true}}},"layouts":{"list":["id","user_sentence"],"edit":[[{"name":"user_sentence","size":6}]]},"isComponent":true}	object	\N	\N
 40	plugin_content_manager_configuration_content_types::api::user-sentence.user-sentence	{"uid":"api::user-sentence.user-sentence","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"target_text","defaultSortBy":"target_text","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","target_text","base_text","user"],"edit":[[{"name":"target_text","size":6}],[{"name":"base_text","size":6},{"name":"lesson","size":6}],[{"name":"user","size":6}]]}}	object	\N	\N
 41	plugin_content_manager_configuration_components::a.user-word-ref	{"uid":"a.user-word-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"user_word":{"edit":{"label":"user_word","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_word","searchable":true,"sortable":true}}},"layouts":{"list":["id","user_word"],"edit":[[{"name":"user_word","size":6}]]},"isComponent":true}	object	\N	\N
-26	plugin_content_manager_configuration_content_types::api::sentence.sentence	{"uid":"api::sentence.sentence","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"target_text","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"instruction":{"edit":{"label":"instruction","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"instruction","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"target_audio":{"edit":{"label":"target_audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_audio","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"words":{"edit":{"label":"words","description":"","placeholder":"","visible":true,"editable":true,"mainField":"word"},"list":{"label":"words","searchable":false,"sortable":false}},"register":{"edit":{"label":"register","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"register","searchable":true,"sortable":true}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","instruction","base_text"],"edit":[[{"name":"title","size":6},{"name":"instruction","size":6}],[{"name":"base_text","size":6},{"name":"target_text","size":6}],[{"name":"target_audio","size":6}],[{"name":"tags","size":12}],[{"name":"words","size":6},{"name":"register","size":6}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}]]}}	object	\N	\N
+38	plugin_content_manager_configuration_content_types::api::section.section	{"uid":"api::section.section","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"components":{"edit":{"label":"components","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"components","searchable":false,"sortable":false}},"word_definitions":{"edit":{"label":"word_definitions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definitions","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","lesson","order"],"edit":[[{"name":"title","size":6},{"name":"lesson","size":6}],[{"name":"order","size":4}],[{"name":"components","size":12}],[{"name":"word_definitions","size":6}]]}}	object	\N	\N
+23	plugin_content_manager_configuration_content_types::api::unit.unit	{"uid":"api::unit.unit","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"lessons":{"edit":{"label":"lessons","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lessons","searchable":false,"sortable":false}},"precondition":{"edit":{"label":"precondition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"precondition","searchable":true,"sortable":true}},"unlocks":{"edit":{"label":"unlocks","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"unlocks","searchable":true,"sortable":true}},"module":{"edit":{"label":"module","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"module","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","slug","description"],"edit":[[{"name":"title","size":6},{"name":"slug","size":6}],[{"name":"description","size":6},{"name":"order","size":4}],[{"name":"lessons","size":6},{"name":"precondition","size":6}],[{"name":"unlocks","size":6},{"name":"module","size":6}]]}}	object	\N	\N
+1	strapi_content_types_schema	{"admin::permission":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"admin::permission","plugin":"admin","globalId":"AdminPermission"},"admin::user":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"registrationToken":{"hidden":true}}},"kind":"collectionType","__schema__":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"admin::user","plugin":"admin","globalId":"AdminUser"},"admin::role":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"admin::role","plugin":"admin","globalId":"AdminRole"},"admin::api-token":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token","connection":"default","uid":"admin::api-token","plugin":"admin","globalId":"AdminApiToken"},"admin::api-token-permission":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token-permission","connection":"default","uid":"admin::api-token-permission","plugin":"admin","globalId":"AdminApiTokenPermission"},"admin::transfer-token":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token","connection":"default","uid":"admin::transfer-token","plugin":"admin","globalId":"AdminTransferToken"},"admin::transfer-token-permission":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token-permission","connection":"default","uid":"admin::transfer-token-permission","plugin":"admin","globalId":"AdminTransferTokenPermission"},"plugin::upload.file":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null}],"kind":"collectionType","__schema__":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"file","connection":"default","uid":"plugin::upload.file","plugin":"upload","globalId":"UploadFile"},"plugin::upload.folder":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"}],"kind":"collectionType","__schema__":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"folder","connection":"default","uid":"plugin::upload.folder","plugin":"upload","globalId":"UploadFolder"},"plugin::users-permissions.permission":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"plugin::users-permissions.permission","plugin":"users-permissions","globalId":"UsersPermissionsPermission"},"plugin::users-permissions.role":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"plugin::users-permissions.role","plugin":"users-permissions","globalId":"UsersPermissionsRole"},"plugin::users-permissions.user":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"confirmationToken":{"hidden":true},"provider":{"hidden":true}}},"kind":"collectionType","__filename__":"schema.json","__schema__":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"plugin::users-permissions.user","plugin":"users-permissions","globalId":"UsersPermissionsUser"},"plugin::i18n.locale":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"locale","connection":"default","uid":"plugin::i18n.locale","plugin":"i18n","collectionName":"i18n_locale","globalId":"I18NLocale"},"api::conversation.conversation":{"kind":"collectionType","collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"conversation","connection":"default","uid":"api::conversation.conversation","apiName":"conversation","globalId":"Conversation","actions":{},"lifecycles":{}},"api::difficulty-level.difficulty-level":{"kind":"collectionType","collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::difficulty-level.difficulty-level"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"}},"kind":"collectionType"},"modelType":"contentType","modelName":"difficulty-level","connection":"default","uid":"api::difficulty-level.difficulty-level","apiName":"difficulty-level","globalId":"DifficultyLevel","actions":{},"lifecycles":{}},"api::flashcard.flashcard":{"kind":"collectionType","collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"flashcards"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"flashcards"}},"kind":"collectionType"},"modelType":"contentType","modelName":"flashcard","connection":"default","uid":"api::flashcard.flashcard","apiName":"flashcard","globalId":"Flashcard","actions":{},"lifecycles":{}},"api::lesson.lesson":{"kind":"collectionType","collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::lesson.lesson"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lesson","connection":"default","uid":"api::lesson.lesson","apiName":"lesson","globalId":"Lesson","actions":{},"lifecycles":{}},"api::lessonlevel.lessonlevel":{"kind":"collectionType","collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lessonlevel","connection":"default","uid":"api::lessonlevel.lessonlevel","apiName":"lessonlevel","globalId":"Lessonlevel","actions":{},"lifecycles":{}},"api::module.module":{"kind":"collectionType","collectionName":"modules","info":{"singularName":"module","pluralName":"modules","displayName":"module"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"goal":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"icon_media":{"allowedTypes":["images","videos"],"type":"media","multiple":false,"pluginOptions":{"i18n":{"localized":false}}},"units":{"type":"relation","relation":"oneToMany","target":"api::unit.unit","mappedBy":"module"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::module.module"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"modules","info":{"singularName":"module","pluralName":"modules","displayName":"module"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"goal":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"icon_media":{"allowedTypes":["images","videos"],"type":"media","multiple":false,"pluginOptions":{"i18n":{"localized":false}}},"units":{"type":"relation","relation":"oneToMany","target":"api::unit.unit","mappedBy":"module"}},"kind":"collectionType"},"modelType":"contentType","modelName":"module","connection":"default","uid":"api::module.module","apiName":"module","globalId":"Module","actions":{},"lifecycles":{}},"api::part-of-speech.part-of-speech":{"kind":"collectionType","collectionName":"part_of_speeches","info":{"singularName":"part-of-speech","pluralName":"part-of-speeches","displayName":"part of speech","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","pluginOptions":{"i18n":{"localized":true}}},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"part_of_speech"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::part-of-speech.part-of-speech"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"part_of_speeches","info":{"singularName":"part-of-speech","pluralName":"part-of-speeches","displayName":"part of speech","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","pluginOptions":{"i18n":{"localized":true}}},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"part_of_speech"}},"kind":"collectionType"},"modelType":"contentType","modelName":"part-of-speech","connection":"default","uid":"api::part-of-speech.part-of-speech","apiName":"part-of-speech","globalId":"PartOfSpeech","actions":{},"lifecycles":{}},"api::ping.ping":{"kind":"collectionType","collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"}},"kind":"collectionType"},"modelType":"contentType","modelName":"ping","connection":"default","uid":"api::ping.ping","apiName":"ping","globalId":"Ping","actions":{},"lifecycles":{}},"api::review-tire.review-tire":{"kind":"collectionType","collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::review-tire.review-tire"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"}},"kind":"collectionType"},"modelType":"contentType","modelName":"review-tire","connection":"default","uid":"api::review-tire.review-tire","apiName":"review-tire","globalId":"ReviewTire","actions":{},"lifecycles":{}},"api::reviewlog.reviewlog":{"kind":"collectionType","collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"}},"kind":"collectionType"},"modelType":"contentType","modelName":"reviewlog","connection":"default","uid":"api::reviewlog.reviewlog","apiName":"reviewlog","globalId":"Reviewlog","actions":{},"lifecycles":{}},"api::section.section":{"kind":"collectionType","collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"section"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::section.section"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"section"}},"kind":"collectionType"},"modelType":"contentType","modelName":"section","connection":"default","uid":"api::section.section","apiName":"section","globalId":"Section","actions":{},"lifecycles":{}},"api::sentence.sentence":{"kind":"collectionType","collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::sentence.sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"sentence","connection":"default","uid":"api::sentence.sentence","apiName":"sentence","globalId":"Sentence","actions":{},"lifecycles":{}},"api::story.story":{"kind":"collectionType","collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::story.story"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story","connection":"default","uid":"api::story.story","apiName":"story","globalId":"Story","actions":{},"lifecycles":{}},"api::story-like.story-like":{"kind":"collectionType","collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story-like","connection":"default","uid":"api::story-like.story-like","apiName":"story-like","globalId":"StoryLike","actions":{},"lifecycles":{}},"api::topic.topic":{"kind":"collectionType","collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"topic","connection":"default","uid":"api::topic.topic","apiName":"topic","globalId":"Topic","actions":{},"lifecycles":{}},"api::unit.unit":{"kind":"collectionType","collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"module":{"type":"relation","relation":"manyToOne","target":"api::module.module","inversedBy":"units"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::unit.unit"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"module":{"type":"relation","relation":"manyToOne","target":"api::module.module","inversedBy":"units"}},"kind":"collectionType"},"modelType":"contentType","modelName":"unit","connection":"default","uid":"api::unit.unit","apiName":"unit","globalId":"Unit","actions":{},"lifecycles":{}},"api::user-profile.user-profile":{"kind":"collectionType","collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-profile","connection":"default","uid":"api::user-profile.user-profile","apiName":"user-profile","globalId":"UserProfile","actions":{},"lifecycles":{}},"api::user-sentence.user-sentence":{"kind":"collectionType","collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-sentence","connection":"default","uid":"api::user-sentence.user-sentence","apiName":"user-sentence","globalId":"UserSentence","actions":{},"lifecycles":{}},"api::user-word.user-word":{"kind":"collectionType","collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-word.user-word"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-word","connection":"default","uid":"api::user-word.user-word","apiName":"user-word","globalId":"UserWord","actions":{},"lifecycles":{}},"api::vbsetting.vbsetting":{"kind":"collectionType","collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2}},"kind":"collectionType"},"modelType":"contentType","modelName":"vbsetting","connection":"default","uid":"api::vbsetting.vbsetting","apiName":"vbsetting","globalId":"Vbsetting","actions":{},"lifecycles":{}},"api::word.word":{"kind":"collectionType","collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"target_text":{"type":"string","unique":true,"required":true},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"word"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"target_text":{"type":"string","unique":true,"required":true},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"word"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word","connection":"default","uid":"api::word.word","apiName":"word","globalId":"Word","actions":{},"lifecycles":{}},"api::word-definition.word-definition":{"kind":"collectionType","collectionName":"word_definitions","info":{"singularName":"word-definition","pluralName":"word-definitions","displayName":"word definition","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"type":"relation","relation":"manyToOne","target":"api::word.word","inversedBy":"word_definitions"},"section":{"type":"relation","relation":"manyToOne","target":"api::section.section","inversedBy":"word_definitions"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"type":"relation","relation":"manyToOne","target":"api::part-of-speech.part-of-speech","inversedBy":"word_definitions"},"gender":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"tags":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentence":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"]},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"word_definition"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"word_definitions","info":{"singularName":"word-definition","pluralName":"word-definitions","displayName":"word definition","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"type":"relation","relation":"manyToOne","target":"api::word.word","inversedBy":"word_definitions"},"section":{"type":"relation","relation":"manyToOne","target":"api::section.section","inversedBy":"word_definitions"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"type":"relation","relation":"manyToOne","target":"api::part-of-speech.part-of-speech","inversedBy":"word_definitions"},"gender":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"tags":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentence":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"]},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"word_definition"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word-definition","connection":"default","uid":"api::word-definition.word-definition","apiName":"word-definition","globalId":"WordDefinition","actions":{},"lifecycles":{}}}	object	\N	\N
 45	plugin_content_manager_configuration_content_types::api::review-tire.review-tire	{"uid":"api::review-tire.review-tire","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"tier":{"edit":{"label":"tier","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tier","searchable":true,"sortable":true}},"min_streak":{"edit":{"label":"min_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"min_streak","searchable":true,"sortable":true}},"max_streak":{"edit":{"label":"max_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"max_streak","searchable":true,"sortable":true}},"cooldown_hours":{"edit":{"label":"cooldown_hours","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"cooldown_hours","searchable":true,"sortable":true}},"demote_bar":{"edit":{"label":"demote_bar","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"demote_bar","searchable":true,"sortable":true}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","tier","min_streak","max_streak","cooldown_hours","demote_bar"],"edit":[[{"name":"tier","size":6},{"name":"min_streak","size":4}],[{"name":"max_streak","size":4},{"name":"cooldown_hours","size":4},{"name":"demote_bar","size":4}],[{"name":"flashcards","size":6}]]}}	object	\N	\N
-1	strapi_content_types_schema	{"admin::permission":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"admin::permission","plugin":"admin","globalId":"AdminPermission"},"admin::user":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"registrationToken":{"hidden":true}}},"kind":"collectionType","__schema__":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"admin::user","plugin":"admin","globalId":"AdminUser"},"admin::role":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"admin::role","plugin":"admin","globalId":"AdminRole"},"admin::api-token":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token","connection":"default","uid":"admin::api-token","plugin":"admin","globalId":"AdminApiToken"},"admin::api-token-permission":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token-permission","connection":"default","uid":"admin::api-token-permission","plugin":"admin","globalId":"AdminApiTokenPermission"},"admin::transfer-token":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token","connection":"default","uid":"admin::transfer-token","plugin":"admin","globalId":"AdminTransferToken"},"admin::transfer-token-permission":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token-permission","connection":"default","uid":"admin::transfer-token-permission","plugin":"admin","globalId":"AdminTransferTokenPermission"},"plugin::upload.file":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null}],"kind":"collectionType","__schema__":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"file","connection":"default","uid":"plugin::upload.file","plugin":"upload","globalId":"UploadFile"},"plugin::upload.folder":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"}],"kind":"collectionType","__schema__":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"folder","connection":"default","uid":"plugin::upload.folder","plugin":"upload","globalId":"UploadFolder"},"plugin::users-permissions.permission":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"plugin::users-permissions.permission","plugin":"users-permissions","globalId":"UsersPermissionsPermission"},"plugin::users-permissions.role":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"plugin::users-permissions.role","plugin":"users-permissions","globalId":"UsersPermissionsRole"},"plugin::users-permissions.user":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"confirmationToken":{"hidden":true},"provider":{"hidden":true}}},"kind":"collectionType","__filename__":"schema.json","__schema__":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"plugin::users-permissions.user","plugin":"users-permissions","globalId":"UsersPermissionsUser"},"plugin::i18n.locale":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"locale","connection":"default","uid":"plugin::i18n.locale","plugin":"i18n","collectionName":"i18n_locale","globalId":"I18NLocale"},"api::conversation.conversation":{"kind":"collectionType","collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"conversation","connection":"default","uid":"api::conversation.conversation","apiName":"conversation","globalId":"Conversation","actions":{},"lifecycles":{}},"api::difficulty-level.difficulty-level":{"kind":"collectionType","collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::difficulty-level.difficulty-level"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"}},"kind":"collectionType"},"modelType":"contentType","modelName":"difficulty-level","connection":"default","uid":"api::difficulty-level.difficulty-level","apiName":"difficulty-level","globalId":"DifficultyLevel","actions":{},"lifecycles":{}},"api::flashcard.flashcard":{"kind":"collectionType","collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"content":{"pluginOptions":{"i18n":{"localized":false}},"type":"dynamiczone","components":["a.sent-ref","a.user-sent-ref","a.word-ref","a.user-word-ref"]},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"flashcards"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"content":{"pluginOptions":{"i18n":{"localized":false}},"type":"dynamiczone","components":["a.sent-ref","a.user-sent-ref","a.word-ref","a.user-word-ref"]},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"flashcards"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"}},"kind":"collectionType"},"modelType":"contentType","modelName":"flashcard","connection":"default","uid":"api::flashcard.flashcard","apiName":"flashcard","globalId":"Flashcard","actions":{},"lifecycles":{}},"api::lesson.lesson":{"kind":"collectionType","collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::lesson.lesson"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lesson","connection":"default","uid":"api::lesson.lesson","apiName":"lesson","globalId":"Lesson","actions":{},"lifecycles":{}},"api::lessonlevel.lessonlevel":{"kind":"collectionType","collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lessonlevel","connection":"default","uid":"api::lessonlevel.lessonlevel","apiName":"lessonlevel","globalId":"Lessonlevel","actions":{},"lifecycles":{}},"api::ping.ping":{"kind":"collectionType","collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"}},"kind":"collectionType"},"modelType":"contentType","modelName":"ping","connection":"default","uid":"api::ping.ping","apiName":"ping","globalId":"Ping","actions":{},"lifecycles":{}},"api::review-tire.review-tire":{"kind":"collectionType","collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::review-tire.review-tire"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"}},"kind":"collectionType"},"modelType":"contentType","modelName":"review-tire","connection":"default","uid":"api::review-tire.review-tire","apiName":"review-tire","globalId":"ReviewTire","actions":{},"lifecycles":{}},"api::reviewlog.reviewlog":{"kind":"collectionType","collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"}},"kind":"collectionType"},"modelType":"contentType","modelName":"reviewlog","connection":"default","uid":"api::reviewlog.reviewlog","apiName":"reviewlog","globalId":"Reviewlog","actions":{},"lifecycles":{}},"api::section.section":{"kind":"collectionType","collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::section.section"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]}},"kind":"collectionType"},"modelType":"contentType","modelName":"section","connection":"default","uid":"api::section.section","apiName":"section","globalId":"Section","actions":{},"lifecycles":{}},"api::sentence.sentence":{"kind":"collectionType","collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"words":{"type":"relation","relation":"manyToMany","target":"api::word.word","mappedBy":"example_sentences"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::sentence.sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"words":{"type":"relation","relation":"manyToMany","target":"api::word.word","mappedBy":"example_sentences"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"sentence","connection":"default","uid":"api::sentence.sentence","apiName":"sentence","globalId":"Sentence","actions":{},"lifecycles":{}},"api::story.story":{"kind":"collectionType","collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::story.story"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story","connection":"default","uid":"api::story.story","apiName":"story","globalId":"Story","actions":{},"lifecycles":{}},"api::story-like.story-like":{"kind":"collectionType","collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story-like","connection":"default","uid":"api::story-like.story-like","apiName":"story-like","globalId":"StoryLike","actions":{},"lifecycles":{}},"api::topic.topic":{"kind":"collectionType","collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"topic","connection":"default","uid":"api::topic.topic","apiName":"topic","globalId":"Topic","actions":{},"lifecycles":{}},"api::unit.unit":{"kind":"collectionType","collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::unit.unit"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"}},"kind":"collectionType"},"modelType":"contentType","modelName":"unit","connection":"default","uid":"api::unit.unit","apiName":"unit","globalId":"Unit","actions":{},"lifecycles":{}},"api::user-profile.user-profile":{"kind":"collectionType","collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-profile","connection":"default","uid":"api::user-profile.user-profile","apiName":"user-profile","globalId":"UserProfile","actions":{},"lifecycles":{}},"api::user-sentence.user-sentence":{"kind":"collectionType","collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-sentence","connection":"default","uid":"api::user-sentence.user-sentence","apiName":"user-sentence","globalId":"UserSentence","actions":{},"lifecycles":{}},"api::user-word.user-word":{"kind":"collectionType","collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-word.user-word"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-word","connection":"default","uid":"api::user-word.user-word","apiName":"user-word","globalId":"UserWord","actions":{},"lifecycles":{}},"api::vbsetting.vbsetting":{"kind":"collectionType","collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2}},"kind":"collectionType"},"modelType":"contentType","modelName":"vbsetting","connection":"default","uid":"api::vbsetting.vbsetting","apiName":"vbsetting","globalId":"Vbsetting","actions":{},"lifecycles":{}},"api::word.word":{"kind":"collectionType","collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"gender":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentences":{"type":"relation","relation":"manyToMany","target":"api::sentence.sentence","inversedBy":"words"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::word.word"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"gender":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentences":{"type":"relation","relation":"manyToMany","target":"api::sentence.sentence","inversedBy":"words"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word","connection":"default","uid":"api::word.word","apiName":"word","globalId":"Word","actions":{},"lifecycles":{}}}	object	\N	\N
 28	plugin_content_manager_configuration_components::a.verb-meta	{"uid":"a.verb-meta","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"simple_past","defaultSortBy":"simple_past","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"simple_past":{"edit":{"label":"simple_past","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"simple_past","searchable":true,"sortable":true}},"past_participle":{"edit":{"label":"past_participle","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"past_participle","searchable":true,"sortable":true}},"present_participle":{"edit":{"label":"present_participle","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"present_participle","searchable":true,"sortable":true}},"thirdperson_singular":{"edit":{"label":"thirdperson_singular","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"thirdperson_singular","searchable":true,"sortable":true}},"auxiliary_verb":{"edit":{"label":"auxiliary_verb","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"auxiliary_verb","searchable":true,"sortable":true}},"conjugations":{"edit":{"label":"conjugations","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"conjugations","searchable":false,"sortable":false}}},"layouts":{"list":["id","simple_past","past_participle","present_participle"],"edit":[[{"name":"simple_past","size":6},{"name":"past_participle","size":6}],[{"name":"present_participle","size":6},{"name":"thirdperson_singular","size":6}],[{"name":"auxiliary_verb","size":6}],[{"name":"conjugations","size":12}]]},"isComponent":true}	object	\N	\N
 30	plugin_content_manager_configuration_components::a.sent-ref	{"uid":"a.sent-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"sentence":{"edit":{"label":"sentence","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"sentence","searchable":true,"sortable":true}}},"layouts":{"list":["id","sentence"],"edit":[[{"name":"sentence","size":6}]]},"isComponent":true}	object	\N	\N
-31	plugin_content_manager_configuration_components::a.word-ref	{"uid":"a.word-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"word":{"edit":{"label":"word","description":"","placeholder":"","visible":true,"editable":true,"mainField":"word"},"list":{"label":"word","searchable":true,"sortable":true}}},"layouts":{"list":["id","word"],"edit":[[{"name":"word","size":6}]]},"isComponent":true}	object	\N	\N
 32	plugin_content_manager_configuration_components::a.quiz	{"uid":"a.quiz","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"question","defaultSortBy":"question","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"question":{"edit":{"label":"question","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"question","searchable":true,"sortable":true}},"options":{"edit":{"label":"options","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"options","searchable":false,"sortable":false}},"answer":{"edit":{"label":"answer","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"answer","searchable":true,"sortable":true}},"explanation":{"edit":{"label":"explanation","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"explanation","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}}},"layouts":{"list":["id","question","answer","explanation"],"edit":[[{"name":"question","size":6}],[{"name":"options","size":12}],[{"name":"answer","size":6},{"name":"explanation","size":6}],[{"name":"audio","size":6}]]},"isComponent":true}	object	\N	\N
-29	plugin_content_manager_configuration_content_types::api::word.word	{"uid":"api::word.word","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"word","defaultSortBy":"word","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"word":{"edit":{"label":"word","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"word","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"instruction":{"edit":{"label":"instruction","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"instruction","searchable":true,"sortable":true}},"part_of_speech":{"edit":{"label":"part_of_speech","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"part_of_speech","searchable":true,"sortable":true}},"gender":{"edit":{"label":"gender","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"gender","searchable":true,"sortable":true}},"article":{"edit":{"label":"article","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"article","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"example_sentences":{"edit":{"label":"example_sentences","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"example_sentences","searchable":false,"sortable":false}},"verb_meta":{"edit":{"label":"verb_meta","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"verb_meta","searchable":false,"sortable":false}},"register":{"edit":{"label":"register","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"register","searchable":true,"sortable":true}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","word","base_text","instruction"],"edit":[[{"name":"word","size":6},{"name":"base_text","size":6}],[{"name":"instruction","size":6},{"name":"part_of_speech","size":6}],[{"name":"gender","size":6},{"name":"article","size":6}],[{"name":"audio","size":6}],[{"name":"tags","size":12}],[{"name":"example_sentences","size":6}],[{"name":"verb_meta","size":12}],[{"name":"register","size":6}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}]]}}	object	\N	\N
 33	plugin_content_manager_configuration_components::a.pagebreaker	{"uid":"a.pagebreaker","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"backbutton":{"edit":{"label":"backbutton","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"backbutton","searchable":true,"sortable":true}},"nextbutton":{"edit":{"label":"nextbutton","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"nextbutton","searchable":true,"sortable":true}}},"layouts":{"list":["id","backbutton","nextbutton"],"edit":[[{"name":"backbutton","size":4},{"name":"nextbutton","size":4}]]},"isComponent":true}	object	\N	\N
 34	plugin_content_manager_configuration_components::a.video	{"uid":"a.video","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"media":{"edit":{"label":"media","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"media","searchable":false,"sortable":false}},"thumbnail":{"edit":{"label":"thumbnail","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"thumbnail","searchable":false,"sortable":false}}},"layouts":{"list":["id","media","thumbnail"],"edit":[[{"name":"media","size":6},{"name":"thumbnail","size":6}]]},"isComponent":true}	object	\N	\N
 35	plugin_content_manager_configuration_components::a.external-video	{"uid":"a.external-video","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"url","defaultSortBy":"url","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"url":{"edit":{"label":"url","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"url","searchable":true,"sortable":true}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}}},"layouts":{"list":["id","url","caption"],"edit":[[{"name":"url","size":6},{"name":"caption","size":6}]]},"isComponent":true}	object	\N	\N
-44	plugin_content_manager_configuration_content_types::api::reviewlog.reviewlog	{"uid":"api::reviewlog.reviewlog","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"createdAt","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"reviewed_at":{"edit":{"label":"reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"reviewed_at","searchable":true,"sortable":true}},"level":{"edit":{"label":"level","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"level","searchable":true,"sortable":true}},"result":{"edit":{"label":"result","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"result","searchable":true,"sortable":true}},"flashcard":{"edit":{"label":"flashcard","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcard","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"user","size":6}],[{"name":"level","size":6}],[{"name":"result","size":6},{"name":"flashcard","size":6}],[{"name":"reviewed_at","size":6}]],"list":["id","user","flashcard","result","reviewed_at"]}}	object	\N	\N
 46	plugin_content_manager_configuration_content_types::api::user-profile.user-profile	{"uid":"api::user-profile.user-profile","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"telephone","defaultSortBy":"telephone","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"telephone":{"edit":{"label":"telephone","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"telephone","searchable":true,"sortable":true}},"baseLanguage":{"edit":{"label":"baseLanguage","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"baseLanguage","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","telephone","baseLanguage"],"edit":[[{"name":"user","size":6},{"name":"telephone","size":6}],[{"name":"baseLanguage","size":6}]]}}	object	\N	\N
-43	plugin_content_manager_configuration_content_types::api::flashcard.flashcard	{"uid":"api::flashcard.flashcard","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"content":{"edit":{"label":"content","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"content","searchable":false,"sortable":false}},"last_reviewed_at":{"edit":{"label":"last_reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"last_reviewed_at","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"correct_streak":{"edit":{"label":"correct_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"correct_streak","searchable":true,"sortable":true}},"wrong_streak":{"edit":{"label":"wrong_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wrong_streak","searchable":true,"sortable":true}},"is_remembered":{"edit":{"label":"is_remembered","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_remembered","searchable":true,"sortable":true}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"review_tire":{"edit":{"label":"review_tire","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"review_tire","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"user","size":6}],[{"name":"content","size":12}],[{"name":"lesson","size":6},{"name":"last_reviewed_at","size":6}],[{"name":"is_remembered","size":4},{"name":"correct_streak","size":4},{"name":"wrong_streak","size":4}],[{"name":"reviewlogs","size":6},{"name":"review_tire","size":6}]],"list":["id","user","last_reviewed_at","correct_streak","wrong_streak","review_tire"]}}	object	\N	\N
 49	plugin_content_manager_configuration_content_types::api::vbsetting.vbsetting	{"uid":"api::vbsetting.vbsetting","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"wordsPerPage":{"edit":{"label":"wordsPerPage","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wordsPerPage","searchable":true,"sortable":true}},"interval1":{"edit":{"label":"interval1","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"interval1","searchable":true,"sortable":true}},"interval2":{"edit":{"label":"interval2","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"interval2","searchable":true,"sortable":true}},"interval3":{"edit":{"label":"interval3","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"interval3","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","wordsPerPage","interval1"],"edit":[[{"name":"user","size":6},{"name":"wordsPerPage","size":4}],[{"name":"interval1","size":4},{"name":"interval2","size":4},{"name":"interval3","size":4}]]}}	object	\N	\N
 39	plugin_content_manager_configuration_content_types::api::user-word.user-word	{"uid":"api::user-word.user-word","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"target_text","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"part_of_speech":{"edit":{"label":"part_of_speech","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"part_of_speech","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","base_text","user","target_text"],"edit":[[{"name":"base_text","size":6},{"name":"part_of_speech","size":6}],[{"name":"lesson","size":6},{"name":"user","size":6}],[{"name":"target_text","size":6}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}]]}}	object	\N	\N
-12	plugin_content_manager_configuration_content_types::plugin::users-permissions.user	{"uid":"plugin::users-permissions.user","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"username","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"username":{"edit":{"label":"username","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"username","searchable":true,"sortable":true}},"email":{"edit":{"label":"email","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"email","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"password":{"edit":{"label":"password","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"password","searchable":true,"sortable":true}},"resetPasswordToken":{"edit":{"label":"resetPasswordToken","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"resetPasswordToken","searchable":true,"sortable":true}},"confirmationToken":{"edit":{"label":"confirmationToken","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"confirmationToken","searchable":true,"sortable":true}},"confirmed":{"edit":{"label":"confirmed","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"confirmed","searchable":true,"sortable":true}},"blocked":{"edit":{"label":"blocked","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"blocked","searchable":true,"sortable":true}},"role":{"edit":{"label":"role","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"role","searchable":true,"sortable":true}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"user_profile":{"edit":{"label":"user_profile","description":"","placeholder":"","visible":true,"editable":true,"mainField":"telephone"},"list":{"label":"user_profile","searchable":true,"sortable":true}},"user_words":{"edit":{"label":"user_words","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_words","searchable":false,"sortable":false}},"user_sentences":{"edit":{"label":"user_sentences","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentences","searchable":false,"sortable":false}},"vbsetting":{"edit":{"label":"vbsetting","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"vbsetting","searchable":true,"sortable":true}},"story_likes":{"edit":{"label":"story_likes","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"story_likes","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","username","email","role","confirmed"],"edit":[[{"name":"username","size":6},{"name":"email","size":6}],[{"name":"password","size":6},{"name":"confirmed","size":4}],[{"name":"blocked","size":4},{"name":"role","size":6}],[{"name":"user_words","size":6},{"name":"user_sentences","size":6}],[{"name":"flashcards","size":6},{"name":"reviewlogs","size":6}],[{"name":"user_profile","size":6}],[{"name":"vbsetting","size":6},{"name":"story_likes","size":6}]]}}	object	\N	\N
-22	core_admin_auth	{"providers":{"autoRegister":false,"defaultRole":null,"ssoLockedRoles":null}}	object	\N	\N
 52	plugin_content_manager_configuration_components::a.question	{"uid":"a.question","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"prompt","defaultSortBy":"prompt","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"prompt":{"edit":{"label":"prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"prompt","searchable":true,"sortable":true}},"expected_answer":{"edit":{"label":"expected_answer","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expected_answer","searchable":true,"sortable":true}}},"layouts":{"list":["id","prompt","expected_answer"],"edit":[[{"name":"prompt","size":6},{"name":"expected_answer","size":6}]]},"isComponent":true}	object	\N	\N
 53	plugin_content_manager_configuration_content_types::api::topic.topic	{"uid":"api::topic.topic","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"difficulty_level":{"edit":{"label":"difficulty_level","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"difficulty_level","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"questions":{"edit":{"label":"questions","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"questions","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":true,"sortable":true}},"is_active":{"edit":{"label":"is_active","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_active","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","difficulty_level","description"],"edit":[[{"name":"title","size":6},{"name":"difficulty_level","size":6}],[{"name":"description","size":6}],[{"name":"questions","size":12}],[{"name":"tags","size":6},{"name":"is_active","size":4}]]}}	object	\N	\N
 50	plugin_content_manager_configuration_content_types::api::difficulty-level.difficulty-level	{"uid":"api::difficulty-level.difficulty-level","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"level":{"edit":{"label":"level","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"level","searchable":true,"sortable":true}},"topics":{"edit":{"label":"topics","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"topics","searchable":false,"sortable":false}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"stories":{"edit":{"label":"stories","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"stories","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","level","code"],"edit":[[{"name":"name","size":6},{"name":"level","size":4}],[{"name":"topics","size":6},{"name":"code","size":6}],[{"name":"description","size":6},{"name":"stories","size":6}]]}}	object	\N	\N
+43	plugin_content_manager_configuration_content_types::api::flashcard.flashcard	{"uid":"api::flashcard.flashcard","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"last_reviewed_at":{"edit":{"label":"last_reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"last_reviewed_at","searchable":true,"sortable":true}},"correct_streak":{"edit":{"label":"correct_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"correct_streak","searchable":true,"sortable":true}},"wrong_streak":{"edit":{"label":"wrong_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wrong_streak","searchable":true,"sortable":true}},"is_remembered":{"edit":{"label":"is_remembered","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_remembered","searchable":true,"sortable":true}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"review_tire":{"edit":{"label":"review_tire","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"review_tire","searchable":true,"sortable":true}},"word_definition":{"edit":{"label":"word_definition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definition","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","last_reviewed_at","correct_streak","wrong_streak","review_tire"],"edit":[[{"name":"user","size":6}],[{"name":"last_reviewed_at","size":6}],[{"name":"is_remembered","size":4},{"name":"correct_streak","size":4},{"name":"wrong_streak","size":4}],[{"name":"reviewlogs","size":6},{"name":"review_tire","size":6}],[{"name":"word_definition","size":6}]]}}	object	\N	\N
 54	plugin_content_manager_configuration_content_types::api::conversation.conversation	{"uid":"api::conversation.conversation","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"sessionId","defaultSortBy":"sessionId","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"sessionId":{"edit":{"label":"sessionId","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"sessionId","searchable":true,"sortable":true}},"history":{"edit":{"label":"history","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"history","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"sessionId","size":6}],[{"name":"history","size":12}]],"list":["id","sessionId"]}}	object	\N	\N
 57	plugin_content_manager_configuration_components::a.illustrations	{"uid":"a.illustrations","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"caption","defaultSortBy":"caption","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}},"alt_text":{"edit":{"label":"alt_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"alt_text","searchable":true,"sortable":true}},"media":{"edit":{"label":"media","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"media","searchable":false,"sortable":false}},"paragraph":{"edit":{"label":"paragraph","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"paragraph","searchable":true,"sortable":true}}},"layouts":{"list":["id","caption","alt_text","media"],"edit":[[{"name":"caption","size":6},{"name":"alt_text","size":6}],[{"name":"media","size":6},{"name":"paragraph","size":4}]]},"isComponent":true}	object	\N	\N
 59	plugin_content_manager_configuration_components::a.generation-prompts	{"uid":"a.generation-prompts","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"cover_image_prompt":{"edit":{"label":"cover_image_prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"cover_image_prompt","searchable":true,"sortable":true}},"brief_video_prompt":{"edit":{"label":"brief_video_prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"brief_video_prompt","searchable":true,"sortable":true}},"illustration_prompts":{"edit":{"label":"illustration_prompts","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"illustration_prompts","searchable":false,"sortable":false}}},"layouts":{"list":["id","cover_image_prompt","brief_video_prompt","illustration_prompts"],"edit":[[{"name":"cover_image_prompt","size":6},{"name":"brief_video_prompt","size":6}],[{"name":"illustration_prompts","size":12}]]},"isComponent":true}	object	\N	\N
@@ -7427,6 +8065,16 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 58	plugin_content_manager_configuration_components::a.illustration-prompt	{"uid":"a.illustration-prompt","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"prompt":{"edit":{"label":"prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"prompt","searchable":true,"sortable":true}}},"layouts":{"list":["id","prompt"],"edit":[[{"name":"prompt","size":6}]]},"isComponent":true}	object	\N	\N
 60	plugin_content_manager_configuration_content_types::api::story-like.story-like	{"uid":"api::story-like.story-like","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"story":{"edit":{"label":"story","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"story","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","story","createdAt"],"edit":[[{"name":"user","size":6},{"name":"story","size":6}]]}}	object	\N	\N
 62	plugin_content_manager_configuration_content_types::api::ping.ping	{"uid":"api::ping.ping","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"status","defaultSortBy":"status","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"status":{"edit":{"label":"status","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"status","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","status","createdAt","updatedAt"],"edit":[[{"name":"status","size":6}]]}}	object	\N	\N
+31	plugin_content_manager_configuration_components::a.word-ref	{"uid":"a.word-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}}},"layouts":{"list":["id"],"edit":[]},"isComponent":true}	object	\N	\N
+26	plugin_content_manager_configuration_content_types::api::sentence.sentence	{"uid":"api::sentence.sentence","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"target_text","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"instruction":{"edit":{"label":"instruction","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"instruction","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"target_audio":{"edit":{"label":"target_audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_audio","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"register":{"edit":{"label":"register","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"register","searchable":true,"sortable":true}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","instruction","base_text"],"edit":[[{"name":"title","size":6},{"name":"instruction","size":6}],[{"name":"base_text","size":6},{"name":"target_text","size":6}],[{"name":"target_audio","size":6}],[{"name":"tags","size":12}],[{"name":"register","size":6}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}]]}}	object	\N	\N
+64	plugin_content_manager_configuration_content_types::api::word-definition.word-definition	{"uid":"api::word-definition.word-definition","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"base_text","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"word":{"edit":{"label":"word","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"word","searchable":true,"sortable":true}},"section":{"edit":{"label":"section","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"section","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"instruction":{"edit":{"label":"instruction","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"instruction","searchable":true,"sortable":true}},"part_of_speech":{"edit":{"label":"part_of_speech","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"part_of_speech","searchable":true,"sortable":true}},"gender":{"edit":{"label":"gender","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"gender","searchable":true,"sortable":true}},"article":{"edit":{"label":"article","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"article","searchable":true,"sortable":true}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"example_sentence":{"edit":{"label":"example_sentence","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"example_sentence","searchable":true,"sortable":true}},"verb_meta":{"edit":{"label":"verb_meta","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"verb_meta","searchable":false,"sortable":false}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"register":{"edit":{"label":"register","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"register","searchable":true,"sortable":true}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"word","size":6},{"name":"section","size":6}],[{"name":"base_text","size":6},{"name":"instruction","size":6}],[{"name":"part_of_speech","size":6},{"name":"gender","size":6}],[{"name":"article","size":6}],[{"name":"tags","size":12}],[{"name":"example_sentence","size":6}],[{"name":"verb_meta","size":12}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}],[{"name":"register","size":6},{"name":"flashcards","size":6}]],"list":["id","word","section","base_text"]}}	object	\N	\N
+22	core_admin_auth	{"providers":{"autoRegister":false,"defaultRole":null,"ssoLockedRoles":null}}	object	\N	\N
+65	plugin_content_manager_configuration_content_types::api::part-of-speech.part-of-speech	{"uid":"api::part-of-speech.part-of-speech","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"word_definitions":{"edit":{"label":"word_definitions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definitions","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","createdAt","updatedAt"],"edit":[[{"name":"name","size":6},{"name":"word_definitions","size":6}]]}}	object	\N	\N
+12	plugin_content_manager_configuration_content_types::plugin::users-permissions.user	{"uid":"plugin::users-permissions.user","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"username","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"username":{"edit":{"label":"username","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"username","searchable":true,"sortable":true}},"email":{"edit":{"label":"email","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"email","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"password":{"edit":{"label":"password","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"password","searchable":true,"sortable":true}},"resetPasswordToken":{"edit":{"label":"resetPasswordToken","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"resetPasswordToken","searchable":true,"sortable":true}},"confirmationToken":{"edit":{"label":"confirmationToken","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"confirmationToken","searchable":true,"sortable":true}},"confirmed":{"edit":{"label":"confirmed","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"confirmed","searchable":true,"sortable":true}},"blocked":{"edit":{"label":"blocked","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"blocked","searchable":true,"sortable":true}},"role":{"edit":{"label":"role","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"role","searchable":true,"sortable":true}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"user_profile":{"edit":{"label":"user_profile","description":"","placeholder":"","visible":true,"editable":true,"mainField":"telephone"},"list":{"label":"user_profile","searchable":true,"sortable":true}},"user_words":{"edit":{"label":"user_words","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_words","searchable":false,"sortable":false}},"user_sentences":{"edit":{"label":"user_sentences","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentences","searchable":false,"sortable":false}},"vbsetting":{"edit":{"label":"vbsetting","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"vbsetting","searchable":true,"sortable":true}},"story_likes":{"edit":{"label":"story_likes","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"story_likes","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","username","email","role","confirmed"],"edit":[[{"name":"username","size":6},{"name":"email","size":6}],[{"name":"password","size":6},{"name":"confirmed","size":4}],[{"name":"blocked","size":4},{"name":"role","size":6}],[{"name":"user_words","size":6},{"name":"user_sentences","size":6}],[{"name":"flashcards","size":6},{"name":"reviewlogs","size":6}],[{"name":"user_profile","size":6}],[{"name":"vbsetting","size":6},{"name":"story_likes","size":6}]]}}	object	\N	\N
+44	plugin_content_manager_configuration_content_types::api::reviewlog.reviewlog	{"uid":"api::reviewlog.reviewlog","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"createdAt","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"reviewed_at":{"edit":{"label":"reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"reviewed_at","searchable":true,"sortable":true}},"level":{"edit":{"label":"level","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"level","searchable":true,"sortable":true}},"result":{"edit":{"label":"result","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"result","searchable":true,"sortable":true}},"flashcard":{"edit":{"label":"flashcard","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcard","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","flashcard","result","reviewed_at"],"edit":[[{"name":"user","size":6}],[{"name":"level","size":6}],[{"name":"result","size":6},{"name":"flashcard","size":6}],[{"name":"reviewed_at","size":6}]]}}	object	\N	\N
+37	plugin_content_manager_configuration_content_types::api::lesson.lesson	{"uid":"api::lesson.lesson","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"lessonlevel":{"edit":{"label":"lessonlevel","description":"","placeholder":"","visible":true,"editable":true,"mainField":"level"},"list":{"label":"lessonlevel","searchable":true,"sortable":true}},"sections":{"edit":{"label":"sections","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"sections","searchable":false,"sortable":false}},"user_words":{"edit":{"label":"user_words","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_words","searchable":false,"sortable":false}},"user_sentences":{"edit":{"label":"user_sentences","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentences","searchable":false,"sortable":false}},"unit":{"edit":{"label":"unit","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"unit","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","slug","unit"],"edit":[[{"name":"title","size":6},{"name":"slug","size":6}],[{"name":"description","size":6}],[{"name":"order","size":4}],[{"name":"tags","size":12}],[{"name":"lessonlevel","size":6},{"name":"sections","size":6}],[{"name":"user_words","size":6},{"name":"user_sentences","size":6}],[{"name":"unit","size":6}]]}}	object	\N	\N
+67	plugin_content_manager_configuration_content_types::api::module.module	{"uid":"api::module.module","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"goal":{"edit":{"label":"goal","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"goal","searchable":true,"sortable":true}},"icon_media":{"edit":{"label":"icon_media","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"icon_media","searchable":false,"sortable":false}},"units":{"edit":{"label":"units","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"units","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","description","goal"],"edit":[[{"name":"name","size":6},{"name":"description","size":6}],[{"name":"goal","size":6},{"name":"icon_media","size":6}],[{"name":"units","size":6}]]}}	object	\N	\N
+63	plugin_content_manager_configuration_content_types::api::word.word	{"uid":"api::word.word","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"target_text","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"word_definitions":{"edit":{"label":"word_definitions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definitions","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"target_text","size":6},{"name":"word_definitions","size":6}]],"list":["id","target_text","createdAt","updatedAt"]}}	object	\N	\N
 \.
 
 
@@ -7435,7 +8083,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 --
 
 COPY public.strapi_database_schema (id, schema, "time", hash) FROM stdin;
-96	{"tables":[{"name":"strapi_core_store_settings","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"value","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"environment","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"strapi_webhooks","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"headers","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"events","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"enabled","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"admin_permissions","indexes":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"action_parameters","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"subject","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"properties","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conditions","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users","indexes":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"firstname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lastname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"registration_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"prefered_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_roles","indexes":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_tokens","indexes":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions","indexes":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_tokens","indexes":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions","indexes":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files","indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null},{"name":"files_created_by_id_fk","columns":["created_by_id"]},{"name":"files_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"files_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"files_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alternative_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"width","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"height","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"formats","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"ext","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"mime","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"size","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"preview_url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider_metadata","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"folder_path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders","indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"},{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"]},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions","indexes":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_roles","indexes":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users","indexes":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"]},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmation_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmed","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"i18n_locale","indexes":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"]},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"conversations","indexes":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"]},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"session_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"history","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels","indexes":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"]},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"flashcards","indexes":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"]},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"last_reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"correct_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"wrong_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_remembered","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessons","indexes":[{"type":"unique","name":"lessons_slug_unique","columns":["slug"]},{"name":"lessons_created_by_id_fk","columns":["created_by_id"]},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessons_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessonlevels","indexes":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"]},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"pings","indexes":[{"name":"pings_created_by_id_fk","columns":["created_by_id"]},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"pings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"status","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"review_tires","indexes":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"]},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tier","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"min_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"max_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"cooldown_hours","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"demote_bar","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"reviewlogs","indexes":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"]},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"result","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections","indexes":[{"name":"sections_created_by_id_fk","columns":["created_by_id"]},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sections_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"sentences","indexes":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"stories","indexes":[{"type":"unique","name":"stories_slug_unique","columns":["slug"]},{"name":"stories_created_by_id_fk","columns":["created_by_id"]},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"stories_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"author","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"text","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"word_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"like_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"story_likes","indexes":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"]},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics","indexes":[{"name":"topics_created_by_id_fk","columns":["created_by_id"]},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"topics_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tags","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units","indexes":[{"type":"unique","name":"units_slug_unique","columns":["slug"]},{"name":"units_created_by_id_fk","columns":["created_by_id"]},{"name":"units_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"units_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"units_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_profiles","indexes":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"]},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"telephone","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences","indexes":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_words","indexes":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"]},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"part_of_speech","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"vbsettings","indexes":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"]},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"words_per_page","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_1","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_2","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_3","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words","indexes":[{"name":"words_created_by_id_fk","columns":["created_by_id"]},{"name":"words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"part_of_speech","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"gender","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"article","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_external_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_generation_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"cover_image_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief_video_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustration_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustrations","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alt_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"paragraph","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_pagebreakers","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"backbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"nextbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_questions","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expected_answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_quizzes","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"question","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"options","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"explanation","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_taglists","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_user_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_user_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_verb_metas","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"simple_past","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"past_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"present_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"thirdperson_singular","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"auxiliary_verb","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conjugations","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"admin_permissions_role_links","indexes":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"]},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"admin_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"admin_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"admin_permissions","onDelete":"CASCADE"},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users_roles_links","indexes":[{"name":"admin_users_roles_links_fk","columns":["user_id"]},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"]},{"name":"admin_users_roles_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"admin_users_roles_links_order_fk","columns":["role_order"]},{"name":"admin_users_roles_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"admin_users_roles_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"admin_users","onDelete":"CASCADE"},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions_token_links","indexes":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"]},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"]},{"name":"strapi_api_token_permissions_token_links_unique","columns":["api_token_permission_id","api_token_id"],"type":"unique"},{"name":"strapi_api_token_permissions_token_links_order_inv_fk","columns":["api_token_permission_order"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_token_permissions","onDelete":"CASCADE"},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"api_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions_token_links","indexes":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"]},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"]},{"name":"strapi_transfer_token_permissions_token_links_unique","columns":["transfer_token_permission_id","transfer_token_id"],"type":"unique"},{"name":"strapi_transfer_token_permissions_token_links_order_inv_fk","columns":["transfer_token_permission_order"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_token_permissions","onDelete":"CASCADE"},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"transfer_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_related_morphs","indexes":[{"name":"files_related_morphs_fk","columns":["file_id"]},{"name":"files_related_morphs_order_index","columns":["order"]},{"name":"files_related_morphs_id_column_index","columns":["related_id"]}],"foreignKeys":[{"name":"files_related_morphs_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_folder_links","indexes":[{"name":"files_folder_links_fk","columns":["file_id"]},{"name":"files_folder_links_inv_fk","columns":["folder_id"]},{"name":"files_folder_links_unique","columns":["file_id","folder_id"],"type":"unique"},{"name":"files_folder_links_order_inv_fk","columns":["file_order"]}],"foreignKeys":[{"name":"files_folder_links_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"},{"name":"files_folder_links_inv_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"file_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders_parent_links","indexes":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"]},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"]},{"name":"upload_folders_parent_links_unique","columns":["folder_id","inv_folder_id"],"type":"unique"},{"name":"upload_folders_parent_links_order_inv_fk","columns":["folder_order"]}],"foreignKeys":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions_role_links","indexes":[{"name":"up_permissions_role_links_fk","columns":["permission_id"]},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"up_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"up_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"up_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"up_permissions","onDelete":"CASCADE"},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users_role_links","indexes":[{"name":"up_users_role_links_fk","columns":["user_id"]},{"name":"up_users_role_links_inv_fk","columns":["role_id"]},{"name":"up_users_role_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"up_users_role_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"up_users_role_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"},{"name":"up_users_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels_localizations_links","indexes":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_unique","columns":["difficulty_level_id","inv_difficulty_level_id"],"type":"unique"},{"name":"difficulty_levels_localizations_links_order_fk","columns":["difficulty_level_order"]}],"foreignKeys":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_components","indexes":[{"name":"flashcards_field_index","columns":["field"]},{"name":"flashcards_component_type_index","columns":["component_type"]},{"name":"flashcards_entity_fk","columns":["entity_id"]},{"name":"flashcards_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"flashcards_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_user_links","indexes":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"]},{"name":"flashcards_user_links_inv_fk","columns":["user_id"]},{"name":"flashcards_user_links_unique","columns":["flashcard_id","user_id"],"type":"unique"},{"name":"flashcards_user_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_lesson_links","indexes":[{"name":"flashcards_lesson_links_fk","columns":["flashcard_id"]},{"name":"flashcards_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"flashcards_lesson_links_unique","columns":["flashcard_id","lesson_id"],"type":"unique"},{"name":"flashcards_lesson_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_lesson_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_review_tire_links","indexes":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"]},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"]},{"name":"flashcards_review_tire_links_unique","columns":["flashcard_id","review_tire_id"],"type":"unique"},{"name":"flashcards_review_tire_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_localizations_links","indexes":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"]},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"]},{"name":"flashcards_localizations_links_unique","columns":["flashcard_id","inv_flashcard_id"],"type":"unique"},{"name":"flashcards_localizations_links_order_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_components","indexes":[{"name":"lessons_field_index","columns":["field"]},{"name":"lessons_component_type_index","columns":["component_type"]},{"name":"lessons_entity_fk","columns":["entity_id"]},{"name":"lessons_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"lessons_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_lessonlevel_links","indexes":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"]},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"]},{"name":"lessons_lessonlevel_links_unique","columns":["lesson_id","lessonlevel_id"],"type":"unique"},{"name":"lessons_lessonlevel_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"],"referencedColumns":["id"],"referencedTable":"lessonlevels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lessonlevel_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_unit_links","indexes":[{"name":"lessons_unit_links_fk","columns":["lesson_id"]},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"]},{"name":"lessons_unit_links_unique","columns":["lesson_id","unit_id"],"type":"unique"},{"name":"lessons_unit_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_unit_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_localizations_links","indexes":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"]},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"]},{"name":"lessons_localizations_links_unique","columns":["lesson_id","inv_lesson_id"],"type":"unique"},{"name":"lessons_localizations_links_order_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"review_tires_localizations_links","indexes":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"]},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"]},{"name":"review_tires_localizations_links_unique","columns":["review_tire_id","inv_review_tire_id"],"type":"unique"},{"name":"review_tires_localizations_links_order_fk","columns":["review_tire_order"]}],"foreignKeys":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_user_links","indexes":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"]},{"name":"reviewlogs_user_links_unique","columns":["reviewlog_id","user_id"],"type":"unique"},{"name":"reviewlogs_user_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_flashcard_links","indexes":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"]},{"name":"reviewlogs_flashcard_links_unique","columns":["reviewlog_id","flashcard_id"],"type":"unique"},{"name":"reviewlogs_flashcard_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_components","indexes":[{"name":"sections_field_index","columns":["field"]},{"name":"sections_component_type_index","columns":["component_type"]},{"name":"sections_entity_fk","columns":["entity_id"]},{"name":"sections_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sections_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_lesson_links","indexes":[{"name":"sections_lesson_links_fk","columns":["section_id"]},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"sections_lesson_links_unique","columns":["section_id","lesson_id"],"type":"unique"},{"name":"sections_lesson_links_order_inv_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_lesson_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_localizations_links","indexes":[{"name":"sections_localizations_links_fk","columns":["section_id"]},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"]},{"name":"sections_localizations_links_unique","columns":["section_id","inv_section_id"],"type":"unique"},{"name":"sections_localizations_links_order_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_localizations_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_components","indexes":[{"name":"sentences_field_index","columns":["field"]},{"name":"sentences_component_type_index","columns":["component_type"]},{"name":"sentences_entity_fk","columns":["entity_id"]},{"name":"sentences_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sentences_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_localizations_links","indexes":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"]},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"]},{"name":"sentences_localizations_links_unique","columns":["sentence_id","inv_sentence_id"],"type":"unique"},{"name":"sentences_localizations_links_order_fk","columns":["sentence_order"]}],"foreignKeys":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_components","indexes":[{"name":"stories_field_index","columns":["field"]},{"name":"stories_component_type_index","columns":["component_type"]},{"name":"stories_entity_fk","columns":["entity_id"]},{"name":"stories_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"stories_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_difficulty_level_links","indexes":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"]},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"stories_difficulty_level_links_unique","columns":["story_id","difficulty_level_id"],"type":"unique"},{"name":"stories_difficulty_level_links_order_inv_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_localizations_links","indexes":[{"name":"stories_localizations_links_fk","columns":["story_id"]},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"]},{"name":"stories_localizations_links_unique","columns":["story_id","inv_story_id"],"type":"unique"},{"name":"stories_localizations_links_order_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_localizations_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_user_links","indexes":[{"name":"story_likes_user_links_fk","columns":["story_like_id"]},{"name":"story_likes_user_links_inv_fk","columns":["user_id"]},{"name":"story_likes_user_links_unique","columns":["story_like_id","user_id"],"type":"unique"},{"name":"story_likes_user_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_user_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_story_links","indexes":[{"name":"story_likes_story_links_fk","columns":["story_like_id"]},{"name":"story_likes_story_links_inv_fk","columns":["story_id"]},{"name":"story_likes_story_links_unique","columns":["story_like_id","story_id"],"type":"unique"},{"name":"story_likes_story_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_story_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_story_links_inv_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_components","indexes":[{"name":"topics_field_index","columns":["field"]},{"name":"topics_component_type_index","columns":["component_type"]},{"name":"topics_entity_fk","columns":["entity_id"]},{"name":"topics_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"topics_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_difficulty_level_links","indexes":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"]},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"topics_difficulty_level_links_unique","columns":["topic_id","difficulty_level_id"],"type":"unique"},{"name":"topics_difficulty_level_links_order_inv_fk","columns":["topic_order"]}],"foreignKeys":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"topic_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"topic_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_precondition_links","indexes":[{"name":"units_precondition_links_fk","columns":["unit_id"]},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_precondition_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"}],"foreignKeys":[{"name":"units_precondition_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_localizations_links","indexes":[{"name":"units_localizations_links_fk","columns":["unit_id"]},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_localizations_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"},{"name":"units_localizations_links_order_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_localizations_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_profiles_user_links","indexes":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"]},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"]},{"name":"user_profiles_user_links_unique","columns":["user_profile_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"],"referencedColumns":["id"],"referencedTable":"user_profiles","onDelete":"CASCADE"},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_profile_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_user_links","indexes":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"]},{"name":"user_sentences_user_links_unique","columns":["user_sentence_id","user_id"],"type":"unique"},{"name":"user_sentences_user_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_lesson_links","indexes":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_sentences_lesson_links_unique","columns":["user_sentence_id","lesson_id"],"type":"unique"},{"name":"user_sentences_lesson_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_localizations_links","indexes":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"]},{"name":"user_sentences_localizations_links_unique","columns":["user_sentence_id","inv_user_sentence_id"],"type":"unique"},{"name":"user_sentences_localizations_links_order_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_user_links","indexes":[{"name":"user_words_user_links_fk","columns":["user_word_id"]},{"name":"user_words_user_links_inv_fk","columns":["user_id"]},{"name":"user_words_user_links_unique","columns":["user_word_id","user_id"],"type":"unique"},{"name":"user_words_user_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_user_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_lesson_links","indexes":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"]},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_words_lesson_links_unique","columns":["user_word_id","lesson_id"],"type":"unique"},{"name":"user_words_lesson_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_localizations_links","indexes":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"]},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"]},{"name":"user_words_localizations_links_unique","columns":["user_word_id","inv_user_word_id"],"type":"unique"},{"name":"user_words_localizations_links_order_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"vbsettings_user_links","indexes":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"]},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"]},{"name":"vbsettings_user_links_unique","columns":["vbsetting_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"],"referencedColumns":["id"],"referencedTable":"vbsettings","onDelete":"CASCADE"},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"vbsetting_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words_components","indexes":[{"name":"words_field_index","columns":["field"]},{"name":"words_component_type_index","columns":["component_type"]},{"name":"words_entity_fk","columns":["entity_id"]},{"name":"words_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"words_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words_example_sentences_links","indexes":[{"name":"words_example_sentences_links_fk","columns":["word_id"]},{"name":"words_example_sentences_links_inv_fk","columns":["sentence_id"]},{"name":"words_example_sentences_links_unique","columns":["word_id","sentence_id"],"type":"unique"},{"name":"words_example_sentences_links_order_fk","columns":["sentence_order"]},{"name":"words_example_sentences_links_order_inv_fk","columns":["word_order"]}],"foreignKeys":[{"name":"words_example_sentences_links_fk","columns":["word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"},{"name":"words_example_sentences_links_inv_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words_localizations_links","indexes":[{"name":"words_localizations_links_fk","columns":["word_id"]},{"name":"words_localizations_links_inv_fk","columns":["inv_word_id"]},{"name":"words_localizations_links_unique","columns":["word_id","inv_word_id"],"type":"unique"},{"name":"words_localizations_links_order_fk","columns":["word_order"]}],"foreignKeys":[{"name":"words_localizations_links_fk","columns":["word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"},{"name":"words_localizations_links_inv_fk","columns":["inv_word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_generation_prompts_components","indexes":[{"name":"components_a_generation_prompts_field_index","columns":["field"]},{"name":"components_a_generation_prompts_component_type_index","columns":["component_type"]},{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"]},{"name":"components_a_generation_prompts_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"components_a_generation_prompts","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_sent_refs_sentence_links","indexes":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"]},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"]},{"name":"components_a_sent_refs_sentence_links_unique","columns":["sent_ref_id","sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_sent_refs","onDelete":"CASCADE"},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_sent_refs_user_sentence_links","indexes":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_unique","columns":["user_sent_ref_id","user_sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_sent_refs","onDelete":"CASCADE"},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_word_refs_user_word_links","indexes":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"]},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"]},{"name":"components_a_user_word_refs_user_word_links_unique","columns":["user_word_ref_id","user_word_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_word_refs","onDelete":"CASCADE"},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_word_refs_word_links","indexes":[{"name":"components_a_word_refs_word_links_fk","columns":["word_ref_id"]},{"name":"components_a_word_refs_word_links_inv_fk","columns":["word_id"]},{"name":"components_a_word_refs_word_links_unique","columns":["word_ref_id","word_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_word_refs_word_links_fk","columns":["word_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_word_refs","onDelete":"CASCADE"},{"name":"components_a_word_refs_word_links_inv_fk","columns":["word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]}]}	2025-08-02 12:29:26.651	b2055ec434c932dfd724539ec618e5aa
+108	{"tables":[{"name":"strapi_core_store_settings","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"value","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"environment","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"strapi_webhooks","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"headers","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"events","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"enabled","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"admin_permissions","indexes":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"action_parameters","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"subject","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"properties","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conditions","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users","indexes":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"firstname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lastname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"registration_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"prefered_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_roles","indexes":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_tokens","indexes":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions","indexes":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_tokens","indexes":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions","indexes":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files","indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null},{"name":"files_created_by_id_fk","columns":["created_by_id"]},{"name":"files_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"files_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"files_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alternative_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"width","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"height","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"formats","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"ext","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"mime","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"size","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"preview_url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider_metadata","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"folder_path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders","indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"},{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"]},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions","indexes":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_roles","indexes":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users","indexes":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"]},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmation_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmed","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"i18n_locale","indexes":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"]},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"conversations","indexes":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"]},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"session_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"history","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels","indexes":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"]},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"flashcards","indexes":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"]},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"last_reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"correct_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"wrong_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_remembered","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessons","indexes":[{"type":"unique","name":"lessons_slug_unique","columns":["slug"]},{"name":"lessons_created_by_id_fk","columns":["created_by_id"]},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessons_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessonlevels","indexes":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"]},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"modules","indexes":[{"name":"modules_created_by_id_fk","columns":["created_by_id"]},{"name":"modules_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"modules_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"modules_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"goal","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"part_of_speeches","indexes":[{"name":"part_of_speeches_created_by_id_fk","columns":["created_by_id"]},{"name":"part_of_speeches_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"part_of_speeches_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"part_of_speeches_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"pings","indexes":[{"name":"pings_created_by_id_fk","columns":["created_by_id"]},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"pings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"status","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"review_tires","indexes":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"]},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tier","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"min_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"max_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"cooldown_hours","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"demote_bar","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"reviewlogs","indexes":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"]},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"result","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections","indexes":[{"name":"sections_created_by_id_fk","columns":["created_by_id"]},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sections_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"sentences","indexes":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"stories","indexes":[{"type":"unique","name":"stories_slug_unique","columns":["slug"]},{"name":"stories_created_by_id_fk","columns":["created_by_id"]},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"stories_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"author","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"text","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"word_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"like_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"story_likes","indexes":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"]},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics","indexes":[{"name":"topics_created_by_id_fk","columns":["created_by_id"]},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"topics_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tags","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units","indexes":[{"type":"unique","name":"units_slug_unique","columns":["slug"]},{"name":"units_created_by_id_fk","columns":["created_by_id"]},{"name":"units_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"units_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"units_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_profiles","indexes":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"]},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"telephone","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences","indexes":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_words","indexes":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"]},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"part_of_speech","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"vbsettings","indexes":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"]},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"words_per_page","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_1","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_2","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_3","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words","indexes":[{"name":"words_created_by_id_fk","columns":["created_by_id"]},{"name":"words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions","indexes":[{"name":"word_definitions_created_by_id_fk","columns":["created_by_id"]},{"name":"word_definitions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"word_definitions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"word_definitions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"gender","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"article","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"example_sentence","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_external_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_generation_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"cover_image_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief_video_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustration_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustrations","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alt_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"paragraph","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_pagebreakers","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"backbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"nextbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_questions","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expected_answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_quizzes","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"question","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"options","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"explanation","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_taglists","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_user_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_user_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_verb_metas","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"simple_past","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"past_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"present_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"thirdperson_singular","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"auxiliary_verb","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conjugations","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"admin_permissions_role_links","indexes":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"]},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"admin_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"admin_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"admin_permissions","onDelete":"CASCADE"},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users_roles_links","indexes":[{"name":"admin_users_roles_links_fk","columns":["user_id"]},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"]},{"name":"admin_users_roles_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"admin_users_roles_links_order_fk","columns":["role_order"]},{"name":"admin_users_roles_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"admin_users_roles_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"admin_users","onDelete":"CASCADE"},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions_token_links","indexes":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"]},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"]},{"name":"strapi_api_token_permissions_token_links_unique","columns":["api_token_permission_id","api_token_id"],"type":"unique"},{"name":"strapi_api_token_permissions_token_links_order_inv_fk","columns":["api_token_permission_order"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_token_permissions","onDelete":"CASCADE"},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"api_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions_token_links","indexes":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"]},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"]},{"name":"strapi_transfer_token_permissions_token_links_unique","columns":["transfer_token_permission_id","transfer_token_id"],"type":"unique"},{"name":"strapi_transfer_token_permissions_token_links_order_inv_fk","columns":["transfer_token_permission_order"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_token_permissions","onDelete":"CASCADE"},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"transfer_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_related_morphs","indexes":[{"name":"files_related_morphs_fk","columns":["file_id"]},{"name":"files_related_morphs_order_index","columns":["order"]},{"name":"files_related_morphs_id_column_index","columns":["related_id"]}],"foreignKeys":[{"name":"files_related_morphs_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_folder_links","indexes":[{"name":"files_folder_links_fk","columns":["file_id"]},{"name":"files_folder_links_inv_fk","columns":["folder_id"]},{"name":"files_folder_links_unique","columns":["file_id","folder_id"],"type":"unique"},{"name":"files_folder_links_order_inv_fk","columns":["file_order"]}],"foreignKeys":[{"name":"files_folder_links_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"},{"name":"files_folder_links_inv_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"file_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders_parent_links","indexes":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"]},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"]},{"name":"upload_folders_parent_links_unique","columns":["folder_id","inv_folder_id"],"type":"unique"},{"name":"upload_folders_parent_links_order_inv_fk","columns":["folder_order"]}],"foreignKeys":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions_role_links","indexes":[{"name":"up_permissions_role_links_fk","columns":["permission_id"]},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"up_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"up_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"up_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"up_permissions","onDelete":"CASCADE"},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users_role_links","indexes":[{"name":"up_users_role_links_fk","columns":["user_id"]},{"name":"up_users_role_links_inv_fk","columns":["role_id"]},{"name":"up_users_role_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"up_users_role_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"up_users_role_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"},{"name":"up_users_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels_localizations_links","indexes":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_unique","columns":["difficulty_level_id","inv_difficulty_level_id"],"type":"unique"},{"name":"difficulty_levels_localizations_links_order_fk","columns":["difficulty_level_order"]}],"foreignKeys":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_user_links","indexes":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"]},{"name":"flashcards_user_links_inv_fk","columns":["user_id"]},{"name":"flashcards_user_links_unique","columns":["flashcard_id","user_id"],"type":"unique"},{"name":"flashcards_user_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_review_tire_links","indexes":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"]},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"]},{"name":"flashcards_review_tire_links_unique","columns":["flashcard_id","review_tire_id"],"type":"unique"},{"name":"flashcards_review_tire_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_word_definition_links","indexes":[{"name":"flashcards_word_definition_links_fk","columns":["flashcard_id"]},{"name":"flashcards_word_definition_links_inv_fk","columns":["word_definition_id"]},{"name":"flashcards_word_definition_links_unique","columns":["flashcard_id","word_definition_id"],"type":"unique"},{"name":"flashcards_word_definition_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_word_definition_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_word_definition_links_inv_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_localizations_links","indexes":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"]},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"]},{"name":"flashcards_localizations_links_unique","columns":["flashcard_id","inv_flashcard_id"],"type":"unique"},{"name":"flashcards_localizations_links_order_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_components","indexes":[{"name":"lessons_field_index","columns":["field"]},{"name":"lessons_component_type_index","columns":["component_type"]},{"name":"lessons_entity_fk","columns":["entity_id"]},{"name":"lessons_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"lessons_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_lessonlevel_links","indexes":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"]},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"]},{"name":"lessons_lessonlevel_links_unique","columns":["lesson_id","lessonlevel_id"],"type":"unique"},{"name":"lessons_lessonlevel_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"],"referencedColumns":["id"],"referencedTable":"lessonlevels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lessonlevel_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_unit_links","indexes":[{"name":"lessons_unit_links_fk","columns":["lesson_id"]},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"]},{"name":"lessons_unit_links_unique","columns":["lesson_id","unit_id"],"type":"unique"},{"name":"lessons_unit_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_unit_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_localizations_links","indexes":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"]},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"]},{"name":"lessons_localizations_links_unique","columns":["lesson_id","inv_lesson_id"],"type":"unique"},{"name":"lessons_localizations_links_order_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"modules_localizations_links","indexes":[{"name":"modules_localizations_links_fk","columns":["module_id"]},{"name":"modules_localizations_links_inv_fk","columns":["inv_module_id"]},{"name":"modules_localizations_links_unique","columns":["module_id","inv_module_id"],"type":"unique"},{"name":"modules_localizations_links_order_fk","columns":["module_order"]}],"foreignKeys":[{"name":"modules_localizations_links_fk","columns":["module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"},{"name":"modules_localizations_links_inv_fk","columns":["inv_module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"module_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"part_of_speeches_localizations_links","indexes":[{"name":"part_of_speeches_localizations_links_fk","columns":["part_of_speech_id"]},{"name":"part_of_speeches_localizations_links_inv_fk","columns":["inv_part_of_speech_id"]},{"name":"part_of_speeches_localizations_links_unique","columns":["part_of_speech_id","inv_part_of_speech_id"],"type":"unique"},{"name":"part_of_speeches_localizations_links_order_fk","columns":["part_of_speech_order"]}],"foreignKeys":[{"name":"part_of_speeches_localizations_links_fk","columns":["part_of_speech_id"],"referencedColumns":["id"],"referencedTable":"part_of_speeches","onDelete":"CASCADE"},{"name":"part_of_speeches_localizations_links_inv_fk","columns":["inv_part_of_speech_id"],"referencedColumns":["id"],"referencedTable":"part_of_speeches","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"part_of_speech_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_part_of_speech_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"part_of_speech_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"review_tires_localizations_links","indexes":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"]},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"]},{"name":"review_tires_localizations_links_unique","columns":["review_tire_id","inv_review_tire_id"],"type":"unique"},{"name":"review_tires_localizations_links_order_fk","columns":["review_tire_order"]}],"foreignKeys":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_user_links","indexes":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"]},{"name":"reviewlogs_user_links_unique","columns":["reviewlog_id","user_id"],"type":"unique"},{"name":"reviewlogs_user_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_flashcard_links","indexes":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"]},{"name":"reviewlogs_flashcard_links_unique","columns":["reviewlog_id","flashcard_id"],"type":"unique"},{"name":"reviewlogs_flashcard_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_components","indexes":[{"name":"sections_field_index","columns":["field"]},{"name":"sections_component_type_index","columns":["component_type"]},{"name":"sections_entity_fk","columns":["entity_id"]},{"name":"sections_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sections_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_lesson_links","indexes":[{"name":"sections_lesson_links_fk","columns":["section_id"]},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"sections_lesson_links_unique","columns":["section_id","lesson_id"],"type":"unique"},{"name":"sections_lesson_links_order_inv_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_lesson_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_localizations_links","indexes":[{"name":"sections_localizations_links_fk","columns":["section_id"]},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"]},{"name":"sections_localizations_links_unique","columns":["section_id","inv_section_id"],"type":"unique"},{"name":"sections_localizations_links_order_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_localizations_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_components","indexes":[{"name":"sentences_field_index","columns":["field"]},{"name":"sentences_component_type_index","columns":["component_type"]},{"name":"sentences_entity_fk","columns":["entity_id"]},{"name":"sentences_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sentences_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_localizations_links","indexes":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"]},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"]},{"name":"sentences_localizations_links_unique","columns":["sentence_id","inv_sentence_id"],"type":"unique"},{"name":"sentences_localizations_links_order_fk","columns":["sentence_order"]}],"foreignKeys":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_components","indexes":[{"name":"stories_field_index","columns":["field"]},{"name":"stories_component_type_index","columns":["component_type"]},{"name":"stories_entity_fk","columns":["entity_id"]},{"name":"stories_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"stories_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_difficulty_level_links","indexes":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"]},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"stories_difficulty_level_links_unique","columns":["story_id","difficulty_level_id"],"type":"unique"},{"name":"stories_difficulty_level_links_order_inv_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_localizations_links","indexes":[{"name":"stories_localizations_links_fk","columns":["story_id"]},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"]},{"name":"stories_localizations_links_unique","columns":["story_id","inv_story_id"],"type":"unique"},{"name":"stories_localizations_links_order_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_localizations_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_user_links","indexes":[{"name":"story_likes_user_links_fk","columns":["story_like_id"]},{"name":"story_likes_user_links_inv_fk","columns":["user_id"]},{"name":"story_likes_user_links_unique","columns":["story_like_id","user_id"],"type":"unique"},{"name":"story_likes_user_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_user_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_story_links","indexes":[{"name":"story_likes_story_links_fk","columns":["story_like_id"]},{"name":"story_likes_story_links_inv_fk","columns":["story_id"]},{"name":"story_likes_story_links_unique","columns":["story_like_id","story_id"],"type":"unique"},{"name":"story_likes_story_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_story_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_story_links_inv_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_components","indexes":[{"name":"topics_field_index","columns":["field"]},{"name":"topics_component_type_index","columns":["component_type"]},{"name":"topics_entity_fk","columns":["entity_id"]},{"name":"topics_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"topics_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_difficulty_level_links","indexes":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"]},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"topics_difficulty_level_links_unique","columns":["topic_id","difficulty_level_id"],"type":"unique"},{"name":"topics_difficulty_level_links_order_inv_fk","columns":["topic_order"]}],"foreignKeys":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"topic_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"topic_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_precondition_links","indexes":[{"name":"units_precondition_links_fk","columns":["unit_id"]},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_precondition_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"}],"foreignKeys":[{"name":"units_precondition_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_module_links","indexes":[{"name":"units_module_links_fk","columns":["unit_id"]},{"name":"units_module_links_inv_fk","columns":["module_id"]},{"name":"units_module_links_unique","columns":["unit_id","module_id"],"type":"unique"},{"name":"units_module_links_order_inv_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_module_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_module_links_inv_fk","columns":["module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_localizations_links","indexes":[{"name":"units_localizations_links_fk","columns":["unit_id"]},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_localizations_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"},{"name":"units_localizations_links_order_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_localizations_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_profiles_user_links","indexes":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"]},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"]},{"name":"user_profiles_user_links_unique","columns":["user_profile_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"],"referencedColumns":["id"],"referencedTable":"user_profiles","onDelete":"CASCADE"},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_profile_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_user_links","indexes":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"]},{"name":"user_sentences_user_links_unique","columns":["user_sentence_id","user_id"],"type":"unique"},{"name":"user_sentences_user_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_lesson_links","indexes":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_sentences_lesson_links_unique","columns":["user_sentence_id","lesson_id"],"type":"unique"},{"name":"user_sentences_lesson_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_localizations_links","indexes":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"]},{"name":"user_sentences_localizations_links_unique","columns":["user_sentence_id","inv_user_sentence_id"],"type":"unique"},{"name":"user_sentences_localizations_links_order_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_user_links","indexes":[{"name":"user_words_user_links_fk","columns":["user_word_id"]},{"name":"user_words_user_links_inv_fk","columns":["user_id"]},{"name":"user_words_user_links_unique","columns":["user_word_id","user_id"],"type":"unique"},{"name":"user_words_user_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_user_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_lesson_links","indexes":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"]},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_words_lesson_links_unique","columns":["user_word_id","lesson_id"],"type":"unique"},{"name":"user_words_lesson_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_localizations_links","indexes":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"]},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"]},{"name":"user_words_localizations_links_unique","columns":["user_word_id","inv_user_word_id"],"type":"unique"},{"name":"user_words_localizations_links_order_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"vbsettings_user_links","indexes":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"]},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"]},{"name":"vbsettings_user_links_unique","columns":["vbsetting_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"],"referencedColumns":["id"],"referencedTable":"vbsettings","onDelete":"CASCADE"},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"vbsetting_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_components","indexes":[{"name":"word_definitions_field_index","columns":["field"]},{"name":"word_definitions_component_type_index","columns":["component_type"]},{"name":"word_definitions_entity_fk","columns":["entity_id"]},{"name":"word_definitions_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"word_definitions_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_word_links","indexes":[{"name":"word_definitions_word_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_word_links_inv_fk","columns":["word_id"]},{"name":"word_definitions_word_links_unique","columns":["word_definition_id","word_id"],"type":"unique"},{"name":"word_definitions_word_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_word_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_word_links_inv_fk","columns":["word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_section_links","indexes":[{"name":"word_definitions_section_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_section_links_inv_fk","columns":["section_id"]},{"name":"word_definitions_section_links_unique","columns":["word_definition_id","section_id"],"type":"unique"},{"name":"word_definitions_section_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_section_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_section_links_inv_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_part_of_speech_links","indexes":[{"name":"word_definitions_part_of_speech_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_part_of_speech_links_inv_fk","columns":["part_of_speech_id"]},{"name":"word_definitions_part_of_speech_links_unique","columns":["word_definition_id","part_of_speech_id"],"type":"unique"},{"name":"word_definitions_part_of_speech_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_part_of_speech_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_part_of_speech_links_inv_fk","columns":["part_of_speech_id"],"referencedColumns":["id"],"referencedTable":"part_of_speeches","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"part_of_speech_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_localizations_links","indexes":[{"name":"word_definitions_localizations_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_localizations_links_inv_fk","columns":["inv_word_definition_id"]},{"name":"word_definitions_localizations_links_unique","columns":["word_definition_id","inv_word_definition_id"],"type":"unique"},{"name":"word_definitions_localizations_links_order_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_localizations_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_localizations_links_inv_fk","columns":["inv_word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_generation_prompts_components","indexes":[{"name":"components_a_generation_prompts_field_index","columns":["field"]},{"name":"components_a_generation_prompts_component_type_index","columns":["component_type"]},{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"]},{"name":"components_a_generation_prompts_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"components_a_generation_prompts","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_sent_refs_sentence_links","indexes":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"]},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"]},{"name":"components_a_sent_refs_sentence_links_unique","columns":["sent_ref_id","sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_sent_refs","onDelete":"CASCADE"},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_sent_refs_user_sentence_links","indexes":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_unique","columns":["user_sent_ref_id","user_sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_sent_refs","onDelete":"CASCADE"},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_word_refs_user_word_links","indexes":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"]},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"]},{"name":"components_a_user_word_refs_user_word_links_unique","columns":["user_word_ref_id","user_word_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_word_refs","onDelete":"CASCADE"},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]}]}	2025-08-03 15:13:42.522	061b50a18fb07b9ce0793e5e016a1700
 \.
 
 
@@ -7618,6 +8266,14 @@ COPY public.units_localizations_links (id, unit_id, inv_unit_id, unit_order) FRO
 
 
 --
+-- Data for Name: units_module_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.units_module_links (id, unit_id, module_id, unit_order) FROM stdin;
+\.
+
+
+--
 -- Data for Name: units_precondition_links; Type: TABLE DATA; Schema: public; Owner: strapi
 --
 
@@ -7682,8 +8338,6 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 58	api::user-word.user-word.create	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
 60	api::user-word.user-word.findOne	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
 61	api::user-word.user-word.createLocalization	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
-62	api::word.word.find	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
-63	api::word.word.findOne	2025-07-01 14:20:26.011	2025-07-01 14:20:26.011	\N	\N
 68	api::translate-word.translate-word.translate	2025-07-02 08:43:14.09	2025-07-02 08:43:14.09	\N	\N
 77	plugin::users-permissions.user.find	2025-07-07 20:02:08.43	2025-07-07 20:02:08.43	\N	\N
 78	plugin::users-permissions.user.findOne	2025-07-07 20:02:08.43	2025-07-07 20:02:08.43	\N	\N
@@ -7723,6 +8377,17 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 130	api::story-like.story-like.create	2025-07-30 15:55:35.1	2025-07-30 15:55:35.1	\N	\N
 131	api::story-like.story-like.delete	2025-07-30 15:55:35.1	2025-07-30 15:55:35.1	\N	\N
 132	api::story-like.story-like.update	2025-07-30 15:55:35.1	2025-07-30 15:55:35.1	\N	\N
+133	api::word.word.find	2025-08-03 22:56:46.017	2025-08-03 22:56:46.017	\N	\N
+134	api::word.word.findOne	2025-08-03 22:56:46.017	2025-08-03 22:56:46.017	\N	\N
+135	api::word.word.create	2025-08-03 22:56:46.017	2025-08-03 22:56:46.017	\N	\N
+136	api::word.word.update	2025-08-03 22:56:46.017	2025-08-03 22:56:46.017	\N	\N
+138	api::word-definition.word-definition.find	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+141	api::word-definition.word-definition.delete	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+139	api::word-definition.word-definition.update	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+142	api::word-definition.word-definition.createLocalization	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+140	api::word-definition.word-definition.findOne	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+137	api::word-definition.word-definition.create	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+143	api::flashcard.flashcard.createLocalization	2025-08-03 22:57:38.181	2025-08-03 22:57:38.181	\N	\N
 \.
 
 
@@ -7779,8 +8444,6 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 56	61	1	15
 57	59	1	16
 58	57	1	16
-59	62	1	16
-60	63	1	16
 61	56	1	16
 62	58	1	16
 63	60	1	16
@@ -7823,6 +8486,17 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 130	131	1	36
 132	130	1	36
 131	132	1	36
+133	134	1	37
+134	133	1	37
+135	135	1	37
+136	136	1	38
+137	138	1	39
+138	139	1	39
+139	137	1	39
+140	140	1	39
+141	141	1	40
+142	142	1	40
+143	143	1	41
 \.
 
 
@@ -7833,7 +8507,7 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 COPY public.up_roles (id, name, description, type, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 2	Public	Default role given to unauthenticated user.	public	2025-06-23 17:47:30.213	2025-07-19 22:50:19.938	\N	\N
 3	admin	Administrator	admin	2025-07-20 11:32:36.414	2025-07-20 14:55:52.232	\N	\N
-1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-07-30 15:55:34.954	\N	\N
+1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-08-03 22:57:38.039	\N	\N
 \.
 
 
@@ -7913,6 +8587,8 @@ COPY public.user_profiles (id, telephone, base_language, created_at, updated_at,
 16	\N	en	2025-08-02 01:48:00.388	2025-08-02 01:48:00.388	\N	\N
 17	\N	en	2025-08-02 01:48:00.398	2025-08-02 01:48:00.398	\N	\N
 18	\N	en	2025-08-02 01:48:00.422	2025-08-02 01:48:00.422	\N	\N
+19	\N	zh	2025-08-03 21:18:31.4	2025-08-03 21:18:31.4	1	1
+20	\N	zh	2025-08-03 21:19:35.513	2025-08-03 21:19:35.513	1	1
 \.
 
 
@@ -7925,6 +8601,8 @@ COPY public.user_profiles_user_links (id, user_profile_id, user_id) FROM stdin;
 7	7	34
 12	12	41
 13	13	8
+19	19	30
+20	20	29
 \.
 
 
@@ -8326,40 +9004,1136 @@ COPY public.vbsettings_user_links (id, vbsetting_id, user_id) FROM stdin;
 
 
 --
+-- Data for Name: word_definitions; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.word_definitions (id, base_text, instruction, created_at, updated_at, created_by_id, updated_by_id, locale, gender, article, example_sentence, exam_base, exam_target, register) FROM stdin;
+837	道路	\N	2025-08-03 21:32:22.782	2025-08-03 21:32:26.109	\N	\N	en	\N	\N	I walk to school along the road every day.	[{"text": "小路", "isCorrect": false}, {"text": "地面", "isCorrect": false}, {"text": "道路", "isCorrect": true}, {"text": "街道", "isCorrect": false}]	[{"text": "path", "isCorrect": false}, {"text": "street", "isCorrect": false}, {"text": "avenue", "isCorrect": false}, {"text": "road", "isCorrect": true}]	\N
+774	细节	\N	2025-08-03 21:31:36.907	2025-08-03 21:31:40.278	\N	\N	en	\N	\N	She included every detail in her report.	[{"text": "粗糙", "isCorrect": false}, {"text": "细微", "isCorrect": false}, {"text": "细节", "isCorrect": true}, {"text": "特点", "isCorrect": false}]	[{"text": "aspect", "isCorrect": false}, {"text": "particular", "isCorrect": false}, {"text": "detail", "isCorrect": true}, {"text": "specific", "isCorrect": false}]	\N
+840	电话	\N	2025-08-03 21:32:27.403	2025-08-03 21:32:31.156	\N	\N	en	\N	\N	I always keep my phone with me in case of emergencies.	[{"text": "电话", "isCorrect": true}, {"text": "手机", "isCorrect": false}, {"text": "地址", "isCorrect": false}, {"text": "短信", "isCorrect": false}]	[{"text": "watch", "isCorrect": false}, {"text": "computer", "isCorrect": false}, {"text": "tablet", "isCorrect": false}, {"text": "phone", "isCorrect": true}]	\N
+780	猫	\N	2025-08-03 21:31:42.174	2025-08-03 21:31:45.131	\N	\N	en	\N	\N	I have a black cat named Luna.	[{"text": "狗", "isCorrect": false}, {"text": "鸟", "isCorrect": false}, {"text": "猫", "isCorrect": true}, {"text": "狼", "isCorrect": false}]	[{"text": "kitten", "isCorrect": false}, {"text": "hamster", "isCorrect": false}, {"text": "dog", "isCorrect": false}, {"text": "cat", "isCorrect": true}]	\N
+849	南方	\N	2025-08-03 21:32:32.068	2025-08-03 21:32:34.87	\N	\N	en	\N	\N	I live in a city located in the south of the country.	[{"text": "南方", "isCorrect": true}, {"text": "东方", "isCorrect": false}, {"text": "西方", "isCorrect": false}, {"text": "北方", "isCorrect": false}]	[{"text": "west", "isCorrect": false}, {"text": "south", "isCorrect": true}, {"text": "up", "isCorrect": false}, {"text": "east", "isCorrect": false}]	\N
+791	北方	\N	2025-08-03 21:31:54.711	2025-08-03 21:31:58.53	\N	\N	en	\N	\N	The sun rises in the east and sets in the west, but in the north, it stays light for longer in the summer.	[{"text": "东方", "isCorrect": false}, {"text": "西边", "isCorrect": false}, {"text": "北方", "isCorrect": true}, {"text": "南方", "isCorrect": false}]	[{"text": "east", "isCorrect": false}, {"text": "north", "isCorrect": true}, {"text": "west", "isCorrect": false}, {"text": "south", "isCorrect": false}]	\N
+850	连词	\N	2025-08-03 21:32:32.157	2025-08-03 21:32:35.369	\N	\N	en	\N	\N	I need to buy both bread and milk at the store.	[{"text": "动词", "isCorrect": false}, {"text": "形容词", "isCorrect": false}, {"text": "连词", "isCorrect": true}, {"text": "词组", "isCorrect": false}]	[{"text": "Conjunction", "isCorrect": true}, {"text": "Interjection", "isCorrect": false}, {"text": "Adverb", "isCorrect": false}, {"text": "Adjective", "isCorrect": false}]	\N
+806	镜子	\N	2025-08-03 21:31:59.766	2025-08-03 21:32:03.143	\N	\N	en	\N	\N	She looked at herself in the mirror before leaving the house.	[{"text": "沙发", "isCorrect": false}, {"text": "窗户", "isCorrect": false}, {"text": "镜子", "isCorrect": true}, {"text": "照相机", "isCorrect": false}]	[{"text": "reflect", "isCorrect": false}, {"text": "glass", "isCorrect": false}, {"text": "mirror", "isCorrect": true}, {"text": "window", "isCorrect": false}]	\N
+811	老师	\N	2025-08-03 21:32:04.926	2025-08-03 21:32:08.139	\N	\N	en	\N	\N	The teacher explained the lesson clearly to the students.	[{"text": "学生", "isCorrect": false}, {"text": "老师", "isCorrect": true}, {"text": "医生", "isCorrect": false}, {"text": "警察", "isCorrect": false}]	[{"text": "educator", "isCorrect": false}, {"text": "instructor", "isCorrect": false}, {"text": "professor", "isCorrect": false}, {"text": "teacher", "isCorrect": true}]	\N
+862	目标	\N	2025-08-03 21:32:37.757	2025-08-03 21:32:40.955	\N	\N	en	\N	\N	His goal is to learn how to play the guitar.	[{"text": "方向", "isCorrect": false}, {"text": "目标", "isCorrect": true}, {"text": "挑战", "isCorrect": false}, {"text": "宗旨", "isCorrect": false}]	[{"text": "goal", "isCorrect": true}, {"text": "dream", "isCorrect": false}, {"text": "aim", "isCorrect": false}, {"text": "objective", "isCorrect": false}]	\N
+857	镜子	\N	2025-08-03 21:32:37.74	2025-08-03 21:32:41.429	\N	\N	en	\N	\N	She looked at herself in the mirror before leaving the house.	[{"text": "窗户", "isCorrect": false}, {"text": "镜子", "isCorrect": true}, {"text": "灯光", "isCorrect": false}, {"text": "照相机", "isCorrect": false}]	[{"text": "reflection", "isCorrect": false}, {"text": "glass", "isCorrect": false}, {"text": "window", "isCorrect": false}, {"text": "mirror", "isCorrect": true}]	\N
+824	自行车	\N	2025-08-03 21:32:12.966	2025-08-03 21:32:16.412	\N	\N	en	\N	\N	I ride my bicycle to work every day.	[{"text": "自行车", "isCorrect": true}, {"text": "滑板车", "isCorrect": false}, {"text": "三轮车", "isCorrect": false}, {"text": "电动车", "isCorrect": false}]	[{"text": "bicycle", "isCorrect": true}, {"text": "skateboard", "isCorrect": false}, {"text": "tricycle", "isCorrect": false}, {"text": "scooter", "isCorrect": false}]	\N
+868	自由	\N	2025-08-03 21:32:42.501	2025-08-03 21:32:45.63	\N	\N	en	\N	\N	People in this country have the freedom to express their opinions openly.	[{"text": "约束", "isCorrect": false}, {"text": "限制", "isCorrect": false}, {"text": "自由", "isCorrect": true}, {"text": "禁止", "isCorrect": false}]	[{"text": "liberty", "isCorrect": false}, {"text": "freedom", "isCorrect": true}, {"text": "constraint", "isCorrect": false}, {"text": "autonomy", "isCorrect": false}]	\N
+876	火车	\N	2025-08-03 21:32:42.538	2025-08-03 21:32:46.431	\N	\N	en	\N	\N	I take the train to work every day.	[{"text": "火车", "isCorrect": true}, {"text": "汽车", "isCorrect": false}, {"text": "自行车", "isCorrect": false}, {"text": "飞机", "isCorrect": false}]	[{"text": "train", "isCorrect": true}, {"text": "plane", "isCorrect": false}, {"text": "car", "isCorrect": false}, {"text": "bus", "isCorrect": false}]	\N
+884	学校	\N	2025-08-03 21:32:47.399	2025-08-03 21:32:50.657	\N	\N	en	\N	\N	I go to school every morning.	[{"text": "学生", "isCorrect": false}, {"text": "教育", "isCorrect": false}, {"text": "课程", "isCorrect": false}, {"text": "学校", "isCorrect": true}]	[{"text": "school", "isCorrect": true}, {"text": "academy", "isCorrect": false}, {"text": "classroom", "isCorrect": false}, {"text": "institution", "isCorrect": false}]	\N
+890	朋友	\N	2025-08-03 21:32:54.223	2025-08-03 21:32:57.6	\N	\N	en	\N	\N	I am meeting my friend for lunch tomorrow.	[{"text": "同学", "isCorrect": false}, {"text": "邻居", "isCorrect": false}, {"text": "朋友", "isCorrect": true}, {"text": "家人", "isCorrect": false}]	[{"text": "associate", "isCorrect": false}, {"text": "friend", "isCorrect": true}, {"text": "ally", "isCorrect": false}, {"text": "acquaintance", "isCorrect": false}]	\N
+835	时钟	\N	2025-08-03 21:32:22.781	2025-08-03 21:32:25.975	\N	\N	en	\N	\N	I always check the clock to make sure I am not late for class.	[{"text": "闹钟", "isCorrect": false}, {"text": "时钟", "isCorrect": true}, {"text": "日历", "isCorrect": false}, {"text": "表演", "isCorrect": false}]	[{"text": "clock", "isCorrect": true}, {"text": "watch", "isCorrect": false}, {"text": "timer", "isCorrect": false}, {"text": "calendar", "isCorrect": false}]	\N
+775	前槽牙	\N	2025-08-03 21:31:36.908	2025-08-03 21:31:40.828	\N	\N	en	\N	\N	The dentist examined my anterior molars during my check-up.	[{"text": "前槽牙", "isCorrect": true}, {"text": "下切牙", "isCorrect": false}, {"text": "旁切牙", "isCorrect": false}, {"text": "上臼齿", "isCorrect": false}]	[{"text": "Anterior molars", "isCorrect": true}, {"text": "Posterior molars", "isCorrect": false}, {"text": "Premolar teeth", "isCorrect": false}, {"text": "Canine teeth", "isCorrect": false}]	\N
+841	重点	\N	2025-08-03 21:32:27.433	2025-08-03 21:32:30.699	\N	\N	en	\N	\N	She needs to focus on her homework.	[{"text": "主旨", "isCorrect": false}, {"text": "焦点", "isCorrect": false}, {"text": "核心", "isCorrect": false}, {"text": "重点", "isCorrect": true}]	[{"text": "focus", "isCorrect": true}, {"text": "distract", "isCorrect": false}, {"text": "concentrate", "isCorrect": false}, {"text": "attention", "isCorrect": false}]	\N
+853	狗	\N	2025-08-03 21:32:32.159	2025-08-03 21:32:35.181	\N	\N	en	\N	\N	My dog loves to play fetch in the park.	[{"text": "鳥", "isCorrect": false}, {"text": "豬", "isCorrect": false}, {"text": "狗", "isCorrect": true}, {"text": "兔子", "isCorrect": false}]	[{"text": "canine", "isCorrect": false}, {"text": "dog", "isCorrect": true}, {"text": "puppy", "isCorrect": false}, {"text": "feline", "isCorrect": false}]	\N
+856	初始化	\N	2025-08-03 21:32:32.161	2025-08-03 21:32:36.741	\N	\N	en	\N	\N	Before using the new software, you need to initialize it by following the setup instructions.	[{"text": "初始化", "isCorrect": true}, {"text": "激活", "isCorrect": false}, {"text": "启动", "isCorrect": false}, {"text": "开展", "isCorrect": false}]	[{"text": "finalize", "isCorrect": false}, {"text": "inaugurate", "isCorrect": false}, {"text": "initialize", "isCorrect": true}, {"text": "commence", "isCorrect": false}]	\N
+788	满足	\N	2025-08-03 21:31:42.206	2025-08-03 21:31:46.034	\N	\N	en	\N	\N	Eating a delicious meal can satisfy your hunger.	[{"text": "满怀", "isCorrect": false}, {"text": "满意", "isCorrect": false}, {"text": "愉快", "isCorrect": false}, {"text": "满足", "isCorrect": true}]	[{"text": "gratify", "isCorrect": false}, {"text": "fulfill", "isCorrect": false}, {"text": "content", "isCorrect": false}, {"text": "satisfy", "isCorrect": true}]	\N
+794	现象	\N	2025-08-03 21:31:54.724	2025-08-03 21:31:57.92	\N	\N	en	\N	\N	The Northern Lights are a natural phenomenon that can be seen in the night sky.	[{"text": "标志", "isCorrect": false}, {"text": "特征", "isCorrect": false}, {"text": "表现", "isCorrect": false}, {"text": "现象", "isCorrect": true}]	[{"text": "Phenomenon", "isCorrect": true}, {"text": "Fiasco", "isCorrect": false}, {"text": "Entity", "isCorrect": false}, {"text": "Occurrence", "isCorrect": false}]	\N
+860	山	\N	2025-08-03 21:32:37.755	2025-08-03 21:32:40.802	\N	\N	en	\N	\N	I hiked to the top of the mountain last weekend.	[{"text": "河", "isCorrect": false}, {"text": "山", "isCorrect": true}, {"text": "林", "isCorrect": false}, {"text": "湖", "isCorrect": false}]	[{"text": "ocean", "isCorrect": false}, {"text": "valley", "isCorrect": false}, {"text": "mountain", "isCorrect": true}, {"text": "hill", "isCorrect": false}]	\N
+865	砍死一个蜘蛛	\N	2025-08-03 21:32:37.851	2025-08-03 21:32:41.205	\N	\N	en	\N	\N	I don't want to kill a spider because they help keep the house free of bugs.	[{"text": "砍杀一只老鼠", "isCorrect": false}, {"text": "砍断一只苍蝇", "isCorrect": false}, {"text": "砍死一个蜘蛛", "isCorrect": true}, {"text": "打一个蝴蝶", "isCorrect": false}]	[{"text": "Kill a spider", "isCorrect": true}, {"text": "Squash a bug", "isCorrect": false}, {"text": "Crush an ant", "isCorrect": false}, {"text": "Eliminate a cockroach", "isCorrect": false}]	\N
+804	勇气	\N	2025-08-03 21:31:59.765	2025-08-03 21:32:03.206	\N	\N	en	\N	\N	She showed great courage when she stood up to the bully at school.	[{"text": "勇气", "isCorrect": true}, {"text": "胆小", "isCorrect": false}, {"text": "勇敢", "isCorrect": false}, {"text": "怯懦", "isCorrect": false}]	[{"text": "courage", "isCorrect": true}, {"text": "bravery", "isCorrect": false}, {"text": "fear", "isCorrect": false}, {"text": "strength", "isCorrect": false}]	\N
+814	苹果	\N	2025-08-03 21:32:04.928	2025-08-03 21:32:08.126	\N	\N	en	\N	\N	I like to eat an apple every day for a healthy snack.	[{"text": "桃子", "isCorrect": false}, {"text": "草莓", "isCorrect": false}, {"text": "梨", "isCorrect": false}, {"text": "苹果", "isCorrect": true}]	[{"text": "orange", "isCorrect": false}, {"text": "apple", "isCorrect": true}, {"text": "cherry", "isCorrect": false}, {"text": "banana", "isCorrect": false}]	\N
+875	厨房	\N	2025-08-03 21:32:42.537	2025-08-03 21:32:45.481	\N	\N	en	\N	\N	I am cooking dinner in the kitchen.	[{"text": "厨房", "isCorrect": true}, {"text": "大门", "isCorrect": false}, {"text": "花园", "isCorrect": false}, {"text": "洗手间", "isCorrect": false}]	[{"text": "kitchen", "isCorrect": true}, {"text": "galley", "isCorrect": false}, {"text": "pantry", "isCorrect": false}, {"text": "cookroom", "isCorrect": false}]	\N
+871	勇气	\N	2025-08-03 21:32:42.503	2025-08-03 21:32:45.864	\N	\N	en	\N	\N	She showed great courage when she stood up to the bully at school.	[{"text": "胆怯", "isCorrect": false}, {"text": "勇敢", "isCorrect": false}, {"text": "恐惧", "isCorrect": false}, {"text": "勇气", "isCorrect": true}]	[{"text": "courage", "isCorrect": true}, {"text": "timidity", "isCorrect": false}, {"text": "cowardice", "isCorrect": false}, {"text": "gallantry", "isCorrect": false}]	\N
+825	动物	\N	2025-08-03 21:32:12.967	2025-08-03 21:32:16.573	\N	\N	en	\N	\N	I saw a cute animal at the zoo yesterday.	[{"text": "植物", "isCorrect": false}, {"text": "动物", "isCorrect": true}, {"text": "食物", "isCorrect": false}, {"text": "水果", "isCorrect": false}]	[{"text": "creature", "isCorrect": false}, {"text": "beast", "isCorrect": false}, {"text": "mammal", "isCorrect": false}, {"text": "animal", "isCorrect": true}]	\N
+881	梦想	\N	2025-08-03 21:32:47.361	2025-08-03 21:32:50.477	\N	\N	en	\N	\N	Last night, I had a strange dream about flying.	[{"text": "忧虑", "isCorrect": false}, {"text": "梦想", "isCorrect": true}, {"text": "愿望", "isCorrect": false}, {"text": "追求", "isCorrect": false}]	[{"text": "illusion", "isCorrect": false}, {"text": "dream", "isCorrect": true}, {"text": "fantasy", "isCorrect": false}, {"text": "imagination", "isCorrect": false}]	\N
+831	历史	\N	2025-08-03 21:32:22.777	2025-08-03 21:32:26.42	\N	\N	en	\N	\N	I am studying history in school.	[{"text": "古代", "isCorrect": false}, {"text": "传记", "isCorrect": false}, {"text": "遗址", "isCorrect": false}, {"text": "历史", "isCorrect": true}]	[{"text": "geography", "isCorrect": false}, {"text": "mathematics", "isCorrect": false}, {"text": "literature", "isCorrect": false}, {"text": "history", "isCorrect": true}]	\N
+776	包包	\N	2025-08-03 21:31:36.911	2025-08-03 21:31:40.923	\N	\N	en	\N	\N	I need to buy a new bag for school.	[{"text": "包包", "isCorrect": true}, {"text": "手套", "isCorrect": false}, {"text": "帽子", "isCorrect": false}, {"text": "女鞋", "isCorrect": false}]	[{"text": "container", "isCorrect": false}, {"text": "bag", "isCorrect": true}, {"text": "sack", "isCorrect": false}, {"text": "pouch", "isCorrect": false}]	\N
+842	屏幕	\N	2025-08-03 21:32:27.434	2025-08-03 21:32:30.951	\N	\N	en	\N	\N	I watched a movie on my computer screen.	[{"text": "投影仪", "isCorrect": false}, {"text": "键盘", "isCorrect": false}, {"text": "显示器", "isCorrect": false}, {"text": "屏幕", "isCorrect": true}]	[{"text": "panel", "isCorrect": false}, {"text": "display", "isCorrect": false}, {"text": "monitor", "isCorrect": false}, {"text": "screen", "isCorrect": true}]	\N
+786	真正	\N	2025-08-03 21:31:42.179	2025-08-03 21:31:45.439	\N	\N	en	\N	\N	She has a real talent for painting.	[{"text": "实际", "isCorrect": false}, {"text": "真正", "isCorrect": true}, {"text": "真实", "isCorrect": false}, {"text": "真皮", "isCorrect": false}]	[{"text": "genuine", "isCorrect": false}, {"text": "real", "isCorrect": true}, {"text": "authentic", "isCorrect": false}, {"text": "natural", "isCorrect": false}]	\N
+847	狮子	\N	2025-08-03 21:32:32.065	2025-08-03 21:32:35.489	\N	\N	en	\N	\N	The lion roared loudly in the jungle.	[{"text": "狮子", "isCorrect": true}, {"text": "老虎", "isCorrect": false}, {"text": "大象", "isCorrect": false}, {"text": "长颈鹿", "isCorrect": false}]	[{"text": "tiger", "isCorrect": false}, {"text": "lion", "isCorrect": true}, {"text": "panther", "isCorrect": false}, {"text": "leopard", "isCorrect": false}]	\N
+795	驱散	\N	2025-08-03 21:31:54.725	2025-08-03 21:31:58.413	\N	\N	en	\N	\N	The bright sunshine helped to dispel the dark clouds overhead.	[{"text": "消散", "isCorrect": false}, {"text": "驱逐", "isCorrect": false}, {"text": "驱散", "isCorrect": true}, {"text": "驱逐", "isCorrect": false}]	[{"text": "Emanate", "isCorrect": false}, {"text": "Conceal", "isCorrect": false}, {"text": "Prolong", "isCorrect": false}, {"text": "Dispel", "isCorrect": true}]	\N
+863	森林	\N	2025-08-03 21:32:37.771	2025-08-03 21:32:40.725	\N	\N	en	\N	\N	I like to take long walks in the forest to relax and enjoy nature.	[{"text": "丛林", "isCorrect": false}, {"text": "树林", "isCorrect": false}, {"text": "景观", "isCorrect": false}, {"text": "森林", "isCorrect": true}]	[{"text": "grove", "isCorrect": false}, {"text": "forest", "isCorrect": true}, {"text": "jungle", "isCorrect": false}, {"text": "desert", "isCorrect": false}]	\N
+802	河流	\N	2025-08-03 21:31:59.762	2025-08-03 21:32:02.764	\N	\N	en	\N	\N	The children played by the river.	[{"text": "溪谷", "isCorrect": false}, {"text": "海洋", "isCorrect": false}, {"text": "河流", "isCorrect": true}, {"text": "湖泊", "isCorrect": false}]	[{"text": "creek", "isCorrect": false}, {"text": "stream", "isCorrect": false}, {"text": "lake", "isCorrect": false}, {"text": "river", "isCorrect": true}]	\N
+870	老师	\N	2025-08-03 21:32:42.503	2025-08-03 21:32:45.816	\N	\N	en	\N	\N	The teacher is writing on the whiteboard.	[{"text": "店员", "isCorrect": false}, {"text": "医生", "isCorrect": false}, {"text": "学生", "isCorrect": false}, {"text": "老师", "isCorrect": true}]	[{"text": "professor", "isCorrect": false}, {"text": "teacher", "isCorrect": true}, {"text": "tutor", "isCorrect": false}, {"text": "educator", "isCorrect": false}]	\N
+816	太阳	\N	2025-08-03 21:32:04.93	2025-08-03 21:32:07.859	\N	\N	en	\N	\N	The sun is shining brightly in the sky.	[{"text": "星星", "isCorrect": false}, {"text": "天空", "isCorrect": false}, {"text": "日光", "isCorrect": false}, {"text": "太阳", "isCorrect": true}]	[{"text": "moon", "isCorrect": false}, {"text": "sun", "isCorrect": true}, {"text": "planet", "isCorrect": false}, {"text": "star", "isCorrect": false}]	\N
+885	朋友	\N	2025-08-03 21:32:47.401	2025-08-03 21:32:50.583	\N	\N	en	\N	\N	I am meeting my friend for lunch today.	[{"text": "朋友", "isCorrect": true}, {"text": "同学", "isCorrect": false}, {"text": "伙伴", "isCorrect": false}, {"text": "家人", "isCorrect": false}]	[{"text": "confidant", "isCorrect": false}, {"text": "acquaintance", "isCorrect": false}, {"text": "comrade", "isCorrect": false}, {"text": "friend", "isCorrect": true}]	\N
+826	大师	\N	2025-08-03 21:32:12.978	2025-08-03 21:32:15.982	\N	\N	en	\N	\N	He is a master at playing the guitar.	[{"text": "明星", "isCorrect": false}, {"text": "大师", "isCorrect": true}, {"text": "专家", "isCorrect": false}, {"text": "高手", "isCorrect": false}]	[{"text": "conquer", "isCorrect": false}, {"text": "master", "isCorrect": true}, {"text": "novice", "isCorrect": false}, {"text": "expert", "isCorrect": false}]	\N
+877	书	\N	2025-08-03 21:32:47.342	2025-08-03 21:32:52.2	\N	\N	en	\N	\N	I am reading a book about space exploration.	[{"text": "笔", "isCorrect": false}, {"text": "纸", "isCorrect": false}, {"text": "书", "isCorrect": true}, {"text": "板", "isCorrect": false}]	[{"text": "magazine", "isCorrect": false}, {"text": "dictionary", "isCorrect": false}, {"text": "book", "isCorrect": true}, {"text": "novel", "isCorrect": false}]	\N
+887	市场	\N	2025-08-03 21:32:54.22	2025-08-03 21:32:57.73	\N	\N	en	\N	\N	I buy fresh fruits and vegetables at the market every Saturday.	[{"text": "超市", "isCorrect": false}, {"text": "商店", "isCorrect": false}, {"text": "街道", "isCorrect": false}, {"text": "市场", "isCorrect": true}]	[{"text": "emporium", "isCorrect": false}, {"text": "boutique", "isCorrect": false}, {"text": "fair", "isCorrect": false}, {"text": "market", "isCorrect": true}]	\N
+894	环孢菌素——抗排异药	\N	2025-08-03 21:32:54.314	2025-08-03 21:32:58.133	\N	\N	en	\N	\N	The doctor prescribed cyclosporine to help manage my autoimmune disease.	[{"text": "环孢菌素——抗排异药", "isCorrect": true}, {"text": "抗凝血剂", "isCorrect": false}, {"text": "抗氧化剂", "isCorrect": false}, {"text": "免疫抑制剂", "isCorrect": false}]	[{"text": "mycophenolate", "isCorrect": false}, {"text": "prednisolone", "isCorrect": false}, {"text": "tacrolimus", "isCorrect": false}, {"text": "cyclosporine", "isCorrect": true}]	\N
+893	单位	\N	2025-08-03 21:32:54.312	2025-08-03 21:33:06.349	\N	\N	en	\N	\N	I need to buy a new storage unit for my clothes.	[{"text": "单位", "isCorrect": true}, {"text": "机构", "isCorrect": false}, {"text": "场所", "isCorrect": false}, {"text": "尺度", "isCorrect": false}]	[{"text": "block", "isCorrect": false}, {"text": "module", "isCorrect": false}, {"text": "item", "isCorrect": false}, {"text": "unit", "isCorrect": true}]	\N
+838	门	\N	2025-08-03 21:32:22.792	2025-08-03 21:32:26.014	\N	\N	en	\N	\N	Please close the door when you leave.	[{"text": "门", "isCorrect": true}, {"text": "窗", "isCorrect": false}, {"text": "桌子", "isCorrect": false}, {"text": "窗户", "isCorrect": false}]	[{"text": "wall", "isCorrect": false}, {"text": "entry", "isCorrect": false}, {"text": "door", "isCorrect": true}, {"text": "window", "isCorrect": false}]	\N
+777	武器	\N	2025-08-03 21:31:36.924	2025-08-03 21:31:40.755	\N	\N	en	\N	\N	He carried a sharp weapon for self-defense.	[{"text": "武器", "isCorrect": true}, {"text": "防具", "isCorrect": false}, {"text": "火箭", "isCorrect": false}, {"text": "劫匪", "isCorrect": false}]	[{"text": "weapon", "isCorrect": true}, {"text": "equipment", "isCorrect": false}, {"text": "arms", "isCorrect": false}, {"text": "ammunition", "isCorrect": false}]	\N
+843	键盘	\N	2025-08-03 21:32:27.435	2025-08-03 21:32:30.827	\N	\N	en	\N	\N	I am typing on my keyboard to write an email.	[{"text": "键盘", "isCorrect": true}, {"text": "显示器", "isCorrect": false}, {"text": "鼠标", "isCorrect": false}, {"text": "笔记本", "isCorrect": false}]	[{"text": "monitor", "isCorrect": false}, {"text": "mouse", "isCorrect": false}, {"text": "typewriter", "isCorrect": false}, {"text": "keyboard", "isCorrect": true}]	\N
+844	市场	\N	2025-08-03 21:32:27.435	2025-08-03 21:32:31.11	\N	\N	en	\N	\N	I bought fresh fruits and vegetables at the market.	[{"text": "超市", "isCorrect": false}, {"text": "市场", "isCorrect": true}, {"text": "医院", "isCorrect": false}, {"text": "商店", "isCorrect": false}]	[{"text": "bazaar", "isCorrect": false}, {"text": "market", "isCorrect": true}, {"text": "plaza", "isCorrect": false}, {"text": "boutique", "isCorrect": false}]	\N
+787	开始	\N	2025-08-03 21:31:42.179	2025-08-03 21:31:45.673	\N	\N	en	\N	\N	I will start my homework after dinner.	[{"text": "开端", "isCorrect": false}, {"text": "着手", "isCorrect": false}, {"text": "开始", "isCorrect": true}, {"text": "启动", "isCorrect": false}]	[{"text": "initiate", "isCorrect": false}, {"text": "start", "isCorrect": true}, {"text": "stop", "isCorrect": false}, {"text": "commence", "isCorrect": false}]	\N
+798	边界	\N	2025-08-03 21:31:54.742	2025-08-03 21:31:58.788	\N	\N	en	\N	\N	The fence marks the boundary between our yard and the neighbor's yard.	[{"text": "边界", "isCorrect": true}, {"text": "界限", "isCorrect": false}, {"text": "范围", "isCorrect": false}, {"text": "辐射", "isCorrect": false}]	[{"text": "boundary", "isCorrect": true}, {"text": "limit", "isCorrect": false}, {"text": "edge", "isCorrect": false}, {"text": "barrier", "isCorrect": false}]	\N
+854	模型	\N	2025-08-03 21:32:32.159	2025-08-03 21:32:35.179	\N	\N	en	\N	\N	She is a fashion model who walks on runways and poses for photoshoots.	[{"text": "纹理", "isCorrect": false}, {"text": "模式", "isCorrect": false}, {"text": "模型", "isCorrect": true}, {"text": "设计", "isCorrect": false}]	[{"text": "pattern", "isCorrect": false}, {"text": "example", "isCorrect": false}, {"text": "mold", "isCorrect": false}, {"text": "model", "isCorrect": true}]	\N
+852	交换	\N	2025-08-03 21:32:32.158	2025-08-03 21:32:35.216	\N	\N	en	\N	\N	We can swap books if you want to read something new.	[{"text": "交换", "isCorrect": true}, {"text": "替换", "isCorrect": false}, {"text": "调换", "isCorrect": false}, {"text": "转移", "isCorrect": false}]	[{"text": "toggle", "isCorrect": false}, {"text": "swap", "isCorrect": true}, {"text": "exchange", "isCorrect": false}, {"text": "switch", "isCorrect": false}]	\N
+808	森林	\N	2025-08-03 21:31:59.779	2025-08-03 21:32:03.945	\N	\N	en	\N	\N	I love to take walks in the forest to enjoy nature.	[{"text": "丛林", "isCorrect": false}, {"text": "树木", "isCorrect": false}, {"text": "森林", "isCorrect": true}, {"text": "林地", "isCorrect": false}]	[{"text": "grove", "isCorrect": false}, {"text": "forest", "isCorrect": true}, {"text": "jungle", "isCorrect": false}, {"text": "woodland", "isCorrect": false}]	\N
+815	窗户	\N	2025-08-03 21:32:04.929	2025-08-03 21:32:08.249	\N	\N	en	\N	\N	I opened the window to let in some fresh air.	[{"text": "门", "isCorrect": false}, {"text": "帘子", "isCorrect": false}, {"text": "窗户", "isCorrect": true}, {"text": "桌子", "isCorrect": false}]	[{"text": "door", "isCorrect": false}, {"text": "window", "isCorrect": true}, {"text": "wall", "isCorrect": false}, {"text": "mirror", "isCorrect": false}]	\N
+859	河流	\N	2025-08-03 21:32:37.753	2025-08-03 21:32:40.511	\N	\N	en	\N	\N	The river flows through the forest.	[{"text": "水道", "isCorrect": false}, {"text": "溪流", "isCorrect": false}, {"text": "湖泊", "isCorrect": false}, {"text": "河流", "isCorrect": true}]	[{"text": "stream", "isCorrect": false}, {"text": "lake", "isCorrect": false}, {"text": "river", "isCorrect": true}, {"text": "pond", "isCorrect": false}]	\N
+861	想法	\N	2025-08-03 21:32:37.756	2025-08-03 21:32:41.171	\N	\N	en	\N	\N	I have an idea for a new project.	[{"text": "观点", "isCorrect": false}, {"text": "概念", "isCorrect": false}, {"text": "想象", "isCorrect": false}, {"text": "想法", "isCorrect": true}]	[{"text": "thought", "isCorrect": false}, {"text": "idea", "isCorrect": true}, {"text": "concept", "isCorrect": false}, {"text": "notion", "isCorrect": false}]	\N
+823	语言	\N	2025-08-03 21:32:12.966	2025-08-03 21:32:16.318	\N	\N	en	\N	\N	I am learning a new language.	[{"text": "交流", "isCorrect": false}, {"text": "语言", "isCorrect": true}, {"text": "文字", "isCorrect": false}, {"text": "言语", "isCorrect": false}]	[{"text": "vocabulary", "isCorrect": false}, {"text": "dialect", "isCorrect": false}, {"text": "language", "isCorrect": true}, {"text": "communication", "isCorrect": false}]	\N
+874	窗户	\N	2025-08-03 21:32:42.504	2025-08-03 21:32:45.94	\N	\N	en	\N	\N	I opened the window to let in some fresh air.	[{"text": "牆壁", "isCorrect": false}, {"text": "門", "isCorrect": false}, {"text": "窗户", "isCorrect": true}, {"text": "地板", "isCorrect": false}]	[{"text": "mirror", "isCorrect": false}, {"text": "door", "isCorrect": false}, {"text": "window", "isCorrect": true}, {"text": "glass", "isCorrect": false}]	\N
+869	城市	\N	2025-08-03 21:32:42.502	2025-08-03 21:32:46.051	\N	\N	en	\N	\N	I live in a big city with lots of tall buildings.	[{"text": "都市", "isCorrect": false}, {"text": "城市", "isCorrect": true}, {"text": "海洋", "isCorrect": false}, {"text": "乡村", "isCorrect": false}]	[{"text": "village", "isCorrect": false}, {"text": "city", "isCorrect": true}, {"text": "town", "isCorrect": false}, {"text": "metropolis", "isCorrect": false}]	\N
+878	音乐	\N	2025-08-03 21:32:47.343	2025-08-03 21:32:50.886	\N	\N	en	\N	\N	I love listening to music while I study.	[{"text": "舞蹈", "isCorrect": false}, {"text": "画画", "isCorrect": false}, {"text": "音乐", "isCorrect": true}, {"text": "乐器", "isCorrect": false}]	[{"text": "painting", "isCorrect": false}, {"text": "art", "isCorrect": false}, {"text": "dance", "isCorrect": false}, {"text": "music", "isCorrect": true}]	\N
+836	家庭	\N	2025-08-03 21:32:22.781	2025-08-03 21:32:25.694	\N	\N	en	\N	\N	I love spending time with my family on weekends.	[{"text": "父母", "isCorrect": false}, {"text": "亲戚", "isCorrect": false}, {"text": "家庭", "isCorrect": true}, {"text": "室内", "isCorrect": false}]	[{"text": "kin", "isCorrect": false}, {"text": "lineage", "isCorrect": false}, {"text": "family", "isCorrect": true}, {"text": "clan", "isCorrect": false}]	\N
+830	工具	\N	2025-08-03 21:32:22.778	2025-08-03 21:32:25.691	\N	\N	en	\N	\N	I used a hammer as a tool to hang the picture on the wall.	[{"text": "装备", "isCorrect": false}, {"text": "器械", "isCorrect": false}, {"text": "设备", "isCorrect": false}, {"text": "工具", "isCorrect": true}]	[{"text": "utensil", "isCorrect": false}, {"text": "implement", "isCorrect": false}, {"text": "tool", "isCorrect": true}, {"text": "device", "isCorrect": false}]	\N
+778	核实	\N	2025-08-03 21:31:36.944	2025-08-03 21:31:40	\N	\N	en	\N	\N	Please verify your email address before creating an account.	[{"text": "验证", "isCorrect": false}, {"text": "确认", "isCorrect": false}, {"text": "订正", "isCorrect": false}, {"text": "核实", "isCorrect": true}]	[{"text": "clarify", "isCorrect": false}, {"text": "justify", "isCorrect": false}, {"text": "confirm", "isCorrect": false}, {"text": "verify", "isCorrect": true}]	\N
+770	创新	\N	2025-08-03 21:31:36.883	2025-08-03 21:31:40.068	\N	\N	en	\N	\N	The company's latest innovation is a new smartphone with advanced features.	[{"text": "改革", "isCorrect": false}, {"text": "创新", "isCorrect": true}, {"text": "革新", "isCorrect": false}, {"text": "革命", "isCorrect": false}]	[{"text": "Revolution", "isCorrect": false}, {"text": "Innovation", "isCorrect": true}, {"text": "Creativity", "isCorrect": false}, {"text": "Novelty", "isCorrect": false}]	\N
+845	欺诈罪	\N	2025-08-03 21:32:27.436	2025-08-03 21:32:30.701	\N	\N	en	\N	\N	He was arrested for committing fraud by using fake credit cards.	[{"text": "欺瞒罪", "isCorrect": false}, {"text": "欺骗罪", "isCorrect": false}, {"text": "欺诈罪", "isCorrect": true}, {"text": "诈骗罪", "isCorrect": false}]	[{"text": "fraud", "isCorrect": true}, {"text": "lie", "isCorrect": false}, {"text": "deceit", "isCorrect": false}, {"text": "hoax", "isCorrect": false}]	\N
+782	飞驰	\N	2025-08-03 21:31:42.177	2025-08-03 21:31:45.359	\N	\N	en	\N	\N	The birds are flying in the sky.	[{"text": "疾驰", "isCorrect": false}, {"text": "疾行", "isCorrect": false}, {"text": "飞驰", "isCorrect": true}, {"text": "飘忽", "isCorrect": false}]	[{"text": "Soaring", "isCorrect": false}, {"text": "Hovering", "isCorrect": false}, {"text": "Flying", "isCorrect": true}, {"text": "Gliding", "isCorrect": false}]	\N
+896	猫	\N	2025-08-03 21:33:07.255	2025-08-03 21:33:11.044	\N	\N	en	\N	\N	I have a black cat named Luna.	[{"text": "猫", "isCorrect": true}, {"text": "鼠", "isCorrect": false}, {"text": "狗", "isCorrect": false}, {"text": "猩猩", "isCorrect": false}]	[{"text": "cat", "isCorrect": true}, {"text": "bird", "isCorrect": false}, {"text": "dog", "isCorrect": false}, {"text": "rat", "isCorrect": false}]	\N
+781	解说	\N	2025-08-03 21:31:42.175	2025-08-03 21:31:45.375	\N	\N	en	\N	\N	I enjoy reading the sports commentary in the newspaper.	[{"text": "说明", "isCorrect": false}, {"text": "解说", "isCorrect": true}, {"text": "讲解", "isCorrect": false}, {"text": "翻译", "isCorrect": false}]	[{"text": "Commentary", "isCorrect": true}, {"text": "Opinion", "isCorrect": false}, {"text": "Narrative", "isCorrect": false}, {"text": "Speech", "isCorrect": false}]	\N
+790	修补	\N	2025-08-03 21:31:54.71	2025-08-03 21:31:57.916	\N	\N	en	\N	\N	I need to repair my broken bicycle before I can ride it again.	[{"text": "改编", "isCorrect": false}, {"text": "修理", "isCorrect": false}, {"text": "维修", "isCorrect": false}, {"text": "修补", "isCorrect": true}]	[{"text": "repair", "isCorrect": true}, {"text": "mend", "isCorrect": false}, {"text": "fix", "isCorrect": false}, {"text": "destroy", "isCorrect": false}]	\N
+792	原始的	\N	2025-08-03 21:31:54.722	2025-08-03 21:31:58.064	\N	\N	en	\N	\N	She showed me the original painting she had created.	[{"text": "原始的", "isCorrect": true}, {"text": "基本的", "isCorrect": false}, {"text": "初始的", "isCorrect": false}, {"text": "初期的", "isCorrect": false}]	[{"text": "invented", "isCorrect": false}, {"text": "original", "isCorrect": true}, {"text": "novel", "isCorrect": false}, {"text": "genuine", "isCorrect": false}]	\N
+803	选择	\N	2025-08-03 21:31:59.764	2025-08-03 21:32:03.115	\N	\N	en	\N	\N	I have a difficult choice to make between studying or going to the party.	[{"text": "决定", "isCorrect": false}, {"text": "答案", "isCorrect": false}, {"text": "选择", "isCorrect": true}, {"text": "挑选", "isCorrect": false}]	[{"text": "decision", "isCorrect": false}, {"text": "alternative", "isCorrect": false}, {"text": "choice", "isCorrect": true}, {"text": "selection", "isCorrect": false}]	\N
+801	火车	\N	2025-08-03 21:31:59.764	2025-08-03 21:32:03.687	\N	\N	en	\N	\N	I take the train to work every morning.	[{"text": "火车", "isCorrect": true}, {"text": "汽车", "isCorrect": false}, {"text": "自行车", "isCorrect": false}, {"text": "飞机", "isCorrect": false}]	[{"text": "car", "isCorrect": false}, {"text": "train", "isCorrect": true}, {"text": "plane", "isCorrect": false}, {"text": "bus", "isCorrect": false}]	\N
+817	花	\N	2025-08-03 21:32:04.931	2025-08-03 21:32:08.045	\N	\N	en	\N	\N	She picked a beautiful flower from the garden.	[{"text": "树", "isCorrect": false}, {"text": "花", "isCorrect": true}, {"text": "草", "isCorrect": false}, {"text": "水", "isCorrect": false}]	[{"text": "flower", "isCorrect": true}, {"text": "tree", "isCorrect": false}, {"text": "beach", "isCorrect": false}, {"text": "garden", "isCorrect": false}]	\N
+812	城市	\N	2025-08-03 21:32:04.927	2025-08-03 21:32:08.698	\N	\N	en	\N	\N	I live in a big city with tall buildings and busy streets.	[{"text": "村庄", "isCorrect": false}, {"text": "乡村", "isCorrect": false}, {"text": "城市", "isCorrect": true}, {"text": "农田", "isCorrect": false}]	[{"text": "town", "isCorrect": false}, {"text": "village", "isCorrect": false}, {"text": "city", "isCorrect": true}, {"text": "metropolis", "isCorrect": false}]	\N
+829	书	\N	2025-08-03 21:32:12.98	2025-08-03 21:32:15.92	\N	\N	en	\N	\N	I like to read a book before going to bed.	[{"text": "书", "isCorrect": true}, {"text": "桌子", "isCorrect": false}, {"text": "纸", "isCorrect": false}, {"text": "笔", "isCorrect": false}]	[{"text": "novel", "isCorrect": false}, {"text": "magazine", "isCorrect": false}, {"text": "dictionary", "isCorrect": false}, {"text": "book", "isCorrect": true}]	\N
+821	海洋	\N	2025-08-03 21:32:12.963	2025-08-03 21:32:16.243	\N	\N	en	\N	\N	I love to relax by the ocean and listen to the sound of the waves.	[{"text": "海洋", "isCorrect": true}, {"text": "海湾", "isCorrect": false}, {"text": "大海", "isCorrect": false}, {"text": "海域", "isCorrect": false}]	[{"text": "lake", "isCorrect": false}, {"text": "river", "isCorrect": false}, {"text": "sea", "isCorrect": false}, {"text": "ocean", "isCorrect": true}]	\N
+832	空难	\N	2025-08-03 21:32:22.779	2025-08-03 21:32:25.801	\N	\N	en	\N	\N	The air crash resulted in several injuries.	[{"text": "坠机", "isCorrect": false}, {"text": "飞行", "isCorrect": false}, {"text": "空难", "isCorrect": true}, {"text": "飞机", "isCorrect": false}]	[{"text": "Flight disaster", "isCorrect": false}, {"text": "Plane accident", "isCorrect": false}, {"text": "Helicopter crash", "isCorrect": false}, {"text": "Air crash", "isCorrect": true}]	\N
+834	铅笔	\N	2025-08-03 21:32:22.779	2025-08-03 21:32:25.945	\N	\N	en	\N	\N	I use a pencil to write in my notebook.	[{"text": "书包", "isCorrect": false}, {"text": "尺子", "isCorrect": false}, {"text": "铅笔", "isCorrect": true}, {"text": "钢笔", "isCorrect": false}]	[{"text": "pencil", "isCorrect": true}, {"text": "pen", "isCorrect": false}, {"text": "crayon", "isCorrect": false}, {"text": "marker", "isCorrect": false}]	\N
+779	计算机	\N	2025-08-03 21:31:36.942	2025-08-03 21:31:40.231	\N	\N	en	\N	\N	I use my computer to write emails and browse the internet.	[{"text": "编程", "isCorrect": false}, {"text": "电子", "isCorrect": false}, {"text": "设备", "isCorrect": false}, {"text": "计算机", "isCorrect": true}]	[{"text": "tablet", "isCorrect": false}, {"text": "laptop", "isCorrect": false}, {"text": "calculator", "isCorrect": false}, {"text": "computer", "isCorrect": true}]	\N
+846	减轻	\N	2025-08-03 21:32:27.436	2025-08-03 21:32:30.92	\N	\N	en	\N	\N	Drinking tea can help alleviate a sore throat.	[{"text": "增加", "isCorrect": false}, {"text": "减轻", "isCorrect": true}, {"text": "升高", "isCorrect": false}, {"text": "缓解", "isCorrect": false}]	[{"text": "exacerbate", "isCorrect": false}, {"text": "alleviate", "isCorrect": true}, {"text": "amplify", "isCorrect": false}, {"text": "aggravate", "isCorrect": false}]	\N
+771	令人震惊的交易	\N	2025-08-03 21:31:36.882	2025-08-03 21:31:41.173	\N	\N	en	\N	\N	The store was offering a shocking deal on laptops.	[{"text": "令人震惊的交易", "isCorrect": true}, {"text": "惊异交易", "isCorrect": false}, {"text": "惊人的合同", "isCorrect": false}, {"text": "惊讶的协议", "isCorrect": false}]	[{"text": "shocking deal", "isCorrect": true}, {"text": "amazing transaction", "isCorrect": false}, {"text": "appalling bargain", "isCorrect": false}, {"text": "astonishing offer", "isCorrect": false}]	\N
+783	关系	\N	2025-08-03 21:31:42.177	2025-08-03 21:31:45.378	\N	\N	en	\N	\N	My sister has a close relation with her best friend.	[{"text": "关系", "isCorrect": true}, {"text": "交往", "isCorrect": false}, {"text": "社交", "isCorrect": false}, {"text": "沟通", "isCorrect": false}]	[{"text": "connection", "isCorrect": false}, {"text": "affiliation", "isCorrect": false}, {"text": "relation", "isCorrect": true}, {"text": "link", "isCorrect": false}]	\N
+785	南方	\N	2025-08-03 21:31:42.178	2025-08-03 21:31:45.442	\N	\N	en	\N	\N	I live in a city located in the south of the country.	[{"text": "东方", "isCorrect": false}, {"text": "北方", "isCorrect": false}, {"text": "西方", "isCorrect": false}, {"text": "南方", "isCorrect": true}]	[{"text": "northern", "isCorrect": false}, {"text": "west", "isCorrect": false}, {"text": "east", "isCorrect": false}, {"text": "south", "isCorrect": true}]	\N
+793	塔	\N	2025-08-03 21:31:54.723	2025-08-03 21:31:57.967	\N	\N	en	\N	\N	The tower stood tall in the middle of the city.	[{"text": "城堡", "isCorrect": false}, {"text": "塔", "isCorrect": true}, {"text": "宫殿", "isCorrect": false}, {"text": "古墓", "isCorrect": false}]	[{"text": "fortress", "isCorrect": false}, {"text": "skyscraper", "isCorrect": false}, {"text": "tower", "isCorrect": true}, {"text": "castle", "isCorrect": false}]	\N
+799	狮子	\N	2025-08-03 21:31:54.743	2025-08-03 21:31:58.061	\N	\N	en	\N	\N	The lion roared loudly in the jungle.	[{"text": "狮子", "isCorrect": true}, {"text": "大象", "isCorrect": false}, {"text": "熊猫", "isCorrect": false}, {"text": "老虎", "isCorrect": false}]	[{"text": "zebra", "isCorrect": false}, {"text": "lion", "isCorrect": true}, {"text": "tiger", "isCorrect": false}, {"text": "cheetah", "isCorrect": false}]	\N
+805	自由	\N	2025-08-03 21:31:59.765	2025-08-03 21:32:03.253	\N	\N	en	\N	\N	She felt a sense of freedom when she finally quit her job and pursued her passion.	[{"text": "自由", "isCorrect": true}, {"text": "禁止", "isCorrect": false}, {"text": "限制", "isCorrect": false}, {"text": "束缚", "isCorrect": false}]	[{"text": "freedom", "isCorrect": true}, {"text": "liberty", "isCorrect": false}, {"text": "constraint", "isCorrect": false}, {"text": "independence", "isCorrect": false}]	\N
+807	想法	\N	2025-08-03 21:31:59.778	2025-08-03 21:32:03.856	\N	\N	en	\N	\N	I have an idea for a new project we can work on together.	[{"text": "想法", "isCorrect": true}, {"text": "观点", "isCorrect": false}, {"text": "见解", "isCorrect": false}, {"text": "理解", "isCorrect": false}]	[{"text": "thought", "isCorrect": false}, {"text": "concept", "isCorrect": false}, {"text": "idea", "isCorrect": true}, {"text": "notion", "isCorrect": false}]	\N
+813	厨房	\N	2025-08-03 21:32:04.928	2025-08-03 21:32:08.311	\N	\N	en	\N	\N	I am cooking dinner in the kitchen.	[{"text": "花园", "isCorrect": false}, {"text": "餐厅", "isCorrect": false}, {"text": "厨房", "isCorrect": true}, {"text": "书房", "isCorrect": false}]	[{"text": "cookhouse", "isCorrect": false}, {"text": "cuisine", "isCorrect": false}, {"text": "kitchen", "isCorrect": true}, {"text": "galley", "isCorrect": false}]	\N
+818	云	\N	2025-08-03 21:32:04.938	2025-08-03 21:32:11.98	\N	\N	en	\N	\N	The cloud looks like a fluffy pillow in the sky.	[{"text": "雪", "isCorrect": false}, {"text": "雾", "isCorrect": false}, {"text": "云", "isCorrect": true}, {"text": "雷", "isCorrect": false}]	[{"text": "cloud", "isCorrect": true}, {"text": "mist", "isCorrect": false}, {"text": "fog", "isCorrect": false}, {"text": "smoke", "isCorrect": false}]	\N
+827	行星	\N	2025-08-03 21:32:12.978	2025-08-03 21:32:16.728	\N	\N	en	\N	\N	The Earth is a planet in our solar system.	[{"text": "宇宙", "isCorrect": false}, {"text": "行星", "isCorrect": true}, {"text": "星际", "isCorrect": false}, {"text": "尘埃", "isCorrect": false}]	[{"text": "moon", "isCorrect": false}, {"text": "galaxy", "isCorrect": false}, {"text": "star", "isCorrect": false}, {"text": "planet", "isCorrect": true}]	\N
+820	电影	\N	2025-08-03 21:32:12.964	2025-08-03 21:32:21.797	\N	\N	en	\N	\N	I watched a movie with my friends last night.	[{"text": "电影", "isCorrect": true}, {"text": "音乐", "isCorrect": false}, {"text": "小说", "isCorrect": false}, {"text": "表演", "isCorrect": false}]	[{"text": "cinema", "isCorrect": false}, {"text": "movie", "isCorrect": true}, {"text": "flick", "isCorrect": false}, {"text": "dinner", "isCorrect": false}]	\N
+848	花	\N	2025-08-03 21:32:32.067	2025-08-03 21:32:35.579	\N	\N	en	\N	\N	I picked a beautiful flower from the garden.	[{"text": "红", "isCorrect": false}, {"text": "草", "isCorrect": false}, {"text": "花", "isCorrect": true}, {"text": "绿", "isCorrect": false}]	[{"text": "shrub", "isCorrect": false}, {"text": "flower", "isCorrect": true}, {"text": "blossom", "isCorrect": false}, {"text": "tree", "isCorrect": false}]	\N
+866	危机	\N	2025-08-03 21:32:37.881	2025-08-03 21:32:40.923	\N	\N	en	\N	\N	The country is facing an economic crisis.	[{"text": "压力", "isCorrect": false}, {"text": "挑战", "isCorrect": false}, {"text": "威胁", "isCorrect": false}, {"text": "危机", "isCorrect": true}]	[{"text": "Calamity", "isCorrect": false}, {"text": "Disaster", "isCorrect": false}, {"text": "Dilemma", "isCorrect": false}, {"text": "Crisis", "isCorrect": true}]	\N
+867	花	\N	2025-08-03 21:32:42.501	2025-08-03 21:32:45.634	\N	\N	en	\N	\N	I picked a beautiful flower from the garden.	[{"text": "水", "isCorrect": false}, {"text": "草", "isCorrect": false}, {"text": "树", "isCorrect": false}, {"text": "花", "isCorrect": true}]	[{"text": "petal", "isCorrect": false}, {"text": "flower", "isCorrect": true}, {"text": "blossom", "isCorrect": false}, {"text": "plant", "isCorrect": false}]	\N
+886	动物	\N	2025-08-03 21:32:47.441	2025-08-03 21:32:50.938	\N	\N	en	\N	\N	I saw a cute animal at the zoo yesterday.	[{"text": "植物", "isCorrect": false}, {"text": "昆虫", "isCorrect": false}, {"text": "宠物", "isCorrect": false}, {"text": "动物", "isCorrect": true}]	[{"text": "creature", "isCorrect": false}, {"text": "organism", "isCorrect": false}, {"text": "mammal", "isCorrect": false}, {"text": "animal", "isCorrect": true}]	\N
+882	语言	\N	2025-08-03 21:32:47.385	2025-08-03 21:32:53.311	\N	\N	en	\N	\N	I am studying Spanish language.	[{"text": "文字", "isCorrect": false}, {"text": "词汇", "isCorrect": false}, {"text": "语言", "isCorrect": true}, {"text": "方言", "isCorrect": false}]	[{"text": "lexicon", "isCorrect": false}, {"text": "vocabulary", "isCorrect": false}, {"text": "language", "isCorrect": true}, {"text": "dialect", "isCorrect": false}]	\N
+888	海洋	\N	2025-08-03 21:32:54.221	2025-08-03 21:32:57.536	\N	\N	en	\N	\N	I love to swim in the ocean during the summer.	[{"text": "海洋", "isCorrect": true}, {"text": "港口", "isCorrect": false}, {"text": "湖泊", "isCorrect": false}, {"text": "岛屿", "isCorrect": false}]	[{"text": "forest", "isCorrect": false}, {"text": "lake", "isCorrect": false}, {"text": "ocean", "isCorrect": true}, {"text": "river", "isCorrect": false}]	\N
+891	磨牙	\N	2025-08-03 21:32:54.31	2025-08-03 21:32:58.129	\N	\N	en	\N	\N	I have a cavity in my molar and need to see the dentist.	[{"text": "啃咬", "isCorrect": false}, {"text": "磨碎", "isCorrect": false}, {"text": "磨牙", "isCorrect": true}, {"text": "挠痒", "isCorrect": false}]	[{"text": "incisor", "isCorrect": false}, {"text": "bicuspid", "isCorrect": false}, {"text": "canine", "isCorrect": false}, {"text": "molar", "isCorrect": true}]	\N
+902	结束	\N	2025-08-03 21:33:07.352	2025-08-03 21:33:10.469	\N	\N	en	\N	\N	I will finish my homework before dinner.	[{"text": "终点", "isCorrect": false}, {"text": "暂停", "isCorrect": false}, {"text": "结束", "isCorrect": true}, {"text": "停止", "isCorrect": false}]	[{"text": "cease", "isCorrect": false}, {"text": "conclude", "isCorrect": false}, {"text": "finish", "isCorrect": true}, {"text": "complete", "isCorrect": false}]	\N
+897	屠杀	\N	2025-08-03 21:33:07.349	2025-08-03 21:33:10.662	\N	\N	en	\N	\N	The soldiers were horrified by the massacre of innocent civilians.	[{"text": "屠杀", "isCorrect": true}, {"text": "残害", "isCorrect": false}, {"text": "虐待", "isCorrect": false}, {"text": "杀害", "isCorrect": false}]	[{"text": "Slaughter", "isCorrect": false}, {"text": "Massacre", "isCorrect": true}, {"text": "Carnage", "isCorrect": false}, {"text": "Butcher", "isCorrect": false}]	\N
+903	树	\N	2025-08-03 21:33:07.351	2025-08-03 21:33:10.942	\N	\N	en	\N	\N	I like to sit under the tree and read a book.	[{"text": "树", "isCorrect": true}, {"text": "阳光", "isCorrect": false}, {"text": "花", "isCorrect": false}, {"text": "草", "isCorrect": false}]	[{"text": "flower", "isCorrect": false}, {"text": "lake", "isCorrect": false}, {"text": "bush", "isCorrect": false}, {"text": "tree", "isCorrect": true}]	\N
+898	光荣	\N	2025-08-03 21:33:07.348	2025-08-03 21:33:11.075	\N	\N	en	\N	\N	The team celebrated their victory in glory.	[{"text": "忧伤", "isCorrect": false}, {"text": "光荣", "isCorrect": true}, {"text": "壮观", "isCorrect": false}, {"text": "辉煌", "isCorrect": false}]	[{"text": "honour", "isCorrect": false}, {"text": "dull", "isCorrect": false}, {"text": "glory", "isCorrect": true}, {"text": "fame", "isCorrect": false}]	\N
+904	好累啊	\N	2025-08-03 21:33:07.365	2025-08-03 21:33:11.479	\N	\N	en	\N	\N	I'm so tired after working all day.	[{"text": "精力", "isCorrect": false}, {"text": "疲惫", "isCorrect": false}, {"text": "辛苦", "isCorrect": false}, {"text": "好累啊", "isCorrect": true}]	[{"text": "I'm so lazy.", "isCorrect": false}, {"text": "I'm so worn out.", "isCorrect": false}, {"text": "I'm so fatigued.", "isCorrect": false}, {"text": "I'm so tired.", "isCorrect": true}]	\N
+907	粘膜	\N	2025-08-03 21:33:12.499	2025-08-03 21:33:15.844	\N	\N	en	\N	\N	The doctor examined the patient's nasal mucosa.	[{"text": "粘膜", "isCorrect": true}, {"text": "黏着", "isCorrect": false}, {"text": "黏液", "isCorrect": false}, {"text": "黏附", "isCorrect": false}]	[{"text": "goo", "isCorrect": false}, {"text": "sli me", "isCorrect": false}, {"text": "mu co sa", "isCorrect": true}, {"text": "mu cous", "isCorrect": false}]	\N
+912	海藻酸盐	\N	2025-08-03 21:33:12.532	2025-08-03 21:33:15.839	\N	\N	en	\N	\N	The dentist used alginate to make a mold of my teeth.	[{"text": "海藻酸钙", "isCorrect": false}, {"text": "海藻酸盐", "isCorrect": true}, {"text": "海藻酸铁", "isCorrect": false}, {"text": "海藻酸镁", "isCorrect": false}]	[{"text": "albeit", "isCorrect": false}, {"text": "alga", "isCorrect": false}, {"text": "alleviate", "isCorrect": false}, {"text": "alginate", "isCorrect": true}]	\N
+911	𬌗架	\N	2025-08-03 21:33:12.533	2025-08-03 21:33:15.996	\N	\N	en	\N	\N	The lips are important articulators when pronouncing the p sound.	[{"text": "𬌗架", "isCorrect": true}, {"text": "𭺔蚪", "isCorrect": false}, {"text": "𧨠餓", "isCorrect": false}, {"text": "𨞁測", "isCorrect": false}]	[{"text": "articulation", "isCorrect": false}, {"text": "vocalist", "isCorrect": false}, {"text": "intelligible", "isCorrect": false}, {"text": "articulator", "isCorrect": true}]	\N
+940	轮廓	\N	2025-08-03 21:33:30.063	2025-08-03 21:33:34.445	\N	\N	en	\N	\N	She used a contour stick to define her cheekbones.	[{"text": "纹理", "isCorrect": false}, {"text": "轮廓", "isCorrect": true}, {"text": "褶皱", "isCorrect": false}, {"text": "质感", "isCorrect": false}]	[{"text": "Error opt 3", "isCorrect": false}, {"text": "contour", "isCorrect": true}, {"text": "Error opt 1", "isCorrect": false}, {"text": "Error opt 2", "isCorrect": false}]	\N
+839	朋友	\N	2025-08-03 21:32:22.791	2025-08-03 21:32:26.077	\N	\N	en	\N	\N	I am going to the park with my friend tomorrow.	[{"text": "同学", "isCorrect": false}, {"text": "陌生人", "isCorrect": false}, {"text": "家人", "isCorrect": false}, {"text": "朋友", "isCorrect": true}]	[{"text": "friend", "isCorrect": true}, {"text": "mate", "isCorrect": false}, {"text": "pal", "isCorrect": false}, {"text": "buddy", "isCorrect": false}]	\N
+773	安全措施	\N	2025-08-03 21:31:36.885	2025-08-03 21:31:40.262	\N	\N	en	\N	\N	Safety measures such as wearing a helmet and seatbelt can help prevent injuries in a car accident.	[{"text": "安全措施", "isCorrect": true}, {"text": "保护措施", "isCorrect": false}, {"text": "危险行为", "isCorrect": false}, {"text": "安全意识", "isCorrect": false}]	[{"text": "Precautionary steps", "isCorrect": false}, {"text": "Security protocol", "isCorrect": false}, {"text": "Safety measures", "isCorrect": true}, {"text": "Risk factors", "isCorrect": false}]	\N
+851	动画片	\N	2025-08-03 21:32:32.158	2025-08-03 21:32:35.61	\N	\N	en	\N	\N	I love watching animated movies because the animation is so colorful and fun.	[{"text": "戏剧", "isCorrect": false}, {"text": "动画片", "isCorrect": true}, {"text": "影片", "isCorrect": false}, {"text": "卡通", "isCorrect": false}]	[{"text": "vibration", "isCorrect": false}, {"text": "illustration", "isCorrect": false}, {"text": "animation", "isCorrect": true}, {"text": "rendering", "isCorrect": false}]	\N
+784	后退	\N	2025-08-03 21:31:42.176	2025-08-03 21:31:53.735	\N	\N	en	\N	\N	He took a step back.	[{"text": "倒退", "isCorrect": false}, {"text": "前进", "isCorrect": false}, {"text": "后退", "isCorrect": true}, {"text": "回退", "isCorrect": false}]	[{"text": "回避", "isCorrect": false}, {"text": "退缩", "isCorrect": false}, {"text": "退后", "isCorrect": false}, {"text": "后退", "isCorrect": true}]	\N
+864	自动	\N	2025-08-03 21:32:37.849	2025-08-03 21:32:40.953	\N	\N	en	\N	\N	The doors opened automatically as we approached the store.	[{"text": "主动", "isCorrect": false}, {"text": "自动", "isCorrect": true}, {"text": "手动", "isCorrect": false}, {"text": "智能", "isCorrect": false}]	[{"text": "automatical", "isCorrect": true}, {"text": "automatable", "isCorrect": false}, {"text": "autonomous", "isCorrect": false}, {"text": "autocratic", "isCorrect": false}]	\N
+797	废弃	\N	2025-08-03 21:31:54.74	2025-08-03 21:31:58.237	\N	\N	en	\N	\N	The old software version is deprecated and should no longer be used.	[{"text": "遗弃", "isCorrect": false}, {"text": "废弃", "isCorrect": true}, {"text": "抛弃", "isCorrect": false}, {"text": "废止", "isCorrect": false}]	[{"text": "Deprecated", "isCorrect": true}, {"text": "Obsolete", "isCorrect": false}, {"text": "Outdated", "isCorrect": false}, {"text": "Ancient", "isCorrect": false}]	\N
+872	云	\N	2025-08-03 21:32:42.504	2025-08-03 21:32:46.346	\N	\N	en	\N	\N	The sky was filled with fluffy white clouds.	[{"text": "雨", "isCorrect": false}, {"text": "云", "isCorrect": true}, {"text": "风", "isCorrect": false}, {"text": "蓝", "isCorrect": false}]	[{"text": "cloud", "isCorrect": true}, {"text": "fog", "isCorrect": false}, {"text": "rain", "isCorrect": false}, {"text": "mist", "isCorrect": false}]	\N
+809	目标	\N	2025-08-03 21:31:59.779	2025-08-03 21:32:03.086	\N	\N	en	\N	\N	My goal is to learn how to play the guitar.	[{"text": "愿望", "isCorrect": false}, {"text": "成就", "isCorrect": false}, {"text": "目标", "isCorrect": true}, {"text": "计划", "isCorrect": false}]	[{"text": "target", "isCorrect": false}, {"text": "goal", "isCorrect": true}, {"text": "mission", "isCorrect": false}, {"text": "objective", "isCorrect": false}]	\N
+880	行星	\N	2025-08-03 21:32:47.361	2025-08-03 21:32:50.463	\N	\N	en	\N	\N	Our planet Earth is the third planet from the sun.	[{"text": "行星", "isCorrect": true}, {"text": "质量", "isCorrect": false}, {"text": "卫星", "isCorrect": false}, {"text": "星球", "isCorrect": false}]	[{"text": "comet", "isCorrect": false}, {"text": "orbit", "isCorrect": false}, {"text": "planet", "isCorrect": true}, {"text": "galaxy", "isCorrect": false}]	\N
+883	电影	\N	2025-08-03 21:32:47.386	2025-08-03 21:32:51.111	\N	\N	en	\N	\N	I watched a movie with my friends last night.	[{"text": "电视剧", "isCorrect": false}, {"text": "电影", "isCorrect": true}, {"text": "音乐", "isCorrect": false}, {"text": "戏剧", "isCorrect": false}]	[{"text": "movie", "isCorrect": true}, {"text": "cinema", "isCorrect": false}, {"text": "film", "isCorrect": false}, {"text": "novel", "isCorrect": false}]	\N
+819	学校	\N	2025-08-03 21:32:04.96	2025-08-03 21:32:09.133	\N	\N	en	\N	\N	I go to school every day to learn new things.	[{"text": "教室", "isCorrect": false}, {"text": "餐厅", "isCorrect": false}, {"text": "公园", "isCorrect": false}, {"text": "学校", "isCorrect": true}]	[{"text": "institution", "isCorrect": false}, {"text": "academy", "isCorrect": false}, {"text": "campus", "isCorrect": false}, {"text": "school", "isCorrect": true}]	\N
+892	西瓜	\N	2025-08-03 21:32:54.311	2025-08-03 21:32:57.7	\N	\N	en	\N	\N	I love eating cold, juicy watermelon on a hot summer day.	[{"text": "草莓", "isCorrect": false}, {"text": "木瓜", "isCorrect": false}, {"text": "橙子", "isCorrect": false}, {"text": "西瓜", "isCorrect": true}]	[{"text": "watermelon", "isCorrect": true}, {"text": "cantaloupe", "isCorrect": false}, {"text": "strawberry", "isCorrect": false}, {"text": "pineapple", "isCorrect": false}]	\N
+828	梦想	\N	2025-08-03 21:32:12.979	2025-08-03 21:32:17.164	\N	\N	en	\N	\N	Last night, I had a strange dream about flying.	[{"text": "愿望", "isCorrect": false}, {"text": "梦想", "isCorrect": true}, {"text": "幻想", "isCorrect": false}, {"text": "夜晚", "isCorrect": false}]	[{"text": "dream", "isCorrect": true}, {"text": "illusion", "isCorrect": false}, {"text": "fantasy", "isCorrect": false}, {"text": "vision", "isCorrect": false}]	\N
+905	枪	\N	2025-08-03 21:33:07.364	2025-08-03 21:33:10.307	\N	\N	en	\N	\N	He pointed the gun at the target and pulled the trigger.	[{"text": "剑", "isCorrect": false}, {"text": "枪", "isCorrect": true}, {"text": "铁棒", "isCorrect": false}, {"text": "炮", "isCorrect": false}]	[{"text": "rifle", "isCorrect": false}, {"text": "gun", "isCorrect": true}, {"text": "candle", "isCorrect": false}, {"text": "bomb", "isCorrect": false}]	\N
+901	硝苯地平——降压药	\N	2025-08-03 21:33:07.351	2025-08-03 21:33:11.477	\N	\N	en	\N	\N	My doctor prescribed nifedipine to help lower my blood pressure.	[{"text": "硝苯地平——降压药", "isCorrect": true}, {"text": "依贝特酮", "isCorrect": false}, {"text": "赖诺普利", "isCorrect": false}, {"text": "氨基磺酸", "isCorrect": false}]	[{"text": "verapamil", "isCorrect": false}, {"text": "nifedipine", "isCorrect": true}, {"text": "felodipine", "isCorrect": false}, {"text": "amlodipine", "isCorrect": false}]	\N
+833	测试	\N	2025-08-03 21:32:22.78	2025-08-03 21:32:25.864	\N	\N	en	\N	\N	I have a math test tomorrow.	[{"text": "测试", "isCorrect": true}, {"text": "测量", "isCorrect": false}, {"text": "试验", "isCorrect": false}, {"text": "检验", "isCorrect": false}]	[{"text": "assessment", "isCorrect": false}, {"text": "evaluation", "isCorrect": false}, {"text": "exam", "isCorrect": false}, {"text": "test", "isCorrect": true}]	\N
+772	高调宣布	\N	2025-08-03 21:31:36.884	2025-08-03 21:31:40.561	\N	\N	en	\N	\N	The company made a high-profile announcement about their new product launch.	[{"text": "大声通告", "isCorrect": false}, {"text": "低调声明", "isCorrect": false}, {"text": "高调宣布", "isCorrect": true}, {"text": "悄悄公布", "isCorrect": false}]	[{"text": "Noteworthy notice", "isCorrect": false}, {"text": "Insignificant disclosure", "isCorrect": false}, {"text": "Eminent proclamation", "isCorrect": false}, {"text": "High-profile announcement", "isCorrect": true}]	\N
+855	飞	\N	2025-08-03 21:32:32.161	2025-08-03 21:32:34.784	\N	\N	en	\N	\N	The bird can fly high in the sky.	[{"text": "走", "isCorrect": false}, {"text": "跑", "isCorrect": false}, {"text": "飞", "isCorrect": true}, {"text": "游", "isCorrect": false}]	[{"text": "hop", "isCorrect": false}, {"text": "fly", "isCorrect": true}, {"text": "soar", "isCorrect": false}, {"text": "dive", "isCorrect": false}]	\N
+789	成功地	\N	2025-08-03 21:31:42.208	2025-08-03 21:31:45.594	\N	\N	en	\N	\N	She successfully completed her homework before dinner.	[{"text": "顺畅地", "isCorrect": false}, {"text": "顺利地", "isCorrect": false}, {"text": "成功地", "isCorrect": true}, {"text": "圆滑地", "isCorrect": false}]	[{"text": "successfully", "isCorrect": true}, {"text": "effectively", "isCorrect": false}, {"text": "prosperously", "isCorrect": false}, {"text": "adequately", "isCorrect": false}]	\N
+858	选择	\N	2025-08-03 21:32:37.755	2025-08-03 21:32:40.755	\N	\N	en	\N	\N	I have a choice between watching a movie or going for a walk.	[{"text": "选择", "isCorrect": true}, {"text": "拒绝", "isCorrect": false}, {"text": "决定", "isCorrect": false}, {"text": "挑选", "isCorrect": false}]	[{"text": "decision", "isCorrect": false}, {"text": "selection", "isCorrect": false}, {"text": "option", "isCorrect": false}, {"text": "choice", "isCorrect": true}]	\N
+796	可能性	\N	2025-08-03 21:31:54.739	2025-08-03 21:31:58.417	\N	\N	en	\N	\N	There is a possibility of rain later today.	[{"text": "概率", "isCorrect": false}, {"text": "未来", "isCorrect": false}, {"text": "可能性", "isCorrect": true}, {"text": "机会", "isCorrect": false}]	[{"text": "likelihood", "isCorrect": false}, {"text": "potential", "isCorrect": false}, {"text": "possibility", "isCorrect": true}, {"text": "probability", "isCorrect": false}]	\N
+873	苹果	\N	2025-08-03 21:32:42.505	2025-08-03 21:32:46.361	\N	\N	en	\N	\N	I like to eat an apple every day for a healthy snack.	[{"text": "橙子", "isCorrect": false}, {"text": "柠檬", "isCorrect": false}, {"text": "苹果", "isCorrect": true}, {"text": "草莓", "isCorrect": false}]	[{"text": "apple", "isCorrect": true}, {"text": "pear", "isCorrect": false}, {"text": "banana", "isCorrect": false}, {"text": "orange", "isCorrect": false}]	\N
+800	山	\N	2025-08-03 21:31:59.763	2025-08-03 21:32:03.482	\N	\N	en	\N	\N	I hiked to the top of the mountain and enjoyed the beautiful view.	[{"text": "湖泊", "isCorrect": false}, {"text": "石头", "isCorrect": false}, {"text": "山", "isCorrect": true}, {"text": "河流", "isCorrect": false}]	[{"text": "mountain", "isCorrect": true}, {"text": "ocean", "isCorrect": false}, {"text": "valley", "isCorrect": false}, {"text": "hill", "isCorrect": false}]	\N
+879	太阳	\N	2025-08-03 21:32:47.36	2025-08-03 21:32:52.416	\N	\N	en	\N	\N	The sun shines brightly in the sky.	[{"text": "太阳", "isCorrect": true}, {"text": "火车", "isCorrect": false}, {"text": "月亮", "isCorrect": false}, {"text": "西瓜", "isCorrect": false}]	[{"text": "sun", "isCorrect": true}, {"text": "lamp", "isCorrect": false}, {"text": "star", "isCorrect": false}, {"text": "moon", "isCorrect": false}]	\N
+810	镜子	\N	2025-08-03 21:32:04.83	2025-08-03 21:32:09.131	\N	\N	en	\N	\N	She looked at herself in the mirror before leaving the house.	[{"text": "化妆", "isCorrect": false}, {"text": "窗户", "isCorrect": false}, {"text": "镜子", "isCorrect": true}, {"text": "相框", "isCorrect": false}]	[{"text": "glass", "isCorrect": false}, {"text": "mirror", "isCorrect": true}, {"text": "reflect", "isCorrect": false}, {"text": "duplicate", "isCorrect": false}]	\N
+889	铅笔	\N	2025-08-03 21:32:54.222	2025-08-03 21:32:57.209	\N	\N	en	\N	\N	I use a pencil to write notes in my notebook.	[{"text": "书包", "isCorrect": false}, {"text": "铅笔", "isCorrect": true}, {"text": "橡皮", "isCorrect": false}, {"text": "书本", "isCorrect": false}]	[{"text": "pen", "isCorrect": false}, {"text": "pencil", "isCorrect": true}, {"text": "eraser", "isCorrect": false}, {"text": "marker", "isCorrect": false}]	\N
+822	音乐	\N	2025-08-03 21:32:12.965	2025-08-03 21:32:15.949	\N	\N	en	\N	\N	I love listening to music while I study.	[{"text": "唱歌", "isCorrect": false}, {"text": "音乐", "isCorrect": true}, {"text": "舞蹈", "isCorrect": false}, {"text": "旋律", "isCorrect": false}]	[{"text": "artwork", "isCorrect": false}, {"text": "melody", "isCorrect": false}, {"text": "lyrics", "isCorrect": false}, {"text": "music", "isCorrect": true}]	\N
+895	天上的云好蓝啊。	\N	2025-08-03 21:32:54.323	2025-08-03 21:32:58.435	\N	\N	en	\N	\N	The clouds in the sky are so blue.	[{"text": "地上的草很绿啊。", "isCorrect": false}, {"text": "天上的星星好亮啊。", "isCorrect": false}, {"text": "天上的云好蓝啊。", "isCorrect": true}, {"text": "山上的雪很白啊。", "isCorrect": false}]	[{"text": "The clouds in the sky are so blue.", "isCorrect": true}, {"text": "The clouds in the sky are so pink.", "isCorrect": false}, {"text": "The clouds in the sky are so sunny.", "isCorrect": false}, {"text": "The clouds in the sky are so green.", "isCorrect": false}]	\N
+900	吃	\N	2025-08-03 21:33:07.35	2025-08-03 21:33:10.257	\N	\N	en	\N	\N	I like to eat pizza for dinner.	[{"text": "走", "isCorrect": false}, {"text": "坐", "isCorrect": false}, {"text": "喝", "isCorrect": false}, {"text": "吃", "isCorrect": true}]	[{"text": "eat", "isCorrect": true}, {"text": "digest", "isCorrect": false}, {"text": "consume", "isCorrect": false}, {"text": "devour", "isCorrect": false}]	\N
+899	完成	\N	2025-08-03 21:33:07.35	2025-08-03 21:33:10.449	\N	\N	en	\N	\N	I will finish my homework before dinner.	[{"text": "继续", "isCorrect": false}, {"text": "取消", "isCorrect": false}, {"text": "结束", "isCorrect": false}, {"text": "完成", "isCorrect": true}]	[{"text": "End", "isCorrect": false}, {"text": "Finish", "isCorrect": true}, {"text": "Complete", "isCorrect": false}, {"text": "Cease", "isCorrect": false}]	\N
+908	汽车	\N	2025-08-03 21:33:12.53	2025-08-03 21:33:16.062	\N	\N	en	\N	\N	I drove my car to the grocery store.	[{"text": "汽车", "isCorrect": true}, {"text": "飞机", "isCorrect": false}, {"text": "自行车", "isCorrect": false}, {"text": "卡车", "isCorrect": false}]	[{"text": "truck", "isCorrect": false}, {"text": "car", "isCorrect": true}, {"text": "bus", "isCorrect": false}, {"text": "bicycle", "isCorrect": false}]	\N
+924	苯妥英——抗癫痫，治疗心律失常，缓解神经痛	\N	2025-08-03 21:33:18.353	2025-08-03 21:33:21.617	\N	\N	en	\N	\N	The doctor prescribed phenytoin to help control my seizures.	[{"text": "苯文达", "isCorrect": false}, {"text": "苯妥英——抗癫痫，治疗心律失常，缓解神经痛", "isCorrect": true}, {"text": "甲苯酸", "isCorrect": false}, {"text": "达己美", "isCorrect": false}]	[{"text": "oxcarbazepine", "isCorrect": false}, {"text": "phenytoin", "isCorrect": true}, {"text": "gabapentin", "isCorrect": false}, {"text": "carbamazepine", "isCorrect": false}]	\N
+933	沟	\N	2025-08-03 21:33:23.162	2025-08-03 21:33:26.246	\N	\N	en	\N	\N	The sulcus on the surface of the brain helps to divide different regions.	[{"text": "潭", "isCorrect": false}, {"text": "沟", "isCorrect": true}, {"text": "溪", "isCorrect": false}, {"text": "港", "isCorrect": false}]	[{"text": "fissure", "isCorrect": false}, {"text": "sulcus", "isCorrect": true}, {"text": "crater", "isCorrect": false}, {"text": "crevice", "isCorrect": false}]	\N
+1024	波动的	\N	2025-08-03 21:34:36.747	2025-08-03 21:34:40.708	\N	\N	en	\N	\N	The prices of vegetables at the market are fluctuant depending on the season.	[{"text": "震动的", "isCorrect": false}, {"text": "波动的", "isCorrect": true}, {"text": "摇摆的", "isCorrect": false}, {"text": "稳定的", "isCorrect": false}]	[{"text": "variable", "isCorrect": false}, {"text": "erratic", "isCorrect": false}, {"text": "mutable", "isCorrect": false}, {"text": "fluctuant", "isCorrect": true}]	\N
+1031	蝶下颌韧带	\N	2025-08-03 21:34:42.971	2025-08-03 21:34:46.532	\N	\N	en	\N	\N	The sphenomandibular ligament connects the sphenoid bone to the mandible.	[{"text": "蚊子", "isCorrect": false}, {"text": "鹦鹉", "isCorrect": false}, {"text": "觅食能", "isCorrect": false}, {"text": "蝶下颌韧带", "isCorrect": true}]	[{"text": "lacrimal bone", "isCorrect": false}, {"text": "sternoclavicular ligament", "isCorrect": false}, {"text": "temporomandibular ligament", "isCorrect": false}, {"text": "sphenpmadibular ligament", "isCorrect": true}]	\N
+1044	头孢氨苄	\N	2025-08-03 21:34:49.197	2025-08-03 21:35:21.716	\N	\N	en	\N	\N	The doctor prescribed cephalerin to treat the infection.	[{"text": "依曲麦酸", "isCorrect": false}, {"text": "利福平", "isCorrect": false}, {"text": "约克司霉素", "isCorrect": false}, {"text": "头孢氨苄", "isCorrect": true}]	[{"text": "Error opt 2", "isCorrect": false}, {"text": "Error opt 1", "isCorrect": false}, {"text": "Error opt 3", "isCorrect": false}, {"text": "cephalerin", "isCorrect": true}]	\N
+1045	口的	\N	2025-08-03 21:35:22.728	2025-08-03 21:35:27.119	\N	\N	en	\N	\N	She smiled, revealing her pearly white oris.	[{"text": "口的", "isCorrect": true}, {"text": "舌的", "isCorrect": false}, {"text": "牙的", "isCorrect": false}, {"text": "脸的", "isCorrect": false}]	[{"text": "orsi", "isCorrect": false}, {"text": "oris", "isCorrect": true}, {"text": "osir", "isCorrect": false}, {"text": "orsa", "isCorrect": false}]	\N
+909	基牙	\N	2025-08-03 21:33:12.531	2025-08-03 21:33:16.186	\N	\N	en	\N	\N	The bridge is supported by a strong abutment on either end.	[{"text": "基牙", "isCorrect": true}, {"text": "基督", "isCorrect": false}, {"text": "基地", "isCorrect": false}, {"text": "基因", "isCorrect": false}]	[{"text": "abutment", "isCorrect": true}, {"text": "buttress", "isCorrect": false}, {"text": "pier", "isCorrect": false}, {"text": "aperture", "isCorrect": false}]	\N
+923	窝沟封闭剂	\N	2025-08-03 21:33:18.353	2025-08-03 21:33:22.061	\N	\N	en	\N	\N	The dentist applied a pit and fissure sealant to protect the child's teeth from cavities.	[{"text": "途中阻断", "isCorrect": false}, {"text": "基础语言", "isCorrect": false}, {"text": "窝沟封闭剂", "isCorrect": true}, {"text": "搭建连接", "isCorrect": false}]	[{"text": "fluoride treatment", "isCorrect": false}, {"text": "dental varnish", "isCorrect": false}, {"text": "pit and fissure sealant", "isCorrect": true}, {"text": "denture adhesive", "isCorrect": false}]	\N
+934	不可逆转的	\N	2025-08-03 21:33:23.176	2025-08-03 21:33:29.072	\N	\N	en	\N	\N	Once you delete a file, it is irreversible.	[{"text": "永久性的", "isCorrect": false}, {"text": "可适可不适的", "isCorrect": false}, {"text": "不可逆转的", "isCorrect": true}, {"text": "无法改变的", "isCorrect": false}]	[{"text": "irregular", "isCorrect": false}, {"text": "inconclusive", "isCorrect": false}, {"text": "inhibitory", "isCorrect": false}, {"text": "irreversible", "isCorrect": true}]	\N
+1021	边界	\N	2025-08-03 21:34:36.746	2025-08-03 21:34:39.903	\N	\N	en	\N	\N	I live near the border between two countries.	[{"text": "界限", "isCorrect": false}, {"text": "边界", "isCorrect": true}, {"text": "领域", "isCorrect": false}, {"text": "范畴", "isCorrect": false}]	[{"text": "edge", "isCorrect": false}, {"text": "perimeter", "isCorrect": false}, {"text": "boundary", "isCorrect": false}, {"text": "border", "isCorrect": true}]	\N
+1030	被动的	\N	2025-08-03 21:34:42.971	2025-08-03 21:34:46.494	\N	\N	en	\N	\N	She prefers watching movies over playing sports because she is more passive.	[{"text": "消极的", "isCorrect": false}, {"text": "积极的", "isCorrect": false}, {"text": "主动的", "isCorrect": false}, {"text": "被动的", "isCorrect": true}]	[{"text": "impermanent", "isCorrect": false}, {"text": "dormant", "isCorrect": false}, {"text": "passive", "isCorrect": true}, {"text": "inactive", "isCorrect": false}]	\N
+1036	四环素	\N	2025-08-03 21:34:49.184	2025-08-03 21:34:52.779	\N	\N	en	\N	\N	I am taking tetracycline to treat my acne.	[{"text": "康复因子", "isCorrect": false}, {"text": "抗生素", "isCorrect": false}, {"text": "四环素", "isCorrect": true}, {"text": "氯霉素", "isCorrect": false}]	[{"text": "penicillin", "isCorrect": false}, {"text": "amoxicillin", "isCorrect": false}, {"text": "tetracycline", "isCorrect": true}, {"text": "erythromycin", "isCorrect": false}]	\N
+910	石膏	\N	2025-08-03 21:33:12.533	2025-08-03 21:33:16.384	\N	\N	en	\N	\N	After I fell and scraped my knee, I put a plaster on it to protect the wound.	[{"text": "水泥", "isCorrect": false}, {"text": "石膏", "isCorrect": true}, {"text": "水泥板", "isCorrect": false}, {"text": "沙石", "isCorrect": false}]	[{"text": "adhesive", "isCorrect": false}, {"text": "plaster", "isCorrect": true}, {"text": "cement", "isCorrect": false}, {"text": "stucco", "isCorrect": false}]	\N
+922	扁平苔藓	\N	2025-08-03 21:33:18.351	2025-08-03 21:33:21.904	\N	\N	en	\N	\N	She was diagnosed with lichen planus after noticing small, itchy bumps on her skin.	[{"text": "灰白苔藓", "isCorrect": false}, {"text": "平滑苔藓", "isCorrect": false}, {"text": "交错苔藓", "isCorrect": false}, {"text": "扁平苔藓", "isCorrect": true}]	[{"text": "eczema", "isCorrect": false}, {"text": "psoriasis", "isCorrect": false}, {"text": "dermatitis", "isCorrect": false}, {"text": "lichen planus", "isCorrect": true}]	\N
+928	三点标记模型	\N	2025-08-03 21:33:23.147	2025-08-03 21:33:26.724	\N	\N	en	\N	\N	The actor was tripoding a cast during the rehearsal.	[{"text": "七点标记模型", "isCorrect": false}, {"text": "三点标记模型", "isCorrect": true}, {"text": "五点标记模型", "isCorrect": false}, {"text": "四点标记模型", "isCorrect": false}]	[{"text": "triangulating a bandage", "isCorrect": false}, {"text": "tripoding a cast", "isCorrect": true}, {"text": "tripling a plaster", "isCorrect": false}, {"text": "tricasting a splint", "isCorrect": false}]	\N
+1018	扩散率	\N	2025-08-03 21:34:36.744	2025-08-03 21:34:40.239	\N	\N	en	\N	\N	The diffusivity of oxygen in water is influenced by temperature.	[{"text": "散布率", "isCorrect": false}, {"text": "膨胀率", "isCorrect": false}, {"text": "增加率", "isCorrect": false}, {"text": "扩散率", "isCorrect": true}]	[{"text": "diffusivity", "isCorrect": true}, {"text": "permeability", "isCorrect": false}, {"text": "viscosity", "isCorrect": false}, {"text": "thermal conductivity", "isCorrect": false}]	\N
+1028	积极的	\N	2025-08-03 21:34:42.97	2025-08-03 21:34:46.496	\N	\N	en	\N	\N	I try to stay active by going for a walk every morning.	[{"text": "消极的", "isCorrect": false}, {"text": "积极的", "isCorrect": true}, {"text": "被动的", "isCorrect": false}, {"text": "积极的", "isCorrect": false}]	[{"text": "prevalent", "isCorrect": false}, {"text": "lethargic", "isCorrect": false}, {"text": "passive", "isCorrect": false}, {"text": "active", "isCorrect": true}]	\N
+1043	万古霉素	\N	2025-08-03 21:34:49.197	2025-08-03 21:34:52.969	\N	\N	en	\N	\N	The doctor prescribed vancomycin to treat the bacterial infection.	[{"text": "千古丹青", "isCorrect": false}, {"text": "万古霉素", "isCorrect": true}, {"text": "镇疾片", "isCorrect": false}, {"text": "巫草醇", "isCorrect": false}]	[{"text": "ceftriaxone", "isCorrect": false}, {"text": "penicillin", "isCorrect": false}, {"text": "amoxicillin", "isCorrect": false}, {"text": "vancomycin", "isCorrect": true}]	\N
+1047	尖牙肌	\N	2025-08-03 21:35:22.729	2025-08-03 21:35:27.188	\N	\N	en	\N	\N	My dog's caninus teeth are sharp and strong.	[{"text": "眼部肌肉", "isCorrect": false}, {"text": "颧弓肌", "isCorrect": false}, {"text": "鼻咽肌", "isCorrect": false}, {"text": "尖牙肌", "isCorrect": true}]	[{"text": "incisor", "isCorrect": false}, {"text": "molar", "isCorrect": false}, {"text": "caninus", "isCorrect": true}, {"text": "feline", "isCorrect": false}]	\N
+906	你好	\N	2025-08-03 21:33:12.5	2025-08-03 21:33:16.417	\N	\N	en	\N	\N	Hello, how are you today?	[{"text": "再见", "isCorrect": false}, {"text": "你好", "isCorrect": true}, {"text": "对不起", "isCorrect": false}, {"text": "早上好", "isCorrect": false}]	[{"text": "hey", "isCorrect": false}, {"text": "salut", "isCorrect": false}, {"text": "hello", "isCorrect": true}, {"text": "hi", "isCorrect": false}]	\N
+916	撕脱	\N	2025-08-03 21:33:18.339	2025-08-03 21:33:21.496	\N	\N	en	\N	\N	The dentist avulsed the decayed tooth.	[{"text": "解剖", "isCorrect": false}, {"text": "去除", "isCorrect": false}, {"text": "撕脱", "isCorrect": true}, {"text": "揭露", "isCorrect": false}]	[{"text": "pontificate", "isCorrect": false}, {"text": "lacerated", "isCorrect": false}, {"text": "avulsed", "isCorrect": true}, {"text": "contused", "isCorrect": false}]	\N
+930	绳索	\N	2025-08-03 21:33:23.149	2025-08-03 21:33:26.213	\N	\N	en	\N	\N	I need to buy a new charging cord for my phone.	[{"text": "麻绳", "isCorrect": false}, {"text": "绳索", "isCorrect": true}, {"text": "绳线", "isCorrect": false}, {"text": "绳子", "isCorrect": false}]	[{"text": "rope", "isCorrect": false}, {"text": "cord", "isCorrect": true}, {"text": "twine", "isCorrect": false}, {"text": "strand", "isCorrect": false}]	\N
+1020	水门汀	\N	2025-08-03 21:34:36.743	2025-08-03 21:34:40.314	\N	\N	en	\N	\N	The workers used cement to build a strong foundation for the new house.	[{"text": "海港", "isCorrect": false}, {"text": "江河岸", "isCorrect": false}, {"text": "湖滨", "isCorrect": false}, {"text": "水门汀", "isCorrect": true}]	[{"text": "plaster", "isCorrect": false}, {"text": "cement", "isCorrect": true}, {"text": "gravel", "isCorrect": false}, {"text": "asphalt", "isCorrect": false}]	\N
+1029	对抗者，对𬌗牙	\N	2025-08-03 21:34:42.97	2025-08-03 21:34:48.131	\N	\N	en	\N	\N	In the movie, the antagonist was a wicked sorcerer who tried to take over the kingdom.	[{"text": "對抗者", "isCorrect": false}, {"text": "對抗𬌗", "isCorrect": false}, {"text": "对抐木", "isCorrect": false}, {"text": "对抗者，对𬌗牙", "isCorrect": true}]	[{"text": "antagonist", "isCorrect": true}, {"text": "ally", "isCorrect": false}, {"text": "proponent", "isCorrect": false}, {"text": "rival", "isCorrect": false}]	\N
+1041	接触，曝光，暴露	\N	2025-08-03 21:34:49.185	2025-08-03 21:34:52.362	\N	\N	en	\N	\N	The child got a sunburn from too much exposure to the sun.	[{"text": "接触，曝光，暴露", "isCorrect": true}, {"text": "接管", "isCorrect": false}, {"text": "暴力", "isCorrect": false}, {"text": "开发", "isCorrect": false}]	[{"text": "vulnerability", "isCorrect": false}, {"text": "immunity", "isCorrect": false}, {"text": "susceptibility", "isCorrect": false}, {"text": "exposure", "isCorrect": true}]	\N
+914	卡马西平——抗癫痫药，三叉神经痛首选	\N	2025-08-03 21:33:12.535	2025-08-03 21:33:17.179	\N	\N	en	\N	\N	She takes carbamazepine to help manage her seizures.	[{"text": "卡马西平——抗癫痫药，三叉神经痛首选", "isCorrect": true}, {"text": "帕尼泮", "isCorrect": false}, {"text": "卡巴卡新", "isCorrect": false}, {"text": "利培酮", "isCorrect": false}]	[{"text": "topiramate", "isCorrect": false}, {"text": "carbamazepine", "isCorrect": true}, {"text": "phenytoin", "isCorrect": false}, {"text": "valproic acid", "isCorrect": false}]	\N
+918	盐水	\N	2025-08-03 21:33:18.34	2025-08-03 21:33:22.03	\N	\N	en	\N	\N	The nurse administered a saline solution to hydrate the patient.	[{"text": "绿茶", "isCorrect": false}, {"text": "醋", "isCorrect": false}, {"text": "盐水", "isCorrect": true}, {"text": "酱油", "isCorrect": false}]	[{"text": "brine", "isCorrect": false}, {"text": "silt", "isCorrect": false}, {"text": "alkaline", "isCorrect": false}, {"text": "saline", "isCorrect": true}]	\N
+932	生物体	\N	2025-08-03 21:33:23.15	2025-08-03 21:33:26.57	\N	\N	en	\N	\N	The frog is a small organism that lives in the pond.	[{"text": "植物体", "isCorrect": false}, {"text": "生命", "isCorrect": false}, {"text": "生物体", "isCorrect": true}, {"text": "生物学", "isCorrect": false}]	[{"text": "creature", "isCorrect": false}, {"text": "organism", "isCorrect": true}, {"text": "being", "isCorrect": false}, {"text": "entity", "isCorrect": false}]	\N
+1017	膨胀，肿胀	\N	2025-08-03 21:34:36.728	2025-08-03 21:34:40.422	\N	\N	en	\N	\N	Her ankle began to swell after she twisted it during the soccer game.	[{"text": "发胀", "isCorrect": false}, {"text": "膨胀，肿胀", "isCorrect": true}, {"text": "膨大", "isCorrect": false}, {"text": "扩张", "isCorrect": false}]	[{"text": "swell", "isCorrect": true}, {"text": "inflate", "isCorrect": false}, {"text": "magnify", "isCorrect": false}, {"text": "augment", "isCorrect": false}]	\N
+1025	概念	\N	2025-08-03 21:34:42.968	2025-08-03 21:34:46.229	\N	\N	en	\N	\N	I don't understand the concept of time travel.	[{"text": "物质", "isCorrect": false}, {"text": "情感", "isCorrect": false}, {"text": "主观", "isCorrect": false}, {"text": "概念", "isCorrect": true}]	[{"text": "belief", "isCorrect": false}, {"text": "idea", "isCorrect": false}, {"text": "notion", "isCorrect": false}, {"text": "concept", "isCorrect": true}]	\N
+1038	轮匝肌	\N	2025-08-03 21:34:49.184	2025-08-03 21:34:52.459	\N	\N	en	\N	\N	The prbicularis flower blooms in the spring.	[{"text": "轮匝肌", "isCorrect": true}, {"text": "泌尿系", "isCorrect": false}, {"text": "前臂肌", "isCorrect": false}, {"text": "骨骼肌", "isCorrect": false}]	[{"text": "particular", "isCorrect": false}, {"text": "prbicularis", "isCorrect": true}, {"text": "precipitate", "isCorrect": false}, {"text": "precarious", "isCorrect": false}]	\N
+913	颊	\N	2025-08-03 21:33:12.534	2025-08-03 21:33:17.34	\N	\N	en	\N	\N	The dentist applied a buccal sealant to protect the molars from cavities.	[{"text": "颊", "isCorrect": true}, {"text": "Error opt 1", "isCorrect": false}, {"text": "Error opt 2", "isCorrect": false}, {"text": "Error opt 3", "isCorrect": false}]	[{"text": "buccal", "isCorrect": true}, {"text": "labial", "isCorrect": false}, {"text": "lingual", "isCorrect": false}, {"text": "palatal", "isCorrect": false}]	\N
+917	模型观测仪	\N	2025-08-03 21:33:18.339	2025-08-03 21:33:21.498	\N	\N	en	\N	\N	The surveyor measured the land to create a map.	[{"text": "测试", "isCorrect": false}, {"text": "实验", "isCorrect": false}, {"text": "模型观测仪", "isCorrect": true}, {"text": "观察", "isCorrect": false}]	[{"text": "surveyor", "isCorrect": true}, {"text": "architect", "isCorrect": false}, {"text": "navigator", "isCorrect": false}, {"text": "inspector", "isCorrect": false}]	\N
+927	龈沟内	\N	2025-08-03 21:33:23.148	2025-08-03 21:33:27.727	\N	\N	en	\N	\N	The dentist carefully cleaned the intrasulcular area to remove any debris.	[{"text": "口腔", "isCorrect": false}, {"text": "龈沟内", "isCorrect": true}, {"text": "齿颈", "isCorrect": false}, {"text": "牙龈", "isCorrect": false}]	[{"text": "supragingival", "isCorrect": false}, {"text": "intrasulcular", "isCorrect": true}, {"text": "extracoronal", "isCorrect": false}, {"text": "interproximal", "isCorrect": false}]	\N
+1023	咬𬌗面	\N	2025-08-03 21:34:36.746	2025-08-03 21:34:40.441	\N	\N	en	\N	\N	The dentist adjusted the occlusion surface of the patient's dental crown to improve their bite.	[{"text": "啃饼干", "isCorrect": false}, {"text": "嘬汤羹", "isCorrect": false}, {"text": "咬𬌗面", "isCorrect": true}, {"text": "吮面条", "isCorrect": false}]	[{"text": "enclosure boundary", "isCorrect": false}, {"text": "transparency layer", "isCorrect": false}, {"text": "exposure area", "isCorrect": false}, {"text": "occlusion surface", "isCorrect": true}]	\N
+1032	翼外肌	\N	2025-08-03 21:34:42.981	2025-08-03 21:34:47.619	\N	\N	en	\N	\N	The lateral pterygoid muscle helps with chewing and moving the jaw from side to side.	[{"text": "腹直肌", "isCorrect": false}, {"text": "翼外肌", "isCorrect": true}, {"text": "肱三头肌", "isCorrect": false}, {"text": "前斜方肌", "isCorrect": false}]	[{"text": "lateral pterygoid muscle", "isCorrect": true}, {"text": "medial pterygoid muscle", "isCorrect": false}, {"text": "zygomaticus muscle", "isCorrect": false}, {"text": "temporalis muscle", "isCorrect": false}]	\N
+1042	青霉素	\N	2025-08-03 21:34:49.186	2025-08-03 21:34:52.949	\N	\N	en	\N	\N	I took penicillin to help me get better from my infection.	[{"text": "消炎药", "isCorrect": false}, {"text": "抗生素", "isCorrect": false}, {"text": "感冒药", "isCorrect": false}, {"text": "青霉素", "isCorrect": true}]	[{"text": "penicillin", "isCorrect": true}, {"text": "azithromycin", "isCorrect": false}, {"text": "cephalexin", "isCorrect": false}, {"text": "amoxicillin", "isCorrect": false}]	\N
+915	队列	\N	2025-08-03 21:33:18.338	2025-08-03 21:33:21.5	\N	\N	en	\N	\N	I waited in the queue at the grocery store.	[{"text": "队列", "isCorrect": true}, {"text": "编队", "isCorrect": false}, {"text": "列表", "isCorrect": false}, {"text": "排列", "isCorrect": false}]	[{"text": "line", "isCorrect": false}, {"text": "array", "isCorrect": false}, {"text": "queue", "isCorrect": true}, {"text": "row", "isCorrect": false}]	\N
+929	退缩	\N	2025-08-03 21:33:23.148	2025-08-03 21:33:27.148	\N	\N	en	\N	\N	She showed her retration by apologizing to her friend for being late.	[{"text": "毅力", "isCorrect": false}, {"text": "畏缩", "isCorrect": false}, {"text": "觅食", "isCorrect": false}, {"text": "退缩", "isCorrect": true}]	[{"text": "reservation", "isCorrect": false}, {"text": "retration", "isCorrect": true}, {"text": "retortion", "isCorrect": false}, {"text": "reticent", "isCorrect": false}]	\N
+1015	模量	\N	2025-08-03 21:34:36.727	2025-08-03 21:34:40.689	\N	\N	en	\N	\N	The modulus of a complex number is its distance from the origin on the complex plane.	[{"text": "弹性", "isCorrect": false}, {"text": "尺寸", "isCorrect": false}, {"text": "模量", "isCorrect": true}, {"text": "密度", "isCorrect": false}]	[{"text": "multiplicand", "isCorrect": false}, {"text": "mantissa", "isCorrect": false}, {"text": "modulus", "isCorrect": true}, {"text": "quotient", "isCorrect": false}]	\N
+1034	下	\N	2025-08-03 21:34:43.001	2025-08-03 21:34:47.072	\N	\N	en	\N	\N	The quality of the replica was inferior to the original.	[{"text": "左", "isCorrect": false}, {"text": "右", "isCorrect": false}, {"text": "上", "isCorrect": false}, {"text": "下", "isCorrect": true}]	[{"text": "unsatisfactory", "isCorrect": false}, {"text": "mediocre", "isCorrect": false}, {"text": "subpar", "isCorrect": false}, {"text": "inferior", "isCorrect": true}]	\N
+1040	青霉素酶	\N	2025-08-03 21:34:49.186	2025-08-03 21:34:52.967	\N	\N	en	\N	\N	Doctors use penicillinase to treat bacterial infections that are resistant to penicillin.	[{"text": "青霉素酶", "isCorrect": true}, {"text": "坚鑫油酶", "isCorrect": false}, {"text": "叔崽整酶", "isCorrect": false}, {"text": "床略果酶", "isCorrect": false}]	[{"text": "cephalosporinase", "isCorrect": false}, {"text": "amoxicillinase", "isCorrect": false}, {"text": "penicillinase", "isCorrect": true}, {"text": "azithromycinase", "isCorrect": false}]	\N
+1046	笑肌	\N	2025-08-03 21:35:22.728	2025-08-03 21:56:18.133	\N	1	en	\N	\N	The risorius muscle helps you smile.	[{"text": "微笑", "isCorrect": false}, {"text": "酒窝", "isCorrect": false}, {"text": "笑肌", "isCorrect": true}, {"text": "咀嚼肌", "isCorrect": false}]	[{"text": "zygomaticus", "isCorrect": false}, {"text": "frontalis", "isCorrect": false}, {"text": "risorius", "isCorrect": true}, {"text": "buccinator", "isCorrect": false}]	\N
+920	革兰氏阳性菌	\N	2025-08-03 21:33:18.341	2025-08-03 21:33:21.558	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the gram-positive infection.	[{"text": "链球菌", "isCorrect": false}, {"text": "流感病毒", "isCorrect": false}, {"text": "肺炎球菌", "isCorrect": false}, {"text": "革兰氏阳性菌", "isCorrect": true}]	[{"text": "gram-unknown", "isCorrect": false}, {"text": "gram-negative", "isCorrect": false}, {"text": "gram-stain", "isCorrect": false}, {"text": "gram-positive", "isCorrect": true}]	\N
+931	颅骨	\N	2025-08-03 21:33:23.149	2025-08-03 21:33:26.848	\N	\N	en	\N	\N	He fell off his bike and hit his head so hard that he fractured his skull.	[{"text": "颅骨", "isCorrect": true}, {"text": "腰骨", "isCorrect": false}, {"text": "排骨", "isCorrect": false}, {"text": "胸骨", "isCorrect": false}]	[{"text": "skull", "isCorrect": true}, {"text": "skeleton", "isCorrect": false}, {"text": "coffin", "isCorrect": false}, {"text": "peril", "isCorrect": false}]	\N
+1016	热的	\N	2025-08-03 21:34:36.728	2025-08-03 21:34:40.711	\N	\N	en	\N	\N	The thermal blanket kept me warm during the cold night.	[{"text": "冷的", "isCorrect": false}, {"text": "苦的", "isCorrect": false}, {"text": "甜的", "isCorrect": false}, {"text": "热的", "isCorrect": true}]	[{"text": "calorie", "isCorrect": false}, {"text": "thermal", "isCorrect": true}, {"text": "insulation", "isCorrect": false}, {"text": "hot", "isCorrect": false}]	\N
+1027	内侧翼肌	\N	2025-08-03 21:34:42.969	2025-08-03 21:34:46.729	\N	\N	en	\N	\N	The medial pterygoid muscle helps with chewing food.	[{"text": "胫骨前肌", "isCorrect": false}, {"text": "外侧翼肌", "isCorrect": false}, {"text": "内侧翼肌", "isCorrect": true}, {"text": "后腰部肌群", "isCorrect": false}]	[{"text": "lateral pterygoid muscle", "isCorrect": false}, {"text": "masseter muscle", "isCorrect": false}, {"text": "medial pterygoid muscle", "isCorrect": true}, {"text": "temporalis muscle", "isCorrect": false}]	\N
+1035	葡萄球菌	\N	2025-08-03 21:34:49.183	2025-08-03 21:34:52.461	\N	\N	en	\N	\N	The doctor diagnosed the infection as staphylococcus.	[{"text": "葡萄球菌", "isCorrect": true}, {"text": "铁细菌", "isCorrect": false}, {"text": "酵母菌", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}]	[{"text": "klebsiella", "isCorrect": false}, {"text": "staphylococcus", "isCorrect": true}, {"text": "bacillus", "isCorrect": false}, {"text": "streptococcus", "isCorrect": false}]	\N
+919	螺旋体	\N	2025-08-03 21:33:18.341	2025-08-03 21:33:22.094	\N	\N	en	\N	\N	Some spirochetes can cause diseases like syphilis and Lyme disease.	[{"text": "螺旋体", "isCorrect": true}, {"text": "菌株", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}, {"text": "细胞", "isCorrect": false}]	[{"text": "listeria", "isCorrect": false}, {"text": "cocci", "isCorrect": false}, {"text": "spirochetes", "isCorrect": true}, {"text": "bacilli", "isCorrect": false}]	\N
+926	简化	\N	2025-08-03 21:33:23.147	2025-08-03 21:33:26.417	\N	\N	en	\N	\N	Let's simplify the instructions so everyone can understand them.	[{"text": "抽象", "isCorrect": false}, {"text": "繁琐", "isCorrect": false}, {"text": "恰当", "isCorrect": false}, {"text": "简化", "isCorrect": true}]	[{"text": "complexify", "isCorrect": false}, {"text": "simplify", "isCorrect": true}, {"text": "complicate", "isCorrect": false}, {"text": "compensate", "isCorrect": false}]	\N
+1019	磨光面	\N	2025-08-03 21:34:36.745	2025-08-03 21:34:41.819	\N	\N	en	\N	\N	She used a cloth to polish the surface of the table.	[{"text": "磨光面", "isCorrect": true}, {"text": "研磨表面", "isCorrect": false}, {"text": "擦亮表面", "isCorrect": false}, {"text": "抛光面", "isCorrect": false}]	[{"text": "Buff", "isCorrect": false}, {"text": "Clean", "isCorrect": false}, {"text": "Polish surface", "isCorrect": true}, {"text": "Burnish", "isCorrect": false}]	\N
+1033	针尖	\N	2025-08-03 21:34:43	2025-08-03 21:34:46.346	\N	\N	en	\N	\N	Be careful when handling the needle tip of the syringe.	[{"text": "绣花", "isCorrect": false}, {"text": "筷子", "isCorrect": false}, {"text": "针尖", "isCorrect": true}, {"text": "饺子", "isCorrect": false}]	[{"text": "needle tip", "isCorrect": true}, {"text": "tiny point", "isCorrect": false}, {"text": "pointy end", "isCorrect": false}, {"text": "sharp edge", "isCorrect": false}]	\N
+1037	唇	\N	2025-08-03 21:34:49.182	2025-08-03 21:34:52.099	\N	\N	en	\N	\N	She smiled, revealing her labii.	[{"text": "唇", "isCorrect": true}, {"text": "颊", "isCorrect": false}, {"text": "齿", "isCorrect": false}, {"text": "腮", "isCorrect": false}]	[{"text": "labuii", "isCorrect": false}, {"text": "labeii", "isCorrect": false}, {"text": "labii", "isCorrect": true}, {"text": "labbii", "isCorrect": false}]	\N
+921	轮廓	\N	2025-08-03 21:33:18.352	2025-08-03 21:33:22.135	\N	\N	en	\N	\N	I updated my social media profile picture.	[{"text": "剪影", "isCorrect": false}, {"text": "躯干", "isCorrect": false}, {"text": "纤细", "isCorrect": false}, {"text": "轮廓", "isCorrect": true}]	[{"text": "profile", "isCorrect": true}, {"text": "biography", "isCorrect": false}, {"text": "persona", "isCorrect": false}, {"text": "identity", "isCorrect": false}]	\N
+925	外部的	\N	2025-08-03 21:33:23.118	2025-08-03 21:33:26.893	\N	\N	en	\N	\N	He connected the external hard drive to his computer to store extra files.	[{"text": "內在的", "isCorrect": false}, {"text": "外部的", "isCorrect": true}, {"text": "內部的", "isCorrect": false}, {"text": "外圍的", "isCorrect": false}]	[{"text": "internal", "isCorrect": false}, {"text": "outer", "isCorrect": false}, {"text": "exterior", "isCorrect": false}, {"text": "external", "isCorrect": true}]	\N
+1022	局部的	\N	2025-08-03 21:34:36.747	2025-08-03 21:34:41.956	\N	\N	en	\N	\N	The company's marketing efforts are focused on localized strategies to target specific regions.	[{"text": "整体的", "isCorrect": false}, {"text": "具体的", "isCorrect": false}, {"text": "表面的", "isCorrect": false}, {"text": "局部的", "isCorrect": true}]	[{"text": "localized", "isCorrect": true}, {"text": "dispersed", "isCorrect": false}, {"text": "scattered", "isCorrect": false}, {"text": "centralized", "isCorrect": false}]	\N
+1026	脓肿	\N	2025-08-03 21:34:42.969	2025-08-03 21:34:48.027	\N	\N	en	\N	\N	He had to go to the dentist to treat his painful abscess.	[{"text": "化脓性炎症", "isCorrect": false}, {"text": "脓肿", "isCorrect": true}, {"text": "皮脂囊肿", "isCorrect": false}, {"text": "胆结石", "isCorrect": false}]	[{"text": "abcess", "isCorrect": true}, {"text": "bolster", "isCorrect": false}, {"text": "quixotic", "isCorrect": false}, {"text": "malaise", "isCorrect": false}]	\N
+1039	感染	\N	2025-08-03 21:34:49.185	2025-08-03 21:34:52.617	\N	\N	en	\N	\N	She got a bacterial infection after cutting her finger.	[{"text": "传染", "isCorrect": false}, {"text": "感染", "isCorrect": true}, {"text": "传播", "isCorrect": false}, {"text": "发炎", "isCorrect": false}]	[{"text": "disease", "isCorrect": false}, {"text": "infection", "isCorrect": true}, {"text": "contagion", "isCorrect": false}, {"text": "virus", "isCorrect": false}]	\N
+939	凹	\N	2025-08-03 21:33:30.064	2025-08-03 21:33:33.4	\N	\N	en	\N	\N	The inside of the bowl is concave.	[{"text": "凸", "isCorrect": false}, {"text": "弯", "isCorrect": false}, {"text": "凹", "isCorrect": true}, {"text": "扁", "isCorrect": false}]	[{"text": "flat", "isCorrect": false}, {"text": "curved", "isCorrect": false}, {"text": "convex", "isCorrect": false}, {"text": "concave", "isCorrect": true}]	\N
+945	止血	\N	2025-08-03 21:33:36.917	2025-08-03 21:33:41.329	\N	\N	en	\N	\N	The hemostatic bandage helped stop the bleeding quickly.	[{"text": "止血", "isCorrect": true}, {"text": "伤口", "isCorrect": false}, {"text": "救护", "isCorrect": false}, {"text": "创口", "isCorrect": false}]	[{"text": "hemostatic", "isCorrect": true}, {"text": "hypnotic", "isCorrect": false}, {"text": "homeopathic", "isCorrect": false}, {"text": "phlebotomy", "isCorrect": false}]	\N
+956	凝血病	\N	2025-08-03 21:33:45.749	2025-08-03 21:33:49.341	\N	\N	en	\N	\N	The patient's coagulopathy made it difficult for their blood to clot properly.	[{"text": "凝血病", "isCorrect": true}, {"text": "血小板减少症", "isCorrect": false}, {"text": "白血病", "isCorrect": false}, {"text": "白细胞增多症", "isCorrect": false}]	[{"text": "coagulopathy", "isCorrect": true}, {"text": "hepatomegaly", "isCorrect": false}, {"text": "thrombocytopenia", "isCorrect": false}, {"text": "hematochezia", "isCorrect": false}]	\N
+966	骨质的	\N	2025-08-03 21:33:52.124	2025-08-03 21:33:55.43	\N	\N	en	\N	\N	The osseous structure of the skull provides protection for the brain.	[{"text": "坚硬的", "isCorrect": false}, {"text": "硬化的", "isCorrect": false}, {"text": "钢铁的", "isCorrect": false}, {"text": "骨质的", "isCorrect": true}]	[{"text": "calcified", "isCorrect": false}, {"text": "osseous", "isCorrect": true}, {"text": "skeletal", "isCorrect": false}, {"text": "bony", "isCorrect": false}]	\N
+977	地点	\N	2025-08-03 21:33:57.497	2025-08-03 21:34:00.56	\N	\N	en	\N	\N	I will meet you at the location we discussed earlier.	[{"text": "场所", "isCorrect": false}, {"text": "楼层", "isCorrect": false}, {"text": "位置", "isCorrect": false}, {"text": "地点", "isCorrect": true}]	[{"text": "location", "isCorrect": true}, {"text": "position", "isCorrect": false}, {"text": "destination", "isCorrect": false}, {"text": "setting", "isCorrect": false}]	\N
+988	切牙乳头	\N	2025-08-03 21:34:02.388	2025-08-03 21:34:06.394	\N	\N	en	\N	\N	The incisive papilla is located on the roof of the mouth.	[{"text": "洗脸梳发", "isCorrect": false}, {"text": "切牙乳头", "isCorrect": true}, {"text": "牙疼口腔", "isCorrect": false}, {"text": "刷牙漱口", "isCorrect": false}]	[{"text": "incisive papilla", "isCorrect": true}, {"text": "penetrating papilla", "isCorrect": false}, {"text": "prodigious papilla", "isCorrect": false}, {"text": "concise papilla", "isCorrect": false}]	\N
+1002	颤动线	\N	2025-08-03 21:34:12.222	2025-08-03 21:34:15.801	\N	\N	en	\N	\N	The vibrating line on the graph showed the frequency of the sound wave.	[{"text": "颈动线", "isCorrect": false}, {"text": "摇晃线", "isCorrect": false}, {"text": "颤动线", "isCorrect": true}, {"text": "跳动线", "isCorrect": false}]	[{"text": "oscillating stripe", "isCorrect": false}, {"text": "vibrating line", "isCorrect": true}, {"text": "resonating curve", "isCorrect": false}, {"text": "pulsating cord", "isCorrect": false}]	\N
+1005	副承托区	\N	2025-08-03 21:34:18.308	2025-08-03 21:34:21.418	\N	\N	en	\N	\N	The heel is a secondary stress-bearing area of the foot.	[{"text": "借贷区", "isCorrect": false}, {"text": "附着区", "isCorrect": false}, {"text": "副承托区", "isCorrect": true}, {"text": "委托区", "isCorrect": false}]	[{"text": "secondary stress-bearing area", "isCorrect": true}, {"text": "secondary pressure zone", "isCorrect": false}, {"text": "secondary weight-bearing sector", "isCorrect": false}, {"text": "secondary load-carrying region", "isCorrect": false}]	\N
+1048	策略	\N	2025-08-03 22:57:45.117	2025-08-03 23:00:51.744	\N	\N	en	\N	\N	She developed a new marketing strategy to attract more customers.	[{"text": "计策", "isCorrect": false}, {"text": "战略", "isCorrect": false}, {"text": "计谋", "isCorrect": false}, {"text": "策略", "isCorrect": true}]	[{"text": "approach", "isCorrect": false}, {"text": "scheme", "isCorrect": false}, {"text": "method", "isCorrect": false}, {"text": "strategy", "isCorrect": true}]	\N
+944	频繁地	\N	2025-08-03 21:33:30.077	2025-08-03 21:33:33.448	\N	\N	en	\N	\N	She frequently goes jogging in the park.	[{"text": "罕见地", "isCorrect": false}, {"text": "稀疏地", "isCorrect": false}, {"text": "勤快地", "isCorrect": false}, {"text": "频繁地", "isCorrect": true}]	[{"text": "frequently", "isCorrect": true}, {"text": "often", "isCorrect": false}, {"text": "regularly", "isCorrect": false}, {"text": "infrequently", "isCorrect": false}]	\N
+953	干扰	\N	2025-08-03 21:33:36.949	2025-08-03 21:33:40.022	\N	\N	en	\N	\N	The loud music from the party caused a disturbance in the neighborhood.	[{"text": "阻挠", "isCorrect": false}, {"text": "干扰", "isCorrect": true}, {"text": "打扰", "isCorrect": false}, {"text": "影响", "isCorrect": false}]	[{"text": "tumult", "isCorrect": false}, {"text": "commotion", "isCorrect": false}, {"text": "confusion", "isCorrect": false}, {"text": "disturbance", "isCorrect": true}]	\N
+964	上颌骨	\N	2025-08-03 21:33:45.762	2025-08-03 21:33:49.357	\N	\N	en	\N	\N	The maxilla bone forms part of the upper jaw.	[{"text": "头盖骨", "isCorrect": false}, {"text": "耳骨", "isCorrect": false}, {"text": "上颌骨", "isCorrect": true}, {"text": "下颌骨", "isCorrect": false}]	[{"text": "mandible", "isCorrect": false}, {"text": "clavicle", "isCorrect": false}, {"text": "scapula", "isCorrect": false}, {"text": "maxilla", "isCorrect": true}]	\N
+974	创伤性的	\N	2025-08-03 21:33:52.142	2025-08-03 21:33:55.494	\N	\N	en	\N	\N	The car accident was a traumatic experience for him.	[{"text": "创伤性的", "isCorrect": true}, {"text": "刺激性的", "isCorrect": false}, {"text": "负面的", "isCorrect": false}, {"text": "痛苦的", "isCorrect": false}]	[{"text": "distressing", "isCorrect": false}, {"text": "traumatic", "isCorrect": true}, {"text": "harmonious", "isCorrect": false}, {"text": "horrifying", "isCorrect": false}]	\N
+983	后部	\N	2025-08-03 21:33:57.512	2025-08-03 21:34:00.995	\N	\N	en	\N	\N	The doctor examined the patient's posterior to check for any signs of injury.	[{"text": "后部", "isCorrect": true}, {"text": "前端", "isCorrect": false}, {"text": "背部", "isCorrect": false}, {"text": "后排", "isCorrect": false}]	[{"text": "rear", "isCorrect": false}, {"text": "hindmost", "isCorrect": false}, {"text": "posterior", "isCorrect": true}, {"text": "dorsal", "isCorrect": false}]	\N
+994	结节	\N	2025-08-03 21:34:02.419	2025-08-03 21:34:11.09	\N	\N	en	\N	\N	He felt pain in his knee due to the tuberosity on his shin bone.	[{"text": "结节", "isCorrect": true}, {"text": "肉眼", "isCorrect": false}, {"text": "肿块", "isCorrect": false}, {"text": "葫芦", "isCorrect": false}]	[{"text": "bump", "isCorrect": false}, {"text": "prominence", "isCorrect": false}, {"text": "knoll", "isCorrect": false}, {"text": "tuberosity", "isCorrect": true}]	\N
+1001	腭皱	\N	2025-08-03 21:34:12.22	2025-08-03 21:34:16.573	\N	\N	en	\N	\N	The dentist examined the patient's mouth and noted the presence of palatal rugae.	[{"text": "噱头", "isCorrect": false}, {"text": "舌苔", "isCorrect": false}, {"text": "喉抗", "isCorrect": false}, {"text": "腭皱", "isCorrect": true}]	[{"text": "palatal rugae", "isCorrect": true}, {"text": "uvula", "isCorrect": false}, {"text": "alveolar ridge", "isCorrect": false}, {"text": "mesial cusp", "isCorrect": false}]	\N
+1013	下颌舌骨嵴	\N	2025-08-03 21:34:18.341	2025-08-03 21:34:35.636	\N	\N	en	\N	\N	The mylohyoid ridge is a bony ridge on the inner surface of the lower jaw.	[{"text": "额颌骨嵴", "isCorrect": false}, {"text": "蝴蝶骨嵴", "isCorrect": false}, {"text": "颌下骨嵴", "isCorrect": false}, {"text": "下颌舌骨嵴", "isCorrect": true}]	[{"text": "hyoid bone", "isCorrect": false}, {"text": "mandible", "isCorrect": false}, {"text": "lingual frenulum", "isCorrect": false}, {"text": "mylohyoid ridge", "isCorrect": true}]	\N
+935	凸	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.593	\N	\N	en	\N	\N	The mirror was convex, making my reflection appear distorted.	[{"text": "插", "isCorrect": false}, {"text": "凹", "isCorrect": false}, {"text": "凸", "isCorrect": true}, {"text": "厚", "isCorrect": false}]	[{"text": "level", "isCorrect": false}, {"text": "concave", "isCorrect": false}, {"text": "convex", "isCorrect": true}, {"text": "curved", "isCorrect": false}]	\N
+950	牙髓摘除术	\N	2025-08-03 21:33:36.93	2025-08-03 21:33:44.778	\N	\N	en	\N	\N	The dentist recommended a pulpectomy to treat the infected tooth.	[{"text": "牙髓摘除术", "isCorrect": true}, {"text": "牙龈病", "isCorrect": false}, {"text": "根管治疗", "isCorrect": false}, {"text": "牙周炎", "isCorrect": false}]	[{"text": "endodontics", "isCorrect": false}, {"text": "pulpectomy", "isCorrect": true}, {"text": "orthodontics", "isCorrect": false}, {"text": "periodontics", "isCorrect": false}]	\N
+958	未确诊	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.532	\N	\N	en	\N	\N	She has been experiencing unexplained symptoms due to her undiagnosed condition.	[{"text": "未确诊", "isCorrect": true}, {"text": "未诊断", "isCorrect": false}, {"text": "未明确", "isCorrect": false}, {"text": "未确定", "isCorrect": false}]	[{"text": "misdiagnosed", "isCorrect": false}, {"text": "undesigned", "isCorrect": false}, {"text": "undiagnosed", "isCorrect": true}, {"text": "unqualified", "isCorrect": false}]	\N
+972	全景片	\N	2025-08-03 21:33:52.141	2025-08-03 21:33:55.23	\N	\N	en	\N	\N	I climbed to the top of the hill to enjoy the panoramic view of the city below.	[{"text": "戏剧片", "isCorrect": false}, {"text": "鸟瞰图", "isCorrect": false}, {"text": "全景片", "isCorrect": true}, {"text": "实况播报", "isCorrect": false}]	[{"text": "scenic", "isCorrect": false}, {"text": "expansive", "isCorrect": false}, {"text": "panoramic", "isCorrect": true}, {"text": "breathtaking", "isCorrect": false}]	\N
+979	脊	\N	2025-08-03 21:33:57.499	2025-08-03 21:34:01.378	\N	\N	en	\N	\N	The hikers followed the trail along the ridge to enjoy the scenic views.	[{"text": "颈", "isCorrect": false}, {"text": "脊", "isCorrect": true}, {"text": "腰", "isCorrect": false}, {"text": "背", "isCorrect": false}]	[{"text": "crest", "isCorrect": false}, {"text": "ridge", "isCorrect": true}, {"text": "valley", "isCorrect": false}, {"text": "peak", "isCorrect": false}]	\N
+987	系带	\N	2025-08-03 21:34:02.387	2025-08-03 21:34:05.878	\N	\N	en	\N	\N	The frenum is a small fold of tissue that connects the tongue to the floor of the mouth.	[{"text": "系带", "isCorrect": true}, {"text": "松紧带", "isCorrect": false}, {"text": "紧身", "isCorrect": false}, {"text": "衬里", "isCorrect": false}]	[{"text": "labial", "isCorrect": false}, {"text": "zemblanitic", "isCorrect": false}, {"text": "femur", "isCorrect": false}, {"text": "frenum", "isCorrect": true}]	\N
+1003	翼下颌韧带	\N	2025-08-03 21:34:12.223	2025-08-03 21:34:15.769	\N	\N	en	\N	\N	The pterygomandibular ligament attaches to the raphe in the mouth.	[{"text": "颈内动脉", "isCorrect": false}, {"text": "颌下腺体", "isCorrect": false}, {"text": "颈下动静脉", "isCorrect": false}, {"text": "翼下颌韧带", "isCorrect": true}]	[{"text": "temporomandibular ligament", "isCorrect": false}, {"text": "lateral pterygoid muscle", "isCorrect": false}, {"text": "superficial temporal artery", "isCorrect": false}, {"text": "pterygomandibular ligament，raphe", "isCorrect": true}]	\N
+1008	边缘封闭区	\N	2025-08-03 21:34:18.339	2025-08-03 21:34:21.663	\N	\N	en	\N	\N	The border seal area was heavily guarded to prevent unauthorized entry.	[{"text": "旁路封闭区", "isCorrect": false}, {"text": "周围禁区", "isCorrect": false}, {"text": "边缘封闭区", "isCorrect": true}, {"text": "边际抑制区", "isCorrect": false}]	[{"text": "border seal area", "isCorrect": true}, {"text": "perimeter zone", "isCorrect": false}, {"text": "boundary mark zone", "isCorrect": false}, {"text": "frontier stamp region", "isCorrect": false}]	\N
+938	主要地	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.622	\N	\N	en	\N	\N	The sky is predominantly blue during the day.	[{"text": "重要", "isCorrect": false}, {"text": "基本", "isCorrect": false}, {"text": "主要地", "isCorrect": true}, {"text": "大约", "isCorrect": false}]	[{"text": "majorly", "isCorrect": false}, {"text": "principally", "isCorrect": false}, {"text": "largely", "isCorrect": false}, {"text": "predominantly", "isCorrect": true}]	\N
+952	牙髓切断术	\N	2025-08-03 21:33:36.931	2025-08-03 21:33:40.381	\N	\N	en	\N	\N	The dentist performed a pulpotomy to remove the infected pulp from the tooth.	[{"text": "牙髓抽取术", "isCorrect": false}, {"text": "牙髓填充术", "isCorrect": false}, {"text": "牙髓治疗术", "isCorrect": false}, {"text": "牙髓切断术", "isCorrect": true}]	[{"text": "root canal", "isCorrect": false}, {"text": "pulpotomy", "isCorrect": true}, {"text": "extraction", "isCorrect": false}, {"text": "cavity", "isCorrect": false}]	\N
+962	尊重 方面	\N	2025-08-03 21:33:45.753	2025-08-03 21:33:49.668	\N	\N	en	\N	\N	She always treats her classmates with respect.	[{"text": "理解", "isCorrect": false}, {"text": "重视", "isCorrect": false}, {"text": "尊重 方面", "isCorrect": true}, {"text": "关注", "isCorrect": false}]	[{"text": "praise", "isCorrect": false}, {"text": "admiration", "isCorrect": false}, {"text": "respect", "isCorrect": true}, {"text": "esteem", "isCorrect": false}]	\N
+969	耳垂	\N	2025-08-03 21:33:52.126	2025-08-03 21:33:55.969	\N	\N	en	\N	\N	The frontal lobe of the brain is responsible for decision-making and problem-solving.	[{"text": "珠宝", "isCorrect": false}, {"text": "耳垂", "isCorrect": true}, {"text": "唇饰", "isCorrect": false}, {"text": "鼻环", "isCorrect": false}]	[{"text": "nodule", "isCorrect": false}, {"text": "whirl", "isCorrect": false}, {"text": "dome", "isCorrect": false}, {"text": "lobe", "isCorrect": true}]	\N
+981	解剖学	\N	2025-08-03 21:33:57.499	2025-08-03 21:34:01.078	\N	\N	en	\N	\N	Studying human anatomy helps us understand how our bodies work.	[{"text": "解剖学", "isCorrect": true}, {"text": "药理学", "isCorrect": false}, {"text": "医药学", "isCorrect": false}, {"text": "生理学", "isCorrect": false}]	[{"text": "physiology", "isCorrect": false}, {"text": "chemistry", "isCorrect": false}, {"text": "biology", "isCorrect": false}, {"text": "anatomy", "isCorrect": true}]	\N
+990	口腔前庭	\N	2025-08-03 21:34:02.416	2025-08-03 21:34:06.397	\N	\N	en	\N	\N	The dentist examined the inside of my mouth, paying special attention to the oral vestibule.	[{"text": "舌头", "isCorrect": false}, {"text": "口腔前庭", "isCorrect": true}, {"text": "颌", "isCorrect": false}, {"text": "齿龈", "isCorrect": false}]	[{"text": "oral cavity", "isCorrect": false}, {"text": "oral frenulum", "isCorrect": false}, {"text": "oral vestibule", "isCorrect": true}, {"text": "oral mucosa", "isCorrect": false}]	\N
+998	上颌硬区	\N	2025-08-03 21:34:12.219	2025-08-03 21:34:17.257	\N	\N	en	\N	\N	The desert is a hard area to survive in because of the extreme heat and lack of water.	[{"text": "颌骨", "isCorrect": false}, {"text": "牙龈", "isCorrect": false}, {"text": "下颌软区", "isCorrect": false}, {"text": "上颌硬区", "isCorrect": true}]	[{"text": "hard area", "isCorrect": true}, {"text": "difficult terrain", "isCorrect": false}, {"text": "challenging location", "isCorrect": false}, {"text": "tough spot", "isCorrect": false}]	\N
+1007	腺	\N	2025-08-03 21:34:18.309	2025-08-03 21:34:21.865	\N	\N	en	\N	\N	The thyroid gland produces hormones that regulate metabolism.	[{"text": "肚", "isCorrect": false}, {"text": "膀", "isCorrect": false}, {"text": "脾", "isCorrect": false}, {"text": "腺", "isCorrect": true}]	[{"text": "organ", "isCorrect": false}, {"text": "gland", "isCorrect": true}, {"text": "hormone", "isCorrect": false}, {"text": "node", "isCorrect": false}]	\N
+937	革兰氏阴性	\N	2025-08-03 21:33:30.061	2025-08-03 21:33:33.697	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the infection caused by the gram-negative bacteria.	[{"text": "红色阴性杆菌", "isCorrect": false}, {"text": "罗德卡特", "isCorrect": false}, {"text": "白色李斯特氏", "isCorrect": false}, {"text": "革兰氏阴性", "isCorrect": true}]	[{"text": "orthodox", "isCorrect": false}, {"text": "non-toxic", "isCorrect": false}, {"text": "gram- negative", "isCorrect": true}, {"text": "unbiased", "isCorrect": false}]	\N
+948	变色	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:40.647	\N	\N	en	\N	\N	The discolored leaves on the plant indicated that it needed more sunlight.	[{"text": "转变形态", "isCorrect": false}, {"text": "变色", "isCorrect": true}, {"text": "改变颜色", "isCorrect": false}, {"text": "变换外观", "isCorrect": false}]	[{"text": "blotchy", "isCorrect": false}, {"text": "blemished", "isCorrect": false}, {"text": "dingy", "isCorrect": false}, {"text": "discolored", "isCorrect": true}]	\N
+960	按时间顺序排列	\N	2025-08-03 21:33:45.75	2025-08-03 21:33:49.53	\N	\N	en	\N	\N	The chronogic order of events in the story helped me understand the plot better.	[{"text": "按大小顺序排列", "isCorrect": false}, {"text": "按时间顺序排列", "isCorrect": true}, {"text": "按颜色顺序排列", "isCorrect": false}, {"text": "按字母顺序排列", "isCorrect": false}]	[{"text": "chronological", "isCorrect": false}, {"text": "chronogic", "isCorrect": true}, {"text": "chronoscale", "isCorrect": false}, {"text": "chronology", "isCorrect": false}]	\N
+971	囊肿	\N	2025-08-03 21:33:52.128	2025-08-03 21:33:55.279	\N	\N	en	\N	\N	She had to have surgery to remove a cyst from her kidney.	[{"text": "积水", "isCorrect": false}, {"text": "纤维化", "isCorrect": false}, {"text": "溃疡", "isCorrect": false}, {"text": "囊肿", "isCorrect": true}]	[{"text": "polyp", "isCorrect": false}, {"text": "growth", "isCorrect": false}, {"text": "cyst", "isCorrect": true}, {"text": "tumor", "isCorrect": false}]	\N
+976	翼上颌	\N	2025-08-03 21:33:57.496	2025-08-03 21:34:00.799	\N	\N	en	\N	\N	The pterygomaxillary fissure is located between the pterygoid process and the maxilla.	[{"text": "翼上颌", "isCorrect": true}, {"text": "嘴巴", "isCorrect": false}, {"text": "鼻孔", "isCorrect": false}, {"text": "脑袋", "isCorrect": false}]	[{"text": "coniotomocerebellar", "isCorrect": false}, {"text": "pterygomaxillary", "isCorrect": true}, {"text": "zygomaticomandibular", "isCorrect": false}, {"text": "ethmovomerine", "isCorrect": false}]	\N
+989	远中颊角区	\N	2025-08-03 21:34:02.389	2025-08-03 21:34:07.258	\N	\N	en	\N	\N	The dentist examined the distobuccal angles area of the patient's teeth for signs of decay.	[{"text": "远距离中部", "isCorrect": false}, {"text": "颈肩部", "isCorrect": false}, {"text": "角落地区", "isCorrect": false}, {"text": "远中颊角区", "isCorrect": true}]	[{"text": "mesiobuccal angles area", "isCorrect": false}, {"text": "facial surfaces region", "isCorrect": false}, {"text": "distobuccal angles area", "isCorrect": true}, {"text": "lingual margins space", "isCorrect": false}]	\N
+1004	切口	\N	2025-08-03 21:34:12.222	2025-08-03 21:34:15.974	\N	\N	en	\N	\N	The surgeon made a small incision in the patient's skin.	[{"text": "切口", "isCorrect": true}, {"text": "缝合", "isCorrect": false}, {"text": "手术", "isCorrect": false}, {"text": "开颅", "isCorrect": false}]	[{"text": "incision", "isCorrect": true}, {"text": "excision", "isCorrect": false}, {"text": "abrasion", "isCorrect": false}, {"text": "laceration", "isCorrect": false}]	\N
+1010	磨牙后垫	\N	2025-08-03 21:34:18.338	2025-08-03 21:34:23.023	\N	\N	en	\N	\N	The retromalar pad is located beneath the eye in some animals.	[{"text": "牙刷", "isCorrect": false}, {"text": "洗面奶", "isCorrect": false}, {"text": "磨牙后垫", "isCorrect": true}, {"text": "漱口水", "isCorrect": false}]	[{"text": "zygomatic bone", "isCorrect": false}, {"text": "inverse plane", "isCorrect": false}, {"text": "zygomalar arch", "isCorrect": false}, {"text": "retromalar pad", "isCorrect": true}]	\N
+943	平坦的	\N	2025-08-03 21:33:30.076	2025-08-03 21:33:33.701	\N	\N	en	\N	\N	I live in a small flat in the city.	[{"text": "光滑的", "isCorrect": false}, {"text": "崎岖的", "isCorrect": false}, {"text": "坎坷的", "isCorrect": false}, {"text": "平坦的", "isCorrect": true}]	[{"text": "flat", "isCorrect": true}, {"text": "smooth", "isCorrect": false}, {"text": "dull", "isCorrect": false}, {"text": "plain", "isCorrect": false}]	\N
+949	无症状	\N	2025-08-03 21:33:36.92	2025-08-03 21:33:40.869	\N	\N	en	\N	\N	She tested positive for COVID-19 but remained asymptomatic.	[{"text": "无症状", "isCorrect": true}, {"text": "发烧", "isCorrect": false}, {"text": "忧虑", "isCorrect": false}, {"text": "悲哀", "isCorrect": false}]	[{"text": "reverberant", "isCorrect": false}, {"text": "precarious", "isCorrect": false}, {"text": "insignificant", "isCorrect": false}, {"text": "asymptomatic", "isCorrect": true}]	\N
+963	修改	\N	2025-08-03 21:33:45.762	2025-08-03 21:33:49.042	\N	\N	en	\N	\N	She made a modification to the design of the dress by adding pockets.	[{"text": "修改", "isCorrect": true}, {"text": "转化", "isCorrect": false}, {"text": "更改", "isCorrect": false}, {"text": "编辑", "isCorrect": false}]	[{"text": "reconstruction", "isCorrect": false}, {"text": "amendment", "isCorrect": false}, {"text": "adaptation", "isCorrect": false}, {"text": "modification", "isCorrect": true}]	\N
+967	发育不良	\N	2025-08-03 21:33:52.125	2025-08-03 21:33:55.587	\N	\N	en	\N	\N	The doctor diagnosed the patient with hip dysplasia.	[{"text": "发展迟缓", "isCorrect": false}, {"text": "未成年", "isCorrect": false}, {"text": "发育不良", "isCorrect": true}, {"text": "生长不健全", "isCorrect": false}]	[{"text": "discipline", "isCorrect": false}, {"text": "dysplasia", "isCorrect": true}, {"text": "disorder", "isCorrect": false}, {"text": "dystrophy", "isCorrect": false}]	\N
+984	解剖学的	\N	2025-08-03 21:33:57.512	2025-08-03 21:34:01.017	\N	\N	en	\N	\N	The doctor explained the anatomal structure of the human heart during the biology class.	[{"text": "解剖学的", "isCorrect": true}, {"text": "心理学的", "isCorrect": false}, {"text": "免疫学的", "isCorrect": false}, {"text": "生物学的", "isCorrect": false}]	[{"text": "anotomic", "isCorrect": false}, {"text": "anormal", "isCorrect": false}, {"text": "anatomal", "isCorrect": true}, {"text": "analtic", "isCorrect": false}]	\N
+992	颧骨	\N	2025-08-03 21:34:02.416	2025-08-03 21:34:05.667	\N	\N	en	\N	\N	The zygomatic bone forms part of the cheekbone.	[{"text": "额头", "isCorrect": false}, {"text": "鼻梁", "isCorrect": false}, {"text": "眼袋", "isCorrect": false}, {"text": "颧骨", "isCorrect": true}]	[{"text": "maxilla", "isCorrect": false}, {"text": "mandible", "isCorrect": false}, {"text": "zygomatic", "isCorrect": true}, {"text": "temporal", "isCorrect": false}]	\N
+999	舌下的	\N	2025-08-03 21:34:12.22	2025-08-03 21:34:16.147	\N	\N	en	\N	\N	I take a sublingual tablet for my allergies.	[{"text": "舌下的", "isCorrect": true}, {"text": "腋下的", "isCorrect": false}, {"text": "颏下的", "isCorrect": false}, {"text": "鼻梁的", "isCorrect": false}]	[{"text": "sublingual", "isCorrect": true}, {"text": "ephemeral", "isCorrect": false}, {"text": "subterfuge", "isCorrect": false}, {"text": "epistolary", "isCorrect": false}]	\N
+1014	(下颌）舌骨后窝	\N	2025-08-03 21:34:18.343	2025-08-03 21:34:21.52	\N	\N	en	\N	\N	The retromylohyoid fossa is located in the mouth.	[{"text": "梨状窝", "isCorrect": false}, {"text": "舌背", "isCorrect": false}, {"text": "(下颌）舌骨后窝", "isCorrect": true}, {"text": "舌头", "isCorrect": false}]	[{"text": "carotid canal", "isCorrect": false}, {"text": "mental foramen", "isCorrect": false}, {"text": "vestibulocochlear nerve", "isCorrect": false}, {"text": "retromylohyoid fossa", "isCorrect": true}]	\N
+942	碎片	\N	2025-08-03 21:33:30.077	2025-08-03 21:33:33.755	\N	\N	en	\N	\N	After the tornado passed, there was debris scattered everywhere.	[{"text": "碎片", "isCorrect": true}, {"text": "残缺", "isCorrect": false}, {"text": "零星", "isCorrect": false}, {"text": "混凝土", "isCorrect": false}]	[{"text": "trash", "isCorrect": false}, {"text": "garbage", "isCorrect": false}, {"text": "rubble", "isCorrect": false}, {"text": "debris", "isCorrect": true}]	\N
+947	突眼	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:41.02	\N	\N	en	\N	\N	The doctor noticed the patient's exophthalmous eyes during the examination.	[{"text": "对眠", "isCorrect": false}, {"text": "突眼", "isCorrect": true}, {"text": "溜刃", "isCorrect": false}, {"text": "食消", "isCorrect": false}]	[{"text": "mythopoeic", "isCorrect": false}, {"text": "prognathous", "isCorrect": false}, {"text": "exophthalmous", "isCorrect": true}, {"text": "chrysanthemum", "isCorrect": false}]	\N
+959	硬骨板	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.687	\N	\N	en	\N	\N	The laminia dura is a tough outer layer protecting the brain and spinal cord.	[{"text": "硬質板", "isCorrect": false}, {"text": "硬木板", "isCorrect": false}, {"text": "硬骨板", "isCorrect": true}, {"text": "堅固板", "isCorrect": false}]	[{"text": "dura mater", "isCorrect": false}, {"text": "pial sheath", "isCorrect": false}, {"text": "plesiomorphic", "isCorrect": false}, {"text": "laminia dura", "isCorrect": true}]	\N
+968	支	\N	2025-08-03 21:33:52.127	2025-08-03 21:33:55.216	\N	\N	en	\N	\N	The ramus is a branch of the mandible bone.	[{"text": "杆", "isCorrect": false}, {"text": "枝", "isCorrect": false}, {"text": "支", "isCorrect": true}, {"text": "柱", "isCorrect": false}]	[{"text": "twig", "isCorrect": false}, {"text": "blade", "isCorrect": false}, {"text": "ramus", "isCorrect": true}, {"text": "stem", "isCorrect": false}]	\N
+978	肺泡的，齿槽的	\N	2025-08-03 21:33:57.498	2025-08-03 21:34:01.123	\N	\N	en	\N	\N	The t sound in the word better is an alveolar sound.	[{"text": "胆囊的", "isCorrect": false}, {"text": "粪便的", "isCorrect": false}, {"text": "心脏的", "isCorrect": false}, {"text": "肺泡的，齿槽的", "isCorrect": true}]	[{"text": "alveolar", "isCorrect": true}, {"text": "dental", "isCorrect": false}, {"text": "labial", "isCorrect": false}, {"text": "Placeholder 3", "isCorrect": false}]	\N
+985	颊	\N	2025-08-03 21:34:02.32	2025-08-03 21:34:06.254	\N	\N	en	\N	\N	The dentist applied a numbing gel to my buccal cavity before starting the procedure.	[{"text": "颊", "isCorrect": true}, {"text": "脸颊", "isCorrect": false}, {"text": "唇", "isCorrect": false}, {"text": "额头", "isCorrect": false}]	[{"text": "buccal", "isCorrect": true}, {"text": "lingual", "isCorrect": false}, {"text": "gingival", "isCorrect": false}, {"text": "orbital", "isCorrect": false}]	\N
+995	腭小凹	\N	2025-08-03 21:34:12.219	2025-08-03 21:34:15.771	\N	\N	en	\N	\N	The palatine fovea is a small depression located on the roof of the mouth.	[{"text": "口腔", "isCorrect": false}, {"text": "下颚", "isCorrect": false}, {"text": "舌头", "isCorrect": false}, {"text": "腭小凹", "isCorrect": true}]	[{"text": "submandibular gland", "isCorrect": false}, {"text": "palatine fovea", "isCorrect": true}, {"text": "lingual frenulum", "isCorrect": false}, {"text": "alveolar ridge", "isCorrect": false}]	\N
+1009	组织面	\N	2025-08-03 21:34:18.339	2025-08-03 21:34:22.839	\N	\N	en	\N	\N	The doctor examined the tissue surface under the microscope.	[{"text": "编织表", "isCorrect": false}, {"text": "结构面", "isCorrect": false}, {"text": "组织面", "isCorrect": true}, {"text": "组装聚", "isCorrect": false}]	[{"text": "membrane", "isCorrect": false}, {"text": "tissue surface", "isCorrect": true}, {"text": "dermal", "isCorrect": false}, {"text": "epidermis", "isCorrect": false}]	\N
+936	倒凹区域	\N	2025-08-03 21:33:30.063	2025-08-03 21:33:33.953	\N	\N	en	\N	\N	The undercut area of the rock provided a cool and shady spot to relax.	[{"text": "方圆区域", "isCorrect": false}, {"text": "倾斜区域", "isCorrect": false}, {"text": "平坦区域", "isCorrect": false}, {"text": "倒凹区域", "isCorrect": true}]	[{"text": "undersell terrain", "isCorrect": false}, {"text": "subpar location", "isCorrect": false}, {"text": "below deck", "isCorrect": false}, {"text": "undercut area", "isCorrect": true}]	\N
+946	不耐受	\N	2025-08-03 21:33:36.918	2025-08-03 21:33:40.987	\N	\N	en	\N	\N	She has a severe intolerance to dairy products.	[{"text": "不可否认", "isCorrect": false}, {"text": "不屈服", "isCorrect": false}, {"text": "不耐受", "isCorrect": true}, {"text": "不容忍", "isCorrect": false}]	[{"text": "discrimination", "isCorrect": false}, {"text": "bigotry", "isCorrect": false}, {"text": "intolerance", "isCorrect": true}, {"text": "bias", "isCorrect": false}]	\N
+955	甲状旁腺	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.372	\N	\N	en	\N	\N	The doctor explained that the patient would need surgery to remove a parathyroid gland.	[{"text": "颅咽管", "isCorrect": false}, {"text": "甲状旁腺", "isCorrect": true}, {"text": "下丘脑", "isCorrect": false}, {"text": "腹膜后腔", "isCorrect": false}]	[{"text": "thymus", "isCorrect": false}, {"text": "pancreas", "isCorrect": false}, {"text": "hypothalamus", "isCorrect": false}, {"text": "parathyroid", "isCorrect": true}]	\N
+965	根尖周	\N	2025-08-03 21:33:52.111	2025-08-03 21:33:56.528	\N	\N	en	\N	\N	The dentist took a periapical X-ray to examine the tooth root.	[{"text": "根残", "isCorrect": false}, {"text": "根尖周", "isCorrect": true}, {"text": "根管", "isCorrect": false}, {"text": "根理", "isCorrect": false}]	[{"text": "periapical", "isCorrect": true}, {"text": "supragingival", "isCorrect": false}, {"text": "endodontic", "isCorrect": false}, {"text": "dental caries", "isCorrect": false}]	\N
+975	鼻腔	\N	2025-08-03 21:33:57.497	2025-08-03 21:34:01.17	\N	\N	en	\N	\N	She has a distinctive nasal voice.	[{"text": "红外", "isCorrect": false}, {"text": "鼻腔", "isCorrect": true}, {"text": "耳朵", "isCorrect": false}, {"text": "脊椎", "isCorrect": false}]	[{"text": "fricative", "isCorrect": false}, {"text": "breathy", "isCorrect": false}, {"text": "nasal", "isCorrect": true}, {"text": "velar", "isCorrect": false}]	\N
+986	唇音，唇的	\N	2025-08-03 21:34:02.386	2025-08-03 21:34:06.189	\N	\N	en	\N	\N	She practiced her pronunciation of the labial sounds in Spanish class.	[{"text": "唇音，唇的", "isCorrect": true}, {"text": "口腔, false"}, {"text": "牙齿, false"}, {"text": "舌头, false"}]	[{"text": "labial", "isCorrect": true}, {"text": "velar", "isCorrect": false}, {"text": "nasal", "isCorrect": false}, {"text": "dorsal", "isCorrect": false}]	\N
+996	腭穹窿	\N	2025-08-03 21:34:12.218	2025-08-03 21:34:15.944	\N	\N	en	\N	\N	The palatal vault is the curved, bony roof of the mouth.	[{"text": "喉嚨", "isCorrect": false}, {"text": "唾津", "isCorrect": false}, {"text": "腭穹窿", "isCorrect": true}, {"text": "稜齒", "isCorrect": false}]	[{"text": "nasopharynx", "isCorrect": false}, {"text": "uvula", "isCorrect": false}, {"text": "gingiva", "isCorrect": false}, {"text": "palatal vault", "isCorrect": true}]	\N
+1006	主承托区	\N	2025-08-03 21:34:18.309	2025-08-03 21:34:22.483	\N	\N	en	\N	\N	The arches of the foot are the primary stress-bearing areas during walking and running.	[{"text": "主承托区", "isCorrect": true}, {"text": "次要区域", "isCorrect": false}, {"text": "中央核心", "isCorrect": false}, {"text": "外围地区", "isCorrect": false}]	[{"text": "main tension point", "isCorrect": false}, {"text": "emphasis zone", "isCorrect": false}, {"text": "primary stress-bearing area", "isCorrect": true}, {"text": "central accent spot", "isCorrect": false}]	\N
+941	溶液	\N	2025-08-03 21:33:30.075	2025-08-03 21:33:35.937	\N	\N	en	\N	\N	She found a solution to her math problem by asking her teacher for help.	[{"text": "浓缩液", "isCorrect": false}, {"text": "悬浮液", "isCorrect": false}, {"text": "凝固液", "isCorrect": false}, {"text": "溶液", "isCorrect": true}]	[{"text": "response", "isCorrect": false}, {"text": "conclusion", "isCorrect": false}, {"text": "solution", "isCorrect": true}, {"text": "answer", "isCorrect": false}]	\N
+954	固定的	\N	2025-08-03 21:33:36.951	2025-08-03 21:33:40.707	\N	\N	en	\N	\N	The mechanic fixed my car yesterday.	[{"text": "变化的", "isCorrect": false}, {"text": "固定的", "isCorrect": true}, {"text": "常规的", "isCorrect": false}, {"text": "特殊的", "isCorrect": false}]	[{"text": "stuck", "isCorrect": false}, {"text": "set", "isCorrect": false}, {"text": "fixed", "isCorrect": true}, {"text": "steady", "isCorrect": false}]	\N
+961	可靠的	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.458	\N	\N	en	\N	\N	My new car is reliable and never breaks down.	[{"text": "可信任的", "isCorrect": false}, {"text": "可靠的", "isCorrect": true}, {"text": "不靠谱的", "isCorrect": false}, {"text": "靠不住的", "isCorrect": false}]	[{"text": "variable", "isCorrect": false}, {"text": "faithful", "isCorrect": false}, {"text": "unreliable", "isCorrect": false}, {"text": "reliable", "isCorrect": true}]	\N
+973	根尖周围	\N	2025-08-03 21:33:52.14	2025-08-03 21:33:56.15	\N	\N	en	\N	\N	The dentist recommended a periradicular surgery to treat the infection in the root of the tooth.	[{"text": "牙缝间", "isCorrect": false}, {"text": "牙龈边缘", "isCorrect": false}, {"text": "牙齿多龋", "isCorrect": false}, {"text": "根尖周围", "isCorrect": true}]	[{"text": "intraneural", "isCorrect": false}, {"text": "periradicular", "isCorrect": true}, {"text": "posterosseous", "isCorrect": false}, {"text": "exodontic", "isCorrect": false}]	\N
+980	地标	\N	2025-08-03 21:33:57.5	2025-08-03 21:34:00.998	\N	\N	en	\N	\N	The Eiffel Tower is a famous landmark in Paris.	[{"text": "景点", "isCorrect": false}, {"text": "风景", "isCorrect": false}, {"text": "地面", "isCorrect": false}, {"text": "地标", "isCorrect": true}]	[{"text": "attraction", "isCorrect": false}, {"text": "structure", "isCorrect": false}, {"text": "landmark", "isCorrect": true}, {"text": "monument", "isCorrect": false}]	\N
+991	颧突	\N	2025-08-03 21:34:02.417	2025-08-03 21:34:06.653	\N	\N	en	\N	\N	The zygomatic process connects the cheekbone to the skull.	[{"text": "颔顶", "isCorrect": false}, {"text": "颊梁", "isCorrect": false}, {"text": "颧突", "isCorrect": true}, {"text": "颌间", "isCorrect": false}]	[{"text": "temporal bone", "isCorrect": false}, {"text": "occipital bone", "isCorrect": false}, {"text": "nasal bone", "isCorrect": false}, {"text": "zygomatic process", "isCorrect": true}]	\N
+997	引流	\N	2025-08-03 21:34:12.221	2025-08-03 21:34:15.773	\N	\N	en	\N	\N	The drainage system in the neighborhood helps prevent flooding during heavy rain.	[{"text": "引流", "isCorrect": true}, {"text": "导向", "isCorrect": false}, {"text": "吸管", "isCorrect": false}, {"text": "拉动", "isCorrect": false}]	[{"text": "irrigation", "isCorrect": false}, {"text": "drainage", "isCorrect": true}, {"text": "sewage", "isCorrect": false}, {"text": "erosion", "isCorrect": false}]	\N
+1011	缓冲区	\N	2025-08-03 21:34:18.34	2025-08-03 21:34:22.486	\N	\N	en	\N	\N	Please drop your ball within one club length of the nearest relief area.	[{"text": "缓冲区", "isCorrect": true}, {"text": "加速器", "isCorrect": false}, {"text": "存储器", "isCorrect": false}, {"text": "堆栈", "isCorrect": false}]	[{"text": "resting zone", "isCorrect": false}, {"text": "relief area", "isCorrect": true}, {"text": "safety net", "isCorrect": false}, {"text": "comfort zone", "isCorrect": false}]	\N
+951	脓肿	\N	2025-08-03 21:33:36.932	2025-08-03 21:33:40.9	\N	\N	en	\N	\N	The infection caused painful abscesses on his skin.	[{"text": "疼痛", "isCorrect": false}, {"text": "脓肿", "isCorrect": true}, {"text": "感染", "isCorrect": false}, {"text": "溃疡", "isCorrect": false}]	[{"text": "ulcer", "isCorrect": false}, {"text": "gangrene", "isCorrect": false}, {"text": "abcesses", "isCorrect": true}, {"text": "canker", "isCorrect": false}]	\N
+957	腺瘤	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:51.117	\N	\N	en	\N	\N	The doctor discovered an adenoma during the routine check-up.	[{"text": "痔疮", "isCorrect": false}, {"text": "神经炎", "isCorrect": false}, {"text": "腺瘤", "isCorrect": true}, {"text": "假体", "isCorrect": false}]	[{"text": "carcinoma", "isCorrect": false}, {"text": "sarcoma", "isCorrect": false}, {"text": "neoplasm", "isCorrect": false}, {"text": "adenoma", "isCorrect": true}]	\N
+970	下颌骨	\N	2025-08-03 21:33:52.127	2025-08-03 21:33:55.369	\N	\N	en	\N	\N	The dentist examined my mandibular joint to check for any issues.	[{"text": "颌骨", "isCorrect": false}, {"text": "下颚骨", "isCorrect": false}, {"text": "下巴骨", "isCorrect": false}, {"text": "下颌骨", "isCorrect": true}]	[{"text": "menisco", "isCorrect": false}, {"text": "mandibilar", "isCorrect": true}, {"text": "maxilar", "isCorrect": false}, {"text": "dental", "isCorrect": false}]	\N
+982	脊柱，脊	\N	2025-08-03 21:33:57.5	2025-08-03 21:34:00.845	\N	\N	en	\N	\N	I injured my spine while lifting a heavy box.	[{"text": "脊柱，脊", "isCorrect": true}, {"text": "脊背", "isCorrect": false}, {"text": "脊梁", "isCorrect": false}, {"text": "椎骨", "isCorrect": false}]	[{"text": "spine", "isCorrect": true}, {"text": "vertebrae", "isCorrect": false}, {"text": "backbone", "isCorrect": false}, {"text": "marrow", "isCorrect": false}]	\N
+993	颊棚	\N	2025-08-03 21:34:02.419	2025-08-03 21:34:05.895	\N	\N	en	\N	\N	The dentist placed the denture on the buccal shelf of the patient's mouth.	[{"text": "颊棚", "isCorrect": true}, {"text": "颊针", "isCorrect": false}, {"text": "颓棚", "isCorrect": false}, {"text": "颏润", "isCorrect": false}]	[{"text": "buccal shelf", "isCorrect": true}, {"text": "lingual palatal", "isCorrect": false}, {"text": "masticatory muscle", "isCorrect": false}, {"text": "labial frenulum", "isCorrect": false}]	\N
+1000	翼上颌(钩状)切迹	\N	2025-08-03 21:34:12.221	2025-08-03 21:34:17.006	\N	\N	en	\N	\N	The pterygomaxillary hamular notch is located in the back of the mouth.	[{"text": "翼间颌(锯齿状)切迹", "isCorrect": false}, {"text": "翼下颌(孔状)切迹", "isCorrect": false}, {"text": "翼侧颌(环状)切迹", "isCorrect": false}, {"text": "翼上颌(钩状)切迹", "isCorrect": true}]	[{"text": "pterygomaxillary hamular notch", "isCorrect": true}, {"text": "zygomatic arch", "isCorrect": false}, {"text": "temporomandibular joint", "isCorrect": false}, {"text": "mandibular condyle", "isCorrect": false}]	\N
+1012	下颌隆突	\N	2025-08-03 21:34:18.342	2025-08-03 21:34:22.119	\N	\N	en	\N	\N	I found a beautiful torus madinulars while exploring the coral reef.	[{"text": "上颌突起", "isCorrect": false}, {"text": "下巴", "isCorrect": false}, {"text": "下颌隆突", "isCorrect": true}, {"text": "颌骨", "isCorrect": false}]	[{"text": "torus madinulars", "isCorrect": true}, {"text": "mandible toruses", "isCorrect": false}, {"text": "lingual radoniums", "isCorrect": false}, {"text": "perineum bafflings", "isCorrect": false}]	\N
+\.
+
+
+--
+-- Data for Name: word_definitions_components; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.word_definitions_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
+\.
+
+
+--
+-- Data for Name: word_definitions_localizations_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.word_definitions_localizations_links (id, word_definition_id, inv_word_definition_id, word_definition_order) FROM stdin;
+\.
+
+
+--
+-- Data for Name: word_definitions_part_of_speech_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.word_definitions_part_of_speech_links (id, word_definition_id, part_of_speech_id, word_definition_order) FROM stdin;
+833	845	1	8
+834	844	1	8
+837	843	1	8
+839	848	1	9
+842	850	1	9
+843	852	1	9
+844	855	1	9
+847	854	1	9
+849	857	1	10
+850	859	1	10
+851	858	1	10
+854	861	1	10
+858	866	1	10
+860	873	1	11
+861	868	1	11
+862	867	1	11
+863	874	1	11
+865	869	1	11
+869	878	1	12
+874	879	1	12
+875	883	1	12
+876	886	1	12
+877	882	1	12
+879	889	1	13
+881	888	1	13
+883	891	1	13
+884	892	1	13
+885	895	1	13
+888	896	1	14
+889	897	1	14
+894	904	1	14
+895	900	2	2
+897	903	1	14
+899	907	1	15
+900	913	1	15
+905	914	1	15
+904	910	1	15
+908	915	1	16
+909	917	1	16
+910	918	1	16
+914	921	1	16
+915	922	1	16
+917	925	1	17
+918	929	1	17
+920	927	1	17
+921	932	1	17
+922	928	1	17
+927	936	1	18
+928	939	1	18
+930	937	1	18
+932	940	1	18
+934	935	1	18
+936	941	1	18
+937	946	1	19
+938	945	1	19
+941	950	1	19
+943	951	1	19
+944	948	1	19
+945	954	1	19
+947	957	1	20
+949	955	1	20
+950	961	1	20
+952	960	1	20
+953	958	1	20
+954	956	1	20
+957	965	1	21
+958	966	1	21
+961	970	1	21
+962	971	1	21
+964	973	1	21
+965	972	1	21
+967	975	1	22
+968	977	1	22
+969	976	1	22
+971	980	1	22
+972	982	1	22
+973	979	1	22
+978	987	1	23
+979	986	1	23
+980	988	1	23
+763	773	1	1
+765	770	1	1
+767	774	1	1
+769	776	1	1
+771	778	1	1
+773	780	1	2
+775	782	1	2
+776	784	1	2
+777	781	1	2
+778	786	1	2
+783	791	1	3
+784	790	1	3
+786	792	1	3
+787	795	1	3
+792	797	1	3
+793	802	1	4
+794	803	1	4
+802	809	1	4
+797	806	1	4
+800	801	1	4
+804	812	1	5
+805	811	1	5
+807	816	1	5
+811	817	1	5
+812	819	1	5
+815	824	1	6
+817	826	1	6
+818	829	1	6
+821	821	1	6
+822	828	1	6
+823	830	1	7
+824	837	1	7
+826	836	1	7
+828	831	1	7
+831	839	1	7
+981	989	1	23
+983	993	1	23
+984	991	1	23
+987	1002	1	24
+988	1004	1	24
+991	997	1	24
+994	1000	1	24
+995	1003	1	24
+990	996	1	24
+997	1006	1	25
+999	1005	1	25
+1001	1012	1	25
+1002	1011	1	25
+1003	1008	1	25
+1004	1010	1	25
+1008	1016	3	6
+1010	1022	1	26
+1012	1023	1	26
+1014	1018	1	26
+1016	1024	3	6
+1017	1031	1	27
+1018	1028	1	27
+1020	1026	1	27
+1022	1027	1	27
+1025	1032	1	27
+1027	1035	1	28
+1031	1039	1	28
+1034	1044	1	28
+1035	1042	1	28
+1036	1043	1	28
+1037	1047	1	29
+1039	1045	1	29
+835	842	1	8
+836	841	1	8
+838	846	1	8
+840	847	1	9
+841	849	1	9
+845	851	1	9
+846	853	1	9
+848	856	1	9
+852	863	1	10
+853	862	1	10
+855	860	1	10
+856	865	1	10
+857	864	1	10
+859	870	1	11
+864	872	1	11
+866	871	1	11
+867	875	1	11
+868	876	1	11
+870	881	1	12
+871	880	1	12
+872	885	1	12
+873	884	1	12
+878	877	1	12
+880	887	1	13
+882	890	1	13
+886	893	1	13
+887	894	1	13
+890	898	1	14
+891	899	1	14
+892	901	1	14
+893	902	1	14
+896	905	1	14
+898	906	2	3
+902	909	1	15
+903	908	1	15
+901	912	1	15
+906	911	1	15
+907	916	1	16
+911	919	1	16
+912	923	1	16
+913	920	1	16
+916	924	1	16
+919	930	1	17
+923	931	1	17
+924	926	1	17
+925	933	1	17
+926	934	3	1
+929	944	4	2
+931	938	4	2
+935	943	3	2
+933	942	1	18
+939	947	1	19
+940	952	1	19
+942	949	1	19
+946	953	1	19
+948	962	1	20
+951	959	1	20
+955	964	1	20
+956	963	1	20
+959	968	1	21
+960	969	1	21
+963	967	1	21
+966	974	3	3
+970	978	3	4
+974	981	1	22
+975	984	1	22
+976	983	1	22
+977	985	1	23
+764	771	1	1
+766	772	1	1
+768	775	1	1
+770	777	1	1
+772	779	1	1
+774	783	1	2
+779	785	1	2
+780	787	1	2
+781	788	2	1
+782	789	4	1
+785	793	1	3
+788	796	1	3
+789	798	1	3
+790	799	1	3
+791	794	1	3
+795	805	1	4
+796	804	1	4
+799	807	1	4
+798	800	1	4
+801	808	1	4
+803	810	1	5
+806	813	1	5
+808	815	1	5
+810	818	1	5
+809	814	1	5
+813	820	1	6
+814	823	1	6
+816	822	1	6
+819	827	1	6
+820	825	1	6
+825	832	1	7
+827	833	1	7
+829	835	1	7
+830	834	1	7
+832	838	1	7
+982	990	1	23
+985	994	1	23
+986	992	1	23
+989	995	1	24
+992	1001	1	24
+993	998	1	24
+996	999	3	5
+998	1007	1	25
+1000	1009	1	25
+1005	1013	1	25
+1006	1014	1	25
+1007	1017	1	26
+1009	1015	1	26
+1011	1021	1	26
+1013	1019	1	26
+1015	1020	1	26
+1019	1029	1	27
+1021	1025	1	27
+1023	1030	1	27
+1024	1034	1	27
+1026	1033	1	27
+1028	1041	1	28
+1029	1037	1	28
+1030	1036	1	28
+1032	1038	1	28
+1033	1040	1	28
+1038	1046	1	29
+1040	1048	1	30
+\.
+
+
+--
+-- Data for Name: word_definitions_section_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.word_definitions_section_links (id, word_definition_id, section_id, word_definition_order) FROM stdin;
+\.
+
+
+--
+-- Data for Name: word_definitions_word_links; Type: TABLE DATA; Schema: public; Owner: strapi
+--
+
+COPY public.word_definitions_word_links (id, word_definition_id, word_id, word_definition_order) FROM stdin;
+840	840	1634	1
+842	843	1631	1
+844	845	1630	1
+846	846	1633	1
+849	849	1577	2
+851	850	1637	1
+850	852	1640	1
+852	851	1635	1
+853	856	1641	1
+857	857	1589	3
+859	859	1590	2
+862	862	1594	2
+864	864	1643	1
+865	865	1642	1
+867	869	1604	2
+868	868	1592	2
+871	871	1596	2
+874	872	1607	2
+875	876	1593	2
+877	878	1615	2
+878	881	1616	2
+879	880	1617	2
+881	884	1606	2
+883	886	1612	2
+890	890	1625	3
+891	891	1645	1
+892	894	1648	1
+895	895	1646	1
+896	896	1570	2
+897	897	1650	1
+898	898	1655	1
+900	901	1656	1
+902	905	1657	1
+907	907	1660	1
+908	910	1667	1
+910	908	1664	1
+911	911	1663	1
+914	912	1665	1
+916	915	1668	1
+918	919	1672	1
+920	920	1670	1
+922	922	1676	1
+924	924	1677	1
+926	926	1685	1
+932	928	1681	1
+928	929	1682	1
+930	931	1686	1
+934	933	1687	1
+935	939	1688	1
+938	935	1692	1
+937	942	1694	1
+941	940	1696	1
+939	941	1695	1
+943	944	1697	1
+945	945	1700	1
+947	947	1699	1
+948	951	1702	1
+949	950	1701	1
+953	954	1703	1
+954	953	1705	1
+956	958	1715	1
+957	959	1712	1
+959	956	1709	1
+960	961	1714	1
+961	957	1711	1
+963	964	1713	1
+966	966	1718	1
+968	968	1722	1
+967	970	1726	1
+972	972	1725	1
+973	973	1723	1
+974	974	1727	1
+975	977	1728	1
+978	978	1729	1
+980	980	1734	1
+981	979	1733	1
+982	982	1731	1
+984	983	1735	1
+985	985	1666	2
+987	987	1740	1
+988	988	1739	1
+770	770	1559	1
+772	772	1560	1
+775	775	1564	1
+774	774	1565	1
+777	777	1563	1
+779	779	1567	1
+780	781	1578	1
+781	780	1570	1
+783	785	1577	1
+785	787	1573	1
+788	788	1569	1
+789	789	1571	1
+790	791	1584	1
+791	790	1586	1
+794	796	1582	1
+796	794	1581	1
+797	799	1588	1
+799	798	1585	1
+801	806	1589	1
+802	804	1596	1
+803	801	1593	1
+805	800	1595	1
+807	808	1597	1
+809	807	1598	1
+810	810	1589	2
+813	811	1601	1
+814	817	1600	1
+816	814	1605	1
+817	815	1602	1
+818	818	1607	1
+820	821	1613	1
+821	824	1610	1
+822	822	1615	1
+823	825	1612	1
+825	823	1609	1
+829	827	1617	1
+831	836	1621	1
+834	837	1618	1
+835	834	1622	1
+836	833	1619	1
+837	835	1620	1
+838	838	1624	1
+990	991	1742	1
+992	993	1743	1
+993	994	1745	1
+995	995	1752	1
+997	1003	1753	1
+999	997	1754	1
+1000	1000	1750	1
+1001	1002	1749	1
+1003	1001	1756	1
+1006	1005	1765	1
+1008	1009	1761	1
+1009	1011	1764	1
+1010	1012	1760	1
+1011	1008	1759	1
+1014	1013	1766	1
+1015	1015	1774	1
+1017	1017	1767	1
+1019	1023	1770	1
+1021	1019	1772	1
+1023	1024	1769	1
+1026	1025	1777	1
+1029	1031	1783	1
+1032	1033	1786	1
+1033	1032	1782	1
+1034	1034	1785	1
+1036	1037	1790	1
+1038	1038	1788	1
+1041	1040	1796	1
+1042	1042	1794	1
+1043	1044	1791	1
+1045	1046	1797	1
+1047	1045	1799	1
+1048	1048	1800	1
+841	842	1628	1
+843	844	1629	1
+845	841	1632	1
+847	848	1600	2
+848	847	1588	2
+854	855	1636	1
+856	853	1638	1
+855	854	1639	1
+858	858	1591	2
+860	861	1598	2
+861	860	1595	2
+863	863	1597	2
+866	866	1644	1
+869	867	1600	3
+870	870	1601	2
+872	873	1605	2
+873	874	1602	2
+876	875	1599	2
+880	885	1625	2
+882	879	1603	2
+884	877	1608	2
+885	883	1614	2
+886	882	1609	2
+887	888	1613	2
+888	887	1629	2
+889	889	1622	2
+893	893	1647	1
+894	892	1649	1
+899	899	1652	1
+901	904	1658	1
+903	903	1653	1
+904	900	1654	1
+905	902	1651	1
+906	906	1659	1
+909	909	1661	1
+912	914	1662	1
+913	913	1666	1
+915	916	1669	1
+917	917	1675	1
+919	918	1674	1
+921	921	1673	1
+923	923	1671	1
+925	925	1678	1
+927	930	1679	1
+931	927	1680	1
+929	932	1684	1
+933	934	1683	1
+936	936	1689	1
+940	937	1691	1
+942	943	1693	1
+944	938	1690	1
+946	946	1698	1
+950	952	1706	1
+951	948	1704	1
+952	949	1707	1
+955	955	1708	1
+958	962	1710	1
+962	960	1717	1
+964	963	1716	1
+965	965	1719	1
+969	969	1721	1
+970	971	1720	1
+971	967	1724	1
+976	975	1730	1
+977	976	1737	1
+979	981	1732	1
+983	984	1736	1
+986	986	1738	1
+771	771	1561	1
+773	773	1562	1
+776	776	1566	1
+778	778	1568	1
+782	783	1576	1
+784	782	1574	1
+786	786	1575	1
+787	784	1572	1
+792	793	1580	1
+793	792	1579	1
+795	795	1587	1
+798	797	1583	1
+800	805	1592	1
+804	803	1591	1
+806	802	1590	1
+808	809	1594	1
+811	813	1599	1
+812	812	1604	1
+815	816	1603	1
+819	819	1606	1
+824	820	1614	1
+826	829	1608	1
+827	826	1611	1
+828	828	1616	1
+830	830	1623	1
+832	831	1626	1
+833	832	1627	1
+839	839	1625	1
+989	989	1741	1
+991	992	1746	1
+994	990	1744	1
+996	996	1747	1
+998	998	1755	1
+1002	1004	1751	1
+1004	999	1748	1
+1005	1006	1757	1
+1007	1007	1758	1
+1012	1014	1763	1
+1013	1010	1762	1
+1016	1016	1768	1
+1018	1022	1771	1
+1020	1021	1776	1
+1022	1018	1775	1
+1024	1020	1773	1
+1025	1027	1779	1
+1027	1030	1778	1
+1028	1026	1780	1
+1030	1028	1781	1
+1031	1029	1784	1
+1035	1035	1787	1
+1037	1036	1792	1
+1039	1041	1793	1
+1040	1039	1789	1
+1044	1043	1795	1
+1046	1047	1798	1
+\.
+
+
+--
 -- Data for Name: words; Type: TABLE DATA; Schema: public; Owner: strapi
 --
 
-COPY public.words (id, word, base_text, instruction, part_of_speech, gender, article, created_at, updated_at, created_by_id, updated_by_id, locale, register, exam_base, exam_target) FROM stdin;
-3	do	做	怎么说	verb	feminine	le	2025-06-29 00:21:18.092	2025-06-29 10:43:26.133	1	1	en	Neutral	\N	\N
-2	work	工作; 作业	用英语怎么说	verb	\N	\N	2025-06-24 00:43:21.743	2025-06-29 10:44:27.814	1	1	en	Neutral	\N	\N
-1	hello	你好	一般打招呼，你好怎么说？	\N	\N	\N	2025-06-24 00:42:22.806	2025-06-29 10:44:40.092	1	1	en	Neutral	\N	\N
-\.
-
-
---
--- Data for Name: words_components; Type: TABLE DATA; Schema: public; Owner: strapi
---
-
-COPY public.words_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
-3	3	1	a.verb-meta	verb_meta	3
-1	3	2	a.taglist	tags	1
-2	3	1	a.taglist	tags	2
-\.
-
-
---
--- Data for Name: words_example_sentences_links; Type: TABLE DATA; Schema: public; Owner: strapi
---
-
-COPY public.words_example_sentences_links (id, word_id, sentence_id, sentence_order, word_order) FROM stdin;
-\.
-
-
---
--- Data for Name: words_localizations_links; Type: TABLE DATA; Schema: public; Owner: strapi
---
-
-COPY public.words_localizations_links (id, word_id, inv_word_id, word_order) FROM stdin;
+COPY public.words (id, target_text, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
+1628	screen	2025-08-03 21:32:27.247	2025-08-03 21:32:27.247	\N	\N
+1631	keyboard	2025-08-03 21:32:27.249	2025-08-03 21:32:27.249	\N	\N
+1633	alleviate	2025-08-03 21:32:27.249	2025-08-03 21:32:27.249	\N	\N
+1635	animation	2025-08-03 21:32:31.972	2025-08-03 21:32:31.972	\N	\N
+1640	swap	2025-08-03 21:32:31.975	2025-08-03 21:32:31.975	\N	\N
+1641	initialize	2025-08-03 21:32:31.975	2025-08-03 21:32:31.975	\N	\N
+1643	automatical	2025-08-03 21:32:37.66	2025-08-03 21:32:37.66	\N	\N
+1642	Kill a spider	2025-08-03 21:32:37.66	2025-08-03 21:32:37.66	\N	\N
+1644	Crisis	2025-08-03 21:32:37.688	2025-08-03 21:32:37.688	\N	\N
+1646	The clouds in the sky are so blue.	2025-08-03 21:32:54.13	2025-08-03 21:32:54.13	\N	\N
+1648	cyclosporine	2025-08-03 21:32:54.131	2025-08-03 21:32:54.131	\N	\N
+1652	Finish	2025-08-03 21:33:07.16	2025-08-03 21:33:07.16	\N	\N
+1653	tree	2025-08-03 21:33:07.161	2025-08-03 21:33:07.161	\N	\N
+1655	glory	2025-08-03 21:33:07.161	2025-08-03 21:33:07.161	\N	\N
+1656	nifedipine	2025-08-03 21:33:07.162	2025-08-03 21:33:07.162	\N	\N
+1659	hello	2025-08-03 21:33:12.323	2025-08-03 21:33:12.323	\N	\N
+1663	articulator	2025-08-03 21:33:12.325	2025-08-03 21:33:12.325	\N	\N
+1665	alginate	2025-08-03 21:33:12.324	2025-08-03 21:33:12.324	\N	\N
+1666	buccal	2025-08-03 21:33:12.325	2025-08-03 21:33:12.325	\N	\N
+1667	plaster	2025-08-03 21:33:12.326	2025-08-03 21:33:12.326	\N	\N
+1669	avulsed	2025-08-03 21:33:18.15	2025-08-03 21:33:18.15	\N	\N
+1670	gram-positive	2025-08-03 21:33:18.151	2025-08-03 21:33:18.151	\N	\N
+1672	spirochetes	2025-08-03 21:33:18.153	2025-08-03 21:33:18.153	\N	\N
+1676	lichen planus	2025-08-03 21:33:18.154	2025-08-03 21:33:18.154	\N	\N
+1675	surveyor	2025-08-03 21:33:18.154	2025-08-03 21:33:18.154	\N	\N
+1680	intrasulcular	2025-08-03 21:33:22.961	2025-08-03 21:33:22.961	\N	\N
+1679	cord	2025-08-03 21:33:22.962	2025-08-03 21:33:22.962	\N	\N
+1681	tripoding a cast	2025-08-03 21:33:22.962	2025-08-03 21:33:22.962	\N	\N
+1685	simplify	2025-08-03 21:33:22.964	2025-08-03 21:33:22.964	\N	\N
+1686	skull	2025-08-03 21:33:22.964	2025-08-03 21:33:22.964	\N	\N
+1690	predominantly	2025-08-03 21:33:29.875	2025-08-03 21:33:29.875	\N	\N
+1692	convex	2025-08-03 21:33:29.877	2025-08-03 21:33:29.877	\N	\N
+1694	debris	2025-08-03 21:33:29.877	2025-08-03 21:33:29.877	\N	\N
+1696	contour	2025-08-03 21:33:29.878	2025-08-03 21:33:29.878	\N	\N
+1699	exophthalmous	2025-08-03 21:33:36.748	2025-08-03 21:33:36.748	\N	\N
+1702	abcesses	2025-08-03 21:33:36.748	2025-08-03 21:33:36.748	\N	\N
+1701	pulpectomy	2025-08-03 21:33:36.749	2025-08-03 21:33:36.749	\N	\N
+1706	pulpotomy	2025-08-03 21:33:36.75	2025-08-03 21:33:36.75	\N	\N
+1710	respect	2025-08-03 21:33:45.568	2025-08-03 21:33:45.568	\N	\N
+1711	adenoma	2025-08-03 21:33:45.569	2025-08-03 21:33:45.569	\N	\N
+1712	laminia dura	2025-08-03 21:33:45.57	2025-08-03 21:33:45.57	\N	\N
+1715	undiagnosed	2025-08-03 21:33:45.57	2025-08-03 21:33:45.57	\N	\N
+1721	lobe	2025-08-03 21:33:51.939	2025-08-03 21:33:51.939	\N	\N
+1722	ramus	2025-08-03 21:33:51.94	2025-08-03 21:33:51.94	\N	\N
+1726	mandibilar	2025-08-03 21:33:51.941	2025-08-03 21:33:51.941	\N	\N
+1725	panoramic	2025-08-03 21:33:51.941	2025-08-03 21:33:51.941	\N	\N
+1729	alveolar	2025-08-03 21:33:57.319	2025-08-03 21:33:57.319	\N	\N
+1731	spine	2025-08-03 21:33:57.32	2025-08-03 21:33:57.32	\N	\N
+1733	ridge	2025-08-03 21:33:57.322	2025-08-03 21:33:57.322	\N	\N
+1732	anatomy	2025-08-03 21:33:57.321	2025-08-03 21:33:57.321	\N	\N
+1740	frenum	2025-08-03 21:34:02.21	2025-08-03 21:34:02.21	\N	\N
+1743	buccal shelf	2025-08-03 21:34:02.223	2025-08-03 21:34:02.223	\N	\N
+1744	oral vestibule	2025-08-03 21:34:02.222	2025-08-03 21:34:02.222	\N	\N
+1750	pterygomaxillary hamular notch	2025-08-03 21:34:12.027	2025-08-03 21:34:12.027	\N	\N
+1752	palatine fovea	2025-08-03 21:34:12.028	2025-08-03 21:34:12.028	\N	\N
+1753	pterygomandibular ligament，raphe	2025-08-03 21:34:12.027	2025-08-03 21:34:12.027	\N	\N
+1755	hard area	2025-08-03 21:34:12.028	2025-08-03 21:34:12.028	\N	\N
+1758	gland	2025-08-03 21:34:18.125	2025-08-03 21:34:18.125	\N	\N
+1760	torus madinulars	2025-08-03 21:34:18.127	2025-08-03 21:34:18.127	\N	\N
+1759	border seal area	2025-08-03 21:34:18.126	2025-08-03 21:34:18.126	\N	\N
+1761	tissue surface	2025-08-03 21:34:18.127	2025-08-03 21:34:18.127	\N	\N
+1768	thermal	2025-08-03 21:34:36.54	2025-08-03 21:34:36.54	\N	\N
+1767	swell	2025-08-03 21:34:36.541	2025-08-03 21:34:36.541	\N	\N
+1770	occlusion surface	2025-08-03 21:34:36.541	2025-08-03 21:34:36.541	\N	\N
+1772	Polish surface	2025-08-03 21:34:36.553	2025-08-03 21:34:36.553	\N	\N
+1775	diffusivity	2025-08-03 21:34:36.555	2025-08-03 21:34:36.555	\N	\N
+1774	modulus	2025-08-03 21:34:36.556	2025-08-03 21:34:36.556	\N	\N
+1777	concept	2025-08-03 21:34:42.762	2025-08-03 21:34:42.762	\N	\N
+1779	medial pterygoid muscle	2025-08-03 21:34:42.763	2025-08-03 21:34:42.763	\N	\N
+1781	active	2025-08-03 21:34:42.765	2025-08-03 21:34:42.765	\N	\N
+1782	lateral pterygoid muscle	2025-08-03 21:34:42.765	2025-08-03 21:34:42.765	\N	\N
+1785	inferior	2025-08-03 21:34:42.797	2025-08-03 21:34:42.797	\N	\N
+1786	needle tip	2025-08-03 21:34:42.797	2025-08-03 21:34:42.797	\N	\N
+1787	staphylococcus	2025-08-03 21:34:49.001	2025-08-03 21:34:49.001	\N	\N
+1788	prbicularis	2025-08-03 21:34:49.001	2025-08-03 21:34:49.001	\N	\N
+1790	labii	2025-08-03 21:34:49.002	2025-08-03 21:34:49.002	\N	\N
+1794	penicillin	2025-08-03 21:34:49.003	2025-08-03 21:34:49.003	\N	\N
+1795	vancomycin	2025-08-03 21:34:49.004	2025-08-03 21:34:49.004	\N	\N
+1796	penicillinase	2025-08-03 21:34:49.004	2025-08-03 21:34:49.004	\N	\N
+1797	risorius	2025-08-03 21:35:22.541	2025-08-03 21:35:22.541	\N	\N
+1559	Innovation	2025-08-03 21:31:36.653	2025-08-03 21:31:36.653	\N	\N
+1561	shocking deal	2025-08-03 21:31:36.688	2025-08-03 21:31:36.688	\N	\N
+1563	weapon	2025-08-03 21:31:36.714	2025-08-03 21:31:36.714	\N	\N
+1565	detail	2025-08-03 21:31:36.719	2025-08-03 21:31:36.719	\N	\N
+1567	computer	2025-08-03 21:31:36.727	2025-08-03 21:31:36.727	\N	\N
+1570	cat	2025-08-03 21:31:41.975	2025-08-03 21:31:41.975	\N	\N
+1573	start	2025-08-03 21:31:41.976	2025-08-03 21:31:41.976	\N	\N
+1576	relation	2025-08-03 21:31:41.978	2025-08-03 21:31:41.978	\N	\N
+1577	south	2025-08-03 21:31:41.978	2025-08-03 21:31:41.978	\N	\N
+1578	Commentary	2025-08-03 21:31:41.979	2025-08-03 21:31:41.979	\N	\N
+1580	tower	2025-08-03 21:31:54.537	2025-08-03 21:31:54.537	\N	\N
+1584	north	2025-08-03 21:31:54.541	2025-08-03 21:31:54.541	\N	\N
+1585	boundary	2025-08-03 21:31:54.54	2025-08-03 21:31:54.54	\N	\N
+1586	repair	2025-08-03 21:31:54.542	2025-08-03 21:31:54.542	\N	\N
+1588	lion	2025-08-03 21:31:54.543	2025-08-03 21:31:54.543	\N	\N
+1589	mirror	2025-08-03 21:31:59.581	2025-08-03 21:31:59.581	\N	\N
+1592	freedom	2025-08-03 21:31:59.583	2025-08-03 21:31:59.583	\N	\N
+1593	train	2025-08-03 21:31:59.584	2025-08-03 21:31:59.584	\N	\N
+1597	forest	2025-08-03 21:31:59.584	2025-08-03 21:31:59.584	\N	\N
+1598	idea	2025-08-03 21:31:59.585	2025-08-03 21:31:59.585	\N	\N
+1599	kitchen	2025-08-03 21:32:04.739	2025-08-03 21:32:04.739	\N	\N
+1600	flower	2025-08-03 21:32:04.74	2025-08-03 21:32:04.74	\N	\N
+1601	teacher	2025-08-03 21:32:04.741	2025-08-03 21:32:04.741	\N	\N
+1602	window	2025-08-03 21:32:04.74	2025-08-03 21:32:04.74	\N	\N
+1607	cloud	2025-08-03 21:32:04.742	2025-08-03 21:32:04.742	\N	\N
+1609	language	2025-08-03 21:32:12.778	2025-08-03 21:32:12.778	\N	\N
+1610	bicycle	2025-08-03 21:32:12.775	2025-08-03 21:32:12.775	\N	\N
+1613	ocean	2025-08-03 21:32:12.776	2025-08-03 21:32:12.776	\N	\N
+1614	movie	2025-08-03 21:32:12.774	2025-08-03 21:32:12.774	\N	\N
+1617	planet	2025-08-03 21:32:12.779	2025-08-03 21:32:12.779	\N	\N
+1618	road	2025-08-03 21:32:22.589	2025-08-03 21:32:22.589	\N	\N
+1621	family	2025-08-03 21:32:22.592	2025-08-03 21:32:22.592	\N	\N
+1622	pencil	2025-08-03 21:32:22.591	2025-08-03 21:32:22.591	\N	\N
+1624	door	2025-08-03 21:32:22.594	2025-08-03 21:32:22.594	\N	\N
+1627	Air crash	2025-08-03 21:32:22.595	2025-08-03 21:32:22.595	\N	\N
+1798	caninus	2025-08-03 21:35:22.541	2025-08-03 21:35:22.541	\N	\N
+1630	fraud	2025-08-03 21:32:27.25	2025-08-03 21:32:27.25	\N	\N
+1629	market	2025-08-03 21:32:27.248	2025-08-03 21:32:27.248	\N	\N
+1632	focus	2025-08-03 21:32:27.25	2025-08-03 21:32:27.25	\N	\N
+1634	phone	2025-08-03 21:32:27.251	2025-08-03 21:32:27.251	\N	\N
+1637	Conjunction	2025-08-03 21:32:31.974	2025-08-03 21:32:31.974	\N	\N
+1636	fly	2025-08-03 21:32:31.974	2025-08-03 21:32:31.974	\N	\N
+1638	dog	2025-08-03 21:32:31.973	2025-08-03 21:32:31.973	\N	\N
+1639	model	2025-08-03 21:32:31.973	2025-08-03 21:32:31.973	\N	\N
+1645	molar	2025-08-03 21:32:54.129	2025-08-03 21:32:54.129	\N	\N
+1647	unit	2025-08-03 21:32:54.13	2025-08-03 21:32:54.13	\N	\N
+1649	watermelon	2025-08-03 21:32:54.132	2025-08-03 21:32:54.132	\N	\N
+1650	Massacre	2025-08-03 21:33:07.16	2025-08-03 21:33:07.16	\N	\N
+1651	finish	2025-08-03 21:33:07.159	2025-08-03 21:33:07.159	\N	\N
+1654	eat	2025-08-03 21:33:07.161	2025-08-03 21:33:07.161	\N	\N
+1657	gun	2025-08-03 21:33:07.162	2025-08-03 21:33:07.162	\N	\N
+1658	I'm so tired.	2025-08-03 21:33:07.162	2025-08-03 21:33:07.162	\N	\N
+1660	mu co sa	2025-08-03 21:33:12.322	2025-08-03 21:33:12.322	\N	\N
+1661	abutment	2025-08-03 21:33:12.323	2025-08-03 21:33:12.323	\N	\N
+1662	carbamazepine	2025-08-03 21:33:12.324	2025-08-03 21:33:12.324	\N	\N
+1664	car	2025-08-03 21:33:12.325	2025-08-03 21:33:12.325	\N	\N
+1668	queue	2025-08-03 21:33:18.149	2025-08-03 21:33:18.149	\N	\N
+1671	pit and fissure sealant	2025-08-03 21:33:18.151	2025-08-03 21:33:18.151	\N	\N
+1673	profile	2025-08-03 21:33:18.152	2025-08-03 21:33:18.152	\N	\N
+1674	saline	2025-08-03 21:33:18.152	2025-08-03 21:33:18.152	\N	\N
+1677	phenytoin	2025-08-03 21:33:18.153	2025-08-03 21:33:18.153	\N	\N
+1678	external	2025-08-03 21:33:22.943	2025-08-03 21:33:22.943	\N	\N
+1682	retration	2025-08-03 21:33:22.963	2025-08-03 21:33:22.963	\N	\N
+1683	irreversible	2025-08-03 21:33:22.963	2025-08-03 21:33:22.963	\N	\N
+1684	organism	2025-08-03 21:33:22.964	2025-08-03 21:33:22.964	\N	\N
+1687	sulcus	2025-08-03 21:33:22.965	2025-08-03 21:33:22.965	\N	\N
+1689	undercut area	2025-08-03 21:33:29.876	2025-08-03 21:33:29.876	\N	\N
+1688	concave	2025-08-03 21:33:29.875	2025-08-03 21:33:29.875	\N	\N
+1691	gram- negative	2025-08-03 21:33:29.876	2025-08-03 21:33:29.876	\N	\N
+1693	flat	2025-08-03 21:33:29.877	2025-08-03 21:33:29.877	\N	\N
+1695	solution	2025-08-03 21:33:29.878	2025-08-03 21:33:29.878	\N	\N
+1697	frequently	2025-08-03 21:33:29.879	2025-08-03 21:33:29.879	\N	\N
+1698	intolerance	2025-08-03 21:33:36.747	2025-08-03 21:33:36.747	\N	\N
+1700	hemostatic	2025-08-03 21:33:36.747	2025-08-03 21:33:36.747	\N	\N
+1703	fixed	2025-08-03 21:33:36.75	2025-08-03 21:33:36.75	\N	\N
+1704	discolored	2025-08-03 21:33:36.749	2025-08-03 21:33:36.749	\N	\N
+1705	disturbance	2025-08-03 21:33:36.749	2025-08-03 21:33:36.749	\N	\N
+1707	asymptomatic	2025-08-03 21:33:36.75	2025-08-03 21:33:36.75	\N	\N
+1708	parathyroid	2025-08-03 21:33:45.567	2025-08-03 21:33:45.567	\N	\N
+1709	coagulopathy	2025-08-03 21:33:45.568	2025-08-03 21:33:45.568	\N	\N
+1713	maxilla	2025-08-03 21:33:45.569	2025-08-03 21:33:45.569	\N	\N
+1714	reliable	2025-08-03 21:33:45.569	2025-08-03 21:33:45.569	\N	\N
+1716	modification	2025-08-03 21:33:45.571	2025-08-03 21:33:45.571	\N	\N
+1717	chronogic	2025-08-03 21:33:45.571	2025-08-03 21:33:45.571	\N	\N
+1718	osseous	2025-08-03 21:33:51.939	2025-08-03 21:33:51.939	\N	\N
+1720	cyst	2025-08-03 21:33:51.937	2025-08-03 21:33:51.937	\N	\N
+1719	periapical	2025-08-03 21:33:51.938	2025-08-03 21:33:51.938	\N	\N
+1723	periradicular	2025-08-03 21:33:51.94	2025-08-03 21:33:51.94	\N	\N
+1724	dysplasia	2025-08-03 21:33:51.939	2025-08-03 21:33:51.939	\N	\N
+1727	traumatic	2025-08-03 21:33:51.941	2025-08-03 21:33:51.941	\N	\N
+1728	location	2025-08-03 21:33:57.319	2025-08-03 21:33:57.319	\N	\N
+1730	nasal	2025-08-03 21:33:57.32	2025-08-03 21:33:57.32	\N	\N
+1734	landmark	2025-08-03 21:33:57.322	2025-08-03 21:33:57.322	\N	\N
+1735	posterior	2025-08-03 21:33:57.322	2025-08-03 21:33:57.322	\N	\N
+1736	anatomal	2025-08-03 21:33:57.321	2025-08-03 21:33:57.321	\N	\N
+1737	pterygomaxillary	2025-08-03 21:33:57.321	2025-08-03 21:33:57.321	\N	\N
+1738	labial	2025-08-03 21:34:02.208	2025-08-03 21:34:02.208	\N	\N
+1739	incisive papilla	2025-08-03 21:34:02.209	2025-08-03 21:34:02.209	\N	\N
+1741	distobuccal angles area	2025-08-03 21:34:02.209	2025-08-03 21:34:02.209	\N	\N
+1742	zygomatic process	2025-08-03 21:34:02.222	2025-08-03 21:34:02.222	\N	\N
+1746	zygomatic	2025-08-03 21:34:02.224	2025-08-03 21:34:02.224	\N	\N
+1745	tuberosity	2025-08-03 21:34:02.224	2025-08-03 21:34:02.224	\N	\N
+1560	High-profile announcement	2025-08-03 21:31:36.656	2025-08-03 21:31:36.656	\N	\N
+1562	Safety measures	2025-08-03 21:31:36.688	2025-08-03 21:31:36.688	\N	\N
+1564	Anterior molars	2025-08-03 21:31:36.715	2025-08-03 21:31:36.715	\N	\N
+1566	bag	2025-08-03 21:31:36.726	2025-08-03 21:31:36.726	\N	\N
+1568	verify	2025-08-03 21:31:36.744	2025-08-03 21:31:36.744	\N	\N
+1569	satisfy	2025-08-03 21:31:41.974	2025-08-03 21:31:41.974	\N	\N
+1572	后退	2025-08-03 21:31:41.975	2025-08-03 21:31:41.975	\N	\N
+1571	successfully	2025-08-03 21:31:41.976	2025-08-03 21:31:41.976	\N	\N
+1574	Flying	2025-08-03 21:31:41.977	2025-08-03 21:31:41.977	\N	\N
+1575	real	2025-08-03 21:31:41.977	2025-08-03 21:31:41.977	\N	\N
+1579	original	2025-08-03 21:31:54.538	2025-08-03 21:31:54.538	\N	\N
+1581	Phenomenon	2025-08-03 21:31:54.539	2025-08-03 21:31:54.539	\N	\N
+1582	possibility	2025-08-03 21:31:54.539	2025-08-03 21:31:54.539	\N	\N
+1583	Deprecated	2025-08-03 21:31:54.54	2025-08-03 21:31:54.54	\N	\N
+1587	Dispel	2025-08-03 21:31:54.542	2025-08-03 21:31:54.542	\N	\N
+1591	choice	2025-08-03 21:31:59.583	2025-08-03 21:31:59.583	\N	\N
+1590	river	2025-08-03 21:31:59.582	2025-08-03 21:31:59.582	\N	\N
+1594	goal	2025-08-03 21:31:59.582	2025-08-03 21:31:59.582	\N	\N
+1595	mountain	2025-08-03 21:31:59.583	2025-08-03 21:31:59.583	\N	\N
+1596	courage	2025-08-03 21:31:59.585	2025-08-03 21:31:59.585	\N	\N
+1603	sun	2025-08-03 21:32:04.741	2025-08-03 21:32:04.741	\N	\N
+1604	city	2025-08-03 21:32:04.741	2025-08-03 21:32:04.741	\N	\N
+1605	apple	2025-08-03 21:32:04.742	2025-08-03 21:32:04.742	\N	\N
+1606	school	2025-08-03 21:32:04.742	2025-08-03 21:32:04.742	\N	\N
+1608	book	2025-08-03 21:32:12.775	2025-08-03 21:32:12.775	\N	\N
+1611	master	2025-08-03 21:32:12.777	2025-08-03 21:32:12.777	\N	\N
+1612	animal	2025-08-03 21:32:12.778	2025-08-03 21:32:12.778	\N	\N
+1615	music	2025-08-03 21:32:12.777	2025-08-03 21:32:12.777	\N	\N
+1616	dream	2025-08-03 21:32:12.779	2025-08-03 21:32:12.779	\N	\N
+1619	test	2025-08-03 21:32:22.59	2025-08-03 21:32:22.59	\N	\N
+1620	clock	2025-08-03 21:32:22.593	2025-08-03 21:32:22.593	\N	\N
+1623	tool	2025-08-03 21:32:22.594	2025-08-03 21:32:22.594	\N	\N
+1626	history	2025-08-03 21:32:22.593	2025-08-03 21:32:22.593	\N	\N
+1625	friend	2025-08-03 21:32:22.592	2025-08-03 21:32:22.592	\N	\N
+1747	palatal vault	2025-08-03 21:34:12.025	2025-08-03 21:34:12.025	\N	\N
+1748	sublingual	2025-08-03 21:34:12.026	2025-08-03 21:34:12.026	\N	\N
+1749	vibrating line	2025-08-03 21:34:12.026	2025-08-03 21:34:12.026	\N	\N
+1751	incision	2025-08-03 21:34:12.027	2025-08-03 21:34:12.027	\N	\N
+1754	drainage	2025-08-03 21:34:12.028	2025-08-03 21:34:12.028	\N	\N
+1756	palatal rugae	2025-08-03 21:34:12.029	2025-08-03 21:34:12.029	\N	\N
+1757	primary stress-bearing area	2025-08-03 21:34:18.126	2025-08-03 21:34:18.126	\N	\N
+1762	retromalar pad	2025-08-03 21:34:18.128	2025-08-03 21:34:18.128	\N	\N
+1763	retromylohyoid fossa	2025-08-03 21:34:18.127	2025-08-03 21:34:18.127	\N	\N
+1764	relief area	2025-08-03 21:34:18.128	2025-08-03 21:34:18.128	\N	\N
+1765	secondary stress-bearing area	2025-08-03 21:34:18.129	2025-08-03 21:34:18.129	\N	\N
+1766	mylohyoid ridge	2025-08-03 21:34:18.128	2025-08-03 21:34:18.128	\N	\N
+1769	fluctuant	2025-08-03 21:34:36.539	2025-08-03 21:34:36.539	\N	\N
+1771	localized	2025-08-03 21:34:36.555	2025-08-03 21:34:36.555	\N	\N
+1773	cement	2025-08-03 21:34:36.554	2025-08-03 21:34:36.554	\N	\N
+1776	border	2025-08-03 21:34:36.556	2025-08-03 21:34:36.556	\N	\N
+1778	passive	2025-08-03 21:34:42.764	2025-08-03 21:34:42.764	\N	\N
+1780	abcess	2025-08-03 21:34:42.764	2025-08-03 21:34:42.764	\N	\N
+1783	sphenpmadibular ligament	2025-08-03 21:34:42.763	2025-08-03 21:34:42.763	\N	\N
+1784	antagonist	2025-08-03 21:34:42.764	2025-08-03 21:34:42.764	\N	\N
+1789	infection	2025-08-03 21:34:49.002	2025-08-03 21:34:49.002	\N	\N
+1791	cephalerin	2025-08-03 21:34:49.002	2025-08-03 21:34:49.002	\N	\N
+1792	tetracycline	2025-08-03 21:34:49.004	2025-08-03 21:34:49.004	\N	\N
+1793	exposure	2025-08-03 21:34:49.003	2025-08-03 21:34:49.003	\N	\N
+1799	oris	2025-08-03 21:35:22.542	2025-08-03 21:35:22.542	\N	\N
+1800	strategy	2025-08-03 22:57:44.711	2025-08-03 22:57:44.711	\N	\N
 \.
 
 
@@ -8367,14 +10141,14 @@ COPY public.words_localizations_links (id, word_id, inv_word_id, word_order) FRO
 -- Name: admin_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.admin_permissions_id_seq', 427, true);
+SELECT pg_catalog.setval('public.admin_permissions_id_seq', 508, true);
 
 
 --
 -- Name: admin_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.admin_permissions_role_links_id_seq', 463, true);
+SELECT pg_catalog.setval('public.admin_permissions_role_links_id_seq', 544, true);
 
 
 --
@@ -8525,13 +10299,6 @@ SELECT pg_catalog.setval('public.components_a_word_refs_id_seq', 4, true);
 
 
 --
--- Name: components_a_word_refs_word_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
---
-
-SELECT pg_catalog.setval('public.components_a_word_refs_word_links_id_seq', 4, true);
-
-
---
 -- Name: conversations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
@@ -8574,24 +10341,10 @@ SELECT pg_catalog.setval('public.files_related_morphs_id_seq', 1, true);
 
 
 --
--- Name: flashcards_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
---
-
-SELECT pg_catalog.setval('public.flashcards_components_id_seq', 199, true);
-
-
---
 -- Name: flashcards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_id_seq', 148, true);
-
-
---
--- Name: flashcards_lesson_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
---
-
-SELECT pg_catalog.setval('public.flashcards_lesson_links_id_seq', 1, true);
+SELECT pg_catalog.setval('public.flashcards_id_seq', 637, true);
 
 
 --
@@ -8605,14 +10358,21 @@ SELECT pg_catalog.setval('public.flashcards_localizations_links_id_seq', 1, fals
 -- Name: flashcards_review_tire_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 108, true);
+SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 572, true);
 
 
 --
 -- Name: flashcards_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 149, true);
+SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 638, true);
+
+
+--
+-- Name: flashcards_word_definition_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 920, true);
 
 
 --
@@ -8665,6 +10425,34 @@ SELECT pg_catalog.setval('public.lessons_unit_links_id_seq', 1, false);
 
 
 --
+-- Name: modules_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.modules_id_seq', 1, false);
+
+
+--
+-- Name: modules_localizations_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.modules_localizations_links_id_seq', 1, false);
+
+
+--
+-- Name: part_of_speeches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.part_of_speeches_id_seq', 9, true);
+
+
+--
+-- Name: part_of_speeches_localizations_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.part_of_speeches_localizations_links_id_seq', 1, false);
+
+
+--
 -- Name: pings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
@@ -8689,21 +10477,21 @@ SELECT pg_catalog.setval('public.review_tires_localizations_links_id_seq', 1, fa
 -- Name: reviewlogs_flashcard_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 311, true);
+SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 314, true);
 
 
 --
 -- Name: reviewlogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_id_seq', 338, true);
+SELECT pg_catalog.setval('public.reviewlogs_id_seq', 341, true);
 
 
 --
 -- Name: reviewlogs_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 338, true);
+SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 341, true);
 
 
 --
@@ -8829,14 +10617,14 @@ SELECT pg_catalog.setval('public.strapi_api_tokens_id_seq', 1, false);
 -- Name: strapi_core_store_settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.strapi_core_store_settings_id_seq', 62, true);
+SELECT pg_catalog.setval('public.strapi_core_store_settings_id_seq', 67, true);
 
 
 --
 -- Name: strapi_database_schema_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.strapi_database_schema_id_seq', 96, true);
+SELECT pg_catalog.setval('public.strapi_database_schema_id_seq', 108, true);
 
 
 --
@@ -8910,6 +10698,13 @@ SELECT pg_catalog.setval('public.units_localizations_links_id_seq', 1, false);
 
 
 --
+-- Name: units_module_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.units_module_links_id_seq', 1, false);
+
+
+--
 -- Name: units_precondition_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
@@ -8920,14 +10715,14 @@ SELECT pg_catalog.setval('public.units_precondition_links_id_seq', 2, true);
 -- Name: up_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_id_seq', 132, true);
+SELECT pg_catalog.setval('public.up_permissions_id_seq', 143, true);
 
 
 --
 -- Name: up_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 132, true);
+SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 143, true);
 
 
 --
@@ -8969,14 +10764,14 @@ SELECT pg_catalog.setval('public.upload_folders_parent_links_id_seq', 1, false);
 -- Name: user_profiles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_profiles_id_seq', 18, true);
+SELECT pg_catalog.setval('public.user_profiles_id_seq', 20, true);
 
 
 --
 -- Name: user_profiles_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_profiles_user_links_id_seq', 18, true);
+SELECT pg_catalog.setval('public.user_profiles_user_links_id_seq', 20, true);
 
 
 --
@@ -9050,31 +10845,52 @@ SELECT pg_catalog.setval('public.vbsettings_user_links_id_seq', 15, true);
 
 
 --
--- Name: words_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+-- Name: word_definitions_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.words_components_id_seq', 6, true);
+SELECT pg_catalog.setval('public.word_definitions_components_id_seq', 1, false);
 
 
 --
--- Name: words_example_sentences_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+-- Name: word_definitions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.words_example_sentences_links_id_seq', 1, false);
+SELECT pg_catalog.setval('public.word_definitions_id_seq', 1048, true);
+
+
+--
+-- Name: word_definitions_localizations_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.word_definitions_localizations_links_id_seq', 1, false);
+
+
+--
+-- Name: word_definitions_part_of_speech_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1040, true);
+
+
+--
+-- Name: word_definitions_section_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.word_definitions_section_links_id_seq', 1, false);
+
+
+--
+-- Name: word_definitions_word_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
+--
+
+SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1048, true);
 
 
 --
 -- Name: words_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.words_id_seq', 3, true);
-
-
---
--- Name: words_localizations_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
---
-
-SELECT pg_catalog.setval('public.words_localizations_links_id_seq', 1, false);
+SELECT pg_catalog.setval('public.words_id_seq', 1800, true);
 
 
 --
@@ -9310,22 +11126,6 @@ ALTER TABLE ONLY public.components_a_word_refs
 
 
 --
--- Name: components_a_word_refs_word_links components_a_word_refs_word_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.components_a_word_refs_word_links
-    ADD CONSTRAINT components_a_word_refs_word_links_pkey PRIMARY KEY (id);
-
-
---
--- Name: components_a_word_refs_word_links components_a_word_refs_word_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.components_a_word_refs_word_links
-    ADD CONSTRAINT components_a_word_refs_word_links_unique UNIQUE (word_ref_id, word_id);
-
-
---
 -- Name: conversations conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -9390,30 +11190,6 @@ ALTER TABLE ONLY public.files_related_morphs
 
 
 --
--- Name: flashcards_components flashcards_components_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_components
-    ADD CONSTRAINT flashcards_components_pkey PRIMARY KEY (id);
-
-
---
--- Name: flashcards_lesson_links flashcards_lesson_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_lesson_links
-    ADD CONSTRAINT flashcards_lesson_links_pkey PRIMARY KEY (id);
-
-
---
--- Name: flashcards_lesson_links flashcards_lesson_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_lesson_links
-    ADD CONSTRAINT flashcards_lesson_links_unique UNIQUE (flashcard_id, lesson_id);
-
-
---
 -- Name: flashcards_localizations_links flashcards_localizations_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -9454,14 +11230,6 @@ ALTER TABLE ONLY public.flashcards_review_tire_links
 
 
 --
--- Name: flashcards_components flashcards_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_components
-    ADD CONSTRAINT flashcards_unique UNIQUE (entity_id, component_id, field, component_type);
-
-
---
 -- Name: flashcards_user_links flashcards_user_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -9475,6 +11243,22 @@ ALTER TABLE ONLY public.flashcards_user_links
 
 ALTER TABLE ONLY public.flashcards_user_links
     ADD CONSTRAINT flashcards_user_links_unique UNIQUE (flashcard_id, user_id);
+
+
+--
+-- Name: flashcards_word_definition_links flashcards_word_definition_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.flashcards_word_definition_links
+    ADD CONSTRAINT flashcards_word_definition_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: flashcards_word_definition_links flashcards_word_definition_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.flashcards_word_definition_links
+    ADD CONSTRAINT flashcards_word_definition_links_unique UNIQUE (flashcard_id, word_definition_id);
 
 
 --
@@ -9571,6 +11355,54 @@ ALTER TABLE ONLY public.lessons_unit_links
 
 ALTER TABLE ONLY public.lessons_unit_links
     ADD CONSTRAINT lessons_unit_links_unique UNIQUE (lesson_id, unit_id);
+
+
+--
+-- Name: modules_localizations_links modules_localizations_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules_localizations_links
+    ADD CONSTRAINT modules_localizations_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: modules_localizations_links modules_localizations_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules_localizations_links
+    ADD CONSTRAINT modules_localizations_links_unique UNIQUE (module_id, inv_module_id);
+
+
+--
+-- Name: modules modules_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules
+    ADD CONSTRAINT modules_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: part_of_speeches_localizations_links part_of_speeches_localizations_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches_localizations_links
+    ADD CONSTRAINT part_of_speeches_localizations_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: part_of_speeches_localizations_links part_of_speeches_localizations_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches_localizations_links
+    ADD CONSTRAINT part_of_speeches_localizations_links_unique UNIQUE (part_of_speech_id, inv_part_of_speech_id);
+
+
+--
+-- Name: part_of_speeches part_of_speeches_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches
+    ADD CONSTRAINT part_of_speeches_pkey PRIMARY KEY (id);
 
 
 --
@@ -9998,6 +11830,22 @@ ALTER TABLE ONLY public.units_localizations_links
 
 
 --
+-- Name: units_module_links units_module_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.units_module_links
+    ADD CONSTRAINT units_module_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: units_module_links units_module_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.units_module_links
+    ADD CONSTRAINT units_module_links_unique UNIQUE (unit_id, module_id);
+
+
+--
 -- Name: units units_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -10286,43 +12134,91 @@ ALTER TABLE ONLY public.vbsettings_user_links
 
 
 --
--- Name: words_components words_components_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+-- Name: word_definitions_components word_definitions_components_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
-ALTER TABLE ONLY public.words_components
-    ADD CONSTRAINT words_components_pkey PRIMARY KEY (id);
-
-
---
--- Name: words_example_sentences_links words_example_sentences_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_example_sentences_links
-    ADD CONSTRAINT words_example_sentences_links_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.word_definitions_components
+    ADD CONSTRAINT word_definitions_components_pkey PRIMARY KEY (id);
 
 
 --
--- Name: words_example_sentences_links words_example_sentences_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+-- Name: word_definitions_localizations_links word_definitions_localizations_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
-ALTER TABLE ONLY public.words_example_sentences_links
-    ADD CONSTRAINT words_example_sentences_links_unique UNIQUE (word_id, sentence_id);
-
-
---
--- Name: words_localizations_links words_localizations_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_localizations_links
-    ADD CONSTRAINT words_localizations_links_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.word_definitions_localizations_links
+    ADD CONSTRAINT word_definitions_localizations_links_pkey PRIMARY KEY (id);
 
 
 --
--- Name: words_localizations_links words_localizations_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+-- Name: word_definitions_localizations_links word_definitions_localizations_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
 --
 
-ALTER TABLE ONLY public.words_localizations_links
-    ADD CONSTRAINT words_localizations_links_unique UNIQUE (word_id, inv_word_id);
+ALTER TABLE ONLY public.word_definitions_localizations_links
+    ADD CONSTRAINT word_definitions_localizations_links_unique UNIQUE (word_definition_id, inv_word_definition_id);
+
+
+--
+-- Name: word_definitions_part_of_speech_links word_definitions_part_of_speech_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_part_of_speech_links
+    ADD CONSTRAINT word_definitions_part_of_speech_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: word_definitions_part_of_speech_links word_definitions_part_of_speech_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_part_of_speech_links
+    ADD CONSTRAINT word_definitions_part_of_speech_links_unique UNIQUE (word_definition_id, part_of_speech_id);
+
+
+--
+-- Name: word_definitions word_definitions_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions
+    ADD CONSTRAINT word_definitions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: word_definitions_section_links word_definitions_section_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_section_links
+    ADD CONSTRAINT word_definitions_section_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: word_definitions_section_links word_definitions_section_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_section_links
+    ADD CONSTRAINT word_definitions_section_links_unique UNIQUE (word_definition_id, section_id);
+
+
+--
+-- Name: word_definitions_components word_definitions_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_components
+    ADD CONSTRAINT word_definitions_unique UNIQUE (entity_id, component_id, field, component_type);
+
+
+--
+-- Name: word_definitions_word_links word_definitions_word_links_pkey; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_word_links
+    ADD CONSTRAINT word_definitions_word_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: word_definitions_word_links word_definitions_word_links_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_word_links
+    ADD CONSTRAINT word_definitions_word_links_unique UNIQUE (word_definition_id, word_id);
 
 
 --
@@ -10331,14 +12227,6 @@ ALTER TABLE ONLY public.words_localizations_links
 
 ALTER TABLE ONLY public.words
     ADD CONSTRAINT words_pkey PRIMARY KEY (id);
-
-
---
--- Name: words_components words_unique; Type: CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_components
-    ADD CONSTRAINT words_unique UNIQUE (entity_id, component_id, field, component_type);
 
 
 --
@@ -10496,20 +12384,6 @@ CREATE INDEX components_a_user_word_refs_user_word_links_inv_fk ON public.compon
 
 
 --
--- Name: components_a_word_refs_word_links_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX components_a_word_refs_word_links_fk ON public.components_a_word_refs_word_links USING btree (word_ref_id);
-
-
---
--- Name: components_a_word_refs_word_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX components_a_word_refs_word_links_inv_fk ON public.components_a_word_refs_word_links USING btree (word_id);
-
-
---
 -- Name: conversations_created_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
 --
 
@@ -10615,52 +12489,10 @@ CREATE INDEX files_updated_by_id_fk ON public.files USING btree (updated_by_id);
 
 
 --
--- Name: flashcards_component_type_index; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX flashcards_component_type_index ON public.flashcards_components USING btree (component_type);
-
-
---
 -- Name: flashcards_created_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
 --
 
 CREATE INDEX flashcards_created_by_id_fk ON public.flashcards USING btree (created_by_id);
-
-
---
--- Name: flashcards_entity_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX flashcards_entity_fk ON public.flashcards_components USING btree (entity_id);
-
-
---
--- Name: flashcards_field_index; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX flashcards_field_index ON public.flashcards_components USING btree (field);
-
-
---
--- Name: flashcards_lesson_links_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX flashcards_lesson_links_fk ON public.flashcards_lesson_links USING btree (flashcard_id);
-
-
---
--- Name: flashcards_lesson_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX flashcards_lesson_links_inv_fk ON public.flashcards_lesson_links USING btree (lesson_id);
-
-
---
--- Name: flashcards_lesson_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX flashcards_lesson_links_order_inv_fk ON public.flashcards_lesson_links USING btree (flashcard_order);
 
 
 --
@@ -10731,6 +12563,27 @@ CREATE INDEX flashcards_user_links_inv_fk ON public.flashcards_user_links USING 
 --
 
 CREATE INDEX flashcards_user_links_order_inv_fk ON public.flashcards_user_links USING btree (flashcard_order);
+
+
+--
+-- Name: flashcards_word_definition_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX flashcards_word_definition_links_fk ON public.flashcards_word_definition_links USING btree (flashcard_id);
+
+
+--
+-- Name: flashcards_word_definition_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX flashcards_word_definition_links_inv_fk ON public.flashcards_word_definition_links USING btree (word_definition_id);
+
+
+--
+-- Name: flashcards_word_definition_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX flashcards_word_definition_links_order_inv_fk ON public.flashcards_word_definition_links USING btree (flashcard_order);
 
 
 --
@@ -10857,6 +12710,76 @@ CREATE INDEX lessons_unit_links_order_inv_fk ON public.lessons_unit_links USING 
 --
 
 CREATE INDEX lessons_updated_by_id_fk ON public.lessons USING btree (updated_by_id);
+
+
+--
+-- Name: modules_created_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX modules_created_by_id_fk ON public.modules USING btree (created_by_id);
+
+
+--
+-- Name: modules_localizations_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX modules_localizations_links_fk ON public.modules_localizations_links USING btree (module_id);
+
+
+--
+-- Name: modules_localizations_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX modules_localizations_links_inv_fk ON public.modules_localizations_links USING btree (inv_module_id);
+
+
+--
+-- Name: modules_localizations_links_order_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX modules_localizations_links_order_fk ON public.modules_localizations_links USING btree (module_order);
+
+
+--
+-- Name: modules_updated_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX modules_updated_by_id_fk ON public.modules USING btree (updated_by_id);
+
+
+--
+-- Name: part_of_speeches_created_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX part_of_speeches_created_by_id_fk ON public.part_of_speeches USING btree (created_by_id);
+
+
+--
+-- Name: part_of_speeches_localizations_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX part_of_speeches_localizations_links_fk ON public.part_of_speeches_localizations_links USING btree (part_of_speech_id);
+
+
+--
+-- Name: part_of_speeches_localizations_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX part_of_speeches_localizations_links_inv_fk ON public.part_of_speeches_localizations_links USING btree (inv_part_of_speech_id);
+
+
+--
+-- Name: part_of_speeches_localizations_links_order_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX part_of_speeches_localizations_links_order_fk ON public.part_of_speeches_localizations_links USING btree (part_of_speech_order);
+
+
+--
+-- Name: part_of_speeches_updated_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX part_of_speeches_updated_by_id_fk ON public.part_of_speeches USING btree (updated_by_id);
 
 
 --
@@ -11413,6 +13336,27 @@ CREATE INDEX units_localizations_links_order_fk ON public.units_localizations_li
 
 
 --
+-- Name: units_module_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX units_module_links_fk ON public.units_module_links USING btree (unit_id);
+
+
+--
+-- Name: units_module_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX units_module_links_inv_fk ON public.units_module_links USING btree (module_id);
+
+
+--
+-- Name: units_module_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX units_module_links_order_inv_fk ON public.units_module_links USING btree (unit_order);
+
+
+--
 -- Name: units_precondition_links_fk; Type: INDEX; Schema: public; Owner: strapi
 --
 
@@ -11805,10 +13749,122 @@ CREATE INDEX vbsettings_user_links_inv_fk ON public.vbsettings_user_links USING 
 
 
 --
--- Name: words_component_type_index; Type: INDEX; Schema: public; Owner: strapi
+-- Name: word_definitions_component_type_index; Type: INDEX; Schema: public; Owner: strapi
 --
 
-CREATE INDEX words_component_type_index ON public.words_components USING btree (component_type);
+CREATE INDEX word_definitions_component_type_index ON public.word_definitions_components USING btree (component_type);
+
+
+--
+-- Name: word_definitions_created_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_created_by_id_fk ON public.word_definitions USING btree (created_by_id);
+
+
+--
+-- Name: word_definitions_entity_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_entity_fk ON public.word_definitions_components USING btree (entity_id);
+
+
+--
+-- Name: word_definitions_field_index; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_field_index ON public.word_definitions_components USING btree (field);
+
+
+--
+-- Name: word_definitions_localizations_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_localizations_links_fk ON public.word_definitions_localizations_links USING btree (word_definition_id);
+
+
+--
+-- Name: word_definitions_localizations_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_localizations_links_inv_fk ON public.word_definitions_localizations_links USING btree (inv_word_definition_id);
+
+
+--
+-- Name: word_definitions_localizations_links_order_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_localizations_links_order_fk ON public.word_definitions_localizations_links USING btree (word_definition_order);
+
+
+--
+-- Name: word_definitions_part_of_speech_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_part_of_speech_links_fk ON public.word_definitions_part_of_speech_links USING btree (word_definition_id);
+
+
+--
+-- Name: word_definitions_part_of_speech_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_part_of_speech_links_inv_fk ON public.word_definitions_part_of_speech_links USING btree (part_of_speech_id);
+
+
+--
+-- Name: word_definitions_part_of_speech_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_part_of_speech_links_order_inv_fk ON public.word_definitions_part_of_speech_links USING btree (word_definition_order);
+
+
+--
+-- Name: word_definitions_section_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_section_links_fk ON public.word_definitions_section_links USING btree (word_definition_id);
+
+
+--
+-- Name: word_definitions_section_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_section_links_inv_fk ON public.word_definitions_section_links USING btree (section_id);
+
+
+--
+-- Name: word_definitions_section_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_section_links_order_inv_fk ON public.word_definitions_section_links USING btree (word_definition_order);
+
+
+--
+-- Name: word_definitions_updated_by_id_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_updated_by_id_fk ON public.word_definitions USING btree (updated_by_id);
+
+
+--
+-- Name: word_definitions_word_links_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_word_links_fk ON public.word_definitions_word_links USING btree (word_definition_id);
+
+
+--
+-- Name: word_definitions_word_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_word_links_inv_fk ON public.word_definitions_word_links USING btree (word_id);
+
+
+--
+-- Name: word_definitions_word_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
+--
+
+CREATE INDEX word_definitions_word_links_order_inv_fk ON public.word_definitions_word_links USING btree (word_definition_order);
 
 
 --
@@ -11816,69 +13872,6 @@ CREATE INDEX words_component_type_index ON public.words_components USING btree (
 --
 
 CREATE INDEX words_created_by_id_fk ON public.words USING btree (created_by_id);
-
-
---
--- Name: words_entity_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_entity_fk ON public.words_components USING btree (entity_id);
-
-
---
--- Name: words_example_sentences_links_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_example_sentences_links_fk ON public.words_example_sentences_links USING btree (word_id);
-
-
---
--- Name: words_example_sentences_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_example_sentences_links_inv_fk ON public.words_example_sentences_links USING btree (sentence_id);
-
-
---
--- Name: words_example_sentences_links_order_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_example_sentences_links_order_fk ON public.words_example_sentences_links USING btree (sentence_order);
-
-
---
--- Name: words_example_sentences_links_order_inv_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_example_sentences_links_order_inv_fk ON public.words_example_sentences_links USING btree (word_order);
-
-
---
--- Name: words_field_index; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_field_index ON public.words_components USING btree (field);
-
-
---
--- Name: words_localizations_links_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_localizations_links_fk ON public.words_localizations_links USING btree (word_id);
-
-
---
--- Name: words_localizations_links_inv_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_localizations_links_inv_fk ON public.words_localizations_links USING btree (inv_word_id);
-
-
---
--- Name: words_localizations_links_order_fk; Type: INDEX; Schema: public; Owner: strapi
---
-
-CREATE INDEX words_localizations_links_order_fk ON public.words_localizations_links USING btree (word_order);
 
 
 --
@@ -12025,22 +14018,6 @@ ALTER TABLE ONLY public.components_a_user_word_refs_user_word_links
 
 
 --
--- Name: components_a_word_refs_word_links components_a_word_refs_word_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.components_a_word_refs_word_links
-    ADD CONSTRAINT components_a_word_refs_word_links_fk FOREIGN KEY (word_ref_id) REFERENCES public.components_a_word_refs(id) ON DELETE CASCADE;
-
-
---
--- Name: components_a_word_refs_word_links components_a_word_refs_word_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.components_a_word_refs_word_links
-    ADD CONSTRAINT components_a_word_refs_word_links_inv_fk FOREIGN KEY (word_id) REFERENCES public.words(id) ON DELETE CASCADE;
-
-
---
 -- Name: conversations conversations_created_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -12137,30 +14114,6 @@ ALTER TABLE ONLY public.flashcards
 
 
 --
--- Name: flashcards_components flashcards_entity_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_components
-    ADD CONSTRAINT flashcards_entity_fk FOREIGN KEY (entity_id) REFERENCES public.flashcards(id) ON DELETE CASCADE;
-
-
---
--- Name: flashcards_lesson_links flashcards_lesson_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_lesson_links
-    ADD CONSTRAINT flashcards_lesson_links_fk FOREIGN KEY (flashcard_id) REFERENCES public.flashcards(id) ON DELETE CASCADE;
-
-
---
--- Name: flashcards_lesson_links flashcards_lesson_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.flashcards_lesson_links
-    ADD CONSTRAINT flashcards_lesson_links_inv_fk FOREIGN KEY (lesson_id) REFERENCES public.lessons(id) ON DELETE CASCADE;
-
-
---
 -- Name: flashcards_localizations_links flashcards_localizations_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -12214,6 +14167,22 @@ ALTER TABLE ONLY public.flashcards_user_links
 
 ALTER TABLE ONLY public.flashcards_user_links
     ADD CONSTRAINT flashcards_user_links_inv_fk FOREIGN KEY (user_id) REFERENCES public.up_users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: flashcards_word_definition_links flashcards_word_definition_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.flashcards_word_definition_links
+    ADD CONSTRAINT flashcards_word_definition_links_fk FOREIGN KEY (flashcard_id) REFERENCES public.flashcards(id) ON DELETE CASCADE;
+
+
+--
+-- Name: flashcards_word_definition_links flashcards_word_definition_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.flashcards_word_definition_links
+    ADD CONSTRAINT flashcards_word_definition_links_inv_fk FOREIGN KEY (word_definition_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
 
 
 --
@@ -12318,6 +14287,70 @@ ALTER TABLE ONLY public.lessons_unit_links
 
 ALTER TABLE ONLY public.lessons
     ADD CONSTRAINT lessons_updated_by_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: modules modules_created_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules
+    ADD CONSTRAINT modules_created_by_id_fk FOREIGN KEY (created_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: modules_localizations_links modules_localizations_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules_localizations_links
+    ADD CONSTRAINT modules_localizations_links_fk FOREIGN KEY (module_id) REFERENCES public.modules(id) ON DELETE CASCADE;
+
+
+--
+-- Name: modules_localizations_links modules_localizations_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules_localizations_links
+    ADD CONSTRAINT modules_localizations_links_inv_fk FOREIGN KEY (inv_module_id) REFERENCES public.modules(id) ON DELETE CASCADE;
+
+
+--
+-- Name: modules modules_updated_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.modules
+    ADD CONSTRAINT modules_updated_by_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: part_of_speeches part_of_speeches_created_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches
+    ADD CONSTRAINT part_of_speeches_created_by_id_fk FOREIGN KEY (created_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: part_of_speeches_localizations_links part_of_speeches_localizations_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches_localizations_links
+    ADD CONSTRAINT part_of_speeches_localizations_links_fk FOREIGN KEY (part_of_speech_id) REFERENCES public.part_of_speeches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: part_of_speeches_localizations_links part_of_speeches_localizations_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches_localizations_links
+    ADD CONSTRAINT part_of_speeches_localizations_links_inv_fk FOREIGN KEY (inv_part_of_speech_id) REFERENCES public.part_of_speeches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: part_of_speeches part_of_speeches_updated_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.part_of_speeches
+    ADD CONSTRAINT part_of_speeches_updated_by_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
 
 
 --
@@ -12777,6 +14810,22 @@ ALTER TABLE ONLY public.units_localizations_links
 
 
 --
+-- Name: units_module_links units_module_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.units_module_links
+    ADD CONSTRAINT units_module_links_fk FOREIGN KEY (unit_id) REFERENCES public.units(id) ON DELETE CASCADE;
+
+
+--
+-- Name: units_module_links units_module_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.units_module_links
+    ADD CONSTRAINT units_module_links_inv_fk FOREIGN KEY (module_id) REFERENCES public.modules(id) ON DELETE CASCADE;
+
+
+--
 -- Name: units_precondition_links units_precondition_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
 --
 
@@ -13105,51 +15154,99 @@ ALTER TABLE ONLY public.vbsettings_user_links
 
 
 --
+-- Name: word_definitions word_definitions_created_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions
+    ADD CONSTRAINT word_definitions_created_by_id_fk FOREIGN KEY (created_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: word_definitions_components word_definitions_entity_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_components
+    ADD CONSTRAINT word_definitions_entity_fk FOREIGN KEY (entity_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_localizations_links word_definitions_localizations_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_localizations_links
+    ADD CONSTRAINT word_definitions_localizations_links_fk FOREIGN KEY (word_definition_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_localizations_links word_definitions_localizations_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_localizations_links
+    ADD CONSTRAINT word_definitions_localizations_links_inv_fk FOREIGN KEY (inv_word_definition_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_part_of_speech_links word_definitions_part_of_speech_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_part_of_speech_links
+    ADD CONSTRAINT word_definitions_part_of_speech_links_fk FOREIGN KEY (word_definition_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_part_of_speech_links word_definitions_part_of_speech_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_part_of_speech_links
+    ADD CONSTRAINT word_definitions_part_of_speech_links_inv_fk FOREIGN KEY (part_of_speech_id) REFERENCES public.part_of_speeches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_section_links word_definitions_section_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_section_links
+    ADD CONSTRAINT word_definitions_section_links_fk FOREIGN KEY (word_definition_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_section_links word_definitions_section_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_section_links
+    ADD CONSTRAINT word_definitions_section_links_inv_fk FOREIGN KEY (section_id) REFERENCES public.sections(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions word_definitions_updated_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions
+    ADD CONSTRAINT word_definitions_updated_by_id_fk FOREIGN KEY (updated_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: word_definitions_word_links word_definitions_word_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_word_links
+    ADD CONSTRAINT word_definitions_word_links_fk FOREIGN KEY (word_definition_id) REFERENCES public.word_definitions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: word_definitions_word_links word_definitions_word_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
+--
+
+ALTER TABLE ONLY public.word_definitions_word_links
+    ADD CONSTRAINT word_definitions_word_links_inv_fk FOREIGN KEY (word_id) REFERENCES public.words(id) ON DELETE CASCADE;
+
+
+--
 -- Name: words words_created_by_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
 --
 
 ALTER TABLE ONLY public.words
     ADD CONSTRAINT words_created_by_id_fk FOREIGN KEY (created_by_id) REFERENCES public.admin_users(id) ON DELETE SET NULL;
-
-
---
--- Name: words_components words_entity_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_components
-    ADD CONSTRAINT words_entity_fk FOREIGN KEY (entity_id) REFERENCES public.words(id) ON DELETE CASCADE;
-
-
---
--- Name: words_example_sentences_links words_example_sentences_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_example_sentences_links
-    ADD CONSTRAINT words_example_sentences_links_fk FOREIGN KEY (word_id) REFERENCES public.words(id) ON DELETE CASCADE;
-
-
---
--- Name: words_example_sentences_links words_example_sentences_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_example_sentences_links
-    ADD CONSTRAINT words_example_sentences_links_inv_fk FOREIGN KEY (sentence_id) REFERENCES public.sentences(id) ON DELETE CASCADE;
-
-
---
--- Name: words_localizations_links words_localizations_links_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_localizations_links
-    ADD CONSTRAINT words_localizations_links_fk FOREIGN KEY (word_id) REFERENCES public.words(id) ON DELETE CASCADE;
-
-
---
--- Name: words_localizations_links words_localizations_links_inv_fk; Type: FK CONSTRAINT; Schema: public; Owner: strapi
---
-
-ALTER TABLE ONLY public.words_localizations_links
-    ADD CONSTRAINT words_localizations_links_inv_fk FOREIGN KEY (inv_word_id) REFERENCES public.words(id) ON DELETE CASCADE;
 
 
 --

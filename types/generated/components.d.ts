@@ -180,9 +180,7 @@ export interface AWordRef extends Schema.Component {
     displayName: 'wordRef';
     icon: 'dashboard';
   };
-  attributes: {
-    word: Attribute.Relation<'a.word-ref', 'oneToOne', 'api::word.word'>;
-  };
+  attributes: {};
 }
 
 declare module '@strapi/types' {

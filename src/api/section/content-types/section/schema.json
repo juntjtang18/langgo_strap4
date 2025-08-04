@@ -52,6 +52,12 @@
         "a.pagebreaker",
         "a.external-video"
       ]
+    },
+    "word_definitions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::word-definition.word-definition",
+      "mappedBy": "section"
     }
   }
 }

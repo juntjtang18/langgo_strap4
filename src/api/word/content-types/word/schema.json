@@ -4,150 +4,23 @@
   "info": {
     "singularName": "word",
     "pluralName": "words",
-    "displayName": "word",
-    "description": ""
+    "displayName": "word"
   },
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
-    "word": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "string"
+    "target_text": {
+      "type": "string",
+      "unique": true,
+      "required": true
     },
-    "base_text": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string"
-    },
-    "instruction": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string"
-    },
-    "part_of_speech": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "noun",
-        "verb",
-        "adjective",
-        "adverb",
-        "conjunction",
-        "preposition",
-        "interjection",
-        "determiner",
-        "pronoun"
-      ]
-    },
-    "gender": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "masculine",
-        "feminine",
-        "neuter"
-      ]
-    },
-    "article": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "string"
-    },
-    "audio": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "audios"
-      ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "tags": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "a.taglist"
-    },
-    "example_sentences": {
+    "word_definitions": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::sentence.sentence",
-      "inversedBy": "words"
-    },
-    "verb_meta": {
-      "type": "component",
-      "repeatable": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "a.verb-meta"
-    },
-    "register": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "Formal",
-        "Informal",
-        "Neutral"
-      ],
-      "default": "Neutral"
-    },
-    "exam_base": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "json"
-    },
-    "exam_target": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "json"
+      "relation": "oneToMany",
+      "target": "api::word-definition.word-definition",
+      "mappedBy": "word"
     }
   }
 }

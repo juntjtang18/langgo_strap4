@@ -272,3 +272,49 @@ curl -X GET 'https://langgo-subsys.geniusparentingai.ca/api/pings'
 curl -X GET 'https://langgo-en-strapi.geniusparentingai.ca/api/flashcards/mine?pagination%5Bpage%5D=10&pagination%5BpageSize%5D=5&populate=content,review_tire' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
 -H "Content-Type: application/json" | jq .
+
+
+# backup_user_words.sh
+curl -s 'http://localhost:1338/api/user-words?pagination%5BpageSize%5D=1000' \
+-H "Authorization: Bearer 6538d1356589b1535b2c97bc0e76cbe58ffbcaa8087558527ee0b37af5cefa195795b37839fdd885c3cbe624d7e38298130cc787eebd43f60748cd20cab040885dd334b6c88b2201ae2793ad08164177aeadff42f2c13bde3500db72abd0cb477d78e3f2c5d6b8e7073c8021be966076ba288e91d211b9063ec657199fd5fce9" \
+  > user_words_backup.json
+
+ADMIN_TOKEN=6538d1356589b1535b2c97bc0e76cbe58ffbcaa8087558527ee0b37af5cefa195795b37839fdd885c3cbe624d7e38298130cc787eebd43f60748cd20cab040885dd334b6c88b2201ae2793ad08164177aeadff42f2c13bde3500db72abd0cb477d78e3f2c5d6b8e7073c8021be966076ba288e91d211b9063ec657199fd5fce9
+
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MjYyMTgwLCJleHAiOjE3NTY4NTQxODB9.mdAO5YjIEbwBb7uKrpLPOgwtP_5UtyIy7se4WbRwDKY
+
+curl -X POST "http://localhost:1338/api/flashcards/635/validate" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MjYyMTgwLCJleHAiOjE3NTY4NTQxODB9.mdAO5YjIEbwBb7uKrpLPOgwtP_5UtyIy7se4WbRwDKY" | jq .
+
+curl -X GET "http://localhost:1338/api/review-flashcards" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MjYyMTgwLCJleHAiOjE3NTY4NTQxODB9.mdAO5YjIEbwBb7uKrpLPOgwtP_5UtyIy7se4WbRwDKY" | jq .
+
+curl -X POST "http://localhost:1338/api/flashcards/636/review" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MjYyMTgwLCJleHAiOjE3NTY4NTQxODB9.mdAO5YjIEbwBb7uKrpLPOgwtP_5UtyIy7se4WbRwDKY" \
+-d '{"result":"correct"}' | jq .
+
+curl -X GET "http://localhost:1338/api/flashcard-stat" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MjYyMTgwLCJleHAiOjE3NTY4NTQxODB9.mdAO5YjIEbwBb7uKrpLPOgwtP_5UtyIy7se4WbRwDKY" \
+| jq .
+
+curl -X GET "http://localhost:1338/api/flashcards/mine?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MjYyMTgwLCJleHAiOjE3NTY4NTQxODB9.mdAO5YjIEbwBb7uKrpLPOgwtP_5UtyIy7se4WbRwDKY" | jq .
+
+
+const ADMIN_TOKEN='6538d1356589b1535b2c97bc0e76cbe58ffbcaa8087558527ee0b37af5cefa195795b37839fdd885c3cbe624d7e38298130cc787eebd43f60748cd20cab040885dd334b6c88b2201ae2793ad08164177aeadff42f2c13bde3500db72abd0cb477d78e3f2c5d6b8e7073c8021be966076ba288e91d211b9063ec657199fd5fce9';
+
+curl -X POST http://localhost:1338/api/migration/run \
+-H "Authorization: Bearer 6538d1356589b1535b2c97bc0e76cbe58ffbcaa8087558527ee0b37af5cefa195795b37839fdd885c3cbe624d7e38298130cc787eebd43f60748cd20cab040885dd334b6c88b2201ae2793ad08164177aeadff42f2c13bde3500db72abd0cb477d78e3f2c5d6b8e7073c8021be966076ba288e91d211b9063ec657199fd5fce9" \
+-H "Content-Type: application/json" | jq .
+
+
+curl -X POST http://localhost:1338/api/migration/link-and-validate \
+-H "Authorization: Bearer 6538d1356589b1535b2c97bc0e76cbe58ffbcaa8087558527ee0b37af5cefa195795b37839fdd885c3cbe624d7e38298130cc787eebd43f60748cd20cab040885dd334b6c88b2201ae2793ad08164177aeadff42f2c13bde3500db72abd0cb477d78e3f2c5d6b8e7073c8021be966076ba288e91d211b9063ec657199fd5fce9" \
+-H "Content-Type: application/json" | jq .

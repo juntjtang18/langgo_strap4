@@ -5,11 +5,5 @@
     "icon": "dashboard"
   },
   "options": {},
-  "attributes": {
-    "word": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::word.word"
-    }
-  }
+  "attributes": {}
 }
