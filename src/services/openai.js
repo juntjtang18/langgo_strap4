@@ -50,14 +50,55 @@ module.exports = ({ strapi }) => ({
   },
 
   /**
+   * Generates an example sentence for a given word, using a translation for context.
+   * @param {string} targetWord - The word to create a sentence for.
+   * @param {string} locale - The language of the word.
+   * @param {number | string} wordDefinitionId - The ID for logging.
+   * @param {string|null} contextTranslation - The translation of the word to provide context for its meaning.
+   * @returns {Promise<string|null>} The generated sentence or null on error.
+   */
+  async generateExampleSentence(targetWord, locale, wordDefinitionId = 'N/A', contextTranslation = null) {
+    let prompt = `Create one natural, simple example sentence in ${locale} using the word "${targetWord}".`;
+
+    // If context is provided, add it to the prompt to guide the AI
+    if (contextTranslation) {
+      prompt += ` The meaning of "${targetWord}" in this context is "${contextTranslation}".`;
+    }
+
+    prompt += " The sentence should be easy for a language learner to understand. Do not include the definition or any extra text, just the sentence.";
+
+    try {
+      const chatCompletion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are a helpful assistant that creates clear example sentences for language learners." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.6,
+        max_tokens: 60,
+      });
+
+      const sentence = chatCompletion.choices[0].message.content.replace(/\"/g, ''); // Remove quotes
+      return sentence;
+
+    } catch (error) {
+      strapi.log.error(
+        `Error calling OpenAI API for example sentence in ${locale} for word_definition ${wordDefinitionId}:`,
+        error.message
+      );
+      return null;
+    }
+  },
+
+  /**
    * Generates multiple-choice exam options for a given word.
-   * @param {string} correctWord - The correct word for the question.
-   * @param {string} language - The language of the word (e.g., 'en', 'es').
-   * @param {number | string} userWordId - The ID of the user_word for logging purposes.
+   * @param {string} text - The correct word for the question from the word_definition.
+   * @param {string} locale - The language of the word (e.g., 'en', 'es').
+   * @param {number | string} wordDefinitionId - The ID of the word_definition for logging purposes.
    * @returns {Promise<Array<object>>} - An array of 4 exam options.
    */
-  async generateExamOptions(correctWord, language, userWordId = 'N/A') {
-    const prompt = `Generate 3 incorrect alternative words in ${language} that are similar in category or difficulty to "${correctWord}". The output should be a JSON array of objects, where each object has "text" and "isCorrect" (boolean). The correct word should also be included with "isCorrect": true. Ensure the correct word is randomly placed among the options.`;
+  async generateExamOptions(text, locale, wordDefinitionId = 'N/A') {
+    const prompt = `Generate 3 incorrect alternative words in ${locale} that are similar in category or difficulty to "${text}". The output should be a JSON array of objects, where each object has "text" and "isCorrect" (boolean). The correct word should also be included with "isCorrect": true. Ensure the correct word is randomly placed among the options.`;
     try {
       const chatCompletion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -80,7 +121,7 @@ module.exports = ({ strapi }) => ({
 
       let finalOptions = [
         ...generatedOptions.filter(opt => !opt.isCorrect),
-        { text: correctWord, isCorrect: true }
+        { text: text, isCorrect: true }
       ];
       while (finalOptions.length < 4) {
         finalOptions.push({ text: `Placeholder ${finalOptions.length}`, isCorrect: false });
@@ -95,12 +136,12 @@ module.exports = ({ strapi }) => ({
 
     } catch (error) {
       strapi.log.error(
-        `Error calling OpenAI API for ${language} for user_word ${userWordId}:`,
+        `Error calling OpenAI API for ${locale} for word_definition ${wordDefinitionId}:`,
         error.message
       );
       // Return fallback options on error
       return [
-        { text: correctWord, isCorrect: true },
+        { text: text, isCorrect: true },
         { text: `Error opt 1`, isCorrect: false },
         { text: `Error opt 2`, isCorrect: false },
         { text: `Error opt 3`, isCorrect: false }

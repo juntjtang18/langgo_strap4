@@ -83,12 +83,6 @@
       "target": "api::user-sentence.user-sentence",
       "mappedBy": "lesson"
     },
-    "flashcards": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::flashcard.flashcard",
-      "mappedBy": "lesson"
-    },
     "unit": {
       "type": "relation",
       "relation": "manyToOne",

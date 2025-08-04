@@ -71,12 +71,6 @@
       },
       "component": "a.taglist"
     },
-    "words": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::word.word",
-      "mappedBy": "example_sentences"
-    },
     "register": {
       "pluginOptions": {
         "i18n": {

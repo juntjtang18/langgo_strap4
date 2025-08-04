@@ -844,25 +844,12 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    content: Attribute.DynamicZone<
-      ['a.sent-ref', 'a.user-sent-ref', 'a.word-ref', 'a.user-word-ref']
-    > &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     last_reviewed_at: Attribute.DateTime &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
         };
       }>;
-    lesson: Attribute.Relation<
-      'api::flashcard.flashcard',
-      'manyToOne',
-      'api::lesson.lesson'
-    >;
     correct_streak: Attribute.Integer &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -896,6 +883,11 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'api::flashcard.flashcard',
       'manyToOne',
       'api::review-tire.review-tire'
+    >;
+    word_definition: Attribute.Relation<
+      'api::flashcard.flashcard',
+      'manyToOne',
+      'api::word-definition.word-definition'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -987,11 +979,6 @@ export interface ApiLessonLesson extends Schema.CollectionType {
       'oneToMany',
       'api::user-sentence.user-sentence'
     >;
-    flashcards: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToMany',
-      'api::flashcard.flashcard'
-    >;
     unit: Attribute.Relation<
       'api::lesson.lesson',
       'manyToOne',
@@ -1053,6 +1040,126 @@ export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
+  };
+}
+
+export interface ApiModuleModule extends Schema.CollectionType {
+  collectionName: 'modules';
+  info: {
+    singularName: 'module';
+    pluralName: 'modules';
+    displayName: 'module';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    goal: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    icon_media: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    units: Attribute.Relation<
+      'api::module.module',
+      'oneToMany',
+      'api::unit.unit'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::module.module',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::module.module',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::module.module',
+      'oneToMany',
+      'api::module.module'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiPartOfSpeechPartOfSpeech extends Schema.CollectionType {
+  collectionName: 'part_of_speeches';
+  info: {
+    singularName: 'part-of-speech';
+    pluralName: 'part-of-speeches';
+    displayName: 'part of speech';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    word_definitions: Attribute.Relation<
+      'api::part-of-speech.part-of-speech',
+      'oneToMany',
+      'api::word-definition.word-definition'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::part-of-speech.part-of-speech',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::part-of-speech.part-of-speech',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::part-of-speech.part-of-speech',
+      'oneToMany',
+      'api::part-of-speech.part-of-speech'
+    >;
+    locale: Attribute.String;
   };
 }
 
@@ -1252,6 +1359,11 @@ export interface ApiSectionSection extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    word_definitions: Attribute.Relation<
+      'api::section.section',
+      'oneToMany',
+      'api::word-definition.word-definition'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1328,11 +1440,6 @@ export interface ApiSentenceSentence extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    words: Attribute.Relation<
-      'api::sentence.sentence',
-      'manyToMany',
-      'api::word.word'
-    >;
     register: Attribute.Enumeration<['Formal', 'Informal', 'Neutral']> &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -1616,6 +1723,11 @@ export interface ApiUnitUnit extends Schema.CollectionType {
       'api::unit.unit'
     >;
     unlocks: Attribute.Relation<'api::unit.unit', 'oneToOne', 'api::unit.unit'>;
+    module: Attribute.Relation<
+      'api::unit.unit',
+      'manyToOne',
+      'api::module.module'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::unit.unit', 'oneToOne', 'admin::user'> &
@@ -1867,6 +1979,32 @@ export interface ApiWordWord extends Schema.CollectionType {
     singularName: 'word';
     pluralName: 'words';
     displayName: 'word';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    target_text: Attribute.String & Attribute.Required & Attribute.Unique;
+    word_definitions: Attribute.Relation<
+      'api::word.word',
+      'oneToMany',
+      'api::word-definition.word-definition'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
+  collectionName: 'word_definitions';
+  info: {
+    singularName: 'word-definition';
+    pluralName: 'word-definitions';
+    displayName: 'word definition';
     description: '';
   };
   options: {
@@ -1878,12 +2016,16 @@ export interface ApiWordWord extends Schema.CollectionType {
     };
   };
   attributes: {
-    word: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    word: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'manyToOne',
+      'api::word.word'
+    >;
+    section: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'manyToOne',
+      'api::section.section'
+    >;
     base_text: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -1896,28 +2038,15 @@ export interface ApiWordWord extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    part_of_speech: Attribute.Enumeration<
-      [
-        'noun',
-        'verb',
-        'adjective',
-        'adverb',
-        'conjunction',
-        'preposition',
-        'interjection',
-        'determiner',
-        'pronoun'
-      ]
-    > &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    part_of_speech: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'manyToOne',
+      'api::part-of-speech.part-of-speech'
+    >;
     gender: Attribute.Enumeration<['masculine', 'feminine', 'neuter']> &
       Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     article: Attribute.String &
@@ -1926,24 +2055,31 @@ export interface ApiWordWord extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    audio: Attribute.Media &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    tags: Attribute.Component<'a.taglist', true> &
+    tags: Attribute.Component<'a.taglist'> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    example_sentences: Attribute.Relation<
-      'api::word.word',
-      'manyToMany',
-      'api::sentence.sentence'
-    >;
+    example_sentence: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     verb_meta: Attribute.Component<'a.verb-meta'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    exam_base: Attribute.JSON &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    exam_target: Attribute.JSON &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1954,30 +2090,30 @@ export interface ApiWordWord extends Schema.CollectionType {
         i18n: {
           localized: true;
         };
-      }> &
-      Attribute.DefaultTo<'Neutral'>;
-    exam_base: Attribute.JSON &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
       }>;
-    exam_target: Attribute.JSON &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    flashcards: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'oneToMany',
+      'api::flashcard.flashcard'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &
+    createdBy: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
-    updatedBy: Attribute.Relation<'api::word.word', 'oneToOne', 'admin::user'> &
+    updatedBy: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
     localizations: Attribute.Relation<
-      'api::word.word',
+      'api::word-definition.word-definition',
       'oneToMany',
-      'api::word.word'
+      'api::word-definition.word-definition'
     >;
     locale: Attribute.String;
   };
@@ -2004,6 +2140,8 @@ declare module '@strapi/types' {
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
+      'api::module.module': ApiModuleModule;
+      'api::part-of-speech.part-of-speech': ApiPartOfSpeechPartOfSpeech;
       'api::ping.ping': ApiPingPing;
       'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
@@ -2018,6 +2156,7 @@ declare module '@strapi/types' {
       'api::user-word.user-word': ApiUserWordUserWord;
       'api::vbsetting.vbsetting': ApiVbsettingVbsetting;
       'api::word.word': ApiWordWord;
+      'api::word-definition.word-definition': ApiWordDefinitionWordDefinition;
     }
   }
 }

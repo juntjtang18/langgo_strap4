@@ -22,20 +22,6 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "flashcards"
     },
-    "content": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "dynamiczone",
-      "components": [
-        "a.sent-ref",
-        "a.user-sent-ref",
-        "a.word-ref",
-        "a.user-word-ref"
-      ]
-    },
     "last_reviewed_at": {
       "pluginOptions": {
         "i18n": {
@@ -43,12 +29,6 @@
         }
       },
       "type": "datetime"
-    },
-    "lesson": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::lesson.lesson",
-      "inversedBy": "flashcards"
     },
     "correct_streak": {
       "pluginOptions": {
@@ -90,6 +70,12 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::review-tire.review-tire",
+      "inversedBy": "flashcards"
+    },
+    "word_definition": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::word-definition.word-definition",
       "inversedBy": "flashcards"
     }
   }

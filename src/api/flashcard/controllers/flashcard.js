@@ -9,10 +9,8 @@ const getReviewLevel = (tier) => {
 
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
-  // If in development mode, divide cooldown by a large number to make it seconds/minutes long.
-  // Set NODE_ENV=development in your .env file to enable.
   if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
-    return (hours || 0) / 360000; // e.g., 6 hours becomes 0.06 seconds
+    return (hours || 0) / 360000;
   }
   return hours || 0;
 };
@@ -20,20 +18,19 @@ const getEffectiveCooldown = (hours) => {
 module.exports = createCoreController(
   'api::flashcard.flashcard',
   ({ strapi }) => ({
-    // Centralized populate to include review_tire relation everywhere
+    /**
+     * Centralized population object to fetch flashcards with their core relations.
+     */
     _commonPopulate() {
       return {
-        content: {
+        word_definition: {
           populate: {
-            word:      { populate: ['tags', 'verb_meta', 'audio'] },
-            sentence:  { populate: ['tags', 'words', 'target_audio'] },
-            user_word: { populate: { fields: ['target_text', 'base_text', 'part_of_speech'] } },
-            user_sentence: { populate: { fields: ['target_text', 'base_text'] } },
+            word: {
+              populate: ['audio', 'tags'],
+            },
           },
         },
-        review_tire: {
-          populate: ['tier', 'min_streak', 'max_streak', 'cooldown_hours', 'demote_bar'],
-        },
+        review_tire: true,
       };
     },
 
@@ -55,14 +52,11 @@ module.exports = createCoreController(
 
     /**
      * GET /flashcards/findForReview
-     * return the flashcards that are due for review based on the user's streak and review tire settings.
-     * This method handles pagination and returns only the cards that are due for review.
      */
     async findForReview(ctx) {
       const { user } = ctx.state;
       if (!user) return ctx.unauthorized('You must be logged in.');
 
-      // 1. Get pagination params from query string, with defaults
       const page = parseInt(ctx.query.pagination?.page || '1', 10);
       const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
 
@@ -70,26 +64,19 @@ module.exports = createCoreController(
         const tierService = strapi.service('tier-service');
         const allTiers = await tierService.getAllTiers();
 
-        // Fetch all cards lightweight to determine which are due
         const allCards = await strapi.entityService.findMany(
           'api::flashcard.flashcard',
           {
             filters: { user: user.id },
             populate: { review_tire: true },
-            locale: 'all', // The fix is here
+            locale: 'all',
           }
         );
 
         const now = new Date();
         const dueCardIds = allCards
           .filter((card) => {
-            let tierForCheck;
-            if (card.review_tire) {
-              tierForCheck = card.review_tire;
-            } else {
-              tierForCheck = tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
-            }
-
+            const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
             if (!tierForCheck) return false;
             if (!card.last_reviewed_at) return true;
 
@@ -99,7 +86,6 @@ module.exports = createCoreController(
           })
           .map(card => card.id);
 
-        // 2. Paginate the list of due card IDs
         const totalDue = dueCardIds.length;
         if (totalDue === 0) {
           return this.transformResponse([], {
@@ -117,13 +103,11 @@ module.exports = createCoreController(
           });
         }
 
-        // 3. Fetch only the fully populated cards for the current page
         const populatedDueCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
             filters: { id: { $in: paginatedDueCardIds } },
             populate: this._commonPopulate()
         });
 
-        // 4. Return the paginated data and metadata
         const pagination = { page, pageSize, pageCount, total: totalDue };
         return this.transformResponse(populatedDueCards, { pagination });
 
@@ -161,11 +145,8 @@ module.exports = createCoreController(
     
           const tierService = strapi.service('tier-service');
           const reviewTiers = await tierService.getAllTiers();
-    
-          // Determine current tier
           let currentTier = flashcard.review_tire || tierService.findTierForStreakWithRules(flashcard.correct_streak, reviewTiers);
     
-          // Check cooldown
           const effectiveCooldown = getEffectiveCooldown(currentTier?.cooldown_hours || 0);
           const reviewIsOnCooldown = currentTier && flashcard.last_reviewed_at
             ? (new Date() - new Date(flashcard.last_reviewed_at)) / 3600e3 <= effectiveCooldown
@@ -184,11 +165,11 @@ module.exports = createCoreController(
               updateData.wrong_streak = 0;
     
               const newTier = tierService.findTierForStreakWithRules(newStreak, reviewTiers);
-              updateData.review_tire = newTier.id; // Always update review_tire
+              updateData.review_tire = newTier.id;
               if (newTier.tier === 'remembered') {
                 updateData.is_remembered = true;
               }
-            } else { // result === 'wrong'
+            } else {
               const newWrong = (flashcard.wrong_streak ?? 0) + 1;
               updateData.wrong_streak = newWrong;
     
@@ -203,7 +184,6 @@ module.exports = createCoreController(
             }
           }
     
-          // Always log the review
           await strapi.entityService.create('api::reviewlog.reviewlog', {
             data: {
               user: user.id,
@@ -222,7 +202,6 @@ module.exports = createCoreController(
             );
           }
     
-          // Refetch the card with all relations populated
           return await strapi.entityService.findOne(
             'api::flashcard.flashcard',
             id,
@@ -248,7 +227,7 @@ module.exports = createCoreController(
         const allCards = await strapi.entityService.findMany(
           'api::flashcard.flashcard',
           {
-            filters: { user: user.id }, // Filter by logged-in user            
+            filters: { user: user.id },
             fields: ['is_remembered', 'correct_streak', 'wrong_streak'],
           }
         );
@@ -276,8 +255,6 @@ module.exports = createCoreController(
 
     /**
      * GET /flashcards/mine?pagination[page]&pagination[pageSize]
-     * This function return all flashcard belonging to the current user.
-     * It supports pagination via query parameters.
      */
     async findMine(ctx) {
       const { user } = ctx.state;
@@ -287,14 +264,10 @@ module.exports = createCoreController(
       const pageSize = Math.max(1, parseInt(ctx.query.pagination?.pageSize || '10', 10));
       const start = (page - 1) * pageSize;
 
-      // common populate to include review_tire
-      const commonPopulate = this._commonPopulate();
-
-      // fetch page of flashcards
       const [results, total] = await Promise.all([
         strapi.entityService.findMany('api::flashcard.flashcard', {
           filters: { user: user.id },
-          populate: commonPopulate,
+          populate: this._commonPopulate(),
           sort: { createdAt: 'asc' },
           start,
           limit: pageSize,
@@ -304,13 +277,11 @@ module.exports = createCoreController(
         }),
       ]);
 
-      // ensure every card has a review_tire (compute for new ones)
       const tierService = strapi.service('tier-service');
       const allTiers = await tierService.getAllTiers();
       const enriched = results.map((card) => {
         if (!card.review_tire) {
-          const tier = tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
-          card.review_tire = tier;
+          card.review_tire = tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
         }
         return card;
       });
@@ -327,7 +298,6 @@ module.exports = createCoreController(
 
    /**
    * POST /flashcards/:id/validate
-   * New endpoint to trigger validation and fixing of a flashcard.
    */
     async validate(ctx) {
       const { user } = ctx.state;
@@ -336,7 +306,9 @@ module.exports = createCoreController(
       const { id } = ctx.params;
       
       try {
+        // --- THIS IS THE CORRECTED LINE ---
         const validationService = strapi.service('flashcard-validate');
+        
         const updatedFlashcard = await validationService.validateAndFix(id);
         
         return this.transformResponse(updatedFlashcard);

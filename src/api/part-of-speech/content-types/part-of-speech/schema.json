@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "part_of_speeches",
+  "info": {
+    "singularName": "part-of-speech",
+    "pluralName": "part-of-speeches",
+    "displayName": "part of speech",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "word_definitions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::word-definition.word-definition",
+      "mappedBy": "part_of_speech"
+    }
+  }
+}

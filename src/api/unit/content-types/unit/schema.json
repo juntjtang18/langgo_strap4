@@ -66,6 +66,12 @@
       "relation": "oneToOne",
       "target": "api::unit.unit",
       "mappedBy": "precondition"
+    },
+    "module": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::module.module",
+      "inversedBy": "units"
     }
   }
 }

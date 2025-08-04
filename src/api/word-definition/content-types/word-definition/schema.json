@@ -1,0 +1,138 @@
+{
+  "kind": "collectionType",
+  "collectionName": "word_definitions",
+  "info": {
+    "singularName": "word-definition",
+    "pluralName": "word-definitions",
+    "displayName": "word definition",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "word": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::word.word",
+      "inversedBy": "word_definitions"
+    },
+    "section": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::section.section",
+      "inversedBy": "word_definitions"
+    },
+    "base_text": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "instruction": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "part_of_speech": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::part-of-speech.part-of-speech",
+      "inversedBy": "word_definitions"
+    },
+    "gender": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "masculine",
+        "feminine",
+        "neuter"
+      ]
+    },
+    "article": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string"
+    },
+    "tags": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "a.taglist"
+    },
+    "example_sentence": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "verb_meta": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "a.verb-meta"
+    },
+    "exam_base": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "exam_target": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "register": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Formal",
+        "Informal",
+        "Neutral"
+      ]
+    },
+    "flashcards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::flashcard.flashcard",
+      "mappedBy": "word_definition"
+    }
+  }
+}
