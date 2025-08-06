@@ -5,8 +5,55 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::word-definition.word-definition', ({ strapi }) => ({
   /**
+   * Custom search action to find word definitions by base_text.
+   * This allows searching for a word in one language (e.g., Chinese) and seeing all its
+   * potential translations (e.g., in English).
+   * @param {object} ctx - The Koa context object.
+   */
+  async search(ctx) {
+    const { term } = ctx.query;
+    const user = ctx.state.user;
+
+    if (!user) {
+      return ctx.unauthorized('Authentication is required to perform a search.');
+    }
+
+    if (!term) {
+      return ctx.badRequest('A "term" query parameter is required.');
+    }
+
+    try {
+      const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
+        filters: {
+          base_text: {
+            $containsi: term, // Case-insensitive search on the base text
+          },
+        },
+        limit: 10,
+        populate: {
+          word: true, // Populate the parent 'word' to get the target_text
+          part_of_speech: true,
+          flashcards: {
+            filters: {
+              user: user.id,
+            },
+            populate: {
+              user: true,
+            },
+          },
+        },
+      });
+
+      return this.transformResponse(definitions);
+    } catch (error) {
+      strapi.log.error('Error in custom word-definition search controller:', error);
+      return ctx.internalServerError('An error occurred during the search.');
+    }
+  },
+    /**
    * Creates or finds a word/definition and an associated flashcard for the user,
    * then enqueues a background job to populate the entry with AI-generated content.
+   * As some contents may take time to generate, the response may not include all fields immediately.
    */
   async create(ctx) {
     const { user } = ctx.state;
