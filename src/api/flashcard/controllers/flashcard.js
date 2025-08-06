@@ -10,7 +10,7 @@ const getReviewLevel = (tier) => {
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
   if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
-    return (hours || 0) / 360000;
+    return (hours || 0) / 180;
   }
   return hours || 0;
 };
@@ -224,14 +224,39 @@ module.exports = createCoreController(
       if (!user) return ctx.unauthorized('You must be logged in to view statistics.');
     
       try {
+        const tierService = strapi.service('tier-service');
+        const allTiers = await tierService.getAllTiers();
+
         const allCards = await strapi.entityService.findMany(
           'api::flashcard.flashcard',
           {
             filters: { user: user.id },
-            fields: ['is_remembered', 'correct_streak', 'wrong_streak'],
+            populate: { review_tire: true }, // Populate the tier for calculation
+            fields: ['is_remembered', 'correct_streak', 'wrong_streak', 'last_reviewed_at'],
           }
         );
-    
+
+        // --- Calculate Due for Review ---
+        const now = new Date();
+        const dueForReview = allCards.filter((card) => {
+          // A card is due if it has never been reviewed.
+          if (!card.last_reviewed_at) {
+            return true;
+          }
+          // Find the correct tier for the card.
+          const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
+          if (!tierForCheck) {
+            return false; // Cannot determine cooldown if tier is missing.
+          }
+          // Calculate the effective cooldown period.
+          const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
+          // Determine the cutoff time.
+          const cutoff = new Date(now - effectiveCooldown * 3600e3);
+          // A card is due if its last review was before the cutoff time.
+          return new Date(card.last_reviewed_at) <= cutoff;
+        }).length;
+        
+        // --- Calculate Other Statistics ---
         const total = allCards.length;
         const remembered = allCards.filter(
           (c) => c.is_remembered || c.correct_streak >= 11
@@ -246,7 +271,18 @@ module.exports = createCoreController(
         const monthly = active.filter((c) => c.correct_streak >= 9 && c.correct_streak <= 10).length;
         const hardToRemember = active.filter((c) => c.wrong_streak >= 3).length;
     
-        return ctx.send({ data: { totalCards: total, remembered, newCards, warmUp, weekly, monthly, hardToRemember } });
+        return ctx.send({ 
+          data: { 
+            totalCards: total, 
+            remembered, 
+            newCards, 
+            warmUp, 
+            weekly, 
+            monthly, 
+            hardToRemember,
+            dueForReview, // Added the new statistic here
+          } 
+        });
       } catch (err) {
         strapi.log.error(`getStatistics error: ${err.message}`);
         return ctx.internalServerError('An error occurred while fetching statistics.');

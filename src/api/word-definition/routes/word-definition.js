@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * word-definition router
+ * word router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
