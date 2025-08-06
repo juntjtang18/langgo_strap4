@@ -5793,6 +5793,8 @@ COPY public.conversations (id, created_at, updated_at, created_by_id, updated_by
 44	2025-07-31 18:30:00.682	2025-07-31 18:30:00.682	\N	\N	c0f6b2cb-12b1-43b4-a652-a63ddc0351de	[{"role": "assistant", "content": "Hello! How about we talk about \\"Days of the Week\\"? Or, you can suggest a topic."}]
 45	2025-08-02 04:30:16.676	2025-08-02 04:30:16.676	\N	\N	c0e1021f-c71b-49e1-bf7e-14b8d607438e	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
 46	2025-08-02 06:02:47.142	2025-08-02 06:02:47.142	\N	\N	fd2c8f59-d983-4274-8903-20bdfad9606a	[{"role": "assistant", "content": "Hello! How about we talk about \\"Months of the Year\\"? Or, you can suggest a topic."}]
+47	2025-08-05 15:19:18.993	2025-08-05 15:19:18.993	\N	\N	805d3378-4033-4d9a-a215-4916fc8ef07a	[{"role": "assistant", "content": "Hello! How about we talk about \\"Greetings and Introductions\\"? Or, you can suggest a topic."}]
+48	2025-08-05 18:37:38.189	2025-08-05 18:37:38.189	\N	\N	1dc068e1-c39f-4c04-bef4-5c438c95371c	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Polite Expressions\\"? Or, you can suggest a topic."}]
 \.
 
 
@@ -5850,8 +5852,7 @@ COPY public.files_related_morphs (id, file_id, related_id, related_type, field, 
 
 COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id, locale, last_reviewed_at, is_remembered, correct_streak, wrong_streak) FROM stdin;
 421	2025-07-07 17:09:39.931	2025-08-03 21:32:25.866	\N	\N	en	\N	f	0	0
-368	2025-07-01 17:27:11.407	2025-08-03 21:31:40.417	\N	\N	en	2025-07-06 14:26:40.437	f	3	0
-425	2025-07-01 17:19:27.722	2025-08-03 21:32:26.045	\N	\N	en	2025-07-31 06:52:50.503	f	6	0
+376	2025-07-02 03:31:41.445	2025-08-05 10:43:07.775	\N	\N	en	2025-08-05 10:43:07.462	f	3	0
 360	2025-07-05 17:54:28.143	2025-08-03 21:31:40.449	\N	\N	en	2025-07-06 14:18:28.915	f	1	0
 426	2025-07-07 17:09:36.192	2025-08-03 21:32:26.138	\N	\N	en	\N	f	0	0
 364	2025-07-05 17:31:27.887	2025-08-03 21:31:40.751	\N	\N	en	2025-07-06 14:18:27.181	f	1	0
@@ -5862,9 +5863,9 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 370	2025-07-07 09:59:13.186	2025-08-03 21:31:45.56	\N	\N	en	\N	f	0	0
 434	2025-07-02 13:55:27.94	2025-08-03 21:32:31.106	\N	\N	en	2025-07-30 17:59:15.645	f	3	0
 374	2025-07-07 08:37:09.202	2025-08-03 21:31:45.609	\N	\N	en	2025-07-10 05:14:03.955	f	7	0
-429	2025-06-30 18:10:08.461	2025-08-03 21:32:31.331	\N	\N	en	2025-07-31 06:52:47.727	f	7	0
+502	2025-07-01 17:16:17.349	2025-08-05 10:42:47.488	\N	\N	en	2025-08-05 10:42:47.183	f	7	0
 377	2025-07-02 03:32:16.142	2025-08-03 21:31:45.778	\N	\N	en	2025-07-06 14:50:09.757	f	2	0
-376	2025-07-02 03:31:41.445	2025-08-03 21:31:45.845	\N	\N	en	2025-07-06 14:50:07.674	f	2	0
+454	2025-07-02 05:15:22.24	2025-08-05 10:43:10.536	\N	\N	en	2025-08-05 10:43:10.063	f	4	0
 375	2025-07-07 07:40:25.851	2025-08-03 21:31:53.92	\N	\N	en	\N	f	0	0
 437	2025-07-07 08:34:26.509	2025-08-03 21:32:35.063	\N	\N	en	2025-08-02 02:45:30.065	f	6	1
 445	2025-07-02 05:40:13.5	2025-08-03 21:32:35.398	\N	\N	en	2025-08-02 17:00:21.893	f	4	0
@@ -5877,7 +5878,7 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 382	2025-07-07 10:45:53.697	2025-08-03 21:31:58.591	\N	\N	en	\N	f	0	0
 386	2025-07-07 10:36:38.724	2025-08-03 21:31:58.969	\N	\N	en	\N	f	0	0
 451	2025-07-07 17:13:08.835	2025-08-03 21:32:40.706	\N	\N	en	\N	f	0	0
-454	2025-07-02 05:15:22.24	2025-08-03 21:32:41.13	\N	\N	en	2025-08-02 16:59:34.136	f	3	0
+368	2025-07-01 17:27:11.407	2025-08-05 10:44:08.02	\N	\N	en	2025-08-05 10:44:07.708	f	5	0
 455	2025-07-02 17:33:13	2025-08-03 21:32:41.203	\N	\N	en	2025-08-02 16:57:48.55	f	1	1
 398	2025-07-07 16:47:09.191	2025-08-03 21:32:03.268	\N	\N	en	\N	f	0	0
 449	2025-07-07 17:13:11.798	2025-08-03 21:32:41.206	\N	\N	en	\N	f	0	0
@@ -5910,13 +5911,14 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 479	2025-07-15 11:28:36.869	2025-08-03 21:32:57.794	\N	\N	en	\N	f	0	0
 482	2025-08-02 16:44:11.045	2025-08-03 21:32:58.314	\N	\N	en	\N	f	0	0
 484	2025-07-07 08:57:47.635	2025-08-03 21:32:58.622	\N	\N	en	2025-07-09 19:10:56.203	f	1	0
+429	2025-06-30 18:10:08.461	2025-08-05 10:42:35.462	\N	\N	en	2025-08-05 10:42:35.17	f	7	1
 491	2025-07-18 07:24:16.429	2025-08-03 21:33:11.135	\N	\N	en	2025-08-02 12:43:44.396	f	9	0
 485	2025-07-07 07:43:19.693	2025-08-03 21:33:11.226	\N	\N	en	2025-08-02 02:45:21.504	f	8	1
 487	2025-07-14 03:17:29.301	2025-08-03 21:33:11.258	\N	\N	en	2025-08-02 02:45:32.691	f	6	1
 492	2025-08-02 16:44:40.795	2025-08-03 21:33:11.659	\N	\N	en	\N	f	0	0
 500	2025-08-02 16:26:02.995	2025-08-03 21:33:16.026	\N	\N	en	\N	f	0	0
 501	2025-08-02 11:53:36.036	2025-08-03 21:33:16.186	\N	\N	en	2025-08-02 12:49:37.012	f	2	0
-502	2025-07-01 17:16:17.349	2025-08-03 21:33:16.252	\N	\N	en	2025-07-31 06:52:49.089	f	6	0
+425	2025-07-01 17:19:27.722	2025-08-05 10:42:50.867	\N	\N	en	2025-08-05 10:42:50.54	f	7	0
 499	2025-08-02 16:26:18.946	2025-08-03 21:33:16.569	\N	\N	en	\N	f	0	0
 497	2025-08-02 16:26:53.481	2025-08-03 21:33:17.522	\N	\N	en	\N	f	0	0
 509	2025-08-02 16:28:51.304	2025-08-03 21:33:21.676	\N	\N	en	\N	f	0	0
@@ -5942,7 +5944,7 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 541	2025-08-02 16:56:32.703	2025-08-03 21:33:41.2	\N	\N	en	\N	f	0	0
 521	2025-07-15 07:44:33.972	2025-08-04 01:23:46.555	\N	\N	en	2025-08-04 01:23:46.231	f	6	0
 424	2025-07-07 08:27:52.291	2025-08-03 21:32:25.865	\N	\N	en	2025-08-02 02:45:28.1	f	7	1
-361	2025-07-01 17:19:46.977	2025-08-03 21:31:41.097	\N	\N	en	2025-07-06 14:26:42.11	f	2	0
+362	2025-07-01 17:43:22.852	2025-08-05 10:44:04.358	\N	\N	en	2025-08-05 10:44:04.031	f	4	0
 419	2025-07-07 09:55:22.4	2025-08-03 21:32:25.971	\N	\N	en	2025-07-10 05:14:51.865	f	1	0
 359	2025-07-05 17:54:53.245	2025-08-03 21:31:41.361	\N	\N	en	2025-07-06 14:26:32.362	f	1	0
 423	2025-07-07 17:09:37.112	2025-08-03 21:32:26.168	\N	\N	en	\N	f	0	0
@@ -5954,11 +5956,10 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 371	2025-07-06 14:28:53.219	2025-08-03 21:31:45.561	\N	\N	en	2025-07-06 14:50:02.988	f	1	0
 435	2025-07-02 07:06:51.25	2025-08-03 21:32:30.886	\N	\N	en	2025-07-30 17:59:13.33	f	4	0
 373	2025-07-06 14:49:40.573	2025-08-03 21:31:45.622	\N	\N	en	2025-07-06 14:50:05.056	f	0	1
-430	2025-07-01 17:08:15.505	2025-08-03 21:32:31.124	\N	\N	en	2025-07-31 06:52:48.543	f	5	0
-378	2025-07-02 03:16:30.841	2025-08-03 21:31:46.24	\N	\N	en	2025-07-06 14:50:06.373	f	3	0
+439	2025-07-01 17:46:03.056	2025-08-05 10:42:56.587	\N	\N	en	2025-08-05 10:42:56.283	f	5	0
+361	2025-07-01 17:19:46.977	2025-08-05 10:44:01.868	\N	\N	en	2025-08-05 10:44:01.547	f	3	0
 432	2025-07-02 07:07:30.586	2025-08-03 21:32:31.286	\N	\N	en	2025-07-30 17:59:14.417	f	3	0
 384	2025-07-07 10:32:54.674	2025-08-03 21:31:58.091	\N	\N	en	\N	f	0	0
-439	2025-07-01 17:46:03.056	2025-08-03 21:32:34.962	\N	\N	en	2025-08-02 16:57:46.386	f	4	0
 381	2025-07-07 10:54:28.269	2025-08-03 21:31:58.153	\N	\N	en	\N	f	0	0
 443	2025-07-02 05:32:50.67	2025-08-03 21:32:35.367	\N	\N	en	2025-08-02 16:59:37.629	f	2	1
 383	2025-07-07 10:54:30.398	2025-08-03 21:31:58.221	\N	\N	en	\N	f	0	0
@@ -6005,18 +6006,19 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 493	2025-07-18 11:45:49.378	2025-08-03 21:33:10.434	\N	\N	en	2025-08-02 12:43:47.505	f	9	0
 488	2025-07-02 07:39:06.405	2025-08-03 21:33:10.628	\N	\N	en	2025-07-30 17:59:15.452	f	4	0
 490	2025-07-14 15:43:34.208	2025-08-03 21:33:10.659	\N	\N	en	2025-08-02 02:45:05.696	f	3	0
+496	2025-06-27 02:06:57.998	2025-08-05 10:42:32.75	\N	\N	en	2025-08-05 10:42:32.368	t	12	0
 486	2025-07-15 11:03:56.994	2025-08-04 01:23:50.556	\N	\N	en	2025-08-04 01:23:50.246	f	9	0
 495	2025-08-02 16:27:04.214	2025-08-03 21:33:16.026	\N	\N	en	\N	f	0	0
 503	2025-08-02 16:27:52.062	2025-08-03 21:33:16.381	\N	\N	en	\N	f	0	0
-496	2025-06-27 02:06:57.998	2025-08-03 21:33:16.602	\N	\N	en	2025-07-31 06:29:21.451	t	11	0
+430	2025-07-01 17:08:15.505	2025-08-05 10:42:42.061	\N	\N	en	2025-08-05 10:42:41.776	f	5	1
 498	2025-08-02 16:45:43.419	2025-08-03 21:33:17.367	\N	\N	en	\N	f	0	0
 507	2025-07-15 07:37:59.731	2025-08-03 21:33:21.677	\N	\N	en	2025-07-31 07:05:07.818	f	1	0
 504	2025-08-02 16:29:35.059	2025-08-03 21:33:21.676	\N	\N	en	\N	f	0	0
 505	2025-08-02 16:29:14.209	2025-08-03 21:33:22.214	\N	\N	en	\N	f	0	0
 508	2025-08-02 16:31:44.481	2025-08-03 21:33:22.247	\N	\N	en	\N	f	0	0
 512	2025-07-15 07:40:58.372	2025-08-03 21:33:22.326	\N	\N	en	2025-07-31 07:06:16.406	f	1	0
-367	2025-07-02 03:04:23.193	2025-08-03 21:31:40.181	\N	\N	en	2025-07-06 14:26:57.954	f	2	0
-362	2025-07-01 17:43:22.852	2025-08-03 21:31:40.45	\N	\N	en	2025-07-06 14:26:37.622	f	3	0
+378	2025-07-02 03:16:30.841	2025-08-05 10:43:03.955	\N	\N	en	2025-08-05 10:43:03.661	f	3	1
+367	2025-07-02 03:04:23.193	2025-08-05 10:44:06.084	\N	\N	en	2025-08-05 10:44:05.741	f	3	0
 365	2025-07-05 18:19:02.38	2025-08-03 21:31:41.012	\N	\N	en	2025-07-06 14:26:35.668	f	0	1
 516	2025-08-02 16:38:22.99	2025-08-03 21:33:26.398	\N	\N	en	\N	f	0	0
 520	2025-08-02 16:33:31.993	2025-08-03 21:33:26.754	\N	\N	en	\N	f	0	0
@@ -6081,15 +6083,18 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 583	2025-08-02 20:58:12.103	2025-08-03 21:34:05.862	\N	\N	en	\N	f	0	0
 593	2025-08-02 21:10:06.888	2025-08-03 21:34:16.329	\N	\N	en	\N	f	0	0
 603	2025-08-02 21:13:13.96	2025-08-03 21:34:21.732	\N	\N	en	\N	f	0	0
+644	2025-08-04 11:03:30.02	2025-08-05 18:37:59.043	\N	\N	en	2025-08-05 18:37:58.684	f	1	0
 563	2025-08-02 20:44:04.147	2025-08-03 21:33:56.339	\N	\N	en	\N	f	0	0
 572	2025-08-02 20:46:55.723	2025-08-03 21:34:01.173	\N	\N	en	\N	f	0	0
 579	2025-08-02 20:58:30.702	2025-08-03 21:34:06.852	\N	\N	en	\N	f	0	0
 587	2025-08-02 21:01:58.482	2025-08-03 21:34:15.946	\N	\N	en	\N	f	0	0
 600	2025-08-02 21:17:42.129	2025-08-03 21:34:22.685	\N	\N	en	\N	f	0	0
+645	2025-08-04 11:04:24.143	2025-08-05 18:38:00.767	\N	\N	en	2025-08-05 18:37:59.94	f	1	0
 566	2025-08-02 20:50:53.576	2025-08-03 21:34:00.991	\N	\N	en	\N	f	0	0
 576	2025-08-02 21:00:24.505	2025-08-03 21:34:07.445	\N	\N	en	\N	f	0	0
 586	2025-08-02 21:01:44.116	2025-08-03 21:34:16.162	\N	\N	en	\N	f	0	0
 601	2025-08-02 21:14:19.288	2025-08-03 21:34:23.241	\N	\N	en	\N	f	0	0
+646	2025-08-04 13:56:40.711	2025-08-05 18:38:01.044	\N	\N	en	2025-08-05 18:38:00.617	f	1	0
 604	2025-08-02 21:23:01.085	2025-08-03 21:34:40.594	\N	\N	en	\N	f	0	0
 619	2025-08-02 21:25:42.043	2025-08-03 21:34:46.404	\N	\N	en	\N	f	0	0
 625	2025-08-02 21:30:32.208	2025-08-03 21:34:52.649	\N	\N	en	\N	f	0	0
@@ -6124,7 +6129,6 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 622	2025-08-02 21:23:26.234	2025-08-03 21:34:46.53	\N	\N	en	\N	f	0	0
 626	2025-08-02 21:30:14.761	2025-08-03 21:34:52.296	\N	\N	en	\N	f	0	0
 637	2025-08-03 22:57:45.449	2025-08-03 22:57:45.449	\N	\N	en	\N	f	0	0
-638	2025-08-04 01:25:28.844	2025-08-04 01:25:28.844	\N	\N	en	\N	f	0	0
 639	2025-08-04 02:56:52.531	2025-08-04 02:56:52.531	\N	\N	en	\N	f	0	0
 640	2025-08-04 02:57:23.785	2025-08-04 02:57:23.785	\N	\N	en	\N	f	0	0
 641	2025-08-04 03:35:22.495	2025-08-04 03:35:22.495	\N	\N	en	\N	f	0	0
@@ -6150,277 +6154,211 @@ COPY public.flashcards_localizations_links (id, flashcard_id, inv_flashcard_id, 
 --
 
 COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flashcard_order) FROM stdin;
-355	421	1	24
-356	419	1	24
-357	425	2	1
-358	426	1	24
-359	428	1	25
-360	427	1	25
-361	420	1	25
-362	423	1	25
-363	422	1	26
-364	433	2	2
-365	435	2	2
-367	434	1	27
-368	430	2	2
-369	432	1	27
-371	439	2	3
-372	437	2	3
-373	443	1	28
-374	441	2	4
-375	445	2	4
-376	440	1	28
-377	438	2	4
-378	436	1	29
-379	442	1	29
-380	444	1	30
-381	451	1	31
-382	452	1	31
-383	447	1	31
-384	448	1	32
-385	454	1	32
-386	449	1	32
-387	455	1	32
-388	450	1	33
-389	453	1	33
-390	446	1	33
-391	464	1	34
-392	459	1	34
-393	462	1	34
-394	456	1	34
-395	460	1	35
-396	463	1	35
-397	461	1	35
-398	458	1	36
-399	457	1	36
-400	465	1	36
-401	469	1	37
-402	467	1	37
-403	468	1	37
-404	470	1	37
-405	466	1	38
-406	472	1	38
-407	473	1	38
-408	475	1	39
-409	471	1	39
-410	474	1	40
-411	476	1	41
-412	477	1	42
-413	479	1	42
-414	483	1	42
-415	478	1	42
-416	480	1	43
-417	482	1	43
-418	484	1	43
-419	481	1	44
-422	488	2	5
-423	490	1	45
-427	487	2	6
-428	492	1	46
-430	500	1	47
-431	495	1	47
-432	501	1	47
-433	502	2	7
-434	503	1	48
-435	499	1	48
+593	646	1	253
 436	496	5	2
-437	498	1	49
-438	497	1	49
-440	504	1	50
-439	507	1	50
-441	509	1	50
-442	510	1	50
-443	513	1	50
-444	511	1	51
-445	505	1	51
 420	493	4	1
 421	494	4	2
 425	491	4	3
-294	367	1	1
 295	363	1	1
-296	368	1	1
-297	362	1	1
-298	360	1	1
-299	364	1	2
-300	366	1	2
-301	365	1	2
-302	361	1	3
-303	359	1	3
+364	433	2	1
+365	435	2	2
+368	430	2	3
+371	439	2	4
+372	437	2	5
+374	441	2	6
+294	367	1	2
+298	360	1	3
+299	364	1	4
+301	365	1	5
+300	366	1	6
+303	359	1	7
+302	361	1	8
 304	372	5	1
-305	369	1	4
-306	370	1	4
-307	371	1	4
-308	373	1	4
-310	377	1	4
-311	376	1	5
-312	378	1	6
-313	375	1	7
-314	380	1	8
-315	384	1	8
-316	381	1	8
-317	383	1	8
-318	388	1	8
-319	387	1	9
-320	382	1	9
-321	385	1	9
-322	379	1	9
-323	386	1	10
-324	397	1	11
-325	398	1	12
-326	389	1	12
-327	390	1	12
-328	391	1	12
-329	392	1	12
-330	393	1	13
-331	394	1	13
-332	395	1	14
-333	396	1	14
-334	407	1	15
-335	400	1	15
-336	401	1	15
-337	402	1	15
-338	406	1	16
-339	403	1	16
-340	405	1	17
-341	399	1	17
-342	408	1	17
-343	404	1	18
-344	410	1	19
-345	409	1	19
-346	414	1	19
-347	416	1	20
-348	411	1	20
-349	413	1	20
-350	417	1	21
-351	415	1	21
-352	418	1	22
-353	412	1	23
-446	508	1	51
-447	506	1	51
-448	512	1	51
-449	516	1	52
-450	523	1	52
-451	521	2	8
-452	520	1	53
-453	515	1	53
-454	519	1	53
-455	514	1	53
-456	517	1	54
-457	518	1	55
-458	522	1	56
-459	531	1	57
-460	533	1	57
-461	532	1	57
-462	526	1	57
-463	528	1	58
-464	529	1	58
-465	524	1	58
-466	525	1	58
-467	530	1	59
-468	527	1	60
-469	543	1	61
-470	538	1	62
-471	537	1	62
-472	542	1	63
-473	536	1	63
-474	539	1	63
-475	535	1	63
-476	541	1	63
-477	534	1	64
-478	540	1	65
-479	553	1	66
-480	550	1	66
-481	546	1	67
-482	552	1	67
-483	551	1	67
-484	548	1	67
-485	545	1	67
-486	544	1	68
-487	549	1	68
-488	547	1	69
-489	556	1	70
-490	561	1	70
-491	557	1	70
-492	560	1	70
-493	555	1	70
-494	562	1	70
-495	558	1	71
-496	559	1	72
-497	563	1	72
-498	554	1	73
-499	565	1	74
-500	566	1	74
-501	571	1	74
-502	572	1	75
-503	573	1	75
-504	570	1	75
-505	567	1	75
-506	568	1	75
-507	564	1	75
-508	569	1	76
-509	583	1	77
-510	577	1	77
-511	581	1	77
-512	578	1	78
-513	574	1	78
-514	582	1	78
-515	575	1	78
-516	579	1	79
-517	576	1	80
-518	580	1	81
-519	589	1	82
-520	587	1	82
-521	584	1	82
-522	588	1	82
-523	585	1	82
-524	586	1	82
-525	593	1	83
-526	590	1	84
-527	592	1	85
-528	591	1	85
-529	596	1	86
-530	603	1	86
-531	598	1	86
-532	595	1	87
-533	597	1	87
-534	594	1	88
-535	600	1	88
-536	599	1	88
-537	601	1	89
-538	602	1	90
-539	608	1	91
-540	607	1	91
-541	612	1	92
-542	604	1	92
-543	609	1	92
-544	605	1	93
-545	606	1	93
-546	611	1	93
-547	613	1	94
-548	610	1	94
-549	619	1	95
-550	622	1	95
-551	614	1	95
-552	617	1	95
-553	615	1	96
-554	618	1	96
-555	621	1	97
-556	623	1	98
-557	620	1	99
-558	616	1	99
-559	626	1	100
-560	628	1	100
-561	625	1	101
-562	624	1	101
-563	631	1	101
-564	627	1	101
-565	633	1	102
-566	632	1	102
-567	629	1	102
-568	630	1	103
-569	635	1	104
-570	636	1	105
-571	634	1	105
+305	369	1	9
+307	371	1	10
+308	373	1	11
+310	377	1	12
+329	392	1	32
+591	644	1	252
+330	393	1	33
+585	454	2	13
+331	394	1	34
+332	395	1	35
+333	396	1	36
+334	407	1	37
+335	400	1	38
+336	401	1	39
+337	402	1	40
+338	406	1	41
+339	403	1	42
+342	408	1	43
+341	399	1	44
+340	405	1	45
+343	404	1	46
+344	410	1	47
+345	409	1	48
+346	414	1	49
+347	416	1	50
+348	411	1	51
+349	413	1	52
+350	417	1	53
+351	415	1	54
+352	418	1	55
+353	412	1	56
+355	421	1	57
+358	426	1	58
+356	419	1	59
+359	428	1	60
+362	423	1	61
+361	420	1	62
+360	427	1	63
+363	422	1	64
+369	432	1	65
+367	434	1	66
+373	443	1	67
+376	440	1	68
+379	442	1	69
+378	436	1	70
+380	444	1	71
+383	447	1	72
+382	452	1	73
+381	451	1	74
+386	449	1	75
+384	448	1	76
+387	455	1	77
+390	446	1	78
+389	453	1	79
+388	450	1	80
+394	456	1	81
+393	462	1	82
+392	459	1	83
+391	464	1	84
+397	461	1	85
+395	460	1	86
+396	463	1	87
+399	457	1	88
+398	458	1	89
+400	465	1	90
+404	470	1	91
+403	468	1	92
+402	467	1	93
+401	469	1	94
+405	466	1	95
+407	473	1	96
+406	472	1	97
+408	475	1	98
+409	471	1	99
+410	474	1	100
+411	476	1	101
+412	477	1	102
+415	478	1	103
+414	483	1	104
+413	479	1	105
+417	482	1	106
+416	480	1	107
+418	484	1	108
+419	481	1	109
+423	490	1	110
+428	492	1	111
+432	501	1	112
+430	500	1	113
+431	495	1	114
+435	499	1	115
+434	503	1	116
+437	498	1	117
+438	497	1	118
+443	513	1	119
+441	509	1	120
+439	507	1	121
+440	504	1	122
+442	510	1	123
+448	512	1	124
+445	505	1	125
+446	508	1	126
+444	511	1	128
+449	516	1	129
+450	523	1	130
+452	520	1	131
+453	515	1	132
+454	519	1	133
+455	514	1	134
+456	517	1	135
+457	518	1	136
+458	522	1	137
+459	531	1	138
+460	533	1	139
+461	532	1	140
+462	526	1	141
+463	528	1	142
+464	529	1	143
+465	524	1	144
+466	525	1	145
+467	530	1	146
+468	527	1	147
+469	543	1	148
+470	538	1	149
+471	537	1	150
+472	542	1	151
+592	645	1	253
+447	506	1	127
+473	536	1	152
+474	539	1	153
+475	535	1	154
+476	541	1	155
+477	534	1	156
+478	540	1	157
+479	553	1	158
+480	550	1	159
+481	546	1	160
+482	552	1	161
+483	551	1	162
+484	548	1	163
+485	545	1	164
+486	544	1	165
+487	549	1	166
+488	547	1	167
+490	561	1	168
+489	556	1	169
+491	557	1	170
+492	560	1	171
+493	555	1	172
+494	562	1	173
+495	558	1	174
+496	559	1	175
+497	563	1	176
+498	554	1	177
+499	565	1	178
+500	566	1	179
+501	571	1	180
+502	572	1	181
+503	573	1	182
+504	570	1	183
+505	567	1	184
+506	568	1	185
+507	564	1	186
+508	569	1	187
+509	583	1	188
+510	577	1	189
+587	362	2	14
+306	370	1	13
+311	376	1	14
+312	378	1	15
+313	375	1	16
+318	388	1	17
+314	380	1	18
+315	384	1	19
+316	381	1	20
+317	383	1	21
+319	387	1	22
+320	382	1	23
+321	385	1	24
+322	379	1	25
+323	386	1	26
+324	397	1	27
+325	398	1	28
+326	389	1	29
+327	390	1	30
+328	391	1	31
 354	424	3	2
 366	431	3	3
 370	429	3	4
@@ -6428,6 +6366,75 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 309	374	3	1
 576	486	4	4
 577	489	5	3
+580	502	3	6
+375	445	2	7
+377	438	2	8
+422	488	2	9
+427	487	2	10
+451	521	2	11
+581	425	3	7
+511	581	1	190
+512	578	1	191
+513	574	1	192
+514	582	1	193
+515	575	1	194
+516	579	1	195
+517	576	1	196
+518	580	1	197
+519	589	1	198
+520	587	1	199
+521	584	1	200
+522	588	1	201
+523	585	1	202
+524	586	1	203
+525	593	1	204
+526	590	1	205
+527	592	1	206
+528	591	1	207
+529	596	1	208
+530	603	1	209
+531	598	1	210
+532	595	1	211
+533	597	1	212
+534	594	1	213
+535	600	1	214
+536	599	1	215
+537	601	1	216
+538	602	1	217
+539	608	1	218
+540	607	1	219
+541	612	1	220
+542	604	1	221
+543	609	1	222
+544	605	1	223
+545	606	1	224
+546	611	1	225
+547	613	1	226
+548	610	1	227
+549	619	1	228
+550	622	1	229
+551	614	1	230
+552	617	1	231
+553	615	1	232
+554	618	1	233
+555	621	1	234
+556	623	1	235
+557	620	1	236
+558	616	1	237
+559	626	1	238
+560	628	1	239
+561	625	1	240
+562	624	1	241
+563	631	1	242
+564	627	1	243
+565	633	1	244
+566	632	1	245
+567	629	1	246
+568	630	1	247
+569	635	1	248
+570	636	1	249
+571	634	1	250
+582	368	2	12
 \.
 
 
@@ -6714,12 +6721,14 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 623	623	8	21
 633	632	8	22
 638	637	8	24
-639	638	8	25
 640	639	8	26
 641	640	8	27
 642	641	8	28
 643	642	8	29
 644	643	8	30
+645	644	8	31
+646	645	8	32
+647	646	8	33
 520	520	8	11
 \.
 
@@ -6856,6 +6865,9 @@ COPY public.flashcards_word_definition_links (id, flashcard_id, word_definition_
 923	641	1051	1
 924	642	1052	1
 925	643	1053	1
+926	644	1054	1
+927	645	1055	1
+928	646	1056	1
 714	430	842	1
 642	359	771	1
 643	360	773	1
@@ -7105,6 +7117,7 @@ COPY public.part_of_speeches (id, name, created_at, updated_at, created_by_id, u
 7	interjection	2025-08-03 13:59:51.722	2025-08-03 13:59:51.722	1	1	en
 8	determiner	2025-08-03 14:00:02.392	2025-08-03 14:00:02.392	1	1	en
 9	pronoun	2025-08-03 14:00:09.704	2025-08-03 14:00:09.704	1	1	en
+10	prefix	2025-08-05 11:11:08.996	2025-08-05 11:11:08.996	\N	\N	en
 \.
 
 
@@ -7497,6 +7510,34 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 345	weekly	correct	2025-08-04 01:23:50.295	2025-08-04 01:23:50.295	\N	\N	2025-08-04 01:23:50.246
 346	monthly	correct	2025-08-04 01:23:54.293	2025-08-04 01:23:54.293	\N	\N	2025-08-04 01:23:54.234
 347	monthly	correct	2025-08-04 01:23:57.081	2025-08-04 01:23:57.081	\N	\N	2025-08-04 01:23:57.023
+348	remembered	correct	2025-08-05 10:42:32.435	2025-08-05 10:42:32.435	\N	\N	2025-08-05 10:42:32.368
+349	weekly	wrong	2025-08-05 10:42:35.229	2025-08-05 10:42:35.229	\N	\N	2025-08-05 10:42:35.17
+350	warmup	wrong	2025-08-05 10:42:41.835	2025-08-05 10:42:41.835	\N	\N	2025-08-05 10:42:41.776
+351	warmup	correct	2025-08-05 10:42:47.243	2025-08-05 10:42:47.243	\N	\N	2025-08-05 10:42:47.183
+352	warmup	correct	2025-08-05 10:42:50.602	2025-08-05 10:42:50.602	\N	\N	2025-08-05 10:42:50.54
+353	new	correct	2025-08-05 10:42:53.943	2025-08-05 10:42:53.943	\N	\N	2025-08-05 10:42:53.884
+354	warmup	correct	2025-08-05 10:42:56.34	2025-08-05 10:42:56.34	\N	\N	2025-08-05 10:42:56.283
+355	new	wrong	2025-08-05 10:42:59.197	2025-08-05 10:42:59.197	\N	\N	2025-08-05 10:42:59.139
+356	new	wrong	2025-08-05 10:43:03.722	2025-08-05 10:43:03.722	\N	\N	2025-08-05 10:43:03.661
+357	new	correct	2025-08-05 10:43:07.523	2025-08-05 10:43:07.523	\N	\N	2025-08-05 10:43:07.462
+358	new	correct	2025-08-05 10:43:10.122	2025-08-05 10:43:10.122	\N	\N	2025-08-05 10:43:10.063
+359	new	correct	2025-08-05 10:44:01.604	2025-08-05 10:44:01.604	\N	\N	2025-08-05 10:44:01.547
+360	new	correct	2025-08-05 10:44:04.096	2025-08-05 10:44:04.096	\N	\N	2025-08-05 10:44:04.031
+361	new	correct	2025-08-05 10:44:05.803	2025-08-05 10:44:05.803	\N	\N	2025-08-05 10:44:05.741
+362	warmup	correct	2025-08-05 10:44:07.768	2025-08-05 10:44:07.768	\N	\N	2025-08-05 10:44:07.708
+363	new	correct	2025-08-05 18:27:59.692	2025-08-05 18:27:59.692	\N	\N	2025-08-05 18:27:59.629
+364	new	correct	2025-08-05 18:37:58.75	2025-08-05 18:37:58.75	\N	\N	2025-08-05 18:37:58.684
+365	new	correct	2025-08-05 18:38:00.123	2025-08-05 18:38:00.123	\N	\N	2025-08-05 18:37:59.94
+366	new	correct	2025-08-05 18:38:00.767	2025-08-05 18:38:00.767	\N	\N	2025-08-05 18:38:00.617
+367	new	correct	2025-08-05 18:38:02.591	2025-08-05 18:38:02.591	\N	\N	2025-08-05 18:38:02.524
+368	new	correct	2025-08-05 18:38:03.639	2025-08-05 18:38:03.639	\N	\N	2025-08-05 18:38:03.578
+369	new	correct	2025-08-05 18:38:04.398	2025-08-05 18:38:04.398	\N	\N	2025-08-05 18:38:04.34
+370	new	correct	2025-08-05 18:38:13.645	2025-08-05 18:38:13.645	\N	\N	2025-08-05 18:38:13.587
+371	new	correct	2025-08-05 18:38:16.574	2025-08-05 18:38:16.574	\N	\N	2025-08-05 18:38:16.513
+372	new	correct	2025-08-05 18:38:19.885	2025-08-05 18:38:19.885	\N	\N	2025-08-05 18:38:19.826
+373	new	wrong	2025-08-05 18:38:23.148	2025-08-05 18:38:23.148	\N	\N	2025-08-05 18:38:23.085
+374	new	correct	2025-08-05 18:38:30.899	2025-08-05 18:38:30.899	\N	\N	2025-08-05 18:38:30.84
+375	new	correct	2025-08-05 18:38:33.238	2025-08-05 18:38:33.238	\N	\N	2025-08-05 18:38:33.175
 \.
 
 
@@ -7513,6 +7554,27 @@ COPY public.reviewlogs_flashcard_links (id, reviewlog_id, flashcard_id, reviewlo
 318	345	486	2
 319	346	489	2
 320	347	494	1
+321	348	496	1
+322	349	429	1
+323	350	430	1
+324	351	502	1
+325	352	425	1
+326	353	368	1
+327	354	439	1
+328	355	367	1
+329	356	378	1
+330	357	376	1
+331	358	454	1
+332	359	361	1
+333	360	362	1
+334	361	367	2
+335	362	368	2
+337	364	644	1
+338	365	645	1
+339	366	646	1
+343	370	644	2
+344	371	645	2
+345	372	646	2
 \.
 
 
@@ -7868,6 +7930,34 @@ COPY public.reviewlogs_user_links (id, reviewlog_id, user_id, reviewlog_order) F
 345	345	8	297
 346	346	8	298
 347	347	8	299
+348	348	8	300
+349	349	8	301
+350	350	8	302
+351	351	8	303
+352	352	8	304
+353	353	8	305
+354	354	8	306
+355	355	8	307
+356	356	8	308
+357	357	8	309
+358	358	8	310
+359	359	8	311
+360	360	8	312
+361	361	8	313
+362	362	8	314
+363	363	8	315
+364	364	8	316
+365	365	8	317
+366	366	8	317
+367	367	8	318
+368	368	8	319
+369	369	8	320
+370	370	8	321
+371	371	8	322
+372	372	8	323
+373	373	8	324
+374	374	8	325
+375	375	8	326
 \.
 
 
@@ -8092,7 +8182,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 52	plugin_content_manager_configuration_components::a.question	{"uid":"a.question","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"prompt","defaultSortBy":"prompt","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"prompt":{"edit":{"label":"prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"prompt","searchable":true,"sortable":true}},"expected_answer":{"edit":{"label":"expected_answer","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expected_answer","searchable":true,"sortable":true}}},"layouts":{"list":["id","prompt","expected_answer"],"edit":[[{"name":"prompt","size":6},{"name":"expected_answer","size":6}]]},"isComponent":true}	object	\N	\N
 53	plugin_content_manager_configuration_content_types::api::topic.topic	{"uid":"api::topic.topic","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"difficulty_level":{"edit":{"label":"difficulty_level","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"difficulty_level","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"questions":{"edit":{"label":"questions","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"questions","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":true,"sortable":true}},"is_active":{"edit":{"label":"is_active","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_active","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","difficulty_level","description"],"edit":[[{"name":"title","size":6},{"name":"difficulty_level","size":6}],[{"name":"description","size":6}],[{"name":"questions","size":12}],[{"name":"tags","size":6},{"name":"is_active","size":4}]]}}	object	\N	\N
 50	plugin_content_manager_configuration_content_types::api::difficulty-level.difficulty-level	{"uid":"api::difficulty-level.difficulty-level","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"level":{"edit":{"label":"level","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"level","searchable":true,"sortable":true}},"topics":{"edit":{"label":"topics","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"topics","searchable":false,"sortable":false}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"stories":{"edit":{"label":"stories","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"stories","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","level","code"],"edit":[[{"name":"name","size":6},{"name":"level","size":4}],[{"name":"topics","size":6},{"name":"code","size":6}],[{"name":"description","size":6},{"name":"stories","size":6}]]}}	object	\N	\N
-43	plugin_content_manager_configuration_content_types::api::flashcard.flashcard	{"uid":"api::flashcard.flashcard","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"last_reviewed_at":{"edit":{"label":"last_reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"last_reviewed_at","searchable":true,"sortable":true}},"correct_streak":{"edit":{"label":"correct_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"correct_streak","searchable":true,"sortable":true}},"wrong_streak":{"edit":{"label":"wrong_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wrong_streak","searchable":true,"sortable":true}},"is_remembered":{"edit":{"label":"is_remembered","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_remembered","searchable":true,"sortable":true}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"review_tire":{"edit":{"label":"review_tire","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"review_tire","searchable":true,"sortable":true}},"word_definition":{"edit":{"label":"word_definition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definition","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","last_reviewed_at","correct_streak","wrong_streak","review_tire"],"edit":[[{"name":"user","size":6}],[{"name":"last_reviewed_at","size":6}],[{"name":"is_remembered","size":4},{"name":"correct_streak","size":4},{"name":"wrong_streak","size":4}],[{"name":"reviewlogs","size":6},{"name":"review_tire","size":6}],[{"name":"word_definition","size":6}]]}}	object	\N	\N
+43	plugin_content_manager_configuration_content_types::api::flashcard.flashcard	{"uid":"api::flashcard.flashcard","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"last_reviewed_at":{"edit":{"label":"last_reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"last_reviewed_at","searchable":true,"sortable":true}},"correct_streak":{"edit":{"label":"correct_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"correct_streak","searchable":true,"sortable":true}},"wrong_streak":{"edit":{"label":"wrong_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wrong_streak","searchable":true,"sortable":true}},"is_remembered":{"edit":{"label":"is_remembered","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_remembered","searchable":true,"sortable":true}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"review_tire":{"edit":{"label":"review_tire","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"review_tire","searchable":true,"sortable":true}},"word_definition":{"edit":{"label":"word_definition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definition","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"user","size":6}],[{"name":"last_reviewed_at","size":6}],[{"name":"is_remembered","size":4},{"name":"correct_streak","size":4},{"name":"wrong_streak","size":4}],[{"name":"reviewlogs","size":6},{"name":"review_tire","size":6}],[{"name":"word_definition","size":6}]],"list":["id","user","last_reviewed_at","correct_streak","wrong_streak","review_tire","word_definition"]}}	object	\N	\N
 54	plugin_content_manager_configuration_content_types::api::conversation.conversation	{"uid":"api::conversation.conversation","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"sessionId","defaultSortBy":"sessionId","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"sessionId":{"edit":{"label":"sessionId","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"sessionId","searchable":true,"sortable":true}},"history":{"edit":{"label":"history","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"history","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"sessionId","size":6}],[{"name":"history","size":12}]],"list":["id","sessionId"]}}	object	\N	\N
 57	plugin_content_manager_configuration_components::a.illustrations	{"uid":"a.illustrations","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"caption","defaultSortBy":"caption","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}},"alt_text":{"edit":{"label":"alt_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"alt_text","searchable":true,"sortable":true}},"media":{"edit":{"label":"media","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"media","searchable":false,"sortable":false}},"paragraph":{"edit":{"label":"paragraph","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"paragraph","searchable":true,"sortable":true}}},"layouts":{"list":["id","caption","alt_text","media"],"edit":[[{"name":"caption","size":6},{"name":"alt_text","size":6}],[{"name":"media","size":6},{"name":"paragraph","size":4}]]},"isComponent":true}	object	\N	\N
 59	plugin_content_manager_configuration_components::a.generation-prompts	{"uid":"a.generation-prompts","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"cover_image_prompt":{"edit":{"label":"cover_image_prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"cover_image_prompt","searchable":true,"sortable":true}},"brief_video_prompt":{"edit":{"label":"brief_video_prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"brief_video_prompt","searchable":true,"sortable":true}},"illustration_prompts":{"edit":{"label":"illustration_prompts","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"illustration_prompts","searchable":false,"sortable":false}}},"layouts":{"list":["id","cover_image_prompt","brief_video_prompt","illustration_prompts"],"edit":[[{"name":"cover_image_prompt","size":6},{"name":"brief_video_prompt","size":6}],[{"name":"illustration_prompts","size":12}]]},"isComponent":true}	object	\N	\N
@@ -8421,6 +8511,19 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 139	api::word-definition.word-definition.update	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
 142	api::word-definition.word-definition.createLocalization	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
 140	api::word-definition.word-definition.findOne	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
+146	api::word-definition.word-definition.createLocalization	2025-08-04 19:15:20.417	2025-08-04 19:15:20.417	\N	\N
+149	api::word.word.find	2025-08-04 19:15:26.791	2025-08-04 19:15:26.791	\N	\N
+153	api::word.word.delete	2025-08-04 19:15:26.791	2025-08-04 19:15:26.791	\N	\N
+147	api::word-definition.word-definition.search	2025-08-04 19:15:20.417	2025-08-04 19:15:20.417	\N	\N
+148	api::word.word.search	2025-08-04 19:15:26.791	2025-08-04 19:15:26.791	\N	\N
+151	api::word.word.create	2025-08-04 19:15:26.791	2025-08-04 19:15:26.791	\N	\N
+150	api::word.word.findOne	2025-08-04 19:15:26.791	2025-08-04 19:15:26.791	\N	\N
+152	api::word.word.update	2025-08-04 19:15:26.791	2025-08-04 19:15:26.791	\N	\N
+154	api::word-definition.word-definition.create	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
+156	api::word-definition.word-definition.findOne	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
+157	api::word-definition.word-definition.delete	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
+155	api::word-definition.word-definition.find	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
+158	api::word-definition.word-definition.update	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
 137	api::word-definition.word-definition.create	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
 143	api::flashcard.flashcard.createLocalization	2025-08-03 22:57:38.181	2025-08-03 22:57:38.181	\N	\N
 \.
@@ -8532,6 +8635,19 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 141	141	1	40
 142	142	1	40
 143	143	1	41
+146	146	3	4
+147	147	3	5
+148	150	3	6
+149	149	3	6
+150	148	3	6
+151	153	3	7
+152	151	3	7
+153	152	3	7
+154	155	3	8
+155	156	3	8
+156	154	3	8
+157	158	3	9
+158	157	3	9
 \.
 
 
@@ -8541,8 +8657,8 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 
 COPY public.up_roles (id, name, description, type, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 2	Public	Default role given to unauthenticated user.	public	2025-06-23 17:47:30.213	2025-07-19 22:50:19.938	\N	\N
-3	admin	Administrator	admin	2025-07-20 11:32:36.414	2025-07-20 14:55:52.232	\N	\N
-1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-08-03 22:57:38.039	\N	\N
+1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-08-04 19:14:45.531	\N	\N
+3	admin	Administrator	admin	2025-07-20 11:32:36.414	2025-08-04 19:33:22.618	\N	\N
 \.
 
 
@@ -8830,6 +8946,21 @@ COPY public.user_words (id, base_text, part_of_speech, created_at, updated_at, c
 155	吃	verb	2025-07-18 18:45:48.903	2025-07-18 18:45:52.42	\N	\N	en	eat	[{"text": "吃", "isCorrect": true}, {"text": "喝", "isCorrect": false}, {"text": "看", "isCorrect": false}, {"text": "坐", "isCorrect": false}]	[{"text": "eat", "isCorrect": true}, {"text": "dwell", "isCorrect": false}, {"text": "devour", "isCorrect": false}, {"text": "consume", "isCorrect": false}]
 156	𬌗架	noun	2025-08-02 18:53:35.896	2025-08-02 18:53:59.295	\N	\N	en	articulator	[{"text": "𬌗架", "isCorrect": true}, {"text": "花鸟", "isCorrect": false}, {"text": "博地", "isCorrect": false}, {"text": "绠蒚", "isCorrect": false}]	[{"text": "vocalization", "isCorrect": false}, {"text": "enunciation", "isCorrect": false}, {"text": "articulator", "isCorrect": true}, {"text": "pronunciation", "isCorrect": false}]
 157	要求	verb	2025-08-04 01:25:28.584	2025-08-04 01:25:28.584	\N	\N	en	require	\N	\N
+158	探针	noun	2025-08-04 21:17:38.787	2025-08-04 21:17:38.787	\N	\N	en	probe	\N	\N
+159	获得性免疫缺陷综合征 艾滋病	noun	2025-08-04 21:18:57	2025-08-04 21:18:57	\N	\N	en	acquired immune deficiency syndrome AIDS	\N	\N
+160	显微镜	noun	2025-08-04 21:19:44.461	2025-08-04 21:19:44.461	\N	\N	en	microscopy	\N	\N
+161	凹坑状吸收	noun	2025-08-04 21:20:53.604	2025-08-04 21:20:53.604	\N	\N	en	osseous crater 	\N	\N
+162	奥硝唑	noun	2025-08-04 21:21:31.623	2025-08-04 21:21:31.623	\N	\N	en	ornidazole,ONZ	\N	\N
+163	白垢	noun	2025-08-04 21:23:10.621	2025-08-04 21:23:10.621	\N	\N	en	material alba	\N	\N
+164	白细胞	noun	2025-08-04 21:24:56.633	2025-08-04 21:24:56.633	\N	\N	en	leukocyte	\N	\N
+165	白细胞介素	noun	2025-08-04 21:25:29.978	2025-08-04 21:25:29.978	\N	\N	en	interleukin	\N	\N
+166	反派，拮抗剂	noun	2025-08-04 21:26:59.963	2025-08-04 21:26:59.963	\N	\N	en	antagonist	\N	\N
+167	白细胞毒素	noun	2025-08-04 21:27:32.911	2025-08-04 21:27:32.911	\N	\N	en	leukotocin	\N	\N
+168	半厚瓣	noun	2025-08-04 21:28:26.685	2025-08-04 21:28:26.685	\N	\N	en	partial thickness flap	\N	\N
+169	半切术	noun	2025-08-04 21:29:09.33	2025-08-04 21:29:09.33	\N	\N	en	hemisection	\N	\N
+170	伴发病变	noun	2025-08-04 21:29:56.062	2025-08-04 21:29:56.062	\N	\N	en	combined lesion	\N	\N
+171	伴放线放线杆菌	noun	2025-08-04 21:34:33.829	2025-08-04 21:34:33.829	\N	\N	en	Actinobacillus actinpmycetemcomitans,Aggregatibacter actinomycetemcomitans,Aa	\N	\N
+172	保留龈乳头切口	noun	2025-08-04 21:35:43.517	2025-08-04 21:35:43.517	\N	\N	en	incision for a papilla preservation	\N	\N
 \.
 
 
@@ -9000,6 +9131,21 @@ COPY public.user_words_user_links (id, user_word_id, user_id, user_word_order) F
 148	155	8	54
 149	156	8	55
 150	157	8	56
+151	158	8	57
+152	159	8	58
+153	160	8	59
+154	161	8	60
+155	162	8	61
+156	163	8	62
+157	164	8	63
+158	165	8	64
+159	166	8	65
+160	167	8	66
+161	168	8	67
+162	169	8	68
+163	170	8	69
+165	172	8	71
+164	171	8	70
 \.
 
 
@@ -9022,7 +9168,7 @@ COPY public.vbsettings (id, words_per_page, interval_1, interval_2, interval_3, 
 13	12	1.50	2.00	2.00	2025-08-02 01:48:00.433	2025-08-02 01:48:00.433	\N	\N
 14	12	1.50	2.00	2.00	2025-08-02 01:48:00.434	2025-08-02 01:48:00.434	\N	\N
 15	12	1.50	2.00	2.00	2025-08-02 01:48:00.456	2025-08-02 01:48:00.456	\N	\N
-6	25	1.50	2.00	2.00	2025-07-13 22:11:50.588	2025-08-04 01:41:47.3	\N	\N
+6	15	1.50	2.00	2.00	2025-07-13 22:11:50.588	2025-08-05 18:37:36.338	\N	\N
 \.
 
 
@@ -9261,7 +9407,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 994	结节	\N	2025-08-03 21:34:02.419	2025-08-03 21:34:11.09	\N	\N	en	\N	\N	He felt pain in his knee due to the tuberosity on his shin bone.	[{"text": "结节", "isCorrect": true}, {"text": "肉眼", "isCorrect": false}, {"text": "肿块", "isCorrect": false}, {"text": "葫芦", "isCorrect": false}]	[{"text": "bump", "isCorrect": false}, {"text": "prominence", "isCorrect": false}, {"text": "knoll", "isCorrect": false}, {"text": "tuberosity", "isCorrect": true}]	\N
 1001	腭皱	\N	2025-08-03 21:34:12.22	2025-08-03 21:34:16.573	\N	\N	en	\N	\N	The dentist examined the patient's mouth and noted the presence of palatal rugae.	[{"text": "噱头", "isCorrect": false}, {"text": "舌苔", "isCorrect": false}, {"text": "喉抗", "isCorrect": false}, {"text": "腭皱", "isCorrect": true}]	[{"text": "palatal rugae", "isCorrect": true}, {"text": "uvula", "isCorrect": false}, {"text": "alveolar ridge", "isCorrect": false}, {"text": "mesial cusp", "isCorrect": false}]	\N
 1013	下颌舌骨嵴	\N	2025-08-03 21:34:18.341	2025-08-03 21:34:35.636	\N	\N	en	\N	\N	The mylohyoid ridge is a bony ridge on the inner surface of the lower jaw.	[{"text": "额颌骨嵴", "isCorrect": false}, {"text": "蝴蝶骨嵴", "isCorrect": false}, {"text": "颌下骨嵴", "isCorrect": false}, {"text": "下颌舌骨嵴", "isCorrect": true}]	[{"text": "hyoid bone", "isCorrect": false}, {"text": "mandible", "isCorrect": false}, {"text": "lingual frenulum", "isCorrect": false}, {"text": "mylohyoid ridge", "isCorrect": true}]	\N
-1049	compatibility	\N	2025-08-04 02:56:52.218	2025-08-04 02:56:56.896	\N	\N	en	\N	\N	This software has good compatibility with various operating systems.	[{"text": "互換性", "isCorrect": false}, {"text": "支援性", "isCorrect": false}, {"text": "匹配", "isCorrect": false}, {"text": "compatibility", "isCorrect": true}]	[{"text": "容納性", "isCorrect": false}, {"text": "同調性", "isCorrect": false}, {"text": "相容性", "isCorrect": false}, {"text": "兼容性", "isCorrect": true}]	\N
+1049	兼容性	\N	2025-08-04 02:56:52.218	2025-08-04 11:07:40.009	\N	1	en	\N	\N	This software has good compatibility with various operating systems.	[{"text": "互換性", "isCorrect": false}, {"text": "支援性", "isCorrect": false}, {"text": "匹配", "isCorrect": false}, {"text": "compatibility", "isCorrect": true}]	[{"text": "容納性", "isCorrect": false}, {"text": "同調性", "isCorrect": false}, {"text": "相容性", "isCorrect": false}, {"text": "兼容性", "isCorrect": true}]	\N
 935	凸	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.593	\N	\N	en	\N	\N	The mirror was convex, making my reflection appear distorted.	[{"text": "插", "isCorrect": false}, {"text": "凹", "isCorrect": false}, {"text": "凸", "isCorrect": true}, {"text": "厚", "isCorrect": false}]	[{"text": "level", "isCorrect": false}, {"text": "concave", "isCorrect": false}, {"text": "convex", "isCorrect": true}, {"text": "curved", "isCorrect": false}]	\N
 950	牙髓摘除术	\N	2025-08-03 21:33:36.93	2025-08-03 21:33:44.778	\N	\N	en	\N	\N	The dentist recommended a pulpectomy to treat the infected tooth.	[{"text": "牙髓摘除术", "isCorrect": true}, {"text": "牙龈病", "isCorrect": false}, {"text": "根管治疗", "isCorrect": false}, {"text": "牙周炎", "isCorrect": false}]	[{"text": "endodontics", "isCorrect": false}, {"text": "pulpectomy", "isCorrect": true}, {"text": "orthodontics", "isCorrect": false}, {"text": "periodontics", "isCorrect": false}]	\N
 958	未确诊	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.532	\N	\N	en	\N	\N	She has been experiencing unexplained symptoms due to her undiagnosed condition.	[{"text": "未确诊", "isCorrect": true}, {"text": "未诊断", "isCorrect": false}, {"text": "未明确", "isCorrect": false}, {"text": "未确定", "isCorrect": false}]	[{"text": "misdiagnosed", "isCorrect": false}, {"text": "undesigned", "isCorrect": false}, {"text": "undiagnosed", "isCorrect": true}, {"text": "unqualified", "isCorrect": false}]	\N
@@ -9270,7 +9416,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 987	系带	\N	2025-08-03 21:34:02.387	2025-08-03 21:34:05.878	\N	\N	en	\N	\N	The frenum is a small fold of tissue that connects the tongue to the floor of the mouth.	[{"text": "系带", "isCorrect": true}, {"text": "松紧带", "isCorrect": false}, {"text": "紧身", "isCorrect": false}, {"text": "衬里", "isCorrect": false}]	[{"text": "labial", "isCorrect": false}, {"text": "zemblanitic", "isCorrect": false}, {"text": "femur", "isCorrect": false}, {"text": "frenum", "isCorrect": true}]	\N
 1003	翼下颌韧带	\N	2025-08-03 21:34:12.223	2025-08-03 21:34:15.769	\N	\N	en	\N	\N	The pterygomandibular ligament attaches to the raphe in the mouth.	[{"text": "颈内动脉", "isCorrect": false}, {"text": "颌下腺体", "isCorrect": false}, {"text": "颈下动静脉", "isCorrect": false}, {"text": "翼下颌韧带", "isCorrect": true}]	[{"text": "temporomandibular ligament", "isCorrect": false}, {"text": "lateral pterygoid muscle", "isCorrect": false}, {"text": "superficial temporal artery", "isCorrect": false}, {"text": "pterygomandibular ligament，raphe", "isCorrect": true}]	\N
 1008	边缘封闭区	\N	2025-08-03 21:34:18.339	2025-08-03 21:34:21.663	\N	\N	en	\N	\N	The border seal area was heavily guarded to prevent unauthorized entry.	[{"text": "旁路封闭区", "isCorrect": false}, {"text": "周围禁区", "isCorrect": false}, {"text": "边缘封闭区", "isCorrect": true}, {"text": "边际抑制区", "isCorrect": false}]	[{"text": "border seal area", "isCorrect": true}, {"text": "perimeter zone", "isCorrect": false}, {"text": "boundary mark zone", "isCorrect": false}, {"text": "frontier stamp region", "isCorrect": false}]	\N
-1050	resistance	\N	2025-08-04 02:57:23.211	2025-08-04 02:57:28.542	\N	\N	en	\N	\N	The citizens staged a protest in  反抗 of the new law.	[{"text": "抗议", "isCorrect": false}, {"text": "resistance", "isCorrect": true}, {"text": "阻挡", "isCorrect": false}, {"text": "耐用", "isCorrect": false}]	[{"text": "抗议", "isCorrect": false}, {"text": "反弹", "isCorrect": false}, {"text": "反抗", "isCorrect": true}, {"text": "抵抗", "isCorrect": false}]	\N
+1050	反抗	\N	2025-08-04 02:57:23.211	2025-08-04 11:07:20.512	\N	1	en	\N	\N	The citizens staged a protest in  反抗 of the new law.	[{"text": "抗议", "isCorrect": false}, {"text": "resistance", "isCorrect": true}, {"text": "阻挡", "isCorrect": false}, {"text": "耐用", "isCorrect": false}]	[{"text": "抗议", "isCorrect": false}, {"text": "反弹", "isCorrect": false}, {"text": "反抗", "isCorrect": true}, {"text": "抵抗", "isCorrect": false}]	\N
 938	主要地	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.622	\N	\N	en	\N	\N	The sky is predominantly blue during the day.	[{"text": "重要", "isCorrect": false}, {"text": "基本", "isCorrect": false}, {"text": "主要地", "isCorrect": true}, {"text": "大约", "isCorrect": false}]	[{"text": "majorly", "isCorrect": false}, {"text": "principally", "isCorrect": false}, {"text": "largely", "isCorrect": false}, {"text": "predominantly", "isCorrect": true}]	\N
 952	牙髓切断术	\N	2025-08-03 21:33:36.931	2025-08-03 21:33:40.381	\N	\N	en	\N	\N	The dentist performed a pulpotomy to remove the infected pulp from the tooth.	[{"text": "牙髓抽取术", "isCorrect": false}, {"text": "牙髓填充术", "isCorrect": false}, {"text": "牙髓治疗术", "isCorrect": false}, {"text": "牙髓切断术", "isCorrect": true}]	[{"text": "root canal", "isCorrect": false}, {"text": "pulpotomy", "isCorrect": true}, {"text": "extraction", "isCorrect": false}, {"text": "cavity", "isCorrect": false}]	\N
 962	尊重 方面	\N	2025-08-03 21:33:45.753	2025-08-03 21:33:49.668	\N	\N	en	\N	\N	She always treats her classmates with respect.	[{"text": "理解", "isCorrect": false}, {"text": "重视", "isCorrect": false}, {"text": "尊重 方面", "isCorrect": true}, {"text": "关注", "isCorrect": false}]	[{"text": "praise", "isCorrect": false}, {"text": "admiration", "isCorrect": false}, {"text": "respect", "isCorrect": true}, {"text": "esteem", "isCorrect": false}]	\N
@@ -9279,7 +9425,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 990	口腔前庭	\N	2025-08-03 21:34:02.416	2025-08-03 21:34:06.397	\N	\N	en	\N	\N	The dentist examined the inside of my mouth, paying special attention to the oral vestibule.	[{"text": "舌头", "isCorrect": false}, {"text": "口腔前庭", "isCorrect": true}, {"text": "颌", "isCorrect": false}, {"text": "齿龈", "isCorrect": false}]	[{"text": "oral cavity", "isCorrect": false}, {"text": "oral frenulum", "isCorrect": false}, {"text": "oral vestibule", "isCorrect": true}, {"text": "oral mucosa", "isCorrect": false}]	\N
 998	上颌硬区	\N	2025-08-03 21:34:12.219	2025-08-03 21:34:17.257	\N	\N	en	\N	\N	The desert is a hard area to survive in because of the extreme heat and lack of water.	[{"text": "颌骨", "isCorrect": false}, {"text": "牙龈", "isCorrect": false}, {"text": "下颌软区", "isCorrect": false}, {"text": "上颌硬区", "isCorrect": true}]	[{"text": "hard area", "isCorrect": true}, {"text": "difficult terrain", "isCorrect": false}, {"text": "challenging location", "isCorrect": false}, {"text": "tough spot", "isCorrect": false}]	\N
 1007	腺	\N	2025-08-03 21:34:18.309	2025-08-03 21:34:21.865	\N	\N	en	\N	\N	The thyroid gland produces hormones that regulate metabolism.	[{"text": "肚", "isCorrect": false}, {"text": "膀", "isCorrect": false}, {"text": "脾", "isCorrect": false}, {"text": "腺", "isCorrect": true}]	[{"text": "organ", "isCorrect": false}, {"text": "gland", "isCorrect": true}, {"text": "hormone", "isCorrect": false}, {"text": "node", "isCorrect": false}]	\N
-1051	decision	\N	2025-08-04 03:35:22.21	2025-08-04 03:35:29.677	\N	\N	en	\N	\N	I have made a decision to study Chinese every day.	[{"text": "decision", "isCorrect": true}, {"text": "创新 (chuàng xīn)", "isCorrect": false}, {"text": "解答 (jiědá)", "isCorrect": false}, {"text": "判断 (pànduàn)", "isCorrect": false}]	[{"text": "挑战", "isCorrect": false}, {"text": "断定", "isCorrect": false}, {"text": "选择", "isCorrect": false}, {"text": "决定", "isCorrect": true}]	\N
+1051	决定	\N	2025-08-04 03:35:22.21	2025-08-04 11:06:41.152	\N	1	en	\N	\N	I have made a decision to study Chinese every day.	[{"text": "decision", "isCorrect": true}, {"text": "创新 (chuàng xīn)", "isCorrect": false}, {"text": "解答 (jiědá)", "isCorrect": false}, {"text": "判断 (pànduàn)", "isCorrect": false}]	[{"text": "挑战", "isCorrect": false}, {"text": "断定", "isCorrect": false}, {"text": "选择", "isCorrect": false}, {"text": "决定", "isCorrect": true}]	\N
 937	革兰氏阴性	\N	2025-08-03 21:33:30.061	2025-08-03 21:33:33.697	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the infection caused by the gram-negative bacteria.	[{"text": "红色阴性杆菌", "isCorrect": false}, {"text": "罗德卡特", "isCorrect": false}, {"text": "白色李斯特氏", "isCorrect": false}, {"text": "革兰氏阴性", "isCorrect": true}]	[{"text": "orthodox", "isCorrect": false}, {"text": "non-toxic", "isCorrect": false}, {"text": "gram- negative", "isCorrect": true}, {"text": "unbiased", "isCorrect": false}]	\N
 948	变色	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:40.647	\N	\N	en	\N	\N	The discolored leaves on the plant indicated that it needed more sunlight.	[{"text": "转变形态", "isCorrect": false}, {"text": "变色", "isCorrect": true}, {"text": "改变颜色", "isCorrect": false}, {"text": "变换外观", "isCorrect": false}]	[{"text": "blotchy", "isCorrect": false}, {"text": "blemished", "isCorrect": false}, {"text": "dingy", "isCorrect": false}, {"text": "discolored", "isCorrect": true}]	\N
 960	按时间顺序排列	\N	2025-08-03 21:33:45.75	2025-08-03 21:33:49.53	\N	\N	en	\N	\N	The chronogic order of events in the story helped me understand the plot better.	[{"text": "按大小顺序排列", "isCorrect": false}, {"text": "按时间顺序排列", "isCorrect": true}, {"text": "按颜色顺序排列", "isCorrect": false}, {"text": "按字母顺序排列", "isCorrect": false}]	[{"text": "chronological", "isCorrect": false}, {"text": "chronogic", "isCorrect": true}, {"text": "chronoscale", "isCorrect": false}, {"text": "chronology", "isCorrect": false}]	\N
@@ -9288,7 +9434,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 989	远中颊角区	\N	2025-08-03 21:34:02.389	2025-08-03 21:34:07.258	\N	\N	en	\N	\N	The dentist examined the distobuccal angles area of the patient's teeth for signs of decay.	[{"text": "远距离中部", "isCorrect": false}, {"text": "颈肩部", "isCorrect": false}, {"text": "角落地区", "isCorrect": false}, {"text": "远中颊角区", "isCorrect": true}]	[{"text": "mesiobuccal angles area", "isCorrect": false}, {"text": "facial surfaces region", "isCorrect": false}, {"text": "distobuccal angles area", "isCorrect": true}, {"text": "lingual margins space", "isCorrect": false}]	\N
 1004	切口	\N	2025-08-03 21:34:12.222	2025-08-03 21:34:15.974	\N	\N	en	\N	\N	The surgeon made a small incision in the patient's skin.	[{"text": "切口", "isCorrect": true}, {"text": "缝合", "isCorrect": false}, {"text": "手术", "isCorrect": false}, {"text": "开颅", "isCorrect": false}]	[{"text": "incision", "isCorrect": true}, {"text": "excision", "isCorrect": false}, {"text": "abrasion", "isCorrect": false}, {"text": "laceration", "isCorrect": false}]	\N
 1010	磨牙后垫	\N	2025-08-03 21:34:18.338	2025-08-03 21:34:23.023	\N	\N	en	\N	\N	The retromalar pad is located beneath the eye in some animals.	[{"text": "牙刷", "isCorrect": false}, {"text": "洗面奶", "isCorrect": false}, {"text": "磨牙后垫", "isCorrect": true}, {"text": "漱口水", "isCorrect": false}]	[{"text": "zygomatic bone", "isCorrect": false}, {"text": "inverse plane", "isCorrect": false}, {"text": "zygomalar arch", "isCorrect": false}, {"text": "retromalar pad", "isCorrect": true}]	\N
-1052	hunter	\N	2025-08-04 03:36:30.997	2025-08-04 03:36:35.215	\N	\N	en	\N	\N	The hunter tracked the deer through the forest.	[{"text": "hunter", "isCorrect": true}, {"text": "掠夺者", "isCorrect": false}, {"text": "射手", "isCorrect": false}, {"text": "狩猎者", "isCorrect": false}]	[{"text": "猎人", "isCorrect": true}, {"text": "渔夫", "isCorrect": false}, {"text": "农民", "isCorrect": false}, {"text": "牧师", "isCorrect": false}]	\N
+1052	猎人	\N	2025-08-04 03:36:30.997	2025-08-04 11:06:55.13	\N	1	en	\N	\N	The hunter tracked the deer through the forest.	[{"text": "hunter", "isCorrect": true}, {"text": "掠夺者", "isCorrect": false}, {"text": "射手", "isCorrect": false}, {"text": "狩猎者", "isCorrect": false}]	[{"text": "猎人", "isCorrect": true}, {"text": "渔夫", "isCorrect": false}, {"text": "农民", "isCorrect": false}, {"text": "牧师", "isCorrect": false}]	\N
 943	平坦的	\N	2025-08-03 21:33:30.076	2025-08-03 21:33:33.701	\N	\N	en	\N	\N	I live in a small flat in the city.	[{"text": "光滑的", "isCorrect": false}, {"text": "崎岖的", "isCorrect": false}, {"text": "坎坷的", "isCorrect": false}, {"text": "平坦的", "isCorrect": true}]	[{"text": "flat", "isCorrect": true}, {"text": "smooth", "isCorrect": false}, {"text": "dull", "isCorrect": false}, {"text": "plain", "isCorrect": false}]	\N
 949	无症状	\N	2025-08-03 21:33:36.92	2025-08-03 21:33:40.869	\N	\N	en	\N	\N	She tested positive for COVID-19 but remained asymptomatic.	[{"text": "无症状", "isCorrect": true}, {"text": "发烧", "isCorrect": false}, {"text": "忧虑", "isCorrect": false}, {"text": "悲哀", "isCorrect": false}]	[{"text": "reverberant", "isCorrect": false}, {"text": "precarious", "isCorrect": false}, {"text": "insignificant", "isCorrect": false}, {"text": "asymptomatic", "isCorrect": true}]	\N
 963	修改	\N	2025-08-03 21:33:45.762	2025-08-03 21:33:49.042	\N	\N	en	\N	\N	She made a modification to the design of the dress by adding pockets.	[{"text": "修改", "isCorrect": true}, {"text": "转化", "isCorrect": false}, {"text": "更改", "isCorrect": false}, {"text": "编辑", "isCorrect": false}]	[{"text": "reconstruction", "isCorrect": false}, {"text": "amendment", "isCorrect": false}, {"text": "adaptation", "isCorrect": false}, {"text": "modification", "isCorrect": true}]	\N
@@ -9306,6 +9452,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 985	颊	\N	2025-08-03 21:34:02.32	2025-08-03 21:34:06.254	\N	\N	en	\N	\N	The dentist applied a numbing gel to my buccal cavity before starting the procedure.	[{"text": "颊", "isCorrect": true}, {"text": "脸颊", "isCorrect": false}, {"text": "唇", "isCorrect": false}, {"text": "额头", "isCorrect": false}]	[{"text": "buccal", "isCorrect": true}, {"text": "lingual", "isCorrect": false}, {"text": "gingival", "isCorrect": false}, {"text": "orbital", "isCorrect": false}]	\N
 995	腭小凹	\N	2025-08-03 21:34:12.219	2025-08-03 21:34:15.771	\N	\N	en	\N	\N	The palatine fovea is a small depression located on the roof of the mouth.	[{"text": "口腔", "isCorrect": false}, {"text": "下颚", "isCorrect": false}, {"text": "舌头", "isCorrect": false}, {"text": "腭小凹", "isCorrect": true}]	[{"text": "submandibular gland", "isCorrect": false}, {"text": "palatine fovea", "isCorrect": true}, {"text": "lingual frenulum", "isCorrect": false}, {"text": "alveolar ridge", "isCorrect": false}]	\N
 1009	组织面	\N	2025-08-03 21:34:18.339	2025-08-03 21:34:22.839	\N	\N	en	\N	\N	The doctor examined the tissue surface under the microscope.	[{"text": "编织表", "isCorrect": false}, {"text": "结构面", "isCorrect": false}, {"text": "组织面", "isCorrect": true}, {"text": "组装聚", "isCorrect": false}]	[{"text": "membrane", "isCorrect": false}, {"text": "tissue surface", "isCorrect": true}, {"text": "dermal", "isCorrect": false}, {"text": "epidermis", "isCorrect": false}]	\N
+1054	神经元	\N	2025-08-04 11:03:29.71	2025-08-04 11:03:35.4	\N	\N	en	\N	\N	Neurons send signals throughout the brain and body.	[{"text": "神经元", "isCorrect": true}, {"text": "视网膜", "isCorrect": false}, {"text": "脊柱", "isCorrect": false}, {"text": "脑部", "isCorrect": false}]	[{"text": "Neurons", "isCorrect": true}, {"text": "Cellulose", "isCorrect": false}, {"text": "Axons", "isCorrect": false}, {"text": "Dendrites", "isCorrect": false}]	\N
 936	倒凹区域	\N	2025-08-03 21:33:30.063	2025-08-03 21:33:33.953	\N	\N	en	\N	\N	The undercut area of the rock provided a cool and shady spot to relax.	[{"text": "方圆区域", "isCorrect": false}, {"text": "倾斜区域", "isCorrect": false}, {"text": "平坦区域", "isCorrect": false}, {"text": "倒凹区域", "isCorrect": true}]	[{"text": "undersell terrain", "isCorrect": false}, {"text": "subpar location", "isCorrect": false}, {"text": "below deck", "isCorrect": false}, {"text": "undercut area", "isCorrect": true}]	\N
 946	不耐受	\N	2025-08-03 21:33:36.918	2025-08-03 21:33:40.987	\N	\N	en	\N	\N	She has a severe intolerance to dairy products.	[{"text": "不可否认", "isCorrect": false}, {"text": "不屈服", "isCorrect": false}, {"text": "不耐受", "isCorrect": true}, {"text": "不容忍", "isCorrect": false}]	[{"text": "discrimination", "isCorrect": false}, {"text": "bigotry", "isCorrect": false}, {"text": "intolerance", "isCorrect": true}, {"text": "bias", "isCorrect": false}]	\N
 955	甲状旁腺	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.372	\N	\N	en	\N	\N	The doctor explained that the patient would need surgery to remove a parathyroid gland.	[{"text": "颅咽管", "isCorrect": false}, {"text": "甲状旁腺", "isCorrect": true}, {"text": "下丘脑", "isCorrect": false}, {"text": "腹膜后腔", "isCorrect": false}]	[{"text": "thymus", "isCorrect": false}, {"text": "pancreas", "isCorrect": false}, {"text": "hypothalamus", "isCorrect": false}, {"text": "parathyroid", "isCorrect": true}]	\N
@@ -9314,6 +9461,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 986	唇音，唇的	\N	2025-08-03 21:34:02.386	2025-08-03 21:34:06.189	\N	\N	en	\N	\N	She practiced her pronunciation of the labial sounds in Spanish class.	[{"text": "唇音，唇的", "isCorrect": true}, {"text": "口腔, false"}, {"text": "牙齿, false"}, {"text": "舌头, false"}]	[{"text": "labial", "isCorrect": true}, {"text": "velar", "isCorrect": false}, {"text": "nasal", "isCorrect": false}, {"text": "dorsal", "isCorrect": false}]	\N
 996	腭穹窿	\N	2025-08-03 21:34:12.218	2025-08-03 21:34:15.944	\N	\N	en	\N	\N	The palatal vault is the curved, bony roof of the mouth.	[{"text": "喉嚨", "isCorrect": false}, {"text": "唾津", "isCorrect": false}, {"text": "腭穹窿", "isCorrect": true}, {"text": "稜齒", "isCorrect": false}]	[{"text": "nasopharynx", "isCorrect": false}, {"text": "uvula", "isCorrect": false}, {"text": "gingiva", "isCorrect": false}, {"text": "palatal vault", "isCorrect": true}]	\N
 1006	主承托区	\N	2025-08-03 21:34:18.309	2025-08-03 21:34:22.483	\N	\N	en	\N	\N	The arches of the foot are the primary stress-bearing areas during walking and running.	[{"text": "主承托区", "isCorrect": true}, {"text": "次要区域", "isCorrect": false}, {"text": "中央核心", "isCorrect": false}, {"text": "外围地区", "isCorrect": false}]	[{"text": "main tension point", "isCorrect": false}, {"text": "emphasis zone", "isCorrect": false}, {"text": "primary stress-bearing area", "isCorrect": true}, {"text": "central accent spot", "isCorrect": false}]	\N
+1055	压缩	\N	2025-08-04 11:04:23.84	2025-08-04 11:04:31.928	\N	\N	en	\N	\N	I need to compress this file before sending it via email.	[{"text": "缩减", "isCorrect": false}, {"text": "压缩", "isCorrect": true}, {"text": "收缩", "isCorrect": false}, {"text": "紧缩", "isCorrect": false}]	[{"text": "condense", "isCorrect": false}, {"text": "compress", "isCorrect": true}, {"text": "deflate", "isCorrect": false}, {"text": "expand", "isCorrect": false}]	\N
 941	溶液	\N	2025-08-03 21:33:30.075	2025-08-03 21:33:35.937	\N	\N	en	\N	\N	She found a solution to her math problem by asking her teacher for help.	[{"text": "浓缩液", "isCorrect": false}, {"text": "悬浮液", "isCorrect": false}, {"text": "凝固液", "isCorrect": false}, {"text": "溶液", "isCorrect": true}]	[{"text": "response", "isCorrect": false}, {"text": "conclusion", "isCorrect": false}, {"text": "solution", "isCorrect": true}, {"text": "answer", "isCorrect": false}]	\N
 954	固定的	\N	2025-08-03 21:33:36.951	2025-08-03 21:33:40.707	\N	\N	en	\N	\N	The mechanic fixed my car yesterday.	[{"text": "变化的", "isCorrect": false}, {"text": "固定的", "isCorrect": true}, {"text": "常规的", "isCorrect": false}, {"text": "特殊的", "isCorrect": false}]	[{"text": "stuck", "isCorrect": false}, {"text": "set", "isCorrect": false}, {"text": "fixed", "isCorrect": true}, {"text": "steady", "isCorrect": false}]	\N
 961	可靠的	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.458	\N	\N	en	\N	\N	My new car is reliable and never breaks down.	[{"text": "可信任的", "isCorrect": false}, {"text": "可靠的", "isCorrect": true}, {"text": "不靠谱的", "isCorrect": false}, {"text": "靠不住的", "isCorrect": false}]	[{"text": "variable", "isCorrect": false}, {"text": "faithful", "isCorrect": false}, {"text": "unreliable", "isCorrect": false}, {"text": "reliable", "isCorrect": true}]	\N
@@ -9322,6 +9470,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 991	颧突	\N	2025-08-03 21:34:02.417	2025-08-03 21:34:06.653	\N	\N	en	\N	\N	The zygomatic process connects the cheekbone to the skull.	[{"text": "颔顶", "isCorrect": false}, {"text": "颊梁", "isCorrect": false}, {"text": "颧突", "isCorrect": true}, {"text": "颌间", "isCorrect": false}]	[{"text": "temporal bone", "isCorrect": false}, {"text": "occipital bone", "isCorrect": false}, {"text": "nasal bone", "isCorrect": false}, {"text": "zygomatic process", "isCorrect": true}]	\N
 997	引流	\N	2025-08-03 21:34:12.221	2025-08-03 21:34:15.773	\N	\N	en	\N	\N	The drainage system in the neighborhood helps prevent flooding during heavy rain.	[{"text": "引流", "isCorrect": true}, {"text": "导向", "isCorrect": false}, {"text": "吸管", "isCorrect": false}, {"text": "拉动", "isCorrect": false}]	[{"text": "irrigation", "isCorrect": false}, {"text": "drainage", "isCorrect": true}, {"text": "sewage", "isCorrect": false}, {"text": "erosion", "isCorrect": false}]	\N
 1011	缓冲区	\N	2025-08-03 21:34:18.34	2025-08-03 21:34:22.486	\N	\N	en	\N	\N	Please drop your ball within one club length of the nearest relief area.	[{"text": "缓冲区", "isCorrect": true}, {"text": "加速器", "isCorrect": false}, {"text": "存储器", "isCorrect": false}, {"text": "堆栈", "isCorrect": false}]	[{"text": "resting zone", "isCorrect": false}, {"text": "relief area", "isCorrect": true}, {"text": "safety net", "isCorrect": false}, {"text": "comfort zone", "isCorrect": false}]	\N
+1056	吠	\N	2025-08-04 13:56:40.231	2025-08-04 13:56:44.526	\N	\N	en	\N	\N	The dog began to bark loudly when the mailman approached.	[{"text": "咆", "isCorrect": false}, {"text": "哈", "isCorrect": false}, {"text": "哮", "isCorrect": false}, {"text": "吠", "isCorrect": true}]	[{"text": "bark", "isCorrect": true}, {"text": "yelp", "isCorrect": false}, {"text": "roar", "isCorrect": false}, {"text": "growl", "isCorrect": false}]	\N
 951	脓肿	\N	2025-08-03 21:33:36.932	2025-08-03 21:33:40.9	\N	\N	en	\N	\N	The infection caused painful abscesses on his skin.	[{"text": "疼痛", "isCorrect": false}, {"text": "脓肿", "isCorrect": true}, {"text": "感染", "isCorrect": false}, {"text": "溃疡", "isCorrect": false}]	[{"text": "ulcer", "isCorrect": false}, {"text": "gangrene", "isCorrect": false}, {"text": "abcesses", "isCorrect": true}, {"text": "canker", "isCorrect": false}]	\N
 957	腺瘤	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:51.117	\N	\N	en	\N	\N	The doctor discovered an adenoma during the routine check-up.	[{"text": "痔疮", "isCorrect": false}, {"text": "神经炎", "isCorrect": false}, {"text": "腺瘤", "isCorrect": true}, {"text": "假体", "isCorrect": false}]	[{"text": "carcinoma", "isCorrect": false}, {"text": "sarcoma", "isCorrect": false}, {"text": "neoplasm", "isCorrect": false}, {"text": "adenoma", "isCorrect": true}]	\N
 970	下颌骨	\N	2025-08-03 21:33:52.127	2025-08-03 21:33:55.369	\N	\N	en	\N	\N	The dentist examined my mandibular joint to check for any issues.	[{"text": "颌骨", "isCorrect": false}, {"text": "下颚骨", "isCorrect": false}, {"text": "下巴骨", "isCorrect": false}, {"text": "下颌骨", "isCorrect": true}]	[{"text": "menisco", "isCorrect": false}, {"text": "mandibilar", "isCorrect": true}, {"text": "maxilar", "isCorrect": false}, {"text": "dental", "isCorrect": false}]	\N
@@ -9503,6 +9652,7 @@ COPY public.word_definitions_part_of_speech_links (id, word_definition_id, part_
 1041	1049	1	31
 1043	1051	1	33
 1045	1053	1	35
+1047	1055	1	37
 835	842	1	8
 836	841	1	8
 838	846	1	8
@@ -9636,6 +9786,8 @@ COPY public.word_definitions_part_of_speech_links (id, word_definition_id, part_
 1040	1048	1	30
 1042	1050	1	32
 1044	1052	1	34
+1046	1054	1	36
+1048	1056	1	38
 \.
 
 
@@ -9936,6 +10088,9 @@ COPY public.word_definitions_word_links (id, word_definition_id, word_id, word_d
 1051	1051	1803	1
 1052	1052	1804	1
 1053	1053	1805	1
+1054	1054	1806	1
+1055	1055	1807	1
+1056	1056	1808	1
 \.
 
 
@@ -10060,9 +10215,11 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 1624	door	2025-08-03 21:32:22.594	2025-08-03 21:32:22.594	\N	\N
 1627	Air crash	2025-08-03 21:32:22.595	2025-08-03 21:32:22.595	\N	\N
 1798	caninus	2025-08-03 21:35:22.541	2025-08-03 21:35:22.541	\N	\N
-1801	兼容性	2025-08-04 02:56:51.811	2025-08-04 02:56:51.811	\N	\N
-1803	决定	2025-08-04 03:35:21.843	2025-08-04 03:35:21.843	\N	\N
 1805	tier	2025-08-04 04:05:23.768	2025-08-04 04:05:23.768	\N	\N
+1807	compress	2025-08-04 11:04:23.456	2025-08-04 11:04:23.456	\N	\N
+1803	decision	2025-08-04 03:35:21.843	2025-08-04 11:06:19.282	\N	1
+1801	compatibility	2025-08-04 02:56:51.811	2025-08-04 11:07:34.757	\N	1
+1809	test1	2025-08-05 11:11:08.739	2025-08-05 11:11:08.739	\N	\N
 1630	fraud	2025-08-03 21:32:27.25	2025-08-03 21:32:27.25	\N	\N
 1629	market	2025-08-03 21:32:27.248	2025-08-03 21:32:27.248	\N	\N
 1632	focus	2025-08-03 21:32:27.25	2025-08-03 21:32:27.25	\N	\N
@@ -10189,8 +10346,10 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 1793	exposure	2025-08-03 21:34:49.003	2025-08-03 21:34:49.003	\N	\N
 1799	oris	2025-08-03 21:35:22.542	2025-08-03 21:35:22.542	\N	\N
 1800	strategy	2025-08-03 22:57:44.711	2025-08-03 22:57:44.711	\N	\N
-1802	反抗	2025-08-04 02:57:22.801	2025-08-04 02:57:22.801	\N	\N
-1804	猎人	2025-08-04 03:36:30.628	2025-08-04 03:36:30.628	\N	\N
+1806	Neurons	2025-08-04 11:03:29.266	2025-08-04 11:03:29.266	\N	\N
+1804	hunter	2025-08-04 03:36:30.628	2025-08-04 11:06:09.27	\N	1
+1802	resistance	2025-08-04 02:57:22.801	2025-08-04 11:07:15.335	\N	1
+1808	bark	2025-08-04 13:56:39.683	2025-08-04 13:56:39.683	\N	\N
 \.
 
 
@@ -10359,7 +10518,7 @@ SELECT pg_catalog.setval('public.components_a_word_refs_id_seq', 4, true);
 -- Name: conversations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.conversations_id_seq', 46, true);
+SELECT pg_catalog.setval('public.conversations_id_seq', 48, true);
 
 
 --
@@ -10401,7 +10560,7 @@ SELECT pg_catalog.setval('public.files_related_morphs_id_seq', 1, true);
 -- Name: flashcards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_id_seq', 643, true);
+SELECT pg_catalog.setval('public.flashcards_id_seq', 669, true);
 
 
 --
@@ -10415,21 +10574,21 @@ SELECT pg_catalog.setval('public.flashcards_localizations_links_id_seq', 1, fals
 -- Name: flashcards_review_tire_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 578, true);
+SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 596, true);
 
 
 --
 -- Name: flashcards_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 644, true);
+SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 670, true);
 
 
 --
 -- Name: flashcards_word_definition_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 925, true);
+SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 936, true);
 
 
 --
@@ -10499,7 +10658,7 @@ SELECT pg_catalog.setval('public.modules_localizations_links_id_seq', 1, false);
 -- Name: part_of_speeches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.part_of_speeches_id_seq', 9, true);
+SELECT pg_catalog.setval('public.part_of_speeches_id_seq', 10, true);
 
 
 --
@@ -10534,21 +10693,21 @@ SELECT pg_catalog.setval('public.review_tires_localizations_links_id_seq', 1, fa
 -- Name: reviewlogs_flashcard_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 320, true);
+SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 348, true);
 
 
 --
 -- Name: reviewlogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_id_seq', 347, true);
+SELECT pg_catalog.setval('public.reviewlogs_id_seq', 375, true);
 
 
 --
 -- Name: reviewlogs_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 347, true);
+SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 375, true);
 
 
 --
@@ -10772,14 +10931,14 @@ SELECT pg_catalog.setval('public.units_precondition_links_id_seq', 2, true);
 -- Name: up_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_id_seq', 143, true);
+SELECT pg_catalog.setval('public.up_permissions_id_seq', 158, true);
 
 
 --
 -- Name: up_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 143, true);
+SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 158, true);
 
 
 --
@@ -10863,7 +11022,7 @@ SELECT pg_catalog.setval('public.user_sentences_user_links_id_seq', 1, false);
 -- Name: user_words_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_words_id_seq', 157, true);
+SELECT pg_catalog.setval('public.user_words_id_seq', 172, true);
 
 
 --
@@ -10884,7 +11043,7 @@ SELECT pg_catalog.setval('public.user_words_localizations_links_id_seq', 1, fals
 -- Name: user_words_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_words_user_links_id_seq', 150, true);
+SELECT pg_catalog.setval('public.user_words_user_links_id_seq', 165, true);
 
 
 --
@@ -10912,7 +11071,7 @@ SELECT pg_catalog.setval('public.word_definitions_components_id_seq', 1, false);
 -- Name: word_definitions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_id_seq', 1053, true);
+SELECT pg_catalog.setval('public.word_definitions_id_seq', 1060, true);
 
 
 --
@@ -10926,7 +11085,7 @@ SELECT pg_catalog.setval('public.word_definitions_localizations_links_id_seq', 1
 -- Name: word_definitions_part_of_speech_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1045, true);
+SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1051, true);
 
 
 --
@@ -10940,14 +11099,14 @@ SELECT pg_catalog.setval('public.word_definitions_section_links_id_seq', 1, fals
 -- Name: word_definitions_word_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1053, true);
+SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1060, true);
 
 
 --
 -- Name: words_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.words_id_seq', 1805, true);
+SELECT pg_catalog.setval('public.words_id_seq', 1809, true);
 
 
 --
