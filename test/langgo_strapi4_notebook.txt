@@ -410,10 +410,51 @@ curl -X POST "http://localhost:1338/api/translate-word-context" \
      }' \
 | jq .
 
-curl -X POST "http://localhost:1338/api/translate" \
+curl -X POST "http://localhost:1338/api/translate-word" \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
--H "Content-Type: application/json" \
--d '{ "word": "caught",
-      "source": "en",
-      "target": "zh"
-     }'
+  -H "Content-Type: application/json" \
+  -d '{
+    "word": "catch",
+    "source": "en",
+    "target": "zh"
+  }'
+
+
+curl -I http://localhost:1338/api/flashcards
+curl -I -H 'If-None-Match: W/"1526-dSUXrjK1CXvv5FRBFJEpJHpRAvA"' http://localhost:1338/api/flashcards
+
+
+
+
+
+gcloud redis instances create langgo-cache \
+>   --size=1 \
+>   --region=us-west1 \
+>   --tier=basic \
+>   --network=default
+API [redis.googleapis.com] not enabled on project [lucid-arch-451211-b0]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
+
+Enabling service [redis.googleapis.com] on project [lucid-arch-451211-b0]...
+Operation "operations/acf.p2-852311377699-be507688-2e25-4d09-bc06-4b03fc9ef529" finished successfully.
+Create request issued for: [langgo-cache]
+Waiting for operation [projects/lucid-arch-451211-b0/locations/us-west1/operations/operation-1754607662475-63bce6e712aad-a07a3ceb-a8fff3f2] to complete...done.                               
+Created instance [langgo-cache].
+
+
+Updates are available for some Google Cloud CLI components.  To install them,
+please run:
+  $ gcloud components update
+
+
+curl -i http://localhost:1338/api/flashcards \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" | jq .
+
+
+To start redis now and restart at login:
+  brew services start redis
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/redis/bin/redis-server /usr/local/etc/redis.conf
+
+
+  gcloud beta run services logs tail my-strapi-app  --project lucid-arch-451211-b0

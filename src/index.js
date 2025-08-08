@@ -67,7 +67,7 @@ module.exports = {
 
     // Cron: Keep subsystem warm every minute
     strapi.cron.add({
-      '* * * * *': async () => {
+      '*/8 * * * *': async () => {
         try {
           await keepSubsysWarm(strapi);
         } catch (err) {
