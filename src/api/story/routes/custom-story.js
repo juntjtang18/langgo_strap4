@@ -26,6 +26,14 @@ module.exports = {
     },
     {
       method: 'POST',
+      path: '/stories/:id/regenerate-prompts',
+      handler: 'story.regeneratePromptsWithStyle',
+      config: {
+        policies: [], // Add authentication if needed
+      },
+    },    
+    {
+      method: 'POST',
       path: '/stories/:id/like',
       handler: 'story.like',
       config: {
@@ -38,6 +46,14 @@ module.exports = {
       handler: 'story.findRecommended',
       config: {
         policies: [], // This can remain public
+      },
+    },    
+    {
+      method: 'POST',
+      path: '/stories/:id/backfill-fields',
+      handler: 'story.backfillMissingFields',
+      config: {
+        policies: [], // Add authentication if needed
       },
     },    
   ],

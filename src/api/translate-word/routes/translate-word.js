@@ -9,6 +9,15 @@ module.exports = {
           middlewares: [],
         },
       },
+      {
+        method: 'POST',
+        path: '/translate-word-context',
+        handler: 'translate-word.translateWordInContext',
+        config: {
+          policies: [],
+          middlewares: [],
+        },
+      },
     ],
   };
   

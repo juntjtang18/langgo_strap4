@@ -16,19 +16,21 @@ module.exports = [
         'http://192.168.1.73',
         'https://langgo-en-strapi.geniusparentingai.ca',
         'https://langgo-subsys.geniusparentingai.ca',
-	      'http://localhost:1338',
+        'http://localhost:1338',
       ],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       headers: '*',
       credentials: true,
     },
   },
+
   {
     name: 'strapi::errors',
     config: {
       stackTrace: true,
     },
   },
+
   {
     name: 'strapi::logger',
     config: {
@@ -37,9 +39,11 @@ module.exports = [
       requests: true,
     },
   },
+
   'strapi::security',
   'strapi::poweredBy',
   'strapi::query',
+
   {
     name: 'strapi::body',
     config: {
@@ -56,7 +60,17 @@ module.exports = [
       },
     },
   },
+
   'strapi::session',
   'strapi::favicon',
+
+  {
+    name: 'global::redis-cache',
+    config: {
+      ttl: 60,
+    },
+  },
+  
+  'global::etag',
   'strapi::public',
 ];

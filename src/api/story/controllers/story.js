@@ -99,7 +99,64 @@ module.exports = createCoreController('api::story.story', ({ strapi }) => ({
     strapi.log.info(`Successfully generated ${promiseKeys.length} new prompt set(s) for story ID ${id}.`);
     return this.transformResponse(updatedStory);
   },
-
+  /**********************************************************************
+   * Regenerates all AI prompts for a given story, optionally using a specified style.
+   * @param {object} ctx - The Koa context object.
+   **********************************************************************/
+  async regeneratePromptsWithStyle(ctx) {
+    const { id } = ctx.params;
+    const { style = 'bright' } = ctx.request.body;
+  
+    let story = await strapi.entityService.findOne('api::story.story', id, {
+      populate: { generation_prompts: { populate: 'illustration_prompts' } },
+    });
+  
+    if (!story) {
+      return ctx.notFound(`Story with ID ${id} not found.`);
+    }
+  
+    if (!story.text) {
+      return ctx.badRequest('The story must have text to regenerate prompts.');
+    }
+  
+    const openaiService = strapi.service('openai');
+  
+    // Ensure the brief exists or generate it
+    let updatedBrief = story.brief;
+    if (!updatedBrief) {
+      updatedBrief = await openaiService.generateStoryBrief(story.text);
+      if (updatedBrief) {
+        story = await strapi.entityService.update('api::story.story', id, {
+          data: { brief: updatedBrief },
+          populate: { generation_prompts: { populate: 'illustration_prompts' } },
+        });
+      }
+    }
+  
+    // Regenerate everything (unconditionally)
+    const [coverPrompt, videoPrompt, illustrationPrompts] = await Promise.all([
+      openaiService.generateCoverImagePrompt(story.title, story.author, updatedBrief || story.brief, style),
+      openaiService.generateBriefVideoPrompt(story.title, updatedBrief || story.brief),
+      openaiService.generateIllustrationPrompts(story.title, story.text),
+    ]);
+  
+    const finalPromptData = {
+      cover_image_prompt: coverPrompt,
+      brief_video_prompt: videoPrompt,
+      illustration_prompts: (illustrationPrompts || []).map(p => ({ prompt: p })),
+    };
+  
+    const updatedStory = await strapi.entityService.update('api::story.story', story.id, {
+      data: {
+        generation_prompts: finalPromptData,
+      },
+      populate: { generation_prompts: { populate: 'illustration_prompts' } }
+    });
+  
+    strapi.log.info(`Regenerated prompts for story ID ${id} with style "${style}"`);
+    return this.transformResponse(updatedStory);
+  },
+  
     /*******************************************************************************
    * Fetches stories, generates a brief, analyzes difficulty, and saves them.
    *
@@ -266,21 +323,107 @@ module.exports = createCoreController('api::story.story', ({ strapi }) => ({
     // Parse query parameters for pagination
     const page = parseInt(ctx.query.pagination?.page || '1', 10);
     const pageSize = parseInt(ctx.query.pagination?.pageSize || '10', 10);
-
+  
     // Use findPage for proper pagination
     const { results, pagination } = await strapi.entityService.findPage('api::story.story', {
-        // Populate all the relations you need for the detailed view
-        populate: {
-            difficulty_level: true,
-            illustrations: true,
+      populate: {
+        difficulty_level: true,
+        illustrations: {
+          populate: '*',
         },
-        sort: { like_count: 'desc' },
-        page,
-        pageSize,
+      },
+      sort: { like_count: 'desc' },
+      page,
+      pageSize,
     });
-    
+  
     // Return the full story objects with pagination metadata
     return this.transformResponse(results, { pagination });
   },
+  async backfillMissingFields(ctx) {
+    const { id } = ctx.params;
+  
+    let story = await strapi.entityService.findOne('api::story.story', id, {
+      populate: { generation_prompts: { populate: 'illustration_prompts' } },
+    });
+  
+    if (!story) {
+      return ctx.notFound(`Story with ID ${id} not found.`);
+    }
+  
+    if (!story.text) {
+      return ctx.badRequest('Story must have text to backfill fields.');
+    }
+  
+    const openaiService = strapi.service('openai');
+  
+    const updates = {};
+  
+    // Brief
+    if (!story.brief) {
+      updates.brief = await openaiService.generateStoryBrief(story.text);
+    }
+  
+    // Word Count
+    if (!story.word_count) {
+      updates.word_count = story.text.split(/\s+/).length;
+    }
+  
+    // Difficulty Level
+    if (!story.difficulty_level) {
+      const difficultyCode = await openaiService.getStoryDifficulty(story.text);
+      if (difficultyCode) {
+        const levelEntity = await strapi.db.query('api::difficulty-level.difficulty-level').findOne({
+          where: { code: difficultyCode },
+        });
+        if (levelEntity) {
+          updates.difficulty_level = levelEntity.id;
+        } else {
+          strapi.log.warn(`Difficulty code "${difficultyCode}" not found in DB.`);
+        }
+      }
+    }
+  
+    // Generation Prompts
+    const existingPrompts = story.generation_prompts || {};
+    const promptUpdates = {};
+  
+    if (!existingPrompts.cover_image_prompt) {
+      promptUpdates.cover_image_prompt = await openaiService.generateCoverImagePrompt(story.title, story.author, updates.brief || story.brief);
+    }
+  
+    if (!existingPrompts.brief_video_prompt) {
+      promptUpdates.brief_video_prompt = await openaiService.generateBriefVideoPrompt(story.title, updates.brief || story.brief);
+    }
+  
+    const needsIllustrations = !existingPrompts.illustration_prompts || existingPrompts.illustration_prompts.length < 3;
+    if (needsIllustrations) {
+      const illustrations = await openaiService.generateIllustrationPrompts(story.title, story.text);
+      if (illustrations) {
+        promptUpdates.illustration_prompts = illustrations.map(prompt => ({ prompt }));
+      }
+    }
+  
+    if (Object.keys(promptUpdates).length > 0) {
+      updates.generation_prompts = {
+        ...existingPrompts,
+        ...promptUpdates,
+        illustration_prompts: promptUpdates.illustration_prompts || existingPrompts.illustration_prompts || [],
+      };
+    }
+  
+    if (Object.keys(updates).length === 0) {
+      return ctx.send({ message: 'No fields needed to be backfilled. Story already complete.', data: story });
+    }
+  
+    const updatedStory = await strapi.entityService.update('api::story.story', id, {
+      data: updates,
+      populate: { generation_prompts: { populate: 'illustration_prompts' }, difficulty_level: true },
+    });
+  
+    strapi.log.info(`Backfilled fields for story ID ${id}: ${Object.keys(updates).join(', ')}`);
+    return this.transformResponse(updatedStory);
+  },
+    
   
 }));

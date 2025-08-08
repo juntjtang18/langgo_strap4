@@ -256,7 +256,7 @@ curl -X GET 'http://localhost:1338/api/flashcards/mine' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
 -H "Content-Type: application/json" | jq .
 
-curl -X POST 'http://localhost:1338/api/flashcards/138/review' \
+curl -X POST 'http://localhost:1338/api/flashcards/669/review' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
 -H "Content-Type: application/json" \
 -d '{"result":"correct"}' | jq .
@@ -327,7 +327,7 @@ curl -X GET http://localhost:1338/api/migratecount \
 curl -X GET http://localhost:1338/api/words/search \
 -H "Authorization: Bearer 6538d1356589b1535b2c97bc0e76cbe58ffbcaa8087558527ee0b37af5cefa195795b37839fdd885c3cbe624d7e38298130cc787eebd43f60748cd20cab040885dd334b6c88b2201ae2793ad08164177aeadff42f2c13bde3500db72abd0cb477d78e3f2c5d6b8e7073c8021be966076ba288e91d211b9063ec657199fd5fce9" \
 -H "Content-Type: application/json" \
--d '{"term": "de" }' | jq .
+-d '{"term": "bar" }' | jq .
 
 curl -X GET http://localhost:1338/api/words/search?term=de \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MzUzODY3LCJleHAiOjE3NTY5NDU4Njd9.YL-1mDbOWGRaUm-k3VxxC0xx0URn1QcLezDKBV7rp_E" \
@@ -351,3 +351,69 @@ curl -X POST http://localhost:1338/api/word-definitions \
   }
 }' | jq .
 
+curl -X GET 'http://localhost:1338/api/word-definitions?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MzUzODY3LCJleHAiOjE3NTY5NDU4Njd9.YL-1mDbOWGRaUm-k3VxxC0xx0URn1QcLezDKBV7rp_E" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET 'http://localhost:1338/api/word-definitions?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2&populate%5B0%5D=flashcards&populate%5Bflashcards%5D%5Bpopulate%5D=user' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MzUzODY3LCJleHAiOjE3NTY5NDU4Njd9.YL-1mDbOWGRaUm-k3VxxC0xx0URn1QcLezDKBV7rp_E" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET 'http://localhost:1338/api/words/1808?populate%5Bword_definitions%5D' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MzUzODY3LCJleHAiOjE3NTY5NDU4Njd9.YL-1mDbOWGRaUm-k3VxxC0xx0URn1QcLezDKBV7rp_E" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET http://localhost:1338/api/words/search?term=bar \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzU0MzUzODY3LCJleHAiOjE3NTY5NDU4Njd9.YL-1mDbOWGRaUm-k3VxxC0xx0URn1QcLezDKBV7rp_E" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X GET "http://192.168.1.69:1338/api/stories/recommended?populate%5Bdifficulty_level%5D=*&populate%5Billustrations%5D%5Bpopulate%5D=media&pagination%5Bpage%5D=1&pagination%5BpageSize%5D=6" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X POST "http://localhost:1338/api/auth/local" \
+-H "Content-Type: application/json" \
+-d '{  "identifier": "james@langgo.com",  "password": "123456"}' \
+| jq .
+
+
+curl -X GET "http://192.168.1.69:1338/api/stories?populate%5Bdifficulty_level%5D=*&populate%5Billustrations%5D%5Bpopulate%5D=media&sort=order:asc&pagination%5Bpage%5D=1&pagination%5BpageSize%5D=10" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X POST "http://localhost:1338/api/stories/12/backfill-fields" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" | jq .
+
+curl -X POST "http://localhost:1338/api/stories/11/regenerate-prompts" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" \
+-d '{ "style": "bright" }' \
+| jq .
+
+curl -X POST "http://localhost:1338/api/translate-word-context" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" \
+-d '{ "word": "caught",
+      "sentence": "He caught a cold. ",
+      "sourceLang": "en",
+      "targetLang": "zh"
+     }' \
+| jq .
+
+curl -X POST "http://localhost:1338/api/translate" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" \
+-d '{ "word": "caught",
+      "source": "en",
+      "target": "zh"
+     }'
