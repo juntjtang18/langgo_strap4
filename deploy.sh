@@ -56,6 +56,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --set-env-vars "CLOUD_SQL_INSTANCE=${CLOUD_SQL_INSTANCE}" \
   --set-env-vars "REDIS_HOST=${REDIS_HOST}" \
   --set-env-vars "REDIS_PORT=${REDIS_PORT}" \
+  --set-env-vars "ENABLE_REDIS_CACHE=${ENABLE_REDIS_CACHE}" \
   --set-env-vars "DATABASE_NAME=${DATABASE_NAME}" \
   --set-env-vars "DATABASE_USERNAME=${DATABASE_USERNAME}" \
   --set-env-vars "DATABASE_PASSWORD=${DATABASE_PASSWORD}" \
