@@ -28,6 +28,11 @@ REGION="us-west1"
 IMAGE_NAME="gcr.io/${PROJECT_ID}/${SERVICE_NAME}:${VERSION}"
 CLOUD_SQL_INSTANCE="lucid-arch-451211-b0:us-west1:cloud-sql-server"
 
+# Redis configuration (from Memorystore instance)
+REDIS_HOST="10.165.40.67"
+REDIS_PORT="6379"
+VPC_CONNECTOR="langgo-vpc-connector"
+
 # --- Deployment Steps ---
 echo "--- Deploying version: ${VERSION} ---"
 
@@ -46,8 +51,11 @@ gcloud run deploy "${SERVICE_NAME}" \
   --timeout "600" \
   --allow-unauthenticated \
   --add-cloudsql-instances "${CLOUD_SQL_INSTANCE}" \
+  --vpc-connector "${VPC_CONNECTOR}" \
   --set-env-vars "NODE_ENV=development" \
   --set-env-vars "CLOUD_SQL_INSTANCE=${CLOUD_SQL_INSTANCE}" \
+  --set-env-vars "REDIS_HOST=${REDIS_HOST}" \
+  --set-env-vars "REDIS_PORT=${REDIS_PORT}" \
   --set-env-vars "DATABASE_NAME=${DATABASE_NAME}" \
   --set-env-vars "DATABASE_USERNAME=${DATABASE_USERNAME}" \
   --set-env-vars "DATABASE_PASSWORD=${DATABASE_PASSWORD}" \

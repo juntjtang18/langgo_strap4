@@ -323,30 +323,82 @@ module.exports = ({ strapi }) => ({
     }
   },
   /**
-   * Generates a descriptive prompt for creating a cover image for a story.
+   * Generates a descriptive prompt for creating a cover image for a story, based on a selected art style.
    *
    * @param {string} title - The title of the story.
    * @param {string} author - The author of the story.
    * @param {string} brief - The brief summary of the story.
+   * @param {string} style - The visual style (e.g., 'bright', 'impressionist').
    * @returns {Promise<string|null>} The generated image prompt, or null on error.
    */
-  async generateCoverImagePrompt(title, author, brief) {
+  async generateCoverImagePrompt(title, author, brief, style = 'bright') {
+    const styleInstructionsMap = {
+      bright: `
+        Emphasize a brighter, more hopeful or heartwarming visual mood,
+        with natural lighting, warm tones, and emotionally uplifting composition.
+        Include vibrant colors, gentle highlights, and a welcoming, serene setting.
+        Avoid overly dark or gloomy atmospheres unless absolutely essential to the story.
+      `,
+      impressionist: `
+        The image should reflect a colorful, Impressionist painting style (印象派画风),
+        with expressive brushstrokes, soft outlines, natural outdoor lighting, and a vibrant, dreamlike palette.
+        Capture emotional beauty through light, color, and movement rather than fine detail.
+        Avoid hard edges or photorealism; focus on mood and atmosphere.
+      `,
+      storybook: `
+        Create an illustration that feels like a classic children's storybook page.
+        Use soft, hand-drawn or watercolor textures with warm, inviting colors.
+        The composition should feel magical, gentle, and filled with a sense of wonder or whimsy.
+        Avoid realism—embrace stylization and charm.
+      `,
+      vintage: `
+        Use a retro illustration style reminiscent of early to mid-20th-century book covers or posters.
+        Muted but rich color palette, slightly faded or textured, with period-appropriate costumes and settings.
+        Include balanced, bold composition and lighting that evokes nostalgia.
+        Avoid modern elements or digital aesthetics.
+      `,
+      anime: `
+        The image should be in a high-quality anime illustration style, with vibrant colors, expressive characters, and dramatic yet clean compositions.
+        Use cinematic lighting and include environmental detail like skies, cherry blossoms, cityscapes, or fantasy elements if relevant.
+        Capture emotion through facial expressions, body language, and background atmosphere.
+      `,
+      surreal: `
+        The image should have a surreal or dreamlike quality, combining unexpected elements in imaginative ways.
+        Lighting and color may be unnatural, symbolic, or magical.
+        Think of a poetic visual metaphor—something emotionally resonant but abstracted from realism.
+        Avoid literal representations unless they serve a symbolic purpose.
+      `,
+      cinematic: `
+        Emphasize cinematic realism and drama in the composition—deep shadows, backlighting, lens effects, dynamic angles.
+        Use a color palette suitable to the story’s tone (e.g. warm tones for hopeful stories, cool tones for mystery).
+        Include detailed characters, environment, and mood as if it were a film still.
+        Avoid painterly or cartoonish styles.
+      `
+    };
+
+    const styleInstruction = styleInstructionsMap[style] || styleInstructionsMap["bright"];
+
     const prompt = `
       You are an expert prompt engineer for AI image generation models like Sora or Midjourney.
       Your task is to create a single, powerful prompt to generate a compelling cover image for the short story "${title}" by ${author}.
 
       The summary of the story is: "${brief}"
 
-      Based on this brief, create a prompt that captures the essence of the story. The prompt should be descriptive, evocative, and include details about the style, mood, lighting, and composition.
+      Based on this brief, create a prompt that captures the essence of the story.
+      The prompt should be descriptive, evocative, and include details about the style, mood, lighting, and composition.
 
-      **CRITICAL INSTRUCTIONS:**
+      ${styleInstruction}
+
+      **CRITICAL FORMAT INSTRUCTIONS:**
       - The output MUST be a single JSON object with one key: "image_prompt".
       - The value should be the text of the prompt you create.
       - Do not include any other text or explanations.
 
-      Example format: {"image_prompt": "A young, nervous woman stands under a dim gaslight on a cobblestone street in 19th-century Paris, clutching a single red rose. Cinematic, moody lighting, dramatic shadows, photorealistic style."}
+      Example format: {"image_prompt": "A young girl in a flowing white dress runs through a lavender field at golden hour, petals catching the wind, painted in an Impressionist style with warm, colorful brushstrokes and soft glowing light."}
     `;
-    strapi.log.info(`Generating cover image prompt for "${title}"...`);
+
+    strapi.log.info(`Generating cover image prompt for "${title}" in style "${style}"...`);
+
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-4-turbo",
@@ -355,10 +407,12 @@ module.exports = ({ strapi }) => ({
           { role: "user", content: prompt }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.6, // Allow for some creativity in prompt generation
+        temperature: 0.6,
       });
+
       const content = JSON.parse(response.choices[0].message.content);
       return content.image_prompt || null;
+
     } catch (error) {
       strapi.log.error("Error generating cover image prompt:", error);
       return null;
