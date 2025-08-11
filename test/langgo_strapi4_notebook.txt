@@ -451,6 +451,10 @@ curl -i http://localhost:1338/api/flashcards \
 -H "Content-Type: application/json" | jq .
 
 
+curl -i https://langgo-en-strapi.geniusparentingai.ca/api/flashcards \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzU0NDYxMzgwLCJleHAiOjE3NTcwNTMzODB9.pSAzmpVQmc1EQ4k6cZCChXVg-Rs5V-MVsAeUA54OG-k" \
+-H "Content-Type: application/json" | jq .
+
 To start redis now and restart at login:
   brew services start redis
 Or, if you don't want/need a background service you can just run:
@@ -458,3 +462,8 @@ Or, if you don't want/need a background service you can just run:
 
 
   gcloud beta run services logs tail my-strapi-app  --project lucid-arch-451211-b0
+
+  git clone --branch snapshot-2025-08-07 --depth 1 https://github.com/juntjtang18/LangGo.git oldLanggo
+
+
+git tag -a snapshot-2025-08-10 -m "Snapshot taken on August 10, 2025"

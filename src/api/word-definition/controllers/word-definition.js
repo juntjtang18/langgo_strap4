@@ -53,7 +53,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
     /**
    * Creates or finds a word/definition and an associated flashcard for the user,
    * then enqueues a background job to populate the entry with AI-generated content.
-   * As some contents may take time to generate, the response may not include all fields immediately.
+   * Accepts an optional `example_sentence`.
    */
   async create(ctx) {
     const { user } = ctx.state;
@@ -61,7 +61,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.unauthorized('Authenticated user not found.');
     }
 
-    const { target_text, base_text, part_of_speech } = ctx.request.body?.data || {};
+    const { target_text, base_text, part_of_speech, example_sentence } = ctx.request.body?.data || {};
 
     if (!target_text || !base_text) {
       return ctx.badRequest('Missing required fields: target_text and base_text.');
@@ -114,6 +114,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
               word: word.id,
               base_text: trimmedBase,
               part_of_speech: posId,
+              example_sentence: example_sentence || null, // Save the example sentence
             },
             db: trx,
           });
@@ -140,7 +141,6 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
         }
       }
       
-      // --- THIS IS THE CORRECTED LINE ---
       const queueService = strapi.service('word-processing-queue');
       if (queueService) {
           queueService.addJob({

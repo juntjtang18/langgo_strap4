@@ -519,4 +519,85 @@ module.exports = ({ strapi }) => ({
       return []; // Return an empty array on error
     }
   },
+  
+  /**
+   * Analyzes a verb in the context of a sentence.
+   * @param {string} verb - The verb to analyze.
+   * @param {string} sentence - The sentence containing the verb.
+   * @param {string} lang - The language of the sentence.
+   * @returns {Promise<object|null>} - A JSON object with verb analysis or null on error.
+   */
+  async analyzeVerb(verb, sentence, lang) {
+    const prompt = `Analyze the verb "${verb}" in the following sentence in ${lang}: "${sentence}".
+      Return a JSON object with the following keys: "tense", "voice", "person", "number", "mood".
+      For example: {"tense": "Past", "voice": "Passive", "person": "Third", "number": "Singular", "mood": "Indicative"}`;
+    try {
+      const chatCompletion = await openai.chat.completions.create({
+        model: "gpt-4-turbo",
+        messages: [
+          { role: "system", content: "You are a linguistic expert that analyzes verbs in sentences and returns JSON." },
+          { role: "user", content: prompt }
+        ],
+        response_format: { type: "json_object" },
+      });
+      const content = JSON.parse(chatCompletion.choices[0].message.content);
+      return content;
+    } catch (error) {
+      strapi.log.error(`Error analyzing verb "${verb}":`, error);
+      return null;
+    }
+  },
+
+  /**
+   * Gets the different forms of a verb.
+   * @param {string} verb - The verb to get forms for.
+   * @param {string} lang - The language of the verb.
+   * @returns {Promise<object|null>} - A JSON object with verb forms or null on error.
+   */
+  async getVerbForms(verb, lang) {
+    const prompt = `For the verb "${verb}" in ${lang}, provide its different forms.
+      Return a JSON object.
+      If ${lang} is 'en', the keys should be: "simple_past", "past_participle", "present_participle", "third_person_singular".
+      If ${lang} is 'fr', the keys should be: "participe_passe", "participe_present", "auxiliaire".`; // Add more languages as needed
+    try {
+      const chatCompletion = await openai.chat.completions.create({
+        model: "gpt-4-turbo",
+        messages: [
+          { role: "system", content: "You are a linguistic expert that provides verb forms and returns JSON." },
+          { role: "user", content: prompt }
+        ],
+        response_format: { type: "json_object" },
+      });
+      const content = JSON.parse(chatCompletion.choices[0].message.content);
+      return content;
+    } catch (error) {
+      strapi.log.error(`Error getting verb forms for "${verb}":`, error);
+      return null;
+    }
+  },
+
+  /**
+   * Gets the base form (lemma) of an inflected verb.
+   * @param {string} verb - The inflected verb.
+   * @param {string} lang - The language of the verb.
+   * @returns {Promise<string|null>} - The base form of the verb or null on error.
+   */
+  async getVerbBaseForm(verb, lang) {
+    const prompt = `What is the base form (lemma) of the verb "${verb}" in ${lang}? Return only the base form, nothing else.`;
+    try {
+      const chatCompletion = await openai.chat.completions.create({
+        model: "gpt-4-turbo",
+        messages: [
+          { role: "system", content: "You are a linguistic expert that returns the base form of a verb." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0,
+        max_tokens: 15,
+      });
+      return chatCompletion.choices[0].message.content.trim().replace(/"/g, '');
+    } catch (error) {
+      strapi.log.error(`Error getting base form for verb "${verb}":`, error);
+      return null;
+    }
+  },
 });

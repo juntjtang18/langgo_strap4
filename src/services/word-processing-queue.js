@@ -5,8 +5,8 @@ const async = require('async');
 module.exports = ({ strapi }) => {
   /**
    * Defines the worker function that processes a job from the queue.
-   * It fetches a word_definition, generates exam options and an example sentence,
-   * and then updates the record.
+   * It fetches a word_definition, generates exam options, an example sentence,
+   * and verb_meta if applicable, then updates the record.
    * @param {object} job - The job object from the queue.
    * @param {number} job.wordDefinitionId - The ID of the word_definition to process.
    * @param {number} job.flashcardId - The ID of the related flashcard to get user context.
@@ -31,16 +31,16 @@ module.exports = ({ strapi }) => {
         throw new Error(`Cannot process job for word_definition ${wordDefinitionId}: baseLocale or targetLocale is missing.`);
       }
 
-      // 2. Fetch the word_definition and its related word
+      // 2. Fetch the word_definition and its related word and part_of_speech
       const wordDefinition = await strapi.entityService.findOne('api::word-definition.word-definition', wordDefinitionId, {
-        populate: ['word'],
+        populate: ['word', 'part_of_speech'],
       });
 
       if (!wordDefinition || !wordDefinition.word) {
         throw new Error(`Word Definition or its associated word not found for ID ${wordDefinitionId}.`);
       }
 
-      const { base_text, example_sentence, exam_base, exam_target } = wordDefinition;
+      const { base_text, example_sentence, exam_base, exam_target, part_of_speech, verb_meta } = wordDefinition;
       const { target_text } = wordDefinition.word;
       const updateData = {};
 
@@ -53,16 +53,41 @@ module.exports = ({ strapi }) => {
       }
 
       // 4. Generate an example sentence if it doesn't exist
-      if (!example_sentence && target_text) {
-        updateData.example_sentence = await openAIService.generateExampleSentence(target_text, targetLocale, wordDefinitionId, base_text);
+      if (!example_sentence) {
+        const newSentence = await openAIService.generateExampleSentence(target_text, targetLocale, wordDefinitionId, base_text);
+        if (newSentence) {
+            updateData.example_sentence = newSentence;
+        }
       }
 
-      // 5. Update the word_definition if there's new data
+      // --- REFINED SUBTASK: FILL VERB_META ---
+      // 5. If the part of speech is a verb, find its base form and get all verb forms.
+      if (part_of_speech && part_of_speech.name.toLowerCase() === 'verb' && !verb_meta) {
+        strapi.log.info(`Background Job: Word definition ${wordDefinitionId} is a verb. Finding base form for "${target_text}".`);
+        
+        // A. Get the base form (lemma) of the verb.
+        const baseForm = await openAIService.getVerbBaseForm(target_text, targetLocale);
+        
+        if (baseForm) {
+          strapi.log.info(`Background Job: Base form for "${target_text}" is "${baseForm}". Fetching verb forms.`);
+          
+          // B. Use the base form to get the complete verb metadata.
+          const verbForms = await openAIService.getVerbForms(baseForm, targetLocale);
+          if (verbForms) {
+            updateData.verb_meta = verbForms;
+          }
+        } else {
+            strapi.log.warn(`Background Job: Could not determine base form for verb "${target_text}". Skipping verb_meta.`);
+        }
+      }
+      // --- END REFINED SUBTASK ---
+
+      // 6. Update the word_definition if there's new data
       if (Object.keys(updateData).length > 0) {
         await strapi.entityService.update('api::word-definition.word-definition', wordDefinitionId, {
           data: updateData,
         });
-        strapi.log.info(`Background Job: Updated word_definition ${wordDefinitionId} with generated content.`);
+        strapi.log.info(`Background Job: Updated word_definition ${wordDefinitionId} with generated content: ${Object.keys(updateData).join(', ')}`);
       } else {
         strapi.log.info(`Background Job: No new content needed for word_definition ${wordDefinitionId}.`);
       }
