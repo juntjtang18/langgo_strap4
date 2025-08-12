@@ -159,6 +159,14 @@ module.exports = (plugin) => {
       
       // Replace the original user object in the response with our new, detailed one
       ctx.body.user = sanitizedUser;
+      // --- NEW ---
+      // Re-issue the JWT to include the baseLanguage for faster access later
+      const jwtPayload = {
+        id: user.id,
+        baseLanguage: userWithDetails.user_profile?.baseLanguage,
+      };
+      ctx.body.jwt = strapi.plugin('users-permissions').service('jwt').issue(jwtPayload);
+      // --- END NEW ---
     }
   };
 
@@ -263,11 +271,16 @@ module.exports = (plugin) => {
       // **Manually attach the user profile and subscription to the sanitized response**
       sanitizedUser.user_profile = userProfile;
       sanitizedUser.subscription = subscription;
-
+      // --- MODIFICATION ---
+      const jwtPayload = {
+          id: sanitizedUser.id,
+          baseLanguage: userProfile.baseLanguage,
+      };
       return ctx.send({
-        jwt: jwtService.issue({ id: sanitizedUser.id }),
-        user: sanitizedUser,
+          jwt: jwtService.issue(jwtPayload),
+          user: sanitizedUser,
       });
+      // --- END MODIFICATION ---
 
     } catch (error) {
       console.error("[ERROR] An error during registration:", error);
