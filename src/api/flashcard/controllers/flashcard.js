@@ -307,9 +307,11 @@ module.exports = createCoreController(
           sort: { createdAt: 'asc' },
           start,
           limit: pageSize,
+          locale: 'all', // <-- Add this line
         }),
         strapi.entityService.count('api::flashcard.flashcard', {
           filters: { user: user.id },
+          locale: 'all', // <-- And also this one for an accurate count
         }),
       ]);
 

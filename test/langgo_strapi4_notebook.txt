@@ -467,3 +467,25 @@ Or, if you don't want/need a background service you can just run:
 
 
 git tag -a snapshot-2025-08-10 -m "Snapshot taken on August 10, 2025"
+
+
+curl -X POST "http://localhost:1338/api/auth/local" \
+-H "Content-Type: application/json" \
+-d '{  "identifier": "james@langgo.ca",  "password": "Passw0rd"}' \
+| jq .
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDcsImlhdCI6MTc1NDk0OTMxOCwiZXhwIjoxNzU3NTQxMzE4fQ.PhIfDcp5XYWS9nqu18g2DEfPzdkaN8YXyqNS4N-pGvI
+
+curl -X POST http://localhost:1338/api/word-definitions \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDcsImlhdCI6MTc1NDk0OTMxOCwiZXhwIjoxNzU3NTQxMzE4fQ.PhIfDcp5XYWS9nqu18g2DEfPzdkaN8YXyqNS4N-pGvI" \
+-H "Content-Type: application/json" \
+-d '{
+  "data": {
+    "target_text": "test11",
+    "base_text": "A prefix meaning 'down' or 'from'.",
+    "part_of_speech": "prefix",
+    "locale": "en"
+  }
+}' | jq .
+
