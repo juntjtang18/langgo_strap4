@@ -21,6 +21,18 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
     if (!term) {
       return ctx.badRequest('A "term" query parameter is required.');
     }
+    
+    // 1. Get the user's base language from their profile
+    const userWithProfile = await strapi.entityService.findOne(
+        'plugin::users-permissions.user',
+        user.id,
+        { populate: { user_profile: true } }
+    );
+    const userLocale = userWithProfile?.user_profile?.baseLanguage;
+
+    if (!userLocale) {
+        return ctx.badRequest("User's base language is not set.");
+    }
 
     try {
       const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
@@ -28,6 +40,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
           base_text: {
             $containsi: term, // Case-insensitive search on the base text
           },
+          locale: userLocale,
         },
         limit: 10,
         populate: {
@@ -59,6 +72,18 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
     const { user } = ctx.state;
     if (!user) {
       return ctx.unauthorized('Authenticated user not found.');
+    }
+    
+    // 1. Get the user's base language
+    const userWithProfile = await strapi.entityService.findOne(
+        'plugin::users-permissions.user',
+        user.id,
+        { populate: { user_profile: true } }
+    );
+    const userLocale = userWithProfile?.user_profile?.baseLanguage;
+
+    if (!userLocale) {
+        return ctx.badRequest("User's base language is not set.");
     }
 
     const { target_text, base_text, part_of_speech, example_sentence } = ctx.request.body?.data || {};
@@ -101,6 +126,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
           word: word.id,
           base_text: trimmedBase,
           part_of_speech: posId || null,
+          locale: userLocale,
         },
         populate: { word: true, part_of_speech: true },
       }))[0];
@@ -115,6 +141,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
               base_text: trimmedBase,
               part_of_speech: posId,
               example_sentence: example_sentence || null, // Save the example sentence
+              locale: userLocale,
             },
             db: trx,
           });
