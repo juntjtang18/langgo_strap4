@@ -30,12 +30,18 @@ module.exports = createCoreController('api::word.word', ({ strapi }) => ({
       // Step 1: Find the words and their definitions
       const words = await strapi.entityService.findMany('api::word.word', {
         filters: {
+          // Filter the parent 'word' entity
           target_text: {
             $containsi: term,
+          },
+          // AND filter the populated 'word_definitions' relation
+          word_definitions: {
+            locale: user ? user.baseLanguage : process.env.DEFAULT_LOCALE || 'en',
           },
         },
         limit: 10,
         populate: {
+          // Populate only the definitions that matched the filter above
           word_definitions: {
             populate: {
               part_of_speech: true,
