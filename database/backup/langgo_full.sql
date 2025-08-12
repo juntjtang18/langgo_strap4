@@ -4928,6 +4928,9 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 320	plugin::content-manager.explorer.update	{}	api::vbsetting.vbsetting	{"fields": ["user", "wordsPerPage", "interval1", "interval2", "interval3"]}	[]	2025-07-08 22:18:21.001	2025-07-08 22:18:21.001	\N	\N
 321	plugin::content-manager.explorer.delete	{}	api::vbsetting.vbsetting	{}	[]	2025-07-08 22:18:21.196	2025-07-08 22:18:21.196	\N	\N
 195	plugin::content-manager.explorer.delete	{}	api::reviewlog.reviewlog	{}	[]	2025-06-28 13:06:40.586	2025-06-28 13:06:40.586	\N	\N
+182	plugin::content-manager.explorer.delete	{}	api::flashcard.flashcard	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:29.129	2025-08-12 12:22:29.129	\N	\N
+156	plugin::content-manager.explorer.delete	{}	api::user-word.user-word	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:29.312	2025-08-12 12:22:29.312	\N	\N
+269	plugin::content-manager.explorer.update	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:29.569	2025-08-12 12:22:29.569	\N	\N
 245	plugin::content-manager.explorer.delete	{}	api::user-profile.user-profile	{}	[]	2025-07-01 11:10:40.682	2025-07-01 11:10:40.682	\N	\N
 424	plugin::content-manager.explorer.create	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.486	2025-08-02 12:29:28.486	\N	\N
 312	plugin::content-manager.explorer.create	{}	api::user-profile.user-profile	{"fields": ["user", "telephone", "baseLanguage"]}	[]	2025-07-08 22:11:55.483	2025-07-08 22:11:55.483	\N	\N
@@ -4936,80 +4939,77 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 425	plugin::content-manager.explorer.read	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.669	2025-08-02 12:29:28.669	\N	\N
 426	plugin::content-manager.explorer.update	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.846	2025-08-02 12:29:28.846	\N	\N
 427	plugin::content-manager.explorer.delete	{}	api::ping.ping	{}	[]	2025-08-02 12:29:29.012	2025-08-02 12:29:29.012	\N	\N
-226	plugin::content-manager.explorer.delete	{}	api::review-tire.review-tire	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.495	2025-07-18 11:15:05.495	\N	\N
-172	plugin::content-manager.explorer.delete	{}	api::user-sentence.user-sentence	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:05.68	2025-07-18 11:15:05.68	\N	\N
-269	plugin::content-manager.explorer.update	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.424	2025-07-18 11:15:06.424	\N	\N
-97	plugin::content-manager.explorer.delete	{}	api::sentence.sentence	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:06.968	2025-07-18 11:15:06.968	\N	\N
-265	plugin::content-manager.explorer.create	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.152	2025-07-18 11:15:07.152	\N	\N
-149	plugin::content-manager.explorer.delete	{}	api::section.section	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:07.336	2025-07-18 11:15:07.336	\N	\N
-182	plugin::content-manager.explorer.delete	{}	api::flashcard.flashcard	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.411	2025-07-18 11:15:08.411	\N	\N
-156	plugin::content-manager.explorer.delete	{}	api::user-word.user-word	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:08.589	2025-07-18 11:15:08.589	\N	\N
-142	plugin::content-manager.explorer.delete	{}	api::lesson.lesson	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:09.301	2025-07-18 11:15:09.301	\N	\N
-267	plugin::content-manager.explorer.read	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh"]}	[]	2025-07-18 11:15:10.559	2025-07-18 11:15:10.559	\N	\N
-73	plugin::content-manager.explorer.delete	{}	api::unit.unit	{"locales": ["en", "zh"]}	[]	2025-07-18 11:15:10.743	2025-07-18 11:15:10.743	\N	\N
-349	plugin::content-manager.explorer.create	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 17:50:31.068	2025-07-18 17:50:31.068	\N	\N
-350	plugin::content-manager.explorer.read	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 17:50:31.236	2025-07-18 17:50:31.236	\N	\N
-351	plugin::content-manager.explorer.update	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-07-18 17:50:31.413	2025-07-18 17:50:31.413	\N	\N
+73	plugin::content-manager.explorer.delete	{}	api::unit.unit	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:29.752	2025-08-12 12:22:29.752	\N	\N
+97	plugin::content-manager.explorer.delete	{}	api::sentence.sentence	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:29.933	2025-08-12 12:22:29.933	\N	\N
+497	plugin::content-manager.explorer.update	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:30.119	2025-08-12 12:22:30.119	\N	\N
+394	plugin::content-manager.explorer.read	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:30.3	2025-08-12 12:22:30.3	\N	\N
+388	plugin::content-manager.explorer.delete	{}	api::story.story	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:30.552	2025-08-12 12:22:30.552	\N	\N
+504	plugin::content-manager.explorer.create	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:30.74	2025-08-12 12:22:30.74	\N	\N
+349	plugin::content-manager.explorer.create	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:30.919	2025-08-12 12:22:30.919	\N	\N
+392	plugin::content-manager.explorer.create	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:31.105	2025-08-12 12:22:31.105	\N	\N
+495	plugin::content-manager.explorer.read	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:31.284	2025-08-12 12:22:31.284	\N	\N
+453	plugin::content-manager.explorer.create	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:31.539	2025-08-12 12:22:31.539	\N	\N
 361	plugin::content-manager.explorer.create	{}	api::topic.topic	{"fields": ["title", "difficulty_level", "description", "questions.prompt", "questions.expected_answer", "tags", "is_active"]}	[]	2025-07-18 22:10:45.695	2025-07-18 22:10:45.695	\N	\N
 363	plugin::content-manager.explorer.read	{}	api::topic.topic	{"fields": ["title", "difficulty_level", "description", "questions.prompt", "questions.expected_answer", "tags", "is_active"]}	[]	2025-07-18 22:10:46.071	2025-07-18 22:10:46.071	\N	\N
 365	plugin::content-manager.explorer.update	{}	api::topic.topic	{"fields": ["title", "difficulty_level", "description", "questions.prompt", "questions.expected_answer", "tags", "is_active"]}	[]	2025-07-18 22:10:46.425	2025-07-18 22:10:46.425	\N	\N
 366	plugin::content-manager.explorer.delete	{}	api::topic.topic	{}	[]	2025-07-18 22:10:46.596	2025-07-18 22:10:46.596	\N	\N
-370	plugin::content-manager.explorer.delete	{}	api::difficulty-level.difficulty-level	{"locales": ["en", "zh"]}	[]	2025-07-18 22:20:05.334	2025-07-18 22:20:05.334	\N	\N
 374	plugin::content-manager.explorer.delete	{}	api::conversation.conversation	{}	[]	2025-07-19 14:07:45.935	2025-07-19 14:07:45.935	\N	\N
 382	plugin::content-manager.explorer.create	{}	api::conversation.conversation	{"fields": ["sessionId", "history"]}	[]	2025-07-19 23:05:12.751	2025-07-19 23:05:12.751	\N	\N
 383	plugin::content-manager.explorer.read	{}	api::conversation.conversation	{"fields": ["sessionId", "history"]}	[]	2025-07-19 23:05:12.988	2025-07-19 23:05:12.988	\N	\N
 384	plugin::content-manager.explorer.update	{}	api::conversation.conversation	{"fields": ["sessionId", "history"]}	[]	2025-07-19 23:05:13.203	2025-07-19 23:05:13.203	\N	\N
-388	plugin::content-manager.explorer.delete	{}	api::story.story	{"locales": ["en", "zh"]}	[]	2025-07-20 10:35:43.29	2025-07-20 10:35:43.29	\N	\N
-392	plugin::content-manager.explorer.create	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh"]}	[]	2025-07-20 12:51:58.382	2025-07-20 12:51:58.382	\N	\N
-394	plugin::content-manager.explorer.read	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh"]}	[]	2025-07-20 12:51:58.751	2025-07-20 12:51:58.751	\N	\N
-396	plugin::content-manager.explorer.update	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh"]}	[]	2025-07-20 12:51:59.119	2025-07-20 12:51:59.119	\N	\N
-411	plugin::content-manager.explorer.create	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh"]}	[]	2025-07-20 20:34:11.79	2025-07-20 20:34:11.79	\N	\N
 412	plugin::content-manager.explorer.create	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:11.964	2025-07-20 20:34:11.964	\N	\N
-414	plugin::content-manager.explorer.read	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh"]}	[]	2025-07-20 20:34:12.56	2025-07-20 20:34:12.56	\N	\N
 415	plugin::content-manager.explorer.read	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:12.739	2025-07-20 20:34:12.739	\N	\N
-417	plugin::content-manager.explorer.update	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh"]}	[]	2025-07-20 20:34:13.084	2025-07-20 20:34:13.084	\N	\N
 418	plugin::content-manager.explorer.update	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:13.254	2025-07-20 20:34:13.254	\N	\N
 419	plugin::content-manager.explorer.delete	{}	api::story-like.story-like	{}	[]	2025-07-20 20:34:13.423	2025-07-20 20:34:13.423	\N	\N
-428	plugin::content-manager.explorer.create	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-08-03 12:51:52.471	2025-08-03 12:51:52.471	\N	\N
-429	plugin::content-manager.explorer.read	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-08-03 12:51:52.654	2025-08-03 12:51:52.654	\N	\N
-430	plugin::content-manager.explorer.update	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh"]}	[]	2025-08-03 12:51:52.832	2025-08-03 12:51:52.832	\N	\N
 434	plugin::content-manager.explorer.delete	{}	api::word.word	{}	[]	2025-08-03 12:54:11.431	2025-08-03 12:54:11.431	\N	\N
-435	plugin::content-manager.explorer.create	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 13:32:06.878	2025-08-03 13:32:06.878	\N	\N
 436	plugin::content-manager.explorer.create	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:07.047	2025-08-03 13:32:07.047	\N	\N
-438	plugin::content-manager.explorer.read	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 13:32:07.406	2025-08-03 13:32:07.406	\N	\N
 439	plugin::content-manager.explorer.read	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:07.582	2025-08-03 13:32:07.582	\N	\N
-441	plugin::content-manager.explorer.update	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 13:32:07.911	2025-08-03 13:32:07.911	\N	\N
 442	plugin::content-manager.explorer.update	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:08.089	2025-08-03 13:32:08.089	\N	\N
-444	plugin::content-manager.explorer.delete	{}	api::word-definition.word-definition	{"locales": ["en", "zh"]}	[]	2025-08-03 13:32:08.45	2025-08-03 13:32:08.45	\N	\N
-452	plugin::content-manager.explorer.delete	{}	api::part-of-speech.part-of-speech	{"locales": ["en", "zh"]}	[]	2025-08-03 13:36:59.363	2025-08-03 13:36:59.363	\N	\N
-453	plugin::content-manager.explorer.create	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 14:05:54.52	2025-08-03 14:05:54.52	\N	\N
-455	plugin::content-manager.explorer.read	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 14:05:54.878	2025-08-03 14:05:54.878	\N	\N
-457	plugin::content-manager.explorer.update	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh"]}	[]	2025-08-03 14:05:55.234	2025-08-03 14:05:55.234	\N	\N
 478	plugin::content-manager.explorer.create	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:21.608	2025-08-03 15:07:21.608	\N	\N
-479	plugin::content-manager.explorer.create	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:07:21.791	2025-08-03 15:07:21.791	\N	\N
 480	plugin::content-manager.explorer.create	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:21.97	2025-08-03 15:07:21.97	\N	\N
 482	plugin::content-manager.explorer.read	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:22.323	2025-08-03 15:07:22.323	\N	\N
-483	plugin::content-manager.explorer.read	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:07:22.493	2025-08-03 15:07:22.493	\N	\N
 484	plugin::content-manager.explorer.read	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:22.672	2025-08-03 15:07:22.672	\N	\N
 486	plugin::content-manager.explorer.update	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:23.018	2025-08-03 15:07:23.018	\N	\N
-487	plugin::content-manager.explorer.update	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:07:23.202	2025-08-03 15:07:23.202	\N	\N
 488	plugin::content-manager.explorer.update	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:23.383	2025-08-03 15:07:23.383	\N	\N
-490	plugin::content-manager.explorer.create	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:26.91	2025-08-03 15:09:26.91	\N	\N
-491	plugin::content-manager.explorer.create	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.096	2025-08-03 15:09:27.096	\N	\N
-492	plugin::content-manager.explorer.create	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.264	2025-08-03 15:09:27.264	\N	\N
-493	plugin::content-manager.explorer.read	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.444	2025-08-03 15:09:27.444	\N	\N
-494	plugin::content-manager.explorer.read	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.618	2025-08-03 15:09:27.618	\N	\N
-495	plugin::content-manager.explorer.read	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.796	2025-08-03 15:09:27.796	\N	\N
-496	plugin::content-manager.explorer.update	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:27.973	2025-08-03 15:09:27.973	\N	\N
-497	plugin::content-manager.explorer.update	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:28.151	2025-08-03 15:09:28.151	\N	\N
-498	plugin::content-manager.explorer.update	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh"]}	[]	2025-08-03 15:09:28.335	2025-08-03 15:09:28.335	\N	\N
-502	plugin::content-manager.explorer.delete	{}	api::module.module	{"locales": ["en", "zh"]}	[]	2025-08-03 15:12:48.515	2025-08-03 15:12:48.515	\N	\N
-503	plugin::content-manager.explorer.create	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.161	2025-08-03 15:13:45.161	\N	\N
-504	plugin::content-manager.explorer.create	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.327	2025-08-03 15:13:45.327	\N	\N
-505	plugin::content-manager.explorer.read	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.502	2025-08-03 15:13:45.502	\N	\N
-506	plugin::content-manager.explorer.read	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.673	2025-08-03 15:13:45.673	\N	\N
-507	plugin::content-manager.explorer.update	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:45.85	2025-08-03 15:13:45.85	\N	\N
-508	plugin::content-manager.explorer.update	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh"]}	[]	2025-08-03 15:13:46.025	2025-08-03 15:13:46.025	\N	\N
+428	plugin::content-manager.explorer.create	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja"]}	[]	2025-08-12 12:22:16.064	2025-08-12 12:22:16.064	\N	\N
+483	plugin::content-manager.explorer.read	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja"]}	[]	2025-08-12 12:22:16.226	2025-08-12 12:22:16.226	\N	\N
+142	plugin::content-manager.explorer.delete	{}	api::lesson.lesson	{"locales": ["en", "zh", "fr", "es", "ko", "ja"]}	[]	2025-08-12 12:22:16.46	2025-08-12 12:22:16.46	\N	\N
+507	plugin::content-manager.explorer.update	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh", "fr", "es", "ko", "ja"]}	[]	2025-08-12 12:22:16.641	2025-08-12 12:22:16.641	\N	\N
+452	plugin::content-manager.explorer.delete	{}	api::part-of-speech.part-of-speech	{"locales": ["en", "zh", "fr", "es", "ko", "ja"]}	[]	2025-08-12 12:22:16.891	2025-08-12 12:22:16.891	\N	\N
+494	plugin::content-manager.explorer.read	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh", "fr", "es", "ko", "ja"]}	[]	2025-08-12 12:22:17.062	2025-08-12 12:22:17.062	\N	\N
+430	plugin::content-manager.explorer.update	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:22.659	2025-08-12 12:22:22.659	\N	\N
+496	plugin::content-manager.explorer.update	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:22.837	2025-08-12 12:22:22.837	\N	\N
+172	plugin::content-manager.explorer.delete	{}	api::user-sentence.user-sentence	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:23.023	2025-08-12 12:22:23.023	\N	\N
+505	plugin::content-manager.explorer.read	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:23.276	2025-08-12 12:22:23.276	\N	\N
+491	plugin::content-manager.explorer.create	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:23.456	2025-08-12 12:22:23.456	\N	\N
+351	plugin::content-manager.explorer.update	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:23.641	2025-08-12 12:22:23.641	\N	\N
+493	plugin::content-manager.explorer.read	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:23.82	2025-08-12 12:22:23.82	\N	\N
+498	plugin::content-manager.explorer.update	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:23.999	2025-08-12 12:22:23.999	\N	\N
+441	plugin::content-manager.explorer.update	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:24.262	2025-08-12 12:22:24.262	\N	\N
+414	plugin::content-manager.explorer.read	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:24.45	2025-08-12 12:22:24.45	\N	\N
+508	plugin::content-manager.explorer.update	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:24.632	2025-08-12 12:22:24.632	\N	\N
+506	plugin::content-manager.explorer.read	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:24.814	2025-08-12 12:22:24.814	\N	\N
+492	plugin::content-manager.explorer.create	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:24.994	2025-08-12 12:22:24.994	\N	\N
+435	plugin::content-manager.explorer.create	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:25.248	2025-08-12 12:22:25.248	\N	\N
+438	plugin::content-manager.explorer.read	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:25.428	2025-08-12 12:22:25.428	\N	\N
+370	plugin::content-manager.explorer.delete	{}	api::difficulty-level.difficulty-level	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:25.63	2025-08-12 12:22:25.63	\N	\N
+411	plugin::content-manager.explorer.create	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:25.813	2025-08-12 12:22:25.813	\N	\N
+149	plugin::content-manager.explorer.delete	{}	api::section.section	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:25.995	2025-08-12 12:22:25.995	\N	\N
+429	plugin::content-manager.explorer.read	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:26.267	2025-08-12 12:22:26.267	\N	\N
+265	plugin::content-manager.explorer.create	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:26.447	2025-08-12 12:22:26.447	\N	\N
+444	plugin::content-manager.explorer.delete	{}	api::word-definition.word-definition	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:26.626	2025-08-12 12:22:26.626	\N	\N
+350	plugin::content-manager.explorer.read	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:26.807	2025-08-12 12:22:26.807	\N	\N
+502	plugin::content-manager.explorer.delete	{}	api::module.module	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:26.987	2025-08-12 12:22:26.987	\N	\N
+487	plugin::content-manager.explorer.update	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:27.174	2025-08-12 12:22:27.174	\N	\N
+457	plugin::content-manager.explorer.update	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:27.436	2025-08-12 12:22:27.436	\N	\N
+490	plugin::content-manager.explorer.create	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:27.616	2025-08-12 12:22:27.616	\N	\N
+503	plugin::content-manager.explorer.create	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:27.784	2025-08-12 12:22:27.784	\N	\N
+396	plugin::content-manager.explorer.update	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:27.957	2025-08-12 12:22:27.957	\N	\N
+226	plugin::content-manager.explorer.delete	{}	api::review-tire.review-tire	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:28.137	2025-08-12 12:22:28.137	\N	\N
+479	plugin::content-manager.explorer.create	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:28.393	2025-08-12 12:22:28.393	\N	\N
+417	plugin::content-manager.explorer.update	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:28.577	2025-08-12 12:22:28.577	\N	\N
+267	plugin::content-manager.explorer.read	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:28.762	2025-08-12 12:22:28.762	\N	\N
+455	plugin::content-manager.explorer.read	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi"]}	[]	2025-08-12 12:22:28.945	2025-08-12 12:22:28.945	\N	\N
 \.
 
 
@@ -5089,92 +5089,92 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 318	318	1	259
 320	320	1	261
 321	321	1	262
-447	411	1	355
+780	455	1	536
+781	182	1	537
 448	412	1	356
 114	114	1	93
-450	414	1	358
+782	156	1	538
+783	269	1	539
 451	415	1	359
+784	73	1	540
 134	134	1	95
 137	137	1	98
 140	140	1	101
-453	417	1	361
+785	97	1	541
 454	418	1	362
 455	419	1	363
 460	424	1	364
 461	425	1	365
 462	426	1	366
 463	427	1	367
+786	497	1	542
+787	394	1	543
+788	388	1	544
 245	245	1	192
 312	312	1	253
 313	313	1	254
 314	314	1	255
-354	226	1	282
-355	172	1	283
-359	269	1	287
-362	97	1	290
-363	265	1	291
-364	149	1	292
-370	182	1	298
-371	156	1	299
-375	142	1	303
-382	267	1	310
-383	73	1	311
-385	349	1	313
-386	350	1	314
-387	351	1	315
+789	504	1	545
+790	349	1	546
+791	392	1	547
+792	495	1	548
+793	453	1	549
 397	361	1	321
 399	363	1	323
 401	365	1	325
 402	366	1	326
-406	370	1	330
 410	374	1	334
 418	382	1	342
 419	383	1	343
 420	384	1	344
-424	388	1	348
-428	392	1	349
-430	394	1	351
-432	396	1	353
-464	428	1	368
-465	429	1	369
-466	430	1	370
+748	430	1	504
+749	496	1	505
+750	172	1	506
+751	505	1	507
 470	434	1	374
-471	435	1	375
+752	491	1	508
 472	436	1	376
-474	438	1	378
+753	351	1	509
+754	493	1	510
 475	439	1	379
-477	441	1	381
+755	498	1	511
+756	441	1	512
 478	442	1	382
-480	444	1	384
-488	452	1	388
-489	453	1	389
-491	455	1	391
-493	457	1	393
+757	414	1	513
+758	508	1	514
+759	506	1	515
+760	492	1	516
+761	435	1	517
+762	438	1	518
+763	370	1	519
+764	411	1	520
+765	149	1	521
+766	429	1	522
+767	265	1	523
+768	444	1	524
+769	350	1	525
+770	502	1	526
+771	487	1	527
+772	457	1	528
+773	490	1	529
+774	503	1	530
+775	396	1	531
+776	226	1	532
+777	479	1	533
+778	417	1	534
+779	267	1	535
 514	478	1	394
-515	479	1	395
 516	480	1	396
 518	482	1	398
-519	483	1	399
 520	484	1	400
 522	486	1	402
-523	487	1	403
 524	488	1	404
-526	490	1	405
-527	491	1	406
-528	492	1	407
-529	493	1	408
-530	494	1	409
-531	495	1	410
-532	496	1	411
-533	497	1	412
-534	498	1	413
-538	502	1	417
-539	503	1	418
-540	504	1	419
-541	505	1	420
-542	506	1	421
-543	507	1	422
-544	508	1	423
+742	428	1	498
+743	483	1	499
+744	142	1	500
+745	507	1	501
+746	452	1	502
+747	494	1	503
 \.
 
 
@@ -5220,9 +5220,16 @@ COPY public.components_a_external_videos (id, url, caption) FROM stdin;
 --
 
 COPY public.components_a_generation_prompts (id, cover_image_prompt, brief_video_prompt) FROM stdin;
-1	A sophisticated midnight café bustling with diverse patrons, featuring a central figure, E. Rushmore Coglan, a distinguished middle-aged man with a worldly demeanor, engaged in a deep conversation with a captivated listener. The café is richly decorated, reflecting an eclectic mix of global cultures, under warm, intimate lighting that highlights their animated expressions and the steam rising from their coffee cups. The scene conveys a sense of timeless wisdom and the comfort of belonging anywhere, in a detailed, realistic style with a touch of romanticism.	\N
 2	A tender moment in a modest, dimly-lit early 20th-century urban flat, capturing a young couple, Della and Jim, exchanging humble Christmas gifts. Della, with her newly cut short hair, presents a platinum fob chain, while Jim, astonished, holds an elegant set of combs. The room reflects their financial hardship yet is filled with warm, soft lighting to emphasize a sense of hope and deep love. The style is nostalgic, with a focus on detailed expressions and intimate, emotional atmosphere.	Scene 1: Interior of a modest, dimly lit flat. Camera pans across a small room decorated with simple, worn furniture, highlighting the humble lifestyle of Della and Jim. Della, with long, beautiful hair, sits by a window, counting coins in the fading light of dusk, a look of determination on her face. Scene 2: Close-up of Jim's hands as he holds and caresses an old, gold pocket watch. Cut to his contemplative face, then zoom out to show him standing in a pawnshop, reluctantly handing the watch over to the shopkeeper. Scene 3: Della at a hairdresser's, her expression a mix of resolve and sadness. The scissors snip through her hair as it falls to the floor, transitioning to her leaving the shop with a short hairstyle, clutching a small package. Scene 4: Christmas evening in the flat, both Della and Jim exchange gifts, the camera capturing their bittersweet smiles as they realize the sacrifices made for each other. Soft, warm lighting contrasts with the cold night outside.
 3	A dapper man in early 20th-century attire, standing outside a small town bank in Elmore, Arkansas, holding a set of intricate lock-picking tools discreetly. His gaze is torn between the bank and a charming young woman nearby, symbolizing his inner conflict between a life of crime and the possibility of reformation. The scene is bathed in the warm glow of a sunset, casting long shadows and creating a mood of suspense and transformation. The composition should be dynamic, with a focus on the man’s conflicted expression and the subtle details of his tools, suggesting a cinematic, photorealistic style.	Scene 1: Medium shot of a stark, dimly lit prison cell. Jimmy Valentine packs his belongings into a small bag, his movements brisk and practiced. The barred window casts long shadows across the cell floor. Scene 2: Close-up on Jimmy's hands retrieving a hidden cache of burglary tools buried under a loose floorboard in an abandoned warehouse. The tools gleam under the flashlight's beam, hinting at his unrepentant return to crime. Scene 3: Wide shot of a bustling small-town main street in Elmore, Arkansas. Jimmy, now dressed as a respectable businessman, walks through the town, his demeanor charming yet guarded. The camera pans to a sign 'Elmore Bank' as he passes by, foreshadowing his next target. Scene 4: Intimate shot inside the local bank. Dramatic tension builds as Jimmy, now visibly conflicted, spots Annabel Adams across the room, assisting an elderly customer. The camera focuses on Jimmy's face as his expression softens, the background blurring, signaling a pivotal change in his life.
+1	A sophisticated midnight café bustling with diverse patrons, featuring a central figure, E. Rushmore Coglan, a distinguished middle-aged man with a worldly demeanor, engaged in a deep conversation with a captivated listener. The café is richly decorated, reflecting an eclectic mix of global cultures, under warm, intimate lighting that highlights their animated expressions and the steam rising from their coffee cups. The scene conveys a sense of timeless wisdom and the comfort of belonging anywhere, in a detailed, realistic style with a touch of romanticism.	\N
+4	A dignified, yet visibly troubled man in early 1900s attire sits at a cluttered desk in a dimly lit, run-down office, papers scattered around. Outside the window, the lush Blue Ridge foothills contrast with the room's decay. The man, embodying a blend of despair and nobility, contemplates a document with a pained expression. The scene is steeped in a melancholic, cinematic mood, with soft, diffuse lighting highlighting his internal conflict between morality and survival. Realistic style with rich, textured details.	Scene 1: Wide shot of the quaint town of Bethel, nestled in the Blue Ridge foothills. Early morning, soft light filters through the trees, highlighting the small, rustic buildings and the grand ruins of a once stately home. Camera slowly pans to a modest, worn brick office where Yancey Goree, a weary man in his late 30s, enters with a look of resignation. Scene 2: Interior shot of the decrepit office. Papers and old legal books scattered everywhere. Goree sits at his desk, poring over documents, the weight of his world evident in his slumped shoulders. A knock interrupts his solitude as Colonel Abner Coltrane, a dignified, elderly man in a well-kept suit, steps in. The camera focuses on their handshake, hinting at Goree's reluctant compliance. Scene 3: Close-up on Goree's face, reflecting a turmoil of emotions as he looks out of his office window. The camera pulls back to reveal him gazing towards a modest house in the distance. Cut to a flashback of happier times with his family, contrasting his current solitude and despair. Scene 4: A tense, dimly lit scene in Goree's office at night. Goree and Coltrane sit opposite each other, a document between them. The camera alternates between their faces and the document, highlighting Goree's internal conflict as he decides whether to sign. Low-key lighting emphasizes the gravity of his decision.
+7	A young Eastern man, Harris, dressed in new, slightly out-of-place clothing, stands on a vast Texas ranch under the expansive blue sky, gazing at the sprawling land that stretches beyond the horizon. Beside him, a rugged, sun-tanned ranchman, Jim, gestures towards the horizon, embodying the spirit of the West. The scene is captured in an Impressionist painting style, with expressive brushstrokes and a rich, light-filled palette that emphasizes the warmth of the midday sun. The composition radiates a dreamlike beauty, focusing on the emotional transition of Harris from an outsider to a rooted ranchman, surrounded by the natural beauty of the chaparral.	Scene 1: Wide shot of the dusty town of Cactus, Texas, under the glaring midday sun. Harris steps off the stagecoach, wearing pristine Eastern attire, looking out of place and slightly apprehensive. The camera slowly pans from his polished shoes to his face as he surveys his new surroundings, the bustling activity of ranch life unfolding around him. Scene 2: Interior of the Summers residence. Medium shot of Elias and Jim Summers, rugged and sun-tanned, sitting at a rustic wooden table. The door opens, and Harris enters, greeted with a firm handshake from Elias. The camera cuts to a close-up of their hands, symbolizing the beginning of their business relationship. Scene 3: Tracking shot alongside Harris and Jim as they ride on horseback across the expansive ranch land at sunset. The golden light casts long shadows, and Harris's face shows a growing sense of belonging and determination. The camera pulls up to a wide aerial shot, emphasizing the vastness of the land he's about to call his own. Scene 4: Close-up of Harris, now dressed in worn-in Western gear, standing proudly in front of a bustling ranch. The camera slowly zooms out to reveal workers herding cattle and the thriving ranch, signifying his successful transition into a respected ranchman.
+9	Create a heartwarming, autumn-themed painting of a quaint artist studio overlooking Washington Square. The scene captures a serene, warmly lit interior with two female artists, one comforting the other. Outside the window, a resilient, single ivy leaf clings to a vibrant, otherwise bare branch, symbolizing hope and perseverance. The room is filled with art supplies and sketches, bathed in natural sunlight with gentle highlights and warm tones, evoking a feeling of comfort and artistic inspiration.	Scene 1: Wide shot of a picturesque artist district near Washington Square in autumn, leaves swirling in the wind. Cut to a cozy art studio where Johnsy, looking frail and wrapped in a blanket, stares out a window. Camera slowly zooms in on her face reflecting despair. Scene 2: Close-up of the ivy-covered wall outside the window, focusing on the dwindling leaves. The wind rustles the leaves, one falls. Switch to Johnsy’s reaction, her eyes filled with fear. Scene 3: Medium shot of Sue, palette in hand, trying to cheer up Johnsy with bright, hopeful conversation and sketches. The room is filled with art supplies and canvases, a stark contrast to Johnsy’s mood. Scene 4: Night, the studio dimly lit by a single lamp. Sue paints a leaf on the wall visible from Johnsy’s bed, determined. The camera focuses on Sue’s meticulous brush strokes, symbolizing hope and the power of art.
+10	An evocative, heartwarming scene set in early 20th century New York, capturing a nostalgic reunion at the site of the former 'Big Joe' Brady's restaurant. The composition features a man, warmly dressed in an early 1900s style overcoat, waiting under a lamppost with soft, warm lighting illuminating his hopeful expression. The background shows faint outlines of the demolished restaurant, with gentle highlights and vibrant colors suggesting a sunset. The mood is uplifting, with a serene setting that emphasizes the emotional anticipation of a long-awaited meeting, painted in a realistic style with a focus on natural light and emotional depth.	Scene 1: Evening shot of a dimly lit New York street, mist hanging in the air. The camera pans across the remnants of 'Big Joe' Brady's restaurant, now just an empty lot filled with echoes of the past. Bob, in his forties, stands looking around nostalgically, his face lit by the glow of a nearby street lamp. Scene 2: Close-up on Bob as he checks his watch, his expression mixed with anticipation and uncertainty. The sound of distant city life buzzes in the background. Scene 3: A uniformed policeman approaches, viewed from Bob's perspective. The officer's face is obscured by his hat. They engage in a brief conversation, Bob's body language showing he is tense yet hopeful. Scene 4: The camera shifts to a wider angle as another figure approaches from the shadows, resembling Jimmy. Bob smiles and steps forward, but as the light hits the newcomer's face, the twist is revealed through Bob's changing expression and a final, dramatic close-up on the police badge in the newcomer's hand.
+11	An intimate, warmly lit urban apartment setting during Christmas, featuring a young woman with freshly cut short hair, holding a luxurious platinum fob chain with a look of loving sacrifice on her face. The background subtly reveals a modest Christmas decor, emphasizing a sense of hope and warmth. The scene is rendered in vibrant colors with natural lighting casting gentle highlights across the room, creating an emotionally uplifting and serene atmosphere. The composition should evoke deep affection and mutual sacrifice, painted in a realistic style with a focus on emotional depth and warm tones.	Scene 1: Interior, modest urban apartment, day. Close-up of Della counting coins, totaling $1.87, with a worried expression. Cut to a wide shot showing the sparse but cozy room, decorated modestly for Christmas. Scene 2: Interior, hairdresser's shop, day. Medium shot of Della, sitting nervously in the barber's chair as her long hair falls around her, her eyes closed. The camera slowly zooms out to reveal the falling strands of hair in dramatic slow motion. Scene 3: Interior, urban apartment, evening. Close-up on Jim's hands, carefully wrapping a simple but elegant gift. Cut to his worried face as he looks at an empty watch pocket. Scene 4: Interior, urban apartment, night. Wide shot as Jim and Della exchange gifts, the room dimly lit by candlelight. The camera captures their initial joy turning to bittersweet realization as they understand each other's sacrifices. Soft, sentimental music enhances the mood.
+12	A serene landscape of Los Pinos ranch at sunset, depicting old Ramon Torres and Rosita standing by a partially built wire fence, symbolizing a blend of old and new values. The background shows expansive, gently rolling hills and vibrant green pastures under a warm, glowing sky. Ramon, in traditional rancher attire, looks thoughtfully at Rosita, who is dressed in early 20th-century rural garb, pointing towards the horizon where the community gathers. The scene is painted in a realistic style with bright, hopeful colors, gentle highlights, and an emotionally uplifting composition that emphasizes connection and heritage.	Scene 1: Wide shot of the sprawling, sunlit ranch lands of Los Pinos, showcasing vast fields enclosed by new wire fences. The camera pans across to an aged, weathered Ramon Torres standing by an open gate, his face etched with lines of disdain and contemplation. The background is filled with the distant sounds of cattle and the rustle of the wind. Scene 2: Medium shot of Ramon in his rustic living room, a young, enthusiastic salesman presents a roll of wire fencing with a persuasive smile. Ramon's expression shifts between skepticism and mild amusement as he listens, the room filled with ranching memorabilia that echoes a bygone era of conquest. Scene 3: Cut to an outdoor, golden hour scene where Ramon and Rosita, a confident, spirited young woman, walk along a fence line. She gestures animatedly towards the landscape, arguing the benefits of the new fences for community cohesion. The camera focuses on Ramon's slowly changing expression, reflecting a mix of nostalgia and acceptance. Scene 4: Final scene shows a community gathering at the ranch, with the fence gate now wide open. A crane shot pulls away as people from neighboring ranches mingle, with Ramon and Rosita in the midst of the crowd, laughing and sharing stories. The scene fades out with the sunset illuminating the faces of the community, symbolizing unity and the blending of old values with new realities.
+5	A dimly lit, foggy urban scene at dusk, capturing two well-dressed men from the early 20th century walking through a neighborhood of quaint shops. They pause to interact with a ragged, desperate woman illuminated by a nearby streetlamp, her expression one of urgent pleading. The mood is contemplative and somber, with a focus on the contrast between the men's refined attire and the woman's worn clothes. Artistic, slightly blurred edges evoke a sense of memory or dream, in a realistic yet painterly style.	Scene 1: A dimly lit, narrow street in a city, lined with small, quaint shops casting soft lights onto the pavement. Camera pans over a philosophical discussion between two well-dressed men, the narrator and Billy Winthrop, as they stroll post-dinner from the Bachelors' Club, engaging in deep conversation about geometry and life. Scene 2: Shift to a close-up of a ragged woman emerging from the shadows, approaching the friends with desperation in her eyes. The lighting is moody and contrasts her rough appearance with the men's refined attire. Scene 3: Inside a cramped, dimly lit shop, Winthrop realizes his mistake and discusses his plan with the narrator. The camera follows their conversation with over-the-shoulder shots, capturing the growing concern on their faces. Scene 4: A somber, softly lit living room reveals the woman's dire conditions through a gentle, sweeping shot. The friends, visible through a doorway, pause and reflect on the consequences of their pursuit, ultimately deciding to leave the money. The scene closes with a reflective mood, emphasizing their silhouettes against the sparse room.
 \.
 
 
@@ -5231,11 +5238,43 @@ COPY public.components_a_generation_prompts (id, cover_image_prompt, brief_video
 --
 
 COPY public.components_a_generation_prompts_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
+28	5	12	a.illustration-prompt	illustration_prompts	1
+29	5	14	a.illustration-prompt	illustration_prompts	2
+30	5	13	a.illustration-prompt	illustration_prompts	3
+31	5	15	a.illustration-prompt	illustration_prompts	4
+60	9	30	a.illustration-prompt	illustration_prompts	1
+61	9	33	a.illustration-prompt	illustration_prompts	2
+62	9	32	a.illustration-prompt	illustration_prompts	3
+63	9	31	a.illustration-prompt	illustration_prompts	4
 1	3	2	a.illustration-prompt	illustration_prompts	1
 2	3	1	a.illustration-prompt	illustration_prompts	2
 3	3	3	a.illustration-prompt	illustration_prompts	3
 4	3	4	a.illustration-prompt	illustration_prompts	4
 5	3	5	a.illustration-prompt	illustration_prompts	5
+11	1	6	a.illustration-prompt	illustration_prompts	1
+68	10	34	a.illustration-prompt	illustration_prompts	1
+69	10	35	a.illustration-prompt	illustration_prompts	2
+70	10	36	a.illustration-prompt	illustration_prompts	3
+71	10	37	a.illustration-prompt	illustration_prompts	4
+23	4	7	a.illustration-prompt	illustration_prompts	1
+24	4	8	a.illustration-prompt	illustration_prompts	2
+25	4	9	a.illustration-prompt	illustration_prompts	3
+26	4	10	a.illustration-prompt	illustration_prompts	4
+27	4	11	a.illustration-prompt	illustration_prompts	5
+45	7	20	a.illustration-prompt	illustration_prompts	1
+46	7	21	a.illustration-prompt	illustration_prompts	2
+47	7	22	a.illustration-prompt	illustration_prompts	3
+48	7	23	a.illustration-prompt	illustration_prompts	4
+49	7	24	a.illustration-prompt	illustration_prompts	5
+76	11	38	a.illustration-prompt	illustration_prompts	1
+77	11	39	a.illustration-prompt	illustration_prompts	2
+78	11	40	a.illustration-prompt	illustration_prompts	3
+79	11	41	a.illustration-prompt	illustration_prompts	4
+80	11	42	a.illustration-prompt	illustration_prompts	5
+86	12	44	a.illustration-prompt	illustration_prompts	1
+87	12	43	a.illustration-prompt	illustration_prompts	2
+88	12	45	a.illustration-prompt	illustration_prompts	3
+89	12	46	a.illustration-prompt	illustration_prompts	4
 \.
 
 
@@ -5244,11 +5283,43 @@ COPY public.components_a_generation_prompts_components (id, entity_id, component
 --
 
 COPY public.components_a_illustration_prompts (id, prompt) FROM stdin;
-1	Jimmy Valentine, freshly released, dressed in ill-fitting clothes provided by the state, stands outside the prison gates. The background shows a sunny day with birds and greenery, contrasting sharply with Jimmy's focus on heading to a restaurant. His expression is one of relief mixed with determination, capturing the first moments of his regained freedom.
+7	Yancey Goree, a tall, heavily built man with red hair and worn-out clothes, sits half-asleep in his disheveled and sparse law office. The room is dimly lit by a flickering wood stove, with a squeaking safe door ajar and a pine table cluttered with old newspapers and legal blanks. The mood is one of neglect and decay, reflecting Goree's fallen fortunes. Outside the window, the rugged Blue Ridge mountains loom, contrasting the office's shabbiness with their majestic presence.
+8	Colonel Abner Coltrane, a distinguished elderly gentleman with a white mustache and piercing eyes, stands formally inside Goree's office, presenting a legal document. The scene captures the tension as Goree, with a face too spiritual for his surroundings, hesitantly accepts the paper, his hands trembling. The office's poor condition starkly contrasts with the Colonel's refined appearance, highlighting the gravity and discomfort of the foreclosure task at hand.
+9	A frail, sunburnt woman named Mrs. Ramsey, dressed in a faded calico dress, stands defiantly in her backyard, leaning on an axe, as Yancey Goree, hat in hand, delivers the harsh news of foreclosure. The setting is a humble, sunlit cottage surrounded by the natural beauty of the mountain, which starkly contrasts the grim news being delivered. The emotional weight of the scene is palpable, as Mrs. Ramsey's face shifts from anger to despair.
+3	Illustration of Jimmy Valentine examining his set of burglar's tools in a dusty, secluded room above Mike Dolan’s café. The tools are spread out before him, gleaming slightly in the dim light seeping through a dirty window. Jimmy's face shows a mix of nostalgia and excitement, emphasizing his internal conflict between past criminal life and the desire for reform.
+5	The climactic scene at the Elmore Bank with Jimmy Valentine saving a child trapped in the bank vault. The bank interior is chaotic with panicked townspeople and a distraught Annabel. Jimmy, using his safecracking skills for good, is intensely focused on the vault mechanism, tools in hand, under the watchful eye of the arriving detective, Ben Price. The tension is palpable, highlighting Jimmy's redemption and the suspense of his potential re-arrest.
 2	Scene of Jimmy Valentine in the prison's shoe-shop, looking tired and resigned as he stitches uppers. The guard escorts him to the warden's office, where he receives his pardon in a dim, bureaucratic setting filled with paperwork and stark lighting. The warden, a stern figure, hands Jimmy the pardon with a mix of skepticism and advice, creating a tense yet hopeful atmosphere.
 4	A romantic and pivotal scene where Jimmy Valentine, now as Ralph D. Spencer, first glimpses Annabel Adams outside the Elmore Bank. The setting is a quaint town street with old-fashioned buildings. Jimmy, stylish and charming, is visibly struck by Annabel's beauty, who is depicted as graceful and modest. The moment captures a transformative spark in Jimmy, symbolizing a profound change in his life direction.
-5	The climactic scene at the Elmore Bank with Jimmy Valentine saving a child trapped in the bank vault. The bank interior is chaotic with panicked townspeople and a distraught Annabel. Jimmy, using his safecracking skills for good, is intensely focused on the vault mechanism, tools in hand, under the watchful eye of the arriving detective, Ben Price. The tension is palpable, highlighting Jimmy's redemption and the suspense of his potential re-arrest.
-3	Illustration of Jimmy Valentine examining his set of burglar's tools in a dusty, secluded room above Mike Dolan’s café. The tools are spread out before him, gleaming slightly in the dim light seeping through a dirty window. Jimmy's face shows a mix of nostalgia and excitement, emphasizing his internal conflict between past criminal life and the desire for reform.
+1	Jimmy Valentine, freshly released, dressed in ill-fitting clothes provided by the state, stands outside the prison gates. The background shows a sunny day with birds and greenery, contrasting sharply with Jimmy's focus on heading to a restaurant. His expression is one of relief mixed with determination, capturing the first moments of his regained freedom.
+6	\N
+10	In a dimly lit back room of Ben Tatum’s saloon, Yancey Goree, desperate and determined, negotiates with Ben, a burly man dozing behind the bar. The mood is tense and urgent as Goree, illuminated by a single overhead light, tries to pawn his old-fashioned gold watch to save Mrs. Ramsey’s home. The cluttered, shadowy environment of the saloon adds to the scene's desperation and moral complexity.
+11	A relieved and tearful Mrs. Ramsey stands in front of her cottage, overwhelmed with joy as Yancey Goree, looking weary but resolute, informs her that the mortgage is lifted and she can keep her home. The backdrop of the serene mountain landscape under a bright sky contrasts with the intense emotional release of the scene, symbolizing a new beginning amidst ongoing personal struggles.
+22	Inside a modest living room, the young man, named Harris, discusses land with Jim Summers, a lean, sun-tanned man with rough hands. The room is simple, with wooden furniture and a few western decorations. The atmosphere is earnest and business-like, as Harris expresses his interest in buying a ranch.
+23	Harris and Jim Summers on horseback, traversing a wide-open Texan landscape. They are surrounded by vast fields and distant mountains under a vast blue sky, symbolizing potential and opportunity. The scene captures a moment of camaraderie and exploration, as they inspect the land Harris considers purchasing.
+20	A young, slender man in a new suit and broad-brimmed hat stands beside a dusty stagecoach under the bright Texan sun. The stage driver, a rugged figure in worn attire, waters horses in the background. The setting is a sparse, desert landscape with cacti and mesquite bushes, conveying a sense of new beginnings and adventure.
+21	The young man, now slightly dusty from travel, approaches a rustic, wooden house nestled in a grove of live oaks. An old man with a long white beard and sharp blue eyes, wearing a weathered hat, sits on the porch. The mood is one of anticipation and curiosity, as the young man, lifting his hat in greeting, walks up the path leading to the porch.
+15	A somber and stark room in a rundown building, where a sick man lies on a mattress in the corner, and a young woman stands despairingly with a half-empty bag of groceries. The room is bare and poorly lit, evoking a sense of desperation and sadness. The two men from earlier stand in the doorway, their faces filled with sympathy and regret as they witness the scene.
+12	A bustling dinner scene at the Bachelors' Club, featuring two men, one with a jovial expression and the other slightly anxious due to his lateness. The setting is luxurious, with rich wood paneling and elegant dining tables. The mood is lively and convivial, with other diners in the background enjoying their meals and conversations.
+14	A dimly lit street scene where two men encounter a gaunt, ragged woman emerging from a dark alley. The street is sparsely lit by old-fashioned lamps, casting long shadows, and the woman appears desperate, her face illuminated by a nearby lamp, revealing her wild eyes and disheveled golden hair. The mood is tense and suspenseful, capturing the moment of the woman's fervent plea for help.
+13	An intense discussion at a grocery store with three men, one being the grocer, and the other two, the main characters from the story, trying to track down a ten-dollar bill. The store is cluttered and has an old-time feel, with wooden shelves stocked with goods. The grocer is describing the woman who used the bill, adding to the intrigue and urgency of the scene.
+24	Harris and Jim shake hands in front of a wooden house, finalizing the deal on the ranch. The background shows a well-kept ranch with cattle grazing. The scene conveys a sense of accomplishment and the beginning of a new chapter, with Harris looking pleased and determined.
+32	A dramatic and emotional night scene where the elderly artist Behrman, with a wild beard and intense expression, is outside in a storm. He is painting the last ivy leaf on the brick wall, determined and focused despite the bad weather. His clothes are soaked, and his face shows the strain of his task. The scene captures his heroic effort to give hope to Johnsy, with the storm symbolizing his battle against nature and fate.
+30	In a dimly lit artist's studio, two young women, Johnsy and Sue, are seen in a cozy, cluttered room filled with art supplies and sketches. Johnsy is lying in a bed, looking frail and pale, gazing out of a window towards a dreary, autumn-stricken yard. Sue, with a concerned expression, is sketching at a drawing board. The mood is somber and reflective, capturing the essence of care and worry in a bohemian setting.
+33	A poignant scene showing Sue and Johnsy in their small, artistically cluttered apartment. Johnsy, visibly weak, is lying on her bed, her eyes fixed on the last few leaves of an ivy vine outside the window. The room is dimly lit by a soft lamp, emphasizing the autumn chill seeping through the open window. Sue, looking anxious, peers out the window, trying to understand Johnsy's fixation on the falling leaves. The mood is tense and expectant, highlighting the emotional gravity of Johnsy's superstition about her fate.
+31	A hopeful morning in Johnsy's bedroom, where she, now slightly more vibrant, sits up in bed looking out the window at the ivy vine. The single painted leaf is still clinging to the vine. The room is bathed in soft, warm light, symbolizing hope and renewal. Sue is beside her, showing a gentle smile, relieved and sharing the moment of realization with Johnsy that life is worth clinging to. The atmosphere is uplifting, contrasting sharply with the earlier despair.
+35	A man leaning in the shadowed doorway of a former restaurant, now a darkened hardware store, lighting a cigar. The match illuminates his pale, determined face marked by a small scar and a keen expression. He wears a heavy coat and a scarf with a striking diamond pin. The background shows empty, rain-wet streets of an old city at night, conveying a sense of nostalgia and anticipation.
+34	A chilly, dimly lit urban street at night, with a lone policeman patrolling. The setting is sparsely populated, featuring old-style street lamps casting long shadows. The policeman, in a classic early 20th-century uniform, appears authoritative and watchful as he twirls his club, checking doors of closed businesses. The mood is somber and suspenseful, highlighting the loneliness of the city at night.
+36	Two middle-aged men meeting in front of a bright drug store, their faces revealed under the harsh electric light. One, rugged and well-dressed from the West, shows surprise and suspicion; the other, in a long overcoat, appears calm and authoritative. The scene captures a dramatic and tense reunion, filled with uncertainty and the passage of time.
+40	A bustling, slightly chaotic hair salon scene where Della, with her hair freshly cut, stands before Madame Sofronie, who assesses the hair with a professional gaze. The environment is cramped and cluttered, filled with various hair products and tools. Della's face shows a mix of relief and apprehension as she makes the transaction to buy a Christmas gift for her husband.
+39	Della standing in front of a pier glass between two windows in a humble room, her eyes shining with a mix of resolve and sadness. Her beautiful, long brown hair cascades down, reaching below her knees as she prepares to cut it. The mood is tense and bittersweet, capturing the moment right before she sacrifices her prized possession for love.
+42	The emotional climax in the flat where Jim and Della exchange their gifts. Jim, thin and serious, holds the set of expensive combs Della had longed for, while Della presents the platinum chain for Jim's watch. The irony of their useless gifts, given their respective sacrifices, fills the room with a poignant mix of joy and sorrow. The mood is deeply moving, underscored by their loving embrace amidst the bittersweet realization.
+37	A shocked and confused man reading a short note under the bright light of a drug store, his hands slightly trembling. The note reveals a betrayal by an old friend, now a policeman, who couldn't arrest him himself. The scene is tense, with the man's expression transitioning from anticipation to disbelief, set against the backdrop of a busy city corner at night.
+38	A young woman, Della, in a modest, dimly-lit room, sitting on a shabby couch with tears streaming down her face as she clutches a handful of coins amounting to $1.87. Her expression is one of despair and determination, reflecting the emotional weight of her financial struggles on the eve of Christmas. The room is sparsely furnished, emphasizing the couple's financial hardship.
+41	A cozy, warmly lit interior of the couple's flat during Christmas evening. Della, with her hair now in tiny curls, anxiously holds a platinum fob chain in her hand as she hears Jim's footsteps approaching. The setting includes a small Christmas decoration in the corner and a humble dinner setup, highlighting the simplicity yet profound love in their celebration.
+44	A rustic scene at Los Pinos ranch, featuring old Ramon Torres, a robust elderly man with weathered skin, standing in front of his adobe ranch house. He's laughing harshly while pointing to an expanse of wire fencing that stretches across the landscape behind the house. The setting is a sunny afternoon with semitropical plants surrounding the veranda, conveying a mix of humor and irony in the atmosphere.
+43	A tense moment as a young, earnest cowpuncher dressed in traditional gear stands awkwardly at the door of the ranch house, offering a sample of wire fencing to old Ramon. Ramon, visibly amused and somewhat incredulous, is mid-laugh, throwing his head back with a straw dangling from his mouth. The background shows the wide, sunny veranda and parts of the lush garden, highlighting the clash between old values and new ideas.
+46	A peaceful, contemplative scene on the porch of the ranch house where Ramon and Rosita, seated comfortably, discuss the future of the wire fencing. The setting is relaxed and intimate, with both characters shown in a side view as they look out over the landscape, now free of wire fencing. The mood is hopeful and reflective, symbolizing a return to traditional values and neighborly bonds.
+45	A dramatic encounter at the front gate of Los Pinos where old Ramon, in a polite yet startled manner, greets Rosita, a young and graceful woman on horseback. She asks about buying wire fencing, causing a surprised reaction from Ramon. The scene is set in the late afternoon with golden sunlight casting long shadows, emphasizing the unexpected twist and the deep cultural connections of the characters.
 \.
 
 
@@ -5257,7 +5328,18 @@ COPY public.components_a_illustration_prompts (id, prompt) FROM stdin;
 --
 
 COPY public.components_a_illustrations (id, caption, alt_text, paragraph) FROM stdin;
-1	illustrate 1	\N	1
+2	The Gift of Magi - Cover	The Gift of Magi 	\N
+6	Pardon's Hopeful Moment	Pardon's Hopeful Moment	5
+4	Conflicted at Sunset	Conflicted at Sunset	\N
+5	Freedom's first step	Freedom's first step	3
+3	Midnight Cafe Conversation	\N	\N
+7	Contemplation in Decay	Contemplation in Decay	\N
+9	Cultural Exchange on Ranch	Cultural Exchange on Ranch	\N
+10	Autumn Studio Serenity	Autumn Studio Serenity	\N
+11	Nostalgic New York Reunion	Nostalgic New York Reunion	\N
+12	\N	\N	\N
+13	Heritage at Sunset	Heritage at Sunset	\N
+8	Somber Urban Encounter	Somber Urban Encounter	\N
 \.
 
 
@@ -5719,6 +5801,7 @@ COPY public.components_a_user_word_refs_user_word_links (id, user_word_ref_id, u
 
 COPY public.components_a_verb_metas (id, simple_past, past_participle, present_participle, thirdperson_singular, auxiliary_verb, conjugations) FROM stdin;
 1	did	done	doing	does	have	\N
+2	invoked	invoked	invoking	\N	\N	\N
 \.
 
 
@@ -5795,6 +5878,27 @@ COPY public.conversations (id, created_at, updated_at, created_by_id, updated_by
 46	2025-08-02 06:02:47.142	2025-08-02 06:02:47.142	\N	\N	fd2c8f59-d983-4274-8903-20bdfad9606a	[{"role": "assistant", "content": "Hello! How about we talk about \\"Months of the Year\\"? Or, you can suggest a topic."}]
 47	2025-08-05 15:19:18.993	2025-08-05 15:19:18.993	\N	\N	805d3378-4033-4d9a-a215-4916fc8ef07a	[{"role": "assistant", "content": "Hello! How about we talk about \\"Greetings and Introductions\\"? Or, you can suggest a topic."}]
 48	2025-08-05 18:37:38.189	2025-08-05 18:37:38.189	\N	\N	1dc068e1-c39f-4c04-bef4-5c438c95371c	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Polite Expressions\\"? Or, you can suggest a topic."}]
+49	2025-08-05 21:14:20.671	2025-08-05 21:14:20.671	\N	\N	e0ffd8c0-29f1-451b-8b48-fc2745e99026	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+50	2025-08-05 21:44:51.173	2025-08-05 21:44:51.173	\N	\N	53880923-633e-4538-ba48-4ad333d50785	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+51	2025-08-05 23:32:22.969	2025-08-05 23:32:22.969	\N	\N	eb6c92ae-4cba-43c9-9301-6ed03d1192cf	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+52	2025-08-06 00:02:27.911	2025-08-06 00:02:27.911	\N	\N	0cac1acf-ca34-462b-bbfd-b805256a25a8	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
+53	2025-08-06 18:20:36.218	2025-08-06 18:20:36.218	\N	\N	ea3f1c08-9a50-4ab2-8d29-182b72c78473	[{"role": "assistant", "content": "Hello! How about we talk about \\"Greetings and Introductions\\"? Or, you can suggest a topic."}]
+54	2025-08-06 21:07:38.835	2025-08-06 21:07:38.835	\N	\N	a1147a8a-c579-4647-b862-8614fe0ff9e6	[{"role": "assistant", "content": "Hello! How about we talk about \\"Alphabet and Phonetics\\"? Or, you can suggest a topic."}]
+55	2025-08-06 21:34:05.539	2025-08-06 21:34:05.539	\N	\N	d8e3b483-1901-41fb-b257-29c016fa6218	[{"role": "assistant", "content": "Hello! How about we talk about \\"Days of the Week\\"? Or, you can suggest a topic."}]
+56	2025-08-07 02:59:48.492	2025-08-07 02:59:48.492	\N	\N	e1897f90-bd39-4a6e-9e74-95ffbef06860	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+57	2025-08-07 10:28:42.548	2025-08-07 10:28:42.548	\N	\N	513e373b-538d-4d32-8b80-30039d5d65f7	[{"role": "assistant", "content": "Hello! How about we talk about \\"Alphabet and Phonetics\\"? Or, you can suggest a topic."}]
+58	2025-08-07 10:48:07.697	2025-08-07 10:48:07.697	\N	\N	53177342-63e5-4f2e-8075-15ba64cbb5fa	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+59	2025-08-08 22:43:00.403	2025-08-08 22:43:00.403	\N	\N	e503efc5-cdb1-4cf3-8695-e55d127d4d1b	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
+60	2025-08-09 20:07:05.843	2025-08-09 20:07:05.843	\N	\N	a0289d6c-4bcf-4f20-a725-aa0ea498a080	[{"role": "assistant", "content": "Hello! How about we talk about \\"Greetings and Introductions\\"? Or, you can suggest a topic."}]
+61	2025-08-09 21:35:37.079	2025-08-09 21:35:37.079	\N	\N	3ac7fc6c-5b4c-46c7-9309-6133cf7ec350	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
+62	2025-08-10 13:19:20.374	2025-08-10 13:19:20.374	\N	\N	14306f9c-e53c-4cf7-ab8f-7ae480c65758	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+63	2025-08-10 15:44:36.992	2025-08-10 15:44:36.992	\N	\N	be10d9fd-08d6-46c7-9398-f4421e2d5a29	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
+64	2025-08-10 16:28:39.888	2025-08-10 16:28:39.888	\N	\N	2596e00f-7580-4790-9d35-72f23369b782	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+65	2025-08-10 18:56:19.715	2025-08-10 18:56:19.715	\N	\N	b3967a24-3f57-42b9-9e85-1986f908554a	[{"role": "assistant", "content": "Hello! How about we talk about \\"Months of the Year\\"? Or, you can suggest a topic."}]
+66	2025-08-11 10:18:08.728	2025-08-11 10:18:08.728	\N	\N	af7a2cca-1a4c-41f0-a1d2-c4cd5cdc5c34	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
+67	2025-08-11 19:41:45.402	2025-08-11 19:41:45.402	\N	\N	730acd22-0ac3-4c1d-839c-0bf6f564d256	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
+68	2025-08-11 20:17:52.751	2025-08-11 20:17:52.751	\N	\N	c6938b60-c00c-445a-a603-1aea5dbca75b	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+69	2025-08-11 21:34:46.705	2025-08-11 21:34:46.705	\N	\N	f2a5ce89-d0cb-421d-a516-e7b44104f4d2	[{"role": "assistant", "content": "Hello! How about we talk about \\"Alphabet and Phonetics\\"? Or, you can suggest a topic."}]
 \.
 
 
@@ -5826,6 +5930,19 @@ COPY public.difficulty_levels_localizations_links (id, difficulty_level_id, inv_
 
 COPY public.files (id, name, alternative_text, caption, width, height, formats, hash, ext, mime, size, url, preview_url, provider, provider_metadata, folder_path, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 1	girl1-close.png	\N	\N	1024	1024	{"large": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/large_girl1_close_06730201c1/large_girl1_close_06730201c1.png", "hash": "large_girl1_close_06730201c1", "mime": "image/png", "name": "large_girl1-close.png", "path": null, "size": 1524.79, "width": 1000, "height": 1000}, "small": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/small_girl1_close_06730201c1/small_girl1_close_06730201c1.png", "hash": "small_girl1_close_06730201c1", "mime": "image/png", "name": "small_girl1-close.png", "path": null, "size": 456.77, "width": 500, "height": 500}, "medium": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/medium_girl1_close_06730201c1/medium_girl1_close_06730201c1.png", "hash": "medium_girl1_close_06730201c1", "mime": "image/png", "name": "medium_girl1-close.png", "path": null, "size": 961.63, "width": 750, "height": 750}, "thumbnail": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_girl1_close_06730201c1/thumbnail_girl1_close_06730201c1.png", "hash": "thumbnail_girl1_close_06730201c1", "mime": "image/png", "name": "thumbnail_girl1-close.png", "path": null, "size": 58.82, "width": 156, "height": 156}}	girl1_close_06730201c1	.png	image/png	355.26	https://storage.googleapis.com/langgo-en-storage/girl1_close_06730201c1/girl1_close_06730201c1.png	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/	2025-07-20 16:42:46.817	2025-07-20 16:42:46.817	1	1
+2	The Gift of the Magi - cover.jpg	\N	\N	1024	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_The_Gift_of_the_Magi_cover_ac5da45277/large_The_Gift_of_the_Magi_cover_ac5da45277.jpg", "hash": "large_The_Gift_of_the_Magi_cover_ac5da45277", "mime": "image/jpeg", "name": "large_The Gift of the Magi - cover.jpg", "path": null, "size": 212.47, "width": 1000, "height": 1000}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_The_Gift_of_the_Magi_cover_ac5da45277/small_The_Gift_of_the_Magi_cover_ac5da45277.jpg", "hash": "small_The_Gift_of_the_Magi_cover_ac5da45277", "mime": "image/jpeg", "name": "small_The Gift of the Magi - cover.jpg", "path": null, "size": 46.1, "width": 500, "height": 500}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_The_Gift_of_the_Magi_cover_ac5da45277/medium_The_Gift_of_the_Magi_cover_ac5da45277.jpg", "hash": "medium_The_Gift_of_the_Magi_cover_ac5da45277", "mime": "image/jpeg", "name": "medium_The Gift of the Magi - cover.jpg", "path": null, "size": 112.62, "width": 750, "height": 750}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_The_Gift_of_the_Magi_cover_ac5da45277/thumbnail_The_Gift_of_the_Magi_cover_ac5da45277.jpg", "hash": "thumbnail_The_Gift_of_the_Magi_cover_ac5da45277", "mime": "image/jpeg", "name": "thumbnail_The Gift of the Magi - cover.jpg", "path": null, "size": 5.83, "width": 156, "height": 156}}	The_Gift_of_the_Magi_cover_ac5da45277	.jpg	image/jpeg	231.01	https://storage.googleapis.com/langgo-en-storage/The_Gift_of_the_Magi_cover_ac5da45277/The_Gift_of_the_Magi_cover_ac5da45277.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-05 21:40:36.457	2025-08-05 21:40:36.457	1	1
+4	Conflicted at Sunset.jpg	\N	\N	1536	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Conflicted_at_Sunset_b65600248a/large_Conflicted_at_Sunset_b65600248a.jpg", "hash": "large_Conflicted_at_Sunset_b65600248a", "mime": "image/jpeg", "name": "large_Conflicted at Sunset.jpg", "path": null, "size": 63.65, "width": 1000, "height": 667}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Conflicted_at_Sunset_b65600248a/small_Conflicted_at_Sunset_b65600248a.jpg", "hash": "small_Conflicted_at_Sunset_b65600248a", "mime": "image/jpeg", "name": "small_Conflicted at Sunset.jpg", "path": null, "size": 21.94, "width": 500, "height": 333}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Conflicted_at_Sunset_b65600248a/medium_Conflicted_at_Sunset_b65600248a.jpg", "hash": "medium_Conflicted_at_Sunset_b65600248a", "mime": "image/jpeg", "name": "medium_Conflicted at Sunset.jpg", "path": null, "size": 40.48, "width": 750, "height": 500}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Conflicted_at_Sunset_b65600248a/thumbnail_Conflicted_at_Sunset_b65600248a.jpg", "hash": "thumbnail_Conflicted_at_Sunset_b65600248a", "mime": "image/jpeg", "name": "thumbnail_Conflicted at Sunset.jpg", "path": null, "size": 6.79, "width": 234, "height": 156}}	Conflicted_at_Sunset_b65600248a	.jpg	image/jpeg	115.82	https://storage.googleapis.com/langgo-en-storage/Conflicted_at_Sunset_b65600248a/Conflicted_at_Sunset_b65600248a.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/	2025-08-05 23:47:44.351	2025-08-05 23:47:44.351	1	1
+5	Freedom's First Step.jpg	\N	\N	1536	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Freedom_s_First_Step_0e52a61930/large_Freedom_s_First_Step_0e52a61930.jpg", "hash": "large_Freedom_s_First_Step_0e52a61930", "mime": "image/jpeg", "name": "large_Freedom's First Step.jpg", "path": null, "size": 109.61, "width": 1000, "height": 667}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Freedom_s_First_Step_0e52a61930/small_Freedom_s_First_Step_0e52a61930.jpg", "hash": "small_Freedom_s_First_Step_0e52a61930", "mime": "image/jpeg", "name": "small_Freedom's First Step.jpg", "path": null, "size": 34.65, "width": 500, "height": 333}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Freedom_s_First_Step_0e52a61930/medium_Freedom_s_First_Step_0e52a61930.jpg", "hash": "medium_Freedom_s_First_Step_0e52a61930", "mime": "image/jpeg", "name": "medium_Freedom's First Step.jpg", "path": null, "size": 67.76, "width": 750, "height": 500}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Freedom_s_First_Step_0e52a61930/thumbnail_Freedom_s_First_Step_0e52a61930.jpg", "hash": "thumbnail_Freedom_s_First_Step_0e52a61930", "mime": "image/jpeg", "name": "thumbnail_Freedom's First Step.jpg", "path": null, "size": 10.33, "width": 234, "height": 156}}	Freedom_s_First_Step_0e52a61930	.jpg	image/jpeg	205.15	https://storage.googleapis.com/langgo-en-storage/Freedom_s_First_Step_0e52a61930/Freedom_s_First_Step_0e52a61930.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/	2025-08-05 23:51:20.385	2025-08-05 23:51:20.385	1	1
+6	Pardon's Hopeful Moment.jpg	\N	\N	1536	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Pardon_s_Hopeful_Moment_432dec23ae/large_Pardon_s_Hopeful_Moment_432dec23ae.jpg", "hash": "large_Pardon_s_Hopeful_Moment_432dec23ae", "mime": "image/jpeg", "name": "large_Pardon's Hopeful Moment.jpg", "path": null, "size": 80.01, "width": 1000, "height": 667}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Pardon_s_Hopeful_Moment_432dec23ae/small_Pardon_s_Hopeful_Moment_432dec23ae.jpg", "hash": "small_Pardon_s_Hopeful_Moment_432dec23ae", "mime": "image/jpeg", "name": "small_Pardon's Hopeful Moment.jpg", "path": null, "size": 21.35, "width": 500, "height": 333}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Pardon_s_Hopeful_Moment_432dec23ae/medium_Pardon_s_Hopeful_Moment_432dec23ae.jpg", "hash": "medium_Pardon_s_Hopeful_Moment_432dec23ae", "mime": "image/jpeg", "name": "medium_Pardon's Hopeful Moment.jpg", "path": null, "size": 43.88, "width": 750, "height": 500}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Pardon_s_Hopeful_Moment_432dec23ae/thumbnail_Pardon_s_Hopeful_Moment_432dec23ae.jpg", "hash": "thumbnail_Pardon_s_Hopeful_Moment_432dec23ae", "mime": "image/jpeg", "name": "thumbnail_Pardon's Hopeful Moment.jpg", "path": null, "size": 6.3, "width": 234, "height": 156}}	Pardon_s_Hopeful_Moment_432dec23ae	.jpg	image/jpeg	196.09	https://storage.googleapis.com/langgo-en-storage/Pardon_s_Hopeful_Moment_432dec23ae/Pardon_s_Hopeful_Moment_432dec23ae.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/	2025-08-05 23:58:05.423	2025-08-05 23:58:05.423	1	1
+7	Midnight Cafe Conversation.jpg	\N	\N	1536	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Midnight_Cafe_Conversation_fc9027e0a4/large_Midnight_Cafe_Conversation_fc9027e0a4.jpg", "hash": "large_Midnight_Cafe_Conversation_fc9027e0a4", "mime": "image/jpeg", "name": "large_Midnight Cafe Conversation.jpg", "path": null, "size": 68.3, "width": 1000, "height": 667}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Midnight_Cafe_Conversation_fc9027e0a4/small_Midnight_Cafe_Conversation_fc9027e0a4.jpg", "hash": "small_Midnight_Cafe_Conversation_fc9027e0a4", "mime": "image/jpeg", "name": "small_Midnight Cafe Conversation.jpg", "path": null, "size": 21.62, "width": 500, "height": 333}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Midnight_Cafe_Conversation_fc9027e0a4/medium_Midnight_Cafe_Conversation_fc9027e0a4.jpg", "hash": "medium_Midnight_Cafe_Conversation_fc9027e0a4", "mime": "image/jpeg", "name": "medium_Midnight Cafe Conversation.jpg", "path": null, "size": 42.59, "width": 750, "height": 500}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Midnight_Cafe_Conversation_fc9027e0a4/thumbnail_Midnight_Cafe_Conversation_fc9027e0a4.jpg", "hash": "thumbnail_Midnight_Cafe_Conversation_fc9027e0a4", "mime": "image/jpeg", "name": "thumbnail_Midnight Cafe Conversation.jpg", "path": null, "size": 6.25, "width": 234, "height": 156}}	Midnight_Cafe_Conversation_fc9027e0a4	.jpg	image/jpeg	124.60	https://storage.googleapis.com/langgo-en-storage/Midnight_Cafe_Conversation_fc9027e0a4/Midnight_Cafe_Conversation_fc9027e0a4.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 00:02:18.56	2025-08-06 00:02:18.56	1	1
+8	Contemplation in Decay.jpg	\N	\N	1536	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Contemplation_in_Decay_3425e67a8a/large_Contemplation_in_Decay_3425e67a8a.jpg", "hash": "large_Contemplation_in_Decay_3425e67a8a", "mime": "image/jpeg", "name": "large_Contemplation in Decay.jpg", "path": null, "size": 83.84, "width": 1000, "height": 667}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Contemplation_in_Decay_3425e67a8a/small_Contemplation_in_Decay_3425e67a8a.jpg", "hash": "small_Contemplation_in_Decay_3425e67a8a", "mime": "image/jpeg", "name": "small_Contemplation in Decay.jpg", "path": null, "size": 25.56, "width": 500, "height": 333}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Contemplation_in_Decay_3425e67a8a/medium_Contemplation_in_Decay_3425e67a8a.jpg", "hash": "medium_Contemplation_in_Decay_3425e67a8a", "mime": "image/jpeg", "name": "medium_Contemplation in Decay.jpg", "path": null, "size": 51.06, "width": 750, "height": 500}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Contemplation_in_Decay_3425e67a8a/thumbnail_Contemplation_in_Decay_3425e67a8a.jpg", "hash": "thumbnail_Contemplation_in_Decay_3425e67a8a", "mime": "image/jpeg", "name": "thumbnail_Contemplation in Decay.jpg", "path": null, "size": 7.27, "width": 234, "height": 156}}	Contemplation_in_Decay_3425e67a8a	.jpg	image/jpeg	157.61	https://storage.googleapis.com/langgo-en-storage/Contemplation_in_Decay_3425e67a8a/Contemplation_in_Decay_3425e67a8a.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 00:23:08.099	2025-08-06 00:23:08.099	1	1
+9	Somber Urban Encounter.jpg	\N	\N	1536	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Somber_Urban_Encounter_76092a8e11/large_Somber_Urban_Encounter_76092a8e11.jpg", "hash": "large_Somber_Urban_Encounter_76092a8e11", "mime": "image/jpeg", "name": "large_Somber Urban Encounter.jpg", "path": null, "size": 44.85, "width": 1000, "height": 667}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Somber_Urban_Encounter_76092a8e11/small_Somber_Urban_Encounter_76092a8e11.jpg", "hash": "small_Somber_Urban_Encounter_76092a8e11", "mime": "image/jpeg", "name": "small_Somber Urban Encounter.jpg", "path": null, "size": 13.02, "width": 500, "height": 333}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Somber_Urban_Encounter_76092a8e11/medium_Somber_Urban_Encounter_76092a8e11.jpg", "hash": "medium_Somber_Urban_Encounter_76092a8e11", "mime": "image/jpeg", "name": "medium_Somber Urban Encounter.jpg", "path": null, "size": 26.19, "width": 750, "height": 500}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Somber_Urban_Encounter_76092a8e11/thumbnail_Somber_Urban_Encounter_76092a8e11.jpg", "hash": "thumbnail_Somber_Urban_Encounter_76092a8e11", "mime": "image/jpeg", "name": "thumbnail_Somber Urban Encounter.jpg", "path": null, "size": 4.17, "width": 234, "height": 156}}	Somber_Urban_Encounter_76092a8e11	.jpg	image/jpeg	90.65	https://storage.googleapis.com/langgo-en-storage/Somber_Urban_Encounter_76092a8e11/Somber_Urban_Encounter_76092a8e11.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 00:29:35.773	2025-08-06 00:29:35.773	1	1
+10	Cultural Exchange on Ranch.png	\N	\N	1536	1024	{"large": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/large_Cultural_Exchange_on_Ranch_f8649a0af0/large_Cultural_Exchange_on_Ranch_f8649a0af0.png", "hash": "large_Cultural_Exchange_on_Ranch_f8649a0af0", "mime": "image/png", "name": "large_Cultural Exchange on Ranch.png", "path": null, "size": 1810, "width": 1000, "height": 667}, "small": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/small_Cultural_Exchange_on_Ranch_f8649a0af0/small_Cultural_Exchange_on_Ranch_f8649a0af0.png", "hash": "small_Cultural_Exchange_on_Ranch_f8649a0af0", "mime": "image/png", "name": "small_Cultural Exchange on Ranch.png", "path": null, "size": 451.62, "width": 500, "height": 333}, "medium": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Cultural_Exchange_on_Ranch_f8649a0af0/medium_Cultural_Exchange_on_Ranch_f8649a0af0.png", "hash": "medium_Cultural_Exchange_on_Ranch_f8649a0af0", "mime": "image/png", "name": "medium_Cultural Exchange on Ranch.png", "path": null, "size": 1014.4, "width": 750, "height": 500}, "thumbnail": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Cultural_Exchange_on_Ranch_f8649a0af0/thumbnail_Cultural_Exchange_on_Ranch_f8649a0af0.png", "hash": "thumbnail_Cultural_Exchange_on_Ranch_f8649a0af0", "mime": "image/png", "name": "thumbnail_Cultural Exchange on Ranch.png", "path": null, "size": 101.23, "width": 234, "height": 156}}	Cultural_Exchange_on_Ranch_f8649a0af0	.png	image/png	1097.52	https://storage.googleapis.com/langgo-en-storage/Cultural_Exchange_on_Ranch_f8649a0af0/Cultural_Exchange_on_Ranch_f8649a0af0.png	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 08:22:00.64	2025-08-06 08:22:00.64	1	1
+11	Autumn Studio Serenity.png	\N	\N	1536	1024	{"large": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/large_Autumn_Studio_Serenity_be87c1e67a/large_Autumn_Studio_Serenity_be87c1e67a.png", "hash": "large_Autumn_Studio_Serenity_be87c1e67a", "mime": "image/png", "name": "large_Autumn Studio Serenity.png", "path": null, "size": 1628.61, "width": 1000, "height": 667}, "small": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/small_Autumn_Studio_Serenity_be87c1e67a/small_Autumn_Studio_Serenity_be87c1e67a.png", "hash": "small_Autumn_Studio_Serenity_be87c1e67a", "mime": "image/png", "name": "small_Autumn Studio Serenity.png", "path": null, "size": 427.13, "width": 500, "height": 333}, "medium": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Autumn_Studio_Serenity_be87c1e67a/medium_Autumn_Studio_Serenity_be87c1e67a.png", "hash": "medium_Autumn_Studio_Serenity_be87c1e67a", "mime": "image/png", "name": "medium_Autumn Studio Serenity.png", "path": null, "size": 935.79, "width": 750, "height": 500}, "thumbnail": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Autumn_Studio_Serenity_be87c1e67a/thumbnail_Autumn_Studio_Serenity_be87c1e67a.png", "hash": "thumbnail_Autumn_Studio_Serenity_be87c1e67a", "mime": "image/png", "name": "thumbnail_Autumn Studio Serenity.png", "path": null, "size": 99.11, "width": 234, "height": 156}}	Autumn_Studio_Serenity_be87c1e67a	.png	image/png	868.55	https://storage.googleapis.com/langgo-en-storage/Autumn_Studio_Serenity_be87c1e67a/Autumn_Studio_Serenity_be87c1e67a.png	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 11:25:39.944	2025-08-06 11:25:39.944	1	1
+12	Nostalgic New York Reunion.png	\N	\N	2304	1792	{"large": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/large_Nostalgic_New_York_Reunion_e6292a75e4/large_Nostalgic_New_York_Reunion_e6292a75e4.png", "hash": "large_Nostalgic_New_York_Reunion_e6292a75e4", "mime": "image/png", "name": "large_Nostalgic New York Reunion.png", "path": null, "size": 1031.03, "width": 1000, "height": 778}, "small": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/small_Nostalgic_New_York_Reunion_e6292a75e4/small_Nostalgic_New_York_Reunion_e6292a75e4.png", "hash": "small_Nostalgic_New_York_Reunion_e6292a75e4", "mime": "image/png", "name": "small_Nostalgic New York Reunion.png", "path": null, "size": 310.01, "width": 500, "height": 389}, "medium": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Nostalgic_New_York_Reunion_e6292a75e4/medium_Nostalgic_New_York_Reunion_e6292a75e4.png", "hash": "medium_Nostalgic_New_York_Reunion_e6292a75e4", "mime": "image/png", "name": "medium_Nostalgic New York Reunion.png", "path": null, "size": 613.33, "width": 750, "height": 583}, "thumbnail": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Nostalgic_New_York_Reunion_e6292a75e4/thumbnail_Nostalgic_New_York_Reunion_e6292a75e4.png", "hash": "thumbnail_Nostalgic_New_York_Reunion_e6292a75e4", "mime": "image/png", "name": "thumbnail_Nostalgic New York Reunion.png", "path": null, "size": 65.05, "width": 201, "height": 156}}	Nostalgic_New_York_Reunion_e6292a75e4	.png	image/png	970.75	https://storage.googleapis.com/langgo-en-storage/Nostalgic_New_York_Reunion_e6292a75e4/Nostalgic_New_York_Reunion_e6292a75e4.png	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 11:43:21.766	2025-08-06 11:43:21.766	1	1
+13	Christmas Sacrifice.png	\N	\N	1536	1024	{"large": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/large_Christmas_Sacrifice_1c06ca93d1/large_Christmas_Sacrifice_1c06ca93d1.png", "hash": "large_Christmas_Sacrifice_1c06ca93d1", "mime": "image/png", "name": "large_Christmas Sacrifice.png", "path": null, "size": 1257.93, "width": 1000, "height": 667}, "small": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/small_Christmas_Sacrifice_1c06ca93d1/small_Christmas_Sacrifice_1c06ca93d1.png", "hash": "small_Christmas_Sacrifice_1c06ca93d1", "mime": "image/png", "name": "small_Christmas Sacrifice.png", "path": null, "size": 331.85, "width": 500, "height": 333}, "medium": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Christmas_Sacrifice_1c06ca93d1/medium_Christmas_Sacrifice_1c06ca93d1.png", "hash": "medium_Christmas_Sacrifice_1c06ca93d1", "mime": "image/png", "name": "medium_Christmas Sacrifice.png", "path": null, "size": 725.45, "width": 750, "height": 500}, "thumbnail": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Christmas_Sacrifice_1c06ca93d1/thumbnail_Christmas_Sacrifice_1c06ca93d1.png", "hash": "thumbnail_Christmas_Sacrifice_1c06ca93d1", "mime": "image/png", "name": "thumbnail_Christmas Sacrifice.png", "path": null, "size": 79.53, "width": 234, "height": 156}}	Christmas_Sacrifice_1c06ca93d1	.png	image/png	659.23	https://storage.googleapis.com/langgo-en-storage/Christmas_Sacrifice_1c06ca93d1/Christmas_Sacrifice_1c06ca93d1.png	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 11:54:52.062	2025-08-06 11:54:52.062	1	1
+14	Heritage at Sunset.png	\N	\N	2336	1760	{"large": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/large_Heritage_at_Sunset_2fe273d80c/large_Heritage_at_Sunset_2fe273d80c.png", "hash": "large_Heritage_at_Sunset_2fe273d80c", "mime": "image/png", "name": "large_Heritage at Sunset.png", "path": null, "size": 1594.99, "width": 1000, "height": 753}, "small": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/small_Heritage_at_Sunset_2fe273d80c/small_Heritage_at_Sunset_2fe273d80c.png", "hash": "small_Heritage_at_Sunset_2fe273d80c", "mime": "image/png", "name": "small_Heritage at Sunset.png", "path": null, "size": 413.16, "width": 500, "height": 377}, "medium": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Heritage_at_Sunset_2fe273d80c/medium_Heritage_at_Sunset_2fe273d80c.png", "hash": "medium_Heritage_at_Sunset_2fe273d80c", "mime": "image/png", "name": "medium_Heritage at Sunset.png", "path": null, "size": 902.53, "width": 750, "height": 565}, "thumbnail": {"ext": ".png", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Heritage_at_Sunset_2fe273d80c/thumbnail_Heritage_at_Sunset_2fe273d80c.png", "hash": "thumbnail_Heritage_at_Sunset_2fe273d80c", "mime": "image/png", "name": "thumbnail_Heritage at Sunset.png", "path": null, "size": 78.37, "width": 207, "height": 156}}	Heritage_at_Sunset_2fe273d80c	.png	image/png	1864.76	https://storage.googleapis.com/langgo-en-storage/Heritage_at_Sunset_2fe273d80c/Heritage_at_Sunset_2fe273d80c.png	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/1	2025-08-06 12:01:04.48	2025-08-06 12:01:04.48	1	1
+15	Somber Urban Encounter.jpg	\N	\N	1024	1024	{"large": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/large_Somber_Urban_Encounter_1382070c56/large_Somber_Urban_Encounter_1382070c56.jpg", "hash": "large_Somber_Urban_Encounter_1382070c56", "mime": "image/jpeg", "name": "large_Somber Urban Encounter.jpg", "path": null, "size": 79.08, "width": 1000, "height": 1000}, "small": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/small_Somber_Urban_Encounter_1382070c56/small_Somber_Urban_Encounter_1382070c56.jpg", "hash": "small_Somber_Urban_Encounter_1382070c56", "mime": "image/jpeg", "name": "small_Somber Urban Encounter.jpg", "path": null, "size": 19.42, "width": 500, "height": 500}, "medium": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/medium_Somber_Urban_Encounter_1382070c56/medium_Somber_Urban_Encounter_1382070c56.jpg", "hash": "medium_Somber_Urban_Encounter_1382070c56", "mime": "image/jpeg", "name": "medium_Somber Urban Encounter.jpg", "path": null, "size": 43.88, "width": 750, "height": 750}, "thumbnail": {"ext": ".jpg", "url": "https://storage.googleapis.com/langgo-en-storage/thumbnail_Somber_Urban_Encounter_1382070c56/thumbnail_Somber_Urban_Encounter_1382070c56.jpg", "hash": "thumbnail_Somber_Urban_Encounter_1382070c56", "mime": "image/jpeg", "name": "thumbnail_Somber Urban Encounter.jpg", "path": null, "size": 3.05, "width": 156, "height": 156}}	Somber_Urban_Encounter_1382070c56	.jpg	image/jpeg	82.15	https://storage.googleapis.com/langgo-en-storage/Somber_Urban_Encounter_1382070c56/Somber_Urban_Encounter_1382070c56.jpg	\N	@strapi-community/strapi-provider-upload-google-cloud-storage	\N	/	2025-08-11 04:04:28.416	2025-08-11 04:04:28.416	1	1
 \.
 
 
@@ -5834,6 +5951,15 @@ COPY public.files (id, name, alternative_text, caption, width, height, formats, 
 --
 
 COPY public.files_folder_links (id, file_id, folder_id, file_order) FROM stdin;
+1	2	1	1
+3	7	1	2
+4	8	1	3
+5	9	1	4
+6	10	1	5
+7	11	1	6
+8	12	1	7
+9	13	1	8
+10	14	1	9
 \.
 
 
@@ -5842,7 +5968,18 @@ COPY public.files_folder_links (id, file_id, folder_id, file_order) FROM stdin;
 --
 
 COPY public.files_related_morphs (id, file_id, related_id, related_type, field, "order") FROM stdin;
-1	1	1	a.illustrations	media	1
+2	2	2	a.illustrations	media	1
+7	6	6	a.illustrations	media	1
+9	4	4	a.illustrations	media	1
+8	5	5	a.illustrations	media	1
+10	7	3	a.illustrations	media	1
+11	8	7	a.illustrations	media	1
+13	10	9	a.illustrations	media	1
+14	11	10	a.illustrations	media	1
+15	12	11	a.illustrations	media	1
+16	13	12	a.illustrations	media	1
+17	14	13	a.illustrations	media	1
+18	15	8	a.illustrations	media	1
 \.
 
 
@@ -6083,53 +6220,82 @@ COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id
 583	2025-08-02 20:58:12.103	2025-08-03 21:34:05.862	\N	\N	en	\N	f	0	0
 593	2025-08-02 21:10:06.888	2025-08-03 21:34:16.329	\N	\N	en	\N	f	0	0
 603	2025-08-02 21:13:13.96	2025-08-03 21:34:21.732	\N	\N	en	\N	f	0	0
-644	2025-08-04 11:03:30.02	2025-08-05 18:37:59.043	\N	\N	en	2025-08-05 18:37:58.684	f	1	0
+644	2025-08-04 11:03:30.02	2025-08-07 03:00:15.491	\N	\N	en	2025-08-07 03:00:15.137	f	2	0
+670	2025-08-06 05:01:28.811	2025-08-11 23:34:20.373	\N	\N	en	2025-08-11 23:34:20.061	f	4	0
 563	2025-08-02 20:44:04.147	2025-08-03 21:33:56.339	\N	\N	en	\N	f	0	0
 572	2025-08-02 20:46:55.723	2025-08-03 21:34:01.173	\N	\N	en	\N	f	0	0
 579	2025-08-02 20:58:30.702	2025-08-03 21:34:06.852	\N	\N	en	\N	f	0	0
 587	2025-08-02 21:01:58.482	2025-08-03 21:34:15.946	\N	\N	en	\N	f	0	0
 600	2025-08-02 21:17:42.129	2025-08-03 21:34:22.685	\N	\N	en	\N	f	0	0
-645	2025-08-04 11:04:24.143	2025-08-05 18:38:00.767	\N	\N	en	2025-08-05 18:37:59.94	f	1	0
+645	2025-08-04 11:04:24.143	2025-08-07 03:00:16.171	\N	\N	en	2025-08-07 03:00:15.835	f	2	0
+671	2025-08-07 02:59:37.262	2025-08-07 03:00:20.007	\N	\N	en	2025-08-07 03:00:19.668	f	1	0
 566	2025-08-02 20:50:53.576	2025-08-03 21:34:00.991	\N	\N	en	\N	f	0	0
 576	2025-08-02 21:00:24.505	2025-08-03 21:34:07.445	\N	\N	en	\N	f	0	0
 586	2025-08-02 21:01:44.116	2025-08-03 21:34:16.162	\N	\N	en	\N	f	0	0
 601	2025-08-02 21:14:19.288	2025-08-03 21:34:23.241	\N	\N	en	\N	f	0	0
-646	2025-08-04 13:56:40.711	2025-08-05 18:38:01.044	\N	\N	en	2025-08-05 18:38:00.617	f	1	0
+646	2025-08-04 13:56:40.711	2025-08-07 03:00:16.876	\N	\N	en	2025-08-07 03:00:16.541	f	2	0
+672	2025-08-07 03:04:25.823	2025-08-07 03:04:25.823	\N	\N	en	\N	f	0	0
+673	2025-08-07 03:04:53.301	2025-08-07 03:04:53.301	\N	\N	en	\N	f	0	0
 604	2025-08-02 21:23:01.085	2025-08-03 21:34:40.594	\N	\N	en	\N	f	0	0
 619	2025-08-02 21:25:42.043	2025-08-03 21:34:46.404	\N	\N	en	\N	f	0	0
 625	2025-08-02 21:30:32.208	2025-08-03 21:34:52.649	\N	\N	en	\N	f	0	0
+674	2025-08-07 03:14:34.657	2025-08-07 03:14:34.657	\N	\N	en	\N	f	0	0
+675	2025-08-07 03:15:32.446	2025-08-07 03:15:32.446	\N	\N	en	\N	f	0	0
 605	2025-08-02 21:20:16.528	2025-08-03 21:34:40.88	\N	\N	en	\N	f	0	0
 621	2025-08-02 21:23:38.474	2025-08-03 21:34:47.256	\N	\N	en	\N	f	0	0
 629	2025-08-02 21:28:45.831	2025-08-03 21:34:53.17	\N	\N	en	\N	f	0	0
 635	2025-08-02 21:31:26.313	2025-08-03 21:35:26.937	\N	\N	en	\N	f	0	0
+676	2025-08-09 06:25:05.088	2025-08-09 06:25:05.088	\N	\N	en	\N	f	0	0
 606	2025-08-02 21:20:39.293	2025-08-03 21:34:40.879	\N	\N	en	\N	f	0	0
 618	2025-08-02 21:24:55.053	2025-08-03 21:34:46.915	\N	\N	en	\N	f	0	0
 624	2025-08-02 21:29:07.109	2025-08-03 21:34:52.65	\N	\N	en	\N	f	0	0
+677	2025-08-09 06:30:43.553	2025-08-09 06:30:43.553	\N	\N	en	\N	f	0	0
 607	2025-08-02 21:21:06.275	2025-08-03 21:34:40.439	\N	\N	en	\N	f	0	0
 614	2025-08-02 21:26:51.163	2025-08-03 21:34:46.699	\N	\N	en	\N	f	0	0
 633	2025-08-02 21:30:04.894	2025-08-03 21:34:53.135	\N	\N	en	\N	f	0	0
 634	2025-08-02 21:32:31.776	2025-08-03 21:35:27.375	\N	\N	en	\N	f	0	0
+678	2025-08-09 06:32:24.943	2025-08-09 06:32:24.943	\N	\N	en	\N	f	0	0
+679	2025-08-09 06:33:06.752	2025-08-09 06:33:06.752	\N	\N	en	\N	f	0	0
 608	2025-08-02 21:19:58.136	2025-08-03 21:34:40.118	\N	\N	en	\N	f	0	0
 617	2025-08-02 21:27:01.031	2025-08-03 21:34:46.698	\N	\N	en	\N	f	0	0
 627	2025-08-02 21:29:51.797	2025-08-03 21:34:52.964	\N	\N	en	\N	f	0	0
+680	2025-08-09 21:29:50.237	2025-08-11 23:34:26.479	\N	\N	en	2025-08-11 23:34:26.173	f	2	1
+681	2025-08-09 21:30:08.832	2025-08-11 23:36:27.069	\N	\N	en	2025-08-11 23:36:26.791	f	0	1
+682	2025-08-09 21:30:30.017	2025-08-11 23:36:31.465	\N	\N	en	2025-08-11 23:36:31.14	f	0	0
+683	2025-08-09 21:31:24.013	2025-08-11 23:36:34.954	\N	\N	en	2025-08-11 23:36:34.573	f	0	0
+684	2025-08-09 21:31:36.331	2025-08-11 23:36:38.454	\N	\N	en	2025-08-11 23:36:38.172	f	0	1
+685	2025-08-09 21:32:12.238	2025-08-11 23:36:40.828	\N	\N	en	2025-08-11 23:36:40.514	f	1	0
 609	2025-08-02 21:18:54.086	2025-08-03 21:34:40.624	\N	\N	en	\N	f	0	0
 623	2025-08-02 21:25:24.704	2025-08-03 21:34:47.814	\N	\N	en	\N	f	0	0
 632	2025-08-02 21:28:30.903	2025-08-03 21:34:53.136	\N	\N	en	\N	f	0	0
+686	2025-08-10 16:51:25.987	2025-08-11 23:36:44.573	\N	\N	en	2025-08-11 23:36:44.284	f	0	1
 610	2025-08-02 21:22:17.737	2025-08-03 21:34:42.148	\N	\N	en	\N	f	0	0
 620	2025-08-02 21:23:12.936	2025-08-03 21:34:48.225	\N	\N	en	\N	f	0	0
 631	2025-08-02 21:28:14.015	2025-08-03 21:34:52.809	\N	\N	en	\N	f	0	0
+687	2025-08-10 16:51:26.027	2025-08-11 23:36:51.044	\N	\N	en	2025-08-11 23:36:50.75	f	0	1
+688	2025-08-10 16:52:40.645	2025-08-11 23:36:55.291	\N	\N	en	2025-08-11 23:36:54.963	f	1	0
+689	2025-08-10 16:53:14.562	2025-08-11 23:36:59.763	\N	\N	en	2025-08-11 23:36:59.435	f	1	0
+690	2025-08-10 16:54:37.403	2025-08-11 23:37:06.447	\N	\N	en	2025-08-11 23:37:06.082	f	0	1
 611	2025-08-02 21:22:39.942	2025-08-03 21:34:40.88	\N	\N	en	\N	f	0	0
 615	2025-08-02 21:24:14.184	2025-08-03 21:34:46.727	\N	\N	en	\N	f	0	0
 630	2025-08-02 21:29:24.926	2025-08-03 21:35:21.912	\N	\N	en	\N	f	0	0
 636	2025-08-02 21:30:58.169	2025-08-03 21:43:20.181	\N	\N	en	2025-08-03 21:43:19.857	f	1	1
+691	2025-08-10 19:31:36.059	2025-08-11 23:37:16.002	\N	\N	en	2025-08-11 23:37:15.597	f	1	0
 612	2025-08-02 21:21:37.008	2025-08-03 21:34:40.5	\N	\N	en	\N	f	0	0
 616	2025-08-02 21:26:36.729	2025-08-03 21:34:48.342	\N	\N	en	\N	f	0	0
 628	2025-08-02 21:27:56.032	2025-08-03 21:34:52.549	\N	\N	en	\N	f	0	0
+692	2025-08-11 09:10:51.316	2025-08-11 23:37:20.205	\N	\N	en	2025-08-11 23:37:19.798	f	2	0
+693	2025-08-11 09:11:16.607	2025-08-11 23:37:26.78	\N	\N	en	2025-08-11 23:37:26.483	f	0	1
 613	2025-08-02 21:19:34.648	2025-08-03 21:34:42.02	\N	\N	en	\N	f	0	0
 622	2025-08-02 21:23:26.234	2025-08-03 21:34:46.53	\N	\N	en	\N	f	0	0
 626	2025-08-02 21:30:14.761	2025-08-03 21:34:52.296	\N	\N	en	\N	f	0	0
 637	2025-08-03 22:57:45.449	2025-08-03 22:57:45.449	\N	\N	en	\N	f	0	0
+695	2025-08-11 16:18:29.876	2025-08-11 23:34:08.11	\N	\N	en	2025-08-11 23:34:07.725	f	1	0
+696	2025-08-11 18:43:49.632	2025-08-11 23:34:10.114	\N	\N	en	2025-08-11 23:34:09.74	f	0	1
+697	2025-08-11 19:51:31.947	2025-08-11 23:34:13.677	\N	\N	en	2025-08-11 23:34:13.338	f	1	0
+698	2025-08-11 19:51:48.084	2025-08-11 23:34:17.102	\N	\N	en	2025-08-11 23:34:16.806	f	0	1
 639	2025-08-04 02:56:52.531	2025-08-04 02:56:52.531	\N	\N	en	\N	f	0	0
+699	2025-08-12 12:22:35.224	2025-08-12 12:22:35.224	\N	\N	en	\N	f	0	0
 640	2025-08-04 02:57:23.785	2025-08-04 02:57:23.785	\N	\N	en	\N	f	0	0
 641	2025-08-04 03:35:22.495	2025-08-04 03:35:22.495	\N	\N	en	\N	f	0	0
 547	2025-08-02 20:36:48.452	2025-08-03 21:33:51.323	\N	\N	en	\N	f	0	0
@@ -6154,18 +6320,7 @@ COPY public.flashcards_localizations_links (id, flashcard_id, inv_flashcard_id, 
 --
 
 COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flashcard_order) FROM stdin;
-593	646	1	253
-436	496	5	2
-420	493	4	1
-421	494	4	2
-425	491	4	3
 295	363	1	1
-364	433	2	1
-365	435	2	2
-368	430	2	3
-371	439	2	4
-372	437	2	5
-374	441	2	6
 294	367	1	2
 298	360	1	3
 299	364	1	4
@@ -6173,49 +6328,11 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 300	366	1	6
 303	359	1	7
 302	361	1	8
-304	372	5	1
 305	369	1	9
 307	371	1	10
 308	373	1	11
 310	377	1	12
 329	392	1	32
-591	644	1	252
-330	393	1	33
-585	454	2	13
-331	394	1	34
-332	395	1	35
-333	396	1	36
-334	407	1	37
-335	400	1	38
-336	401	1	39
-337	402	1	40
-338	406	1	41
-339	403	1	42
-342	408	1	43
-341	399	1	44
-340	405	1	45
-343	404	1	46
-344	410	1	47
-345	409	1	48
-346	414	1	49
-347	416	1	50
-348	411	1	51
-349	413	1	52
-350	417	1	53
-351	415	1	54
-352	418	1	55
-353	412	1	56
-355	421	1	57
-358	426	1	58
-356	419	1	59
-359	428	1	60
-362	423	1	61
-361	420	1	62
-360	427	1	63
-363	422	1	64
-369	432	1	65
-367	434	1	66
-373	443	1	67
 376	440	1	68
 379	442	1	69
 378	436	1	70
@@ -6278,6 +6395,7 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 444	511	1	128
 449	516	1	129
 450	523	1	130
+436	496	5	2
 452	520	1	131
 453	515	1	132
 454	519	1	133
@@ -6287,11 +6405,20 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 458	522	1	137
 459	531	1	138
 460	533	1	139
+420	493	4	1
+421	494	4	2
+425	491	4	3
 461	532	1	140
 462	526	1	141
 463	528	1	142
 464	529	1	143
 465	524	1	144
+364	433	2	1
+365	435	2	2
+368	430	2	3
+371	439	2	4
+372	437	2	5
+374	441	2	6
 466	525	1	145
 467	530	1	146
 468	527	1	147
@@ -6299,7 +6426,52 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 470	538	1	149
 471	537	1	150
 472	542	1	151
-592	645	1	253
+591	644	1	251
+593	646	1	253
+611	684	1	260
+612	685	1	262
+618	691	1	267
+620	695	1	269
+621	697	1	270
+622	670	2	15
+304	372	5	1
+330	393	1	33
+331	394	1	34
+332	395	1	35
+333	396	1	36
+334	407	1	37
+335	400	1	38
+336	401	1	39
+337	402	1	40
+338	406	1	41
+339	403	1	42
+342	408	1	43
+341	399	1	44
+340	405	1	45
+343	404	1	46
+344	410	1	47
+345	409	1	48
+346	414	1	49
+347	416	1	50
+348	411	1	51
+349	413	1	52
+350	417	1	53
+351	415	1	54
+352	418	1	55
+353	412	1	56
+355	421	1	57
+358	426	1	58
+356	419	1	59
+359	428	1	60
+362	423	1	61
+361	420	1	62
+360	427	1	63
+363	422	1	64
+369	432	1	65
+367	434	1	66
+373	443	1	67
+585	454	2	13
+587	362	2	14
 447	506	1	127
 473	536	1	152
 474	539	1	153
@@ -6339,7 +6511,9 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 508	569	1	187
 509	583	1	188
 510	577	1	189
-587	362	2	14
+592	645	1	252
+613	686	1	261
+617	690	1	268
 306	370	1	13
 311	376	1	14
 312	378	1	15
@@ -6359,6 +6533,9 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 326	389	1	29
 327	390	1	30
 328	391	1	31
+600	671	1	254
+614	687	1	263
+619	693	1	266
 354	424	3	2
 366	431	3	3
 370	429	3	4
@@ -6373,6 +6550,12 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 427	487	2	10
 451	521	2	11
 581	425	3	7
+603	681	1	256
+604	683	1	257
+605	692	1	258
+607	682	1	259
+615	688	1	264
+582	368	2	12
 511	581	1	190
 512	578	1	191
 513	574	1	192
@@ -6434,7 +6617,8 @@ COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flas
 569	635	1	248
 570	636	1	249
 571	634	1	250
-582	368	2	12
+602	680	1	255
+616	689	1	265
 \.
 
 
@@ -6606,7 +6790,9 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 518	516	8	11
 519	518	8	11
 521	521	8	11
+671	670	47	1
 523	522	8	11
+672	671	8	34
 525	524	8	12
 526	532	8	12
 537	541	8	13
@@ -6623,6 +6809,8 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 589	584	8	18
 598	598	8	19
 601	599	8	19
+673	672	8	35
+674	673	8	36
 527	531	8	12
 535	534	8	13
 550	550	8	14
@@ -6631,6 +6819,8 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 576	575	8	17
 590	588	8	18
 597	596	8	19
+675	674	8	37
+676	675	8	38
 528	526	8	12
 539	538	8	13
 547	544	8	14
@@ -6639,6 +6829,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 583	582	8	17
 593	591	8	18
 596	595	8	19
+677	676	8	39
 530	527	8	12
 531	530	8	12
 540	539	8	13
@@ -6655,6 +6846,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 591	592	8	18
 599	597	8	19
 603	600	8	19
+678	677	8	40
 529	525	8	12
 536	535	8	13
 545	546	8	14
@@ -6663,6 +6855,8 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 579	578	8	17
 585	585	8	18
 595	594	8	19
+679	678	8	41
+680	679	8	42
 532	533	8	12
 544	543	8	13
 553	552	8	14
@@ -6671,6 +6865,12 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 580	580	8	17
 594	590	8	18
 604	602	8	19
+681	680	47	2
+682	681	47	3
+683	682	47	4
+684	683	47	5
+685	684	47	6
+686	685	47	7
 533	529	8	12
 541	537	8	13
 546	545	8	14
@@ -6679,6 +6879,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 577	576	8	17
 592	586	8	18
 600	601	8	19
+687	686	47	8
 534	528	8	12
 542	536	8	13
 554	553	8	14
@@ -6687,26 +6888,38 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 584	583	8	17
 587	593	8	18
 602	603	8	19
+688	687	47	8
+689	688	47	9
+690	689	47	10
+691	690	47	11
 605	605	8	20
 620	621	8	21
 629	629	8	22
 635	635	8	23
+692	691	47	12
 606	606	8	20
 619	618	8	21
 625	624	8	22
+693	692	47	13
+694	693	47	14
 607	604	8	20
 622	619	8	21
 627	625	8	22
 608	610	8	20
 621	620	8	21
 632	631	8	22
+696	695	47	16
 609	608	8	20
 617	617	8	21
 628	627	8	22
+697	696	47	17
+698	697	47	18
+699	698	47	19
 610	607	8	20
 615	614	8	21
 634	633	8	22
 636	634	8	23
+700	699	49	1
 611	611	8	20
 618	615	8	21
 630	630	8	22
@@ -6868,6 +7081,32 @@ COPY public.flashcards_word_definition_links (id, flashcard_id, word_definition_
 926	644	1054	1
 927	645	1055	1
 928	646	1056	1
+937	670	787	2
+938	671	1061	1
+939	672	1062	1
+940	673	1063	1
+941	674	1064	1
+942	675	1065	1
+943	676	1066	1
+944	677	1067	1
+945	678	1068	1
+946	679	1069	1
+947	680	1070	1
+948	681	1071	1
+949	682	1072	1
+950	683	1073	1
+951	684	1074	1
+952	685	1075	1
+953	686	1076	1
+954	687	1077	1
+955	688	1078	1
+956	689	1079	1
+957	690	1080	1
+958	691	1081	1
+959	692	1082	1
+960	693	1083	1
+962	695	1085	1
+963	696	1086	1
 714	430	842	1
 642	359	771	1
 643	360	773	1
@@ -7025,6 +7264,9 @@ COPY public.flashcards_word_definition_links (id, flashcard_id, word_definition_
 867	586	1004	1
 869	584	1003	1
 870	589	995	1
+964	697	1087	1
+965	698	1088	1
+966	699	1089	1
 \.
 
 
@@ -7035,6 +7277,11 @@ COPY public.flashcards_word_definition_links (id, flashcard_id, word_definition_
 COPY public.i18n_locale (id, name, code, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 1	English (en)	en	2025-06-23 17:47:30.813	2025-06-23 17:47:30.813	\N	\N
 2	Chinese (zh)	zh	2025-07-18 11:14:59.914	2025-07-18 11:14:59.914	1	1
+3	French (fr)	fr	2025-08-12 12:20:30.074	2025-08-12 12:20:30.074	1	1
+4	Spanish (es)	es	2025-08-12 12:20:58.519	2025-08-12 12:20:58.519	1	1
+5	Korean (ko)	ko	2025-08-12 12:21:44.669	2025-08-12 12:21:44.669	1	1
+6	Japanese (ja)	ja	2025-08-12 12:22:01.534	2025-08-12 12:22:01.534	1	1
+7	Vietnamese (vi)	vi	2025-08-12 12:22:15.91	2025-08-12 12:22:15.91	1	1
 \.
 
 
@@ -7538,6 +7785,75 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 373	new	wrong	2025-08-05 18:38:23.148	2025-08-05 18:38:23.148	\N	\N	2025-08-05 18:38:23.085
 374	new	correct	2025-08-05 18:38:30.899	2025-08-05 18:38:30.899	\N	\N	2025-08-05 18:38:30.84
 375	new	correct	2025-08-05 18:38:33.238	2025-08-05 18:38:33.238	\N	\N	2025-08-05 18:38:33.175
+376	new	correct	2025-08-07 03:00:15.198	2025-08-07 03:00:15.198	\N	\N	2025-08-07 03:00:15.137
+377	new	correct	2025-08-07 03:00:15.897	2025-08-07 03:00:15.897	\N	\N	2025-08-07 03:00:15.835
+378	new	correct	2025-08-07 03:00:16.605	2025-08-07 03:00:16.605	\N	\N	2025-08-07 03:00:16.541
+379	new	correct	2025-08-07 03:00:19.729	2025-08-07 03:00:19.729	\N	\N	2025-08-07 03:00:19.668
+380	new	correct	2025-08-11 12:09:39.001	2025-08-11 12:09:39.001	\N	\N	2025-08-11 12:09:38.935
+381	new	correct	2025-08-11 12:09:40.049	2025-08-11 12:09:40.049	\N	\N	2025-08-11 12:09:39.983
+382	new	correct	2025-08-11 12:09:40.681	2025-08-11 12:09:40.681	\N	\N	2025-08-11 12:09:40.618
+383	new	wrong	2025-08-11 12:09:47.094	2025-08-11 12:09:47.094	\N	\N	2025-08-11 12:09:46.958
+384	new	correct	2025-08-11 12:24:19.827	2025-08-11 12:24:19.827	\N	\N	2025-08-11 12:24:19.767
+385	new	wrong	2025-08-11 12:24:27.369	2025-08-11 12:24:27.369	\N	\N	2025-08-11 12:24:27.302
+386	new	wrong	2025-08-11 12:24:32.665	2025-08-11 12:24:32.665	\N	\N	2025-08-11 12:24:32.59
+387	new	wrong	2025-08-11 12:24:37.465	2025-08-11 12:24:37.465	\N	\N	2025-08-11 12:24:37.404
+388	new	wrong	2025-08-11 12:24:41.969	2025-08-11 12:24:41.969	\N	\N	2025-08-11 12:24:41.907
+389	new	wrong	2025-08-11 12:24:47.423	2025-08-11 12:24:47.423	\N	\N	2025-08-11 12:24:47.279
+390	new	wrong	2025-08-11 12:24:53.324	2025-08-11 12:24:53.324	\N	\N	2025-08-11 12:24:53.196
+391	new	wrong	2025-08-11 12:24:58.65	2025-08-11 12:24:58.65	\N	\N	2025-08-11 12:24:58.568
+392	new	wrong	2025-08-11 12:25:04.996	2025-08-11 12:25:04.996	\N	\N	2025-08-11 12:25:04.937
+393	new	correct	2025-08-11 12:25:09.595	2025-08-11 12:25:09.595	\N	\N	2025-08-11 12:25:09.465
+394	new	wrong	2025-08-11 12:25:11.028	2025-08-11 12:25:11.028	\N	\N	2025-08-11 12:25:10.969
+395	new	correct	2025-08-11 12:25:20.661	2025-08-11 12:25:20.661	\N	\N	2025-08-11 12:25:20.599
+396	new	wrong	2025-08-11 12:25:24.911	2025-08-11 12:25:24.911	\N	\N	2025-08-11 12:25:24.849
+397	new	wrong	2025-08-11 12:25:29.106	2025-08-11 12:25:29.106	\N	\N	2025-08-11 12:25:28.672
+398	new	wrong	2025-08-11 12:25:37.251	2025-08-11 12:25:37.251	\N	\N	2025-08-11 12:25:37.191
+399	new	correct	2025-08-11 12:25:40.128	2025-08-11 12:25:40.128	\N	\N	2025-08-11 12:25:40.068
+400	new	wrong	2025-08-11 12:25:43.957	2025-08-11 12:25:43.957	\N	\N	2025-08-11 12:25:43.491
+401	new	wrong	2025-08-11 12:25:46.047	2025-08-11 12:25:46.047	\N	\N	2025-08-11 12:25:45.986
+402	new	wrong	2025-08-11 12:25:50.834	2025-08-11 12:25:50.834	\N	\N	2025-08-11 12:25:50.777
+403	new	wrong	2025-08-11 12:26:09.028	2025-08-11 12:26:09.028	\N	\N	2025-08-11 12:26:08.966
+404	new	wrong	2025-08-11 12:26:13.195	2025-08-11 12:26:13.195	\N	\N	2025-08-11 12:26:13.128
+405	new	wrong	2025-08-11 12:26:17.054	2025-08-11 12:26:17.054	\N	\N	2025-08-11 12:26:16.993
+406	new	wrong	2025-08-11 12:26:24.536	2025-08-11 12:26:24.536	\N	\N	2025-08-11 12:26:24.478
+407	new	wrong	2025-08-11 12:26:32.544	2025-08-11 12:26:32.544	\N	\N	2025-08-11 12:26:32.484
+408	new	correct	2025-08-11 12:26:34.624	2025-08-11 12:26:34.624	\N	\N	2025-08-11 12:26:34.564
+409	new	wrong	2025-08-11 12:26:38.369	2025-08-11 12:26:38.369	\N	\N	2025-08-11 12:26:38.309
+410	new	correct	2025-08-11 14:21:25.1	2025-08-11 14:21:25.1	\N	\N	2025-08-11 14:21:25.039
+411	new	correct	2025-08-11 14:21:26.594	2025-08-11 14:21:26.594	\N	\N	2025-08-11 14:21:26.534
+412	new	wrong	2025-08-11 14:21:28.593	2025-08-11 14:21:28.593	\N	\N	2025-08-11 14:21:28.533
+413	new	wrong	2025-08-11 14:21:29.582	2025-08-11 14:21:29.582	\N	\N	2025-08-11 14:21:29.516
+414	new	wrong	2025-08-11 14:21:29.796	2025-08-11 14:21:29.796	\N	\N	2025-08-11 14:21:29.702
+415	new	wrong	2025-08-11 14:21:29.858	2025-08-11 14:21:29.858	\N	\N	2025-08-11 14:21:29.795
+416	new	wrong	2025-08-11 14:21:30.389	2025-08-11 14:21:30.389	\N	\N	2025-08-11 14:21:30.322
+417	new	wrong	2025-08-11 14:21:30.42	2025-08-11 14:21:30.42	\N	\N	2025-08-11 14:21:30.358
+418	new	wrong	2025-08-11 14:21:30.515	2025-08-11 14:21:30.515	\N	\N	2025-08-11 14:21:30.447
+419	new	wrong	2025-08-11 14:21:30.642	2025-08-11 14:21:30.642	\N	\N	2025-08-11 14:21:30.575
+420	new	wrong	2025-08-11 14:21:30.803	2025-08-11 14:21:30.803	\N	\N	2025-08-11 14:21:30.736
+421	new	wrong	2025-08-11 14:21:31.709	2025-08-11 14:21:31.709	\N	\N	2025-08-11 14:21:31.645
+422	new	wrong	2025-08-11 14:21:31.711	2025-08-11 14:21:31.711	\N	\N	2025-08-11 14:21:31.648
+423	new	wrong	2025-08-11 14:21:31.71	2025-08-11 14:21:31.71	\N	\N	2025-08-11 14:21:31.649
+424	new	wrong	2025-08-11 14:21:31.8	2025-08-11 14:21:31.8	\N	\N	2025-08-11 14:21:31.736
+425	new	wrong	2025-08-11 23:34:02.828	2025-08-11 23:34:02.828	\N	\N	2025-08-11 23:34:02.679
+426	new	correct	2025-08-11 23:34:07.785	2025-08-11 23:34:07.785	\N	\N	2025-08-11 23:34:07.725
+427	new	wrong	2025-08-11 23:34:09.804	2025-08-11 23:34:09.804	\N	\N	2025-08-11 23:34:09.74
+428	new	correct	2025-08-11 23:34:13.401	2025-08-11 23:34:13.401	\N	\N	2025-08-11 23:34:13.338
+429	new	wrong	2025-08-11 23:34:16.865	2025-08-11 23:34:16.865	\N	\N	2025-08-11 23:34:16.806
+430	new	correct	2025-08-11 23:34:20.12	2025-08-11 23:34:20.12	\N	\N	2025-08-11 23:34:20.061
+431	new	wrong	2025-08-11 23:34:26.233	2025-08-11 23:34:26.233	\N	\N	2025-08-11 23:34:26.173
+432	new	wrong	2025-08-11 23:36:26.85	2025-08-11 23:36:26.85	\N	\N	2025-08-11 23:36:26.791
+433	new	wrong	2025-08-11 23:36:31.2	2025-08-11 23:36:31.2	\N	\N	2025-08-11 23:36:31.14
+434	new	wrong	2025-08-11 23:36:34.625	2025-08-11 23:36:34.625	\N	\N	2025-08-11 23:36:34.573
+435	new	wrong	2025-08-11 23:36:38.22	2025-08-11 23:36:38.22	\N	\N	2025-08-11 23:36:38.172
+436	new	correct	2025-08-11 23:36:40.571	2025-08-11 23:36:40.571	\N	\N	2025-08-11 23:36:40.514
+437	new	wrong	2025-08-11 23:36:44.345	2025-08-11 23:36:44.345	\N	\N	2025-08-11 23:36:44.284
+438	new	wrong	2025-08-11 23:36:50.814	2025-08-11 23:36:50.814	\N	\N	2025-08-11 23:36:50.75
+439	new	correct	2025-08-11 23:36:55.028	2025-08-11 23:36:55.028	\N	\N	2025-08-11 23:36:54.963
+440	new	correct	2025-08-11 23:36:59.498	2025-08-11 23:36:59.498	\N	\N	2025-08-11 23:36:59.435
+441	new	wrong	2025-08-11 23:37:06.138	2025-08-11 23:37:06.138	\N	\N	2025-08-11 23:37:06.082
+442	new	correct	2025-08-11 23:37:15.739	2025-08-11 23:37:15.739	\N	\N	2025-08-11 23:37:15.597
+443	new	correct	2025-08-11 23:37:19.932	2025-08-11 23:37:19.932	\N	\N	2025-08-11 23:37:19.798
+444	new	wrong	2025-08-11 23:37:26.541	2025-08-11 23:37:26.541	\N	\N	2025-08-11 23:37:26.483
 \.
 
 
@@ -7575,6 +7891,74 @@ COPY public.reviewlogs_flashcard_links (id, reviewlog_id, flashcard_id, reviewlo
 343	370	644	2
 344	371	645	2
 345	372	646	2
+349	376	644	3
+350	377	645	3
+351	378	646	3
+352	379	671	1
+353	380	670	1
+354	381	680	1
+355	382	681	1
+356	383	682	1
+357	384	683	1
+358	385	684	1
+359	386	685	1
+360	387	686	1
+361	388	687	1
+362	389	688	1
+363	390	689	1
+364	391	690	1
+365	392	691	1
+366	393	692	1
+367	394	693	1
+368	395	670	2
+369	396	680	2
+370	397	681	2
+371	398	682	2
+372	399	683	2
+373	400	684	2
+374	401	685	2
+375	402	686	2
+376	403	687	2
+377	404	688	2
+378	405	689	2
+379	406	690	2
+380	407	691	2
+381	408	692	2
+382	409	693	2
+383	410	670	3
+384	411	680	3
+385	412	681	3
+386	413	682	3
+387	414	683	3
+388	415	684	3
+389	416	685	3
+390	417	686	3
+391	418	687	3
+392	419	688	3
+393	420	689	3
+394	422	691	3
+395	421	690	3
+396	423	692	3
+397	424	693	3
+399	426	695	1
+400	427	696	1
+401	428	697	1
+402	429	698	1
+403	430	670	4
+404	431	680	4
+405	432	681	4
+406	433	682	4
+407	434	683	4
+408	435	684	4
+409	436	685	4
+410	437	686	4
+411	438	687	4
+412	439	688	4
+413	440	689	4
+414	441	690	4
+415	442	691	4
+416	443	692	4
+417	444	693	4
 \.
 
 
@@ -7958,6 +8342,75 @@ COPY public.reviewlogs_user_links (id, reviewlog_id, user_id, reviewlog_order) F
 373	373	8	324
 374	374	8	325
 375	375	8	326
+376	376	8	327
+377	377	8	327
+378	378	8	328
+379	379	8	329
+380	380	47	1
+381	381	47	2
+382	382	47	2
+383	383	47	3
+384	384	47	4
+385	385	47	5
+386	386	47	6
+387	387	47	7
+388	388	47	8
+389	389	47	9
+390	390	47	10
+391	391	47	11
+392	392	47	12
+393	393	47	13
+394	394	47	14
+395	395	47	15
+396	396	47	16
+397	397	47	17
+398	398	47	18
+399	399	47	19
+400	400	47	20
+401	401	47	21
+402	402	47	22
+403	403	47	23
+404	404	47	24
+405	405	47	25
+406	406	47	26
+407	407	47	27
+408	408	47	28
+409	409	47	29
+410	410	47	30
+411	411	47	31
+412	412	47	32
+413	413	47	33
+414	414	47	33
+415	415	47	33
+416	416	47	34
+417	417	47	34
+418	418	47	34
+419	419	47	34
+420	420	47	34
+421	421	47	35
+422	422	47	35
+423	423	47	35
+424	424	47	35
+425	425	47	36
+426	426	47	37
+427	427	47	38
+428	428	47	39
+429	429	47	40
+430	430	47	41
+431	431	47	42
+432	432	47	43
+433	433	47	44
+434	434	47	45
+435	435	47	46
+436	436	47	47
+437	437	47	48
+438	438	47	49
+439	439	47	50
+440	440	47	51
+441	441	47	52
+442	442	47	53
+443	443	47	54
+444	444	47	55
 \.
 
 
@@ -8032,16 +8485,16 @@ COPY public.sentences_localizations_links (id, sentence_id, inv_sentence_id, sen
 --
 
 COPY public.stories (id, title, author, brief, text, slug, "order", word_count, created_at, updated_at, created_by_id, updated_by_id, locale, like_count) FROM stdin;
-10	A Call Loan	O. Henry	\N	At the hazard of wearying you this tale of vehement emotions must be prefaced by a discourse on geometry.\n\nNature moves in circles; Art in straight lines. The natural is rounded; the artificial is made up of angles. A man lost in the snow wanders, in spite of himself, in perfect circles; the city man's feet, denaturalized by rectangular streets and floors, carry him ever away from himself. The round eyes of childhood typify innocence; the narrowed line of the flirt's optic proves the invasion of art. The horizontal mouth is the mark of determined cunning; who has not read Nature's most spontaneous lyric in lips rounded for the candid kiss? Our ancestors lived in round huts and fought in the open; we square off into brick boxes, and intrigue in the heart of closets. The beasts, birds, and fishes whose guile is straightforward, and whose motion is in curves, are passing away. We are hedging them 'round with the right angle of civilization and the ninety-degree fence.\n\nBut, after all, this is an oblong story, and we must not make it too circular.\n\nSo, after this prelude, we will back to our lamb chops and mint sauce.\n\nI was to dine at the Bachelors' that evening with Billy Winthrop, and I was late. I had been to see a man about a dog, and the dog was slow in deciding. When I reached the club, Winthrop had left word that he had gone over to the St. James, and for me to follow.\n\nI found him at a table with some others of our set, and we dined hilariously and well. Afterward, we drifted into one of those discussions of things in general that begin amiably and end in smoke. At twelve o'clock, we were well fortified with reason and hoarded opinions, and Winthrop and I left the others and went out for a stroll.\n\nWe walked without choosing a way. Our course led us through a district of small shops in a neighbourhood not yet redeemed from the early disrepute of the city's first spreading. Here and there a late-working tradesman yet lingered, loath to leave his work. The streets were lighted dimly by infrequent lamps, and by the faint radiance diffused from the lighted windows of the shops.\n\nSuddenly, from a dark alley that we were passing, there sprang with a bound and a fierce cry a figure, gaunt, ragged, and terrible. With a hollow voice it cried to us for alms. I felt my ever-ready dime, that I keep for such occasions, leap and tremble in my pocket, but I restrained it. Then the figure darted from the shadow of the alley, and a stream of light from a nearby lamp fell upon it, and we saw that it was a woman.\n\nShe was young, and not without a suggestion of comeliness in her wasted form. Her hair, thick and gold, rioted beneath an old bonnet. Her eyes were wild and bright, and her face was drawn and white. She repeated her piteous cry for help, holding out a thin hand that trembled like a wind-blown leaf.\n\nBilly Winthrop is susceptible, as are all men who are worth a sou, to certain influences. Among these are bright eyes in distress, good music, burnt cork comedy, mothers' meetings, and the hoarse paging of his name in a hotel lobby. He drew out a dollar bill and pressed it into her hand. The woman seized it with a quick cry of joy that was half a sob, and then turned and fled back like a ghost into the impenetrable shadows of her alley.\n\nWinthrop and I walked on without speaking. I was wondering if the lamb chops at the Bachelors' had been as good as usual, and Winthrop was no doubt pondering on some way to evade the extra expense that his susceptible heart had brought upon him.\n\nWe had gone a little way when he suddenly stopped and exclaimed:\n\n"By George! I've made a mistake. That was a ten-dollar bill I gave that woman."\n\n"Ten dollars!" said I. "It was worth a dollar to see her wolfish snatch at it and the grin she gave us from the shadow. You'll never see it again."\n\n"I don't know about that," said Winthrop, thoughtfully. "I believe I'll get it back."\n\n"How?" I asked.\n\n"I'll advertise it," said he. "Lost, ten dollars. If the finder will return it, he can keep the change."\n\nWe laughed at Winthrop's joke, and I left him at the corner of his street and walked on to my apartment, where I found a man waiting for me with a note. It was from Winthrop, and it said:\n\n"Come back to the St. James. I've got a scheme to get my ten dollars back."\n\nI was tired, but I was younger then than now, and the word "scheme" had a lure. I went back to the St. James.\n\nWinthrop was waiting for me with his hat and coat on.\n\n"We'll get that ten back easy," he said, confidently, as we left the hotel. "I've been thinking it over. Here's the plan: We know about where she lives. She'll be sure to have that bill changed tomorrow. Now, we can get next to all the shopkeepers in that neighbourhood and explain. They'll all know that bill. They'll call us up when it's presented, and we'll go around and talk to the lady."\n\nI was doubtful, but Winthrop's enthusiasm was contagious, and we started out on his wild-goose chase. We visited every shop in the neighbourhood and explained our scheme to the shopkeepers. They all agreed to notify us when the bill was presented.\n\nThe next day I received a message at my office that the bill had been passed at a grocery store. I hurried to the place. Winthrop was already there, talking to the grocer.\n\nThe grocer told us that the bill had been given to him by a young woman who had bought fifty cents' worth of sausage. He described her so accurately that we knew it was our quarry.\n\nWe hurried to the address he had given us. It was the same dark alley from which the woman had emerged the night before. We found her in a wretched room, ill and despairing. The room was bare and cold, and in one corner was a mattress on the floor where lay a man, ill and moaning. The woman had bought the sausage for him.\n\nWinthrop's heart was touched. He forgot his ten dollars. He put his hand in his pocket, and I knew that he was fingering bills. But I caught his arm.\n\n"Come away," I said. "This is no place for comedy. Your ten dollars has brought enough tragedy already."\n\nWe went away silently, and left the ten to its fate.	\N	\N	1138	2025-07-20 12:15:53.443	2025-07-20 12:52:52.744	\N	1	en	\N
-11	A Chaparral Christmas Gift	O. Henry	\N	The original first settlers of Los Pinos had been men of the vicarious, or fighting, class. They were of the opinion that the earth belonged to them and to whatsoever posterity they might beget. Time, with his innumerable sleight-of-hand tricks, had never taught them that the earth invariably wins the game.\n\nThe sons of the pioneers were a different breed. Their fathers had fought for the land, and had won it. The sons built wire fences around it, and ploughed it, and increased its value. But the fighting edge had been blunted in the pioneers' sons.\n\nLos Pinos was now a ranch of a thousand acres, owned by one man. The house in which he lived was built of adobe, low, with a wide veranda, and a garden of semitropic plants and shrubs. But from the rear one could look out upon a broad expanse of lesser ranches and see at a glance the outward changes that had come with the second generation.\n\nAmong other innovations the wire fence had been introduced. This was a grievance so bitter that it extended back from the second generation to the first. The old men riding by stopped to rail at it; they lashed their horses with their quirts when they were forced to turn and detour around its insurmountable stretches. They attacked it with knives and pistols, mutilating it, and filling its interstices with vain bullets and impotent curses.\n\nOne afternoon a young man rode through the old, weather-beaten gate of Los Pinos, and dismounted at the door of the ranch house. He was dressed in the garb of the cowpuncher, and seemed to find some difficulty in making his errand known. Old Ramon Torres, owner of Los Pinos, came out to him, chewing a straw, and exhibiting a polite interest.\n\n"I was riding by," said the young man, hesitatingly, "and I thought I'd stop in. Maybe you might want to buy some good wire fencing. I've got a sample here in my pocket."\n\nOld Ramon plucked the straw from his mouth, and his jaws ceased to masticate.\n\n"Wire fencing!" he shouted, with a sudden, grim humour. "Wire fencing! And you stop at Los Pinos with it! Wire fencing!"\n\nHe threw his head back, and laughed harshly and loudly.\n\n"Come here, sir," he said, finally, controlling his mirth. "Step this way, if you please."\n\nHe led the way to the rear of the house, and pointed to a stretch of landscape amply provided with wire fencing.\n\n"Look at that," he said, waving his hand. "Wire fencing! And you come here to sell me wire fencing! My friend, excuse these tears."\n\nHe walked to the corner of the house, and bestowed a kick upon a saddle that lay there, overturning it.\n\n"Wire fencing!" he muttered, as he walked back to the young man.\n\nThe young man had turned a little pale.\n\n"I didn't know," he said, "that you had so much already. I thought maybe you might want some more."\n\n"More!" shouted old Ramon. "More wire fencing! Look here, sir."\n\nHe took the young man by the arm, and led him to the end of the porch.\n\n"You see that enclosure?" he asked. "Well, that's where I keep my dogs. And do you know what I'm going to do with those dogs some day? I'm going to turn them loose along the road, and the first man that comes along trying to sell me wire fencing, I'm going to set the dogs on him. Wire fencing!"\n\nThe young man mounted his horse and rode away.\n\nOld Ramon sat down on the porch, and laughed until he cried.\n\nAnd then, suddenly, he ceased laughing, and his face grew grave.\n\nHe had seen a little cloud of dust rising far down the road. He knew it was the sign of a rider, and he waited, watching it with narrowed eyes.\n\nThe rider came on, became more distinct, and now he was near enough for Ramon to see that it was a woman who rode. She was young, and rode astride, and managed her horse with ease and grace. Ramon knew her well. It was Rosita, the daughter of old man Garcia, who owned the next ranch. Now, what could Rosita be coming to Los Pinos for?\n\nAs she drew near, Ramon went down to the gate to meet her.\n\n"Good-day, Señorita," he said, lifting his hat. "And what brings you to Los Pinos?"\n\n"I came," said Rosita, looking at him with her big, dark eyes, "to see if you had any wire fencing to sell."\n\nRamon felt for the moment as if the earth were giving way beneath his feet.\n\n"Wire fencing!" he gasped.\n\n"Yes," said Rosita, smiling. "We are needing some at our ranch, and I thought, perhaps, you might have some to spare."\n\nRamon recovered himself, and bowed.\n\n"I shall be most happy," he said, "to let you have all that you need. But come in, Señorita, and rest yourself. You must be tired after your ride."\n\nRosita dismounted, and Ramon led her horse away to the stable. When he returned, he found her seated on the porch, fanning herself with her sombrero.\n\nRamon sat down beside her, and they began to talk. And as they talked, Ramon's eyes were often upon the wire fencing, and he thought deeply.\n\nAnd by and by he said:\n\n"Señorita, it is true that I have much wire fencing, as you see. But I have been thinking that perhaps it would be better to do away with it altogether. It is ugly, and it mars the beauty of the landscape. And it is not hospitable, or neighbourly. What do you think, Señorita?"\n\n"I think," said Rosita, slowly, "that it would be a good idea."\n\nAnd so it came about that the wire fencing at Los Pinos was gradually removed, and the old, hospitable, neighbourly life of the ranch was resumed. And in time, Rosita came to be the mistress of Los Pinos, and brought with her the gentleness and the grace that had been somewhat lacking.\n\nAnd old Ramon was content. He had lost his wire fencing, but he had gained something better. And sometimes, when he saw the young men and the young women riding together, and heard their laughter and their happy voices, he would say to himself that the old times were not so bad, after all.\n\nAnd the wire fencing was never missed.	\N	\N	1070	2025-07-20 13:02:34.792	2025-07-20 13:02:34.792	\N	\N	en	\N
-12	A Chaparral Prince	O. Henry	\N	The only passenger on the stage that drew up before the stage-office at Cactus, Texas, was a young man in a brand-new suit of store clothes. He was tall and slender, and his face was smooth and pink. He wore a broad-brimmed, low-crowned felt hat, and carried a solid gold-headed cane. He looked like a college senior who had just stepped out from a class-day procession.\n\nThe only other person who alighted from the stage was its driver, who threw off the mail-sack and then climbed down to the ground to water his horses.\n\nThe young man in the new clothes walked up to the driver.\n\n"Can you tell me, sir," he said, with a Northern accent, "if there is a man living here named Summers—Mr. Elias Summers?"\n\nThe stage-driver was watering his horses. He stopped and looked up.\n\n"Summers?" he repeated. "Yes, sir. Old man Summers lives about four miles out on the Silver City road. I'm going right by his place now. I can take you out there if you want to go."\n\n"Thank you," said the young man. "I'll be glad to ride out with you."\n\nHe climbed into the stage, and the driver got up on his seat and shook the reins. The horses started off at a slow trot.\n\nThe young man seemed to be interested in the scenery. He looked out of the window at the mesquite bushes and cactus plants that lined the road. He was evidently unused to the country.\n\nAfter they had gone about three miles, the driver pointed with his whip to a house that stood in a grove of live oaks about a quarter of a mile from the road.\n\n"That's old man Summers's place," he said. "I'll let you out at the next turn, and you can walk over. It's not far."\n\n"Thank you," said the young man. He got out when the stage stopped, and walked in the direction indicated.\n\nOld man Summers was sitting on the porch of his house when the young man opened the gate and walked up the path. He was a tall, lean old man, with a long white beard and sharp blue eyes. He looked up as the young man approached.\n\n"Good-morning, sir," said the young man, lifting his hat. "Are you Mr. Summers?"\n\n"That's my name," said the old man. "What can I do for you?"\n\n"My name is Harris," said the young man. "I am from the East. I have come out here to look at some land with a view to buying it."\n\n"Sit down," said old man Summers, pointing to a chair. "I'll call my son Jim. He's the one you want to see about land. He knows all about it."\n\nHe went into the house, and soon returned with a young man about the same age as Harris. Jim Summers was tall and thin, like his father, but his face was brown and his hands were rough. He looked like a man who had worked hard.\n\n"How do you do, sir?" he said, shaking hands with Harris. "I understand you are looking for land. What kind of land do you want?"\n\n"I want to buy a ranch," said Harris. "I have some capital to invest, and I think I would like to go into the cattle business."\n\nJim Summers looked at him with a smile.\n\n"You're from the East, aren't you?" he said.\n\n"Yes," said Harris.\n\n"Well," said Jim, "I'll tell you what I'll do. I'll take you out and show you some land that I think will suit you. But I must warn you that ranching is not all play. It's hard work."\n\n"I'm not afraid of work," said Harris.\n\n"All right," said Jim. "We'll start to-morrow morning. You can stay here to-night if you like."\n\n"Thank you," said Harris. "I'll be glad to."\n\nHe stayed at the Summers's house that night, and the next morning he and Jim rode out to look at the land. They were gone all day, and when they returned Harris had decided to buy the ranch.\n\n"I'll take it," he said to Jim, as they rode up to the house.\n\n"All right," said Jim. "I'll have the papers made out and we'll close the deal to-morrow."\n\nThe next day the papers were signed and Harris became the owner of a ranch in Texas. He was very much pleased with his purchase, and he and Jim Summers became good friends.\n\nHarris went back to the East to settle up his business affairs, and then returned to Texas to take charge of his ranch. He found that ranching was indeed hard work, but he was young and strong and he liked the life. He prospered and in a few years he was one of the successful ranchmen of the region.\n\nAnd he always said that it was the best thing he had ever done to come out to Texas and buy that ranch from Jim Summers.	\N	\N	838	2025-07-20 13:02:57.459	2025-07-20 13:09:39.301	\N	1	en	\N
-13	The Last Leaf	O. Henry	In a quaint district near Washington Square, two artist friends, Johnsy and Sue, share a studio in a lively artist community. The story unfolds in late autumn as Johnsy battles pneumonia, convinced her fate is tied to the ivy leaves falling outside her window. She believes she will die when the last leaf falls. Sue, desperate to save her friend, tries to distract her and instill hope. Amidst this poignant vigil, the narrative explores themes of friendship, hope, and the power of art.	In a little district west of Washington Square the streets have run crazy and broken themselves into small strips called "places." These "places" make strange angles and curves. One Street crosses itself a time or two. An artist once discovered a valuable possibility in this street. Suppose he should paint a picture of Madison Square Garden on a wet night. But no, the public would not have it. It was too easy; they could not understand his work.\n\nThe painter had been living in a three-story brick house. The house was more than a studio. It was an art club, a meeting place for those who loved art. Johnsy and Sue were friends who lived in the top flat of the house. Johnsy was familiar for Joanna. Sue was familiar for Susan. They had met at the table d'hote of an Eighth Street "Delmonico's," and found their tastes in art, chicory salad and bishop sleeves so congenial that the joint studio resulted.\n\nThat was in May. In November a cold, unseen stranger, whom the doctors called Pneumonia, stalked about the colony, touching one here and there with his icy fingers. Over on the east side this ravager strode boldly, smiting his victims by scores, but his feet trod slowly through the maze of the narrow and moss-grown "places."\n\nJohnsy lay, scarcely making a ripple under the bedclothes, with her face toward the window. Sue, who had been trained as a nurse in her hometown, had many opportunities to practice her profession since Johnsy fell ill. The doctor had been in to see his patient that day and had said that she had a fighting chance if she wanted to live.\n\n"She has one chance in—let us say, ten," he had said, as he shook down the mercury in his clinical thermometer. "And that chance is for her to want to live. This way people have of lining-up on the side of the gravedigger makes the entire pharmacopoeia look silly. Your little lady has made up her mind that she's not going to get well. Has she anything on her mind?"\n\n"She—she wanted to paint the Bay of Naples some day," said Sue.\n\n"Paint?—bosh! Has she anything on her mind worth thinking twice—a man for instance?"\n\n"A man?" said Sue, with a jew's-harp twang in her voice. "Is a man worth—but, no, doctor; there is nothing of the kind."\n\n"Well, it is the weakness, then," said the doctor. "I will do all that science, so far as it may filter through my efforts, can accomplish. But whenever my patient begins to count the carriages in her funeral procession I subtract 50 per cent from the curative power of medicines. If you will get her to ask one question about the new winter styles in cloak sleeves I will promise you a one-fifth of a chance for her, instead of one-tenth."\n\nWhen the doctor had gone Sue went into the workroom and cried a Japanese napkin to a pulp. Then she swaggered into Johnsy's room with her drawing board, whistling ragtime.\n\nJohnsy lay with her face toward the window. Sue stopped whistling, thinking she was asleep.\n\nShe arranged her board and began a pen-and-ink drawing to illustrate a magazine story. Young artists must pave their way to Art by drawing pictures for magazine stories that young authors write to pave their way to Literature.\n\nAs Sue was sketching a pair of elegant horse-show riding trousers and a monocle on the figure of the hero, an Idaho cowboy, she heard a low sound, several times repeated. She went quickly to the bedside.\n\nJohnsy's eyes were open wide. She was looking out the window and counting—counting backward.\n\n"Twelve," she said, and a little later "eleven"; and then "ten," and "nine"; and then "eight" and "seven," almost together.\n\nSue looked solicitously out of the window. What was there to count? There was only a bare, dreary yard to be seen, and the blank side of the brick house twenty feet away. An old, old ivy vine, gnarled and decayed at the roots, climbed half way up the brick wall. The cold breath of autumn had stricken its leaves from the vine until its skeleton branches clung, almost bare, to the crumbling bricks.\n\n"What is it, dear?" asked Sue.\n\n"Six," said Johnsy, in almost a whisper. "They're falling faster now. Three days ago there were almost a hundred. It made my head ache to count them. But now it's easy. There goes another one. There are only five left now."\n\n"Five what, dear? Tell your Sudie."\n\n"Leaves. On the ivy vine. When the last one falls I must go, too. I've known that for three days. Didn't the doctor tell you?"\n\n"Oh, I never heard of such nonsense," complained Sue, with magnificent scorn. "What have old ivy leaves to do with your getting well? And you used to love that vine so, you naughty girl. Don't be a goosey. Why, the doctor told me this morning that your chances for getting well real soon were—let's see exactly what he said—he said the chances were ten to one! Why, that's almost as good as a sure thing! And here you are talking about ivy leaves and nonsense."\n\n"I know," said Johnsy, closing her eyes and lying white and still as a fallen statue; "because I know something, Sue. The last leaf stays on the vine, I will not leave this bed alive. I know it. I feel it. If there had been one leaf on when the last one fell I would have gotten well. But if the last one goes, I must go."\n\n"But what have old ivy leaves to do with your getting well? And you used to love that vine."\n\n"I tell you I know," said Johnsy, with eyes wide open. "I've been here for three days. Didn't you wonder why I was so still? I've been waiting for that last leaf to fall. I've watched it every moment. I know I will go with the last one. It's falling now. I'm tired of waiting. I'm tired of thinking. I want to turn loose my hold on everything, and go sailing down, down, just like one of those poor, tired leaves."\n\n"To be sure, I have my own ideas of artistic effect in such matters," said Sue, who was from Maine and had been brought up on codfish and beans. "But I couldn't stand to hear you say such things. You're not going to be silly enough to let a little leaf send you to the graveyard. Come now, I'll draw the curtain, and we'll just imagine that the last leaf has fallen. Then I'll draw you a picture of a nice vine with a thousand leaves on it, all fresh and green."\n\n"I want to see the last one fall before it gets dark. Then I'll go, too," said Johnsy, still looking out the window. "I want to see the last one fall. I'm tired of waiting."\n\n"But, dear," said Sue, "just think of how you used to love that vine. You loved it because it was a part of the view from this window. Now, you know that old vine can't bring you any bad luck."\n\n"I know," said Johnsy, "but it's weak, and it's old, and the storm last night was enough to pull it down. I know it's foolish, but I feel as if I'd go with the last leaf."\n\nSue looked out of the window. What she saw was not of much help to her in her fight for Johnsy's life. There was only one leaf left on the vine. It was a very old and very sickly-looking leaf. It hung bravely from a branch about twenty feet above the ground.\n\n"It is the last one," said Johnsy. "I thought it would surely fall during the night. I heard the wind. It will fall today, and I shall die at the same time."\n\n"Dear, dear!" said Sue, leaning her worn face down to the pillow, "think of me, if you won't think of yourself. What would I do?"\n\nBut Johnsy did not answer. The last leaf was still there.\n\nSue looked out of the window. It was a cold, bare, dreary yard below. But the leaf was still there.\n\nThe ivy leaf was still there.\n\nSue went to the table and brought a drawing board. She had been working on a pen-and-ink drawing that she wanted to finish. The drawing was of an old man with a long beard. His head was covered with a wide-brimmed hat. The old man was looking up at a vine covered with leaves. Sue called the drawing "Behrman's Masterpiece."\n\nShe looked out of the window. The leaf was still there. She went to Johnsy and said, "I have something to tell you, white mouse."\n\nJohnsy lay for a long time looking at her. Then she called her name "Sudie."\n\n"What is it, dear?" Sue asked.\n\n"I've been a bad girl, Sudie," said Johnsy. "Something has made that last leaf stay there to show me how wicked I was. It is a sin to want to die."\n\n"You may be right," said Sue, "in your half-delirious condition."\n\n"No," said Johnsy, with a smile. "I'm not delirious. I've been thinking. I think the last leaf is a message from God. It is wrong to want to die. I will try to eat now. But first bring me a looking glass, so that I can see myself."\n\nAnd then she said, "I want to see the last leaf. Is it still there?"\n\n"Yes," said Sue. "It is still there."\n\n"Then I'm not going to die," said Johnsy, sitting up in bed. "I'll get well. I'll try. And I'll eat. And I'll sleep. And I'll try to be happy."\n\n"You're a good girl," said Sue. "Try to sleep. I'll paint the ivy leaf and put it where you can see it every day. We'll keep it always."\n\n"I want to see the last leaf," said Johnsy. "I want to see it now."\n\nSue took her to the window and pointed out the leaf. "It is the last one," she said. "It is still there."\n\n"I'm so glad," said Johnsy. "I'm so glad."\n\nJohnsy's eyes were open wide. She was looking at the ivy leaf. Then she lay back on her pillow and smiled.\n\n"Something has made that last leaf stay there to show me how wicked I was," she said. "It is a sin to want to die."\n\nSue looked out of the window. The ivy leaf was still there.\n\nThen she went to Behrman's room. Behrman was an old, old artist who lived on the ground floor beneath them. He was past sixty and had a Michael Angelo's Moses beard curling down from the head of a satyr along the body of an imp. Behrman was a failure in art. For forty years he had always been about to paint a masterpiece, but had never yet begun it. He had been always about to paint a masterpiece and had never yet begun it. He was a fierce little old man who scoffed terribly at softness in anyone, and yet he was always ready to befriend young artists and to buy them brandy. He had been always about to paint a masterpiece and had never yet begun it. He scoffed at softness, but he was always ready to befriend young artists and to buy them brandy.\n\nSue found him in his room. He was in his shirt sleeves, with a great smudge of yellow paint on his right arm and a blue smudge on his left. He had been painting for twenty-four hours a day for several days. He had been painting the ivy leaf.\n\n"It is the last one," he said. "It is my masterpiece."\n\nHe was ill only two days. Pneumonia finished what its icy fingers had begun.\n\nAnd the day the last ivy leaf fell, they found him dead on the floor of his room.\n\nAnd then they found a lantern still lighted, and a ladder that had been dragged from its place, and some scattered brushes, and a palette with green and yellow colors mixed on it, and—look out the window, dear, at the last ivy leaf on the wall. Didn't you wonder why it never fluttered or moved when the wind blew? Ah, darling, it's Behrman's masterpiece—he painted it there the night that the last leaf fell.	\N	\N	2075	2025-07-20 13:29:00.7	2025-07-20 13:29:00.7	\N	\N	en	\N
-14	After Twenty Years	O. Henry	In New York, a man named Bob returns after twenty years to fulfill a pact made with his best friend, Jimmy Wells, to meet at the location of their last dinner together before Bob left to seek fortune in the West. Waiting at the now-demolished 'Big Joe' Brady's restaurant, Bob encounters a policeman while reminiscing about his past and the promise. As the story unfolds, Bob meets someone he believes to be Jimmy, but the reunion takes an unexpected turn when the true identity and intentions of the newcomer are revealed, leading to a surprising twist involving law enforcement.	The policeman on the beat moved up the avenue impressively. The impressiveness was habitual and not for show, for spectators were few. The time was barely 10 o'clock at night, but chilly gusts of wind with a taste of rain in them had well nigh depeopled the streets.\n\nTrying doors as he went, twirling his club with many intricate and artful movements, turning now and then to cast his watchful eye adown the pacific thoroughfare, the officer, with his stalwart form and slight swagger, made a fine picture of a guardian of the peace. The vicinity was one that kept early hours. Now and then you might see the lights of a cigar store or of an all-night lunch counter; but the majority of the doors belonged to business places that had long since been closed.\n\nWhen about midway of a certain block the policeman suddenly slowed his pace. In the doorway of a darkened hardware store a man leaned, with an unlighted cigar in his mouth. As the officer walked up to him the man spoke up quickly.\n\n"It's all right, officer," he said, reassuringly. "I'm just waiting for a friend. It's an appointment made twenty years ago. Sounds a little funny to you, doesn't it? Well, I'll explain if you'd like to make certain it's all straight. About that long ago there used to be a restaurant where this store stands—'Big Joe' Brady's restaurant."\n\n"Until five years ago," said the policeman. "It was torn down then."\n\nThe man in the doorway struck a match and lit his cigar. The light showed a pale, square-jawed face with keen eyes, and a little white scar near his right eyebrow. His scarf-pin was a large diamond, oddly set.\n\n"Twenty years ago to-night," said the man, "I dined here at 'Big Joe' Brady's with Jimmy Wells, my best chum, and the finest chap in the world. He and I were raised here in New York, just like two brothers together. I was eighteen and Jimmy was twenty. The next morning I was to start for the West to make my fortune. You couldn't have dragged Jimmy out of New York; he thought it was the only place on earth. Well, we agreed that night that we'd meet here again exactly twenty years from that date and time, no matter what our conditions might be or from what distance we might have to come. We figured that in twenty years each of us ought to have our destiny worked out and our fortunes made, whatever they were going to be."\n\n"It sounds pretty interesting," said the policeman. "Rather a long time to wait for a dinner, though."\n\n"It's been twenty years," the man explained, with a touch of pride in his voice. "I've come a thousand miles to stand in this door to-night, and it's worth it if my old partner turns up."\n\nThe policeman twirled his club and took a step or two.\n\n"I'll wait a little longer," said the man. "He might turn up yet."\n\n"Have you heard from him since?" asked the policeman.\n\n"No," said the man. "The West is a pretty big proposition, and I've been hustling around over it pretty lively. But I know Jimmy will meet me here if he's alive, for he always was the truest, staunchest old chap in the world. He'd never forget. I came a thousand miles to stand here to-night, and I'm going to give him half an hour more."\n\n"He was the kind of man who is bound to turn up," said the policeman, slowly.\n\n"Right you are," said the man in the doorway. "I'll wait a bit longer. I'm not hungry. It's more the meeting than the eating."\n\nThe policeman moved up the street, twirling his club, stopping now and then to watch the lonely figure in the doorway. The man pulled out a handsome watch, the lids of it set with small diamonds.\n\n"Three minutes to ten," he announced. "It was exactly ten o'clock when we parted here at the restaurant door."\n\n"Did pretty well out West, didn't you?" asked the policeman.\n\n"You bet! I hope Jimmy has done half as well. He was a kind of plodder, though, good fellow as he was. I've had to compete with some of the sharpest wits going to get my pile. A man gets in a groove in New York. It takes the West to put a razor-edge on him."\n\nThe policeman twirled his club and took a few steps down the street.\n\n"I'll be on my way. Hope your friend comes around all right. Going to call time on him sharp?"\n\n"I should say not!" said the other. "I'll give him half an hour at least. If Jimmy is alive on earth he'll be here by that time. So long, officer."\n\n"Good-night, sir," said the policeman, starting down the street.\n\nThe man in the doorway lighted another cigar and leaned against the frame of the door.\n\nTwenty minutes passed. A tall man in a long overcoat, with collar turned up to his ears, hurried across from the opposite side of the street. He went directly to the waiting man.\n\n"Is that you, Bob?" he asked, doubtfully.\n\n"Is that you, Jimmy Wells?" cried the man in the door.\n\n"Bless my heart!" exclaimed the new arrival, grasping both the other's hands with his own. "It's Bob, sure as fate. I was certain I'd find you here if you were still in existence. Well, well, well!—twenty years is a long time. The old restaurant's gone, Bob; I wish it were here so we could have another dinner in it. Has the West treated you well?"\n\n"Better than I deserve, old man," returned the other. "I've got to hustle back there right away after we've had our talk. I was lucky enough to strike some rich pay dirt out there. I've brought a little roll in my pocket to keep me till I get back to the diggings. I'm mighty glad to see you, Jimmy."\n\n"It's been a long time, and I'm glad too, Bob. You've changed lots more than I thought you would, though. Are you going to stay East?"\n\n"No. I'm going back in a week. I just had to see you first, though. It's been eating me up all these years, not knowing how you were making out."\n\n"All right, Bob. I guess we'd better be going up to the square and have a talk over old times."\n\nThe two men started up the street, arm in arm. The man from the West, his egotism enlarged by success, was beginning to outline the history of his career. The other, submerged in his overcoat, listened with interest.\n\nAt the corner stood a drug store, brilliant with electric lights. When they came into this glare each of them turned simultaneously to gaze upon the other's face.\n\nThe man from the West stopped suddenly and released his arm.\n\n"You're not Jimmy Wells," he snapped.\n\n"Twenty years is a long time," said the tall man, coolly. "It sometimes changes a good man into a bad one. You've been under arrest for ten minutes, 'Silky' Bob. Chicago thinks you may have dropped over our way and wires us she wants to have a chat with you. Going quietly, are you? That's sensible. Now, before we go on to the station here's a note I was asked to hand you. You may read it here at the light. It's from Patrolman Wells."\n\nThe man from the West unfolded the little piece of paper handed him. His hand was steady when he began to read, but it trembled a little by the time he had finished. The note was rather short.\n\n"Bob: I was at the appointed place on time. When you struck the match to light your cigar I saw it was the face of the man wanted in Chicago. Somehow I couldn't do it myself, so I went around and got a plain clothes man to do the job. JIMMY."	\N	\N	1334	2025-07-20 13:29:34.379	2025-07-20 13:29:34.379	\N	\N	en	\N
-15	A Comedy in Rubber	O. Henry	In O. Henry's classic story, set in a modest urban apartment, Della Young struggles with financial hardship as she attempts to buy a Christmas gift for her beloved husband, Jim. With only $1.87 saved from scrimping on household expenses, Della decides to sell her most prized possession, her long, beautiful hair, to afford a platinum fob chain for Jim's treasured heirloom watch. Unbeknownst to her, Jim faces his own dilemma in securing a gift for Della, leading to a poignant twist that underscores their mutual sacrifice and deep love.	One dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one's cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas.\n\nThere was clearly nothing to do but flop down on the shabby little couch and howl. So Della did it. Which instigates the moral reflection that life is made up of sobs, sniffles, and smiles, with sniffles predominating.\n\nWhile the mistress of the home is gradually subsiding from the first stage to the second, take a look at the home. A furnished flat at $8 per week. It did not exactly beggar description, but it certainly had that word on the lookout for the mendicancy squad.\n\nIn the vestibule below was a letter-box into which no letter would go, and an electric button from which no mortal finger could coax a ring. Also appertaining thereunto was a card bearing the name "Mr. James Dillingham Young."\n\nThe "Dillingham" had been flung to the breeze during a former period of prosperity when its possessor was being paid $30 per week. Now, when the income was shrunk to $20, though, they were thinking seriously of contracting to a modest and unassuming D. But whenever Mr. James Dillingham Young came home and reached his flat above he was called "Jim" and greatly hugged by Mrs. James Dillingham Young, already introduced to you as Della. Which is all very good.\n\nDella finished her cry and attended to her cheeks with the powder rag. She stood by the window and looked out dully at a gray cat walking a gray fence in a gray backyard. Tomorrow would be Christmas Day, and she had only $1.87 with which to buy Jim a present. She had been saving every penny she could for months, with this result. Twenty dollars a week doesn't go far. Expenses had been greater than she had calculated. They always are. Only $1.87 to buy a present for Jim. Her Jim. Many a happy hour she had spent planning for something nice for him. Something fine and rare and sterling—something just a little bit near to being worthy of the honor of being owned by Jim.\n\nThere was a pier glass between the windows of the room. Perhaps you have seen a pier glass in an $8 flat. A very thin and very agile person may, by observing his reflection in a rapid sequence of longitudinal strips, obtain a fairly accurate conception of his looks. Della, being slender, had mastered the art.\n\nSuddenly she whirled from the window and stood before the glass. Her eyes were shining brilliantly, but her face had lost its color within twenty seconds. Rapidly she pulled down her hair and let it fall to its full length.\n\nNow, there were two possessions of the James Dillingham Youngs in which they both took a mighty pride. One was Jim's gold watch that had been his father's and his grandfather's. The other was Della's hair. Had the queen of Sheba lived in the flat across the airshaft, Della would have let her hair hang out the window some day to dry just to depreciate Her Majesty's jewels and gifts. Had King Solomon been the janitor, with all his treasures piled up in the basement, Jim would have pulled out his watch every time he passed, just to see him pluck at his beard from envy.\n\nSo now Della's beautiful hair fell about her, rippling and shining like a cascade of brown waters. It reached below her knee and made itself almost a garment for her. And then she did it up again nervously and quickly. Once she faltered for a minute and stood still while a tear or two splashed on the worn red carpet.\n\nOn went her old brown jacket; on went her old brown hat. With a whirl of skirts and with the brilliant sparkle still in her eyes, she fluttered out the door and down the stairs to the street.\n\nWhere she stopped the sign read: "Mme. Sofronie. Hair Goods of All Kinds." One flight up Della ran, and collected herself, panting. Madame, large, too white, chilly, hardly looked the "Sofronie."\n\n"Will you buy my hair?" asked Della.\n\n"I buy hair," said Madame. "Take yer hat off and let's have a sight at the looks of it."\n\nDown rippled the brown cascade.\n\n"Twenty dollars," said Madame, lifting the mass with a practiced hand.\n\n"Give it to me quick," said Della.\n\nOh, and the next two hours tripped by on rosy wings. Forget the hashed metaphor. She was ransacking the stores for Jim's present.\n\nShe found it at last. It surely had been made for Jim and no one else. There was no other like it in any of the stores, and she had turned all of them inside out. It was a platinum fob chain simple and chaste in design, properly proclaiming its value by substance alone and not by meretricious ornamentation—as all good things should do. And it was even worthy of The Watch. As soon as she saw it she knew that it must be Jim's. It was like him. Quietness and value—the description applied to both. Twenty-one dollars they took from her for it, and she hurried home with the 87 cents. With that chain on his watch Jim might be properly anxious about the time in any company. Grand as the watch was, he sometimes looked at it on the sly on account of the old leather strap that he used in place of a chain.\n\nWhen Della reached home her intoxication gave way a little to prudence and reason. She got out her curling irons and lighted the gas and went to work repairing the ravages made by generosity added to love. Which is always a tremendous task, dear friends—a mammoth task.\n\nWithin forty minutes her head was covered with tiny, close-lying curls that made her look wonderfully like a truant schoolboy. She looked at her reflection in the mirror long, carefully, and critically.\n\n"If Jim doesn't kill me," she said to herself, "before he takes a second look at me, he'll say I look like a Coney Island chorus girl. But what could I do—oh! what could I do with a dollar and eighty-seven cents?"\n\nAt 7 o'clock the coffee was made and the frying-pan was on the back of the stove hot and ready to cook the chops.\n\nJim was never late. Della doubled the fob chain in her hand and sat on the corner of the table near the door that he always entered. Then she heard his step on the stair away down on the first flight, and she turned white for just a moment. She had a habit of saying little silent prayers about the simplest everyday things, and now she prayed that he be still okay and not too thin.\n\nHe opened the door and came in. He looked thin and very serious. Poor fellow, he was only twenty-two—and to be burdened with a family! He needed a new overcoat and was without gloves.\n\nJim stopped inside the door, as immovable as a setter at the scent of quail. His eyes were fixed upon Della, and there was an expression in them that she could not read, and it terrified her. It was not anger, nor surprise, nor disapproval, nor horror, nor any of the sentiments that she had been prepared for. He simply stared at her fixedly with that peculiar expression on his face.\n\nDella wriggled off the table and went for him.\n\n"Jim, darling," she cried, "don't look at me that way. I had my hair cut off and sold because I couldn't have lived through Christmas without giving you a present. It'll grow out again—you won't mind, will you? I just had to do it. My hair grows awfully fast. Say 'Merry Christmas!' Jim, and let's be happy. You don't know what a nice—what a beautiful, nice gift I've got for you."\n\n"You've cut off your hair?" asked Jim, laboriously, as if he had not arrived at that patent fact yet even after the hardest mental labor.\n\n"Cut it off and sold it," said Della. "Don't you like me just as well, anyhow? I'm me without my hair, ain't I?"\n\nJim looked about the room curiously.\n\n"You say your hair is gone?" he said, with an air almost of idiocy.\n\n"You needn't look for it," said Della. "It's sold, I tell you—sold and gone, too. It's Christmas Eve, boy. Be good to me, for it went for you. Maybe the hairs of my head were numbered," she went on with sudden serious sweetness, "but nobody could ever count my love for you. Shall I put the chops on, Jim?"\n\nOut of his trance Jim seemed quickly to wake. He enfolded his Della. For ten seconds let us regard with discreet scrutiny some inconsequential object in the other direction. Eight dollars a week or a million a year—what is the difference? A mathematician or a wit would give you the wrong answer. The magi brought valuable gifts, but that was not among them. This dark assertion will be illuminated later on.\n\nJim drew a package from his overcoat pocket and threw it upon the table.\n\n"Don't make any mistake, Dell," he said, "about me. I don't think there's anything in the way of a haircut or a shave or a shampoo that could make me like my girl any less. But if you'll unwrap that package you may see why you had me going a while at first."\n\nWhite fingers and nimble tore at the string and paper. And then an ecstatic scream of joy; and then, alas! a quick feminine change to hysterical tears and wails, necessitating the immediate employment of all the comforting powers of the lord of the flat.\n\nFor there lay The Combs—the set of combs, side and back, that Della had worshipped long in a Broadway window. Beautiful combs, pure tortoise shell, with jeweled rims—just the shade to wear in the beautiful vanished hair. They were expensive combs, she knew, and her heart had simply craved and yearned over them without the least hope of possession. And now, they were hers, but the tresses that should have adorned the coveted adornments were gone.\n\nBut she hugged them to her bosom, and at length she was able to look up with dim eyes and a smile and say: "My hair grows so fast, Jim!"\n\nAnd then Della leaped up like a little singed cat and cried, "Oh, oh!"\n\nJim had not yet seen his beautiful present. She held it out to him eagerly upon her open palm. The dull precious metal seemed to flash with a reflection of her bright and ardent spirit.\n\n"Isn't it a dandy, Jim? I hunted all over town to find it. You'll have to look at the time a hundred times a day now. Give me your watch. I want to see how it looks on it."\n\nInstead of obeying, Jim tumbled down on the couch and put his hands under the back of his head and smiled.\n\n"Dell," said he, "let's put our Christmas presents away and keep 'em a while. They're too nice to use just at present. I sold the watch to get the money to buy your combs. And now suppose you put the chops on."\n\nThe magi, as you know, were wise men—wonderfully wise men—who brought gifts to the Babe in the manger. They invented the art of giving Christmas presents. Being wise, their gifts were no doubt wise ones, possibly bearing the privilege of exchange in case of duplication. And here I have lamely related to you the uneventful chronicle of two foolish children in a flat who most unwisely sacrificed for each other the greatest treasures of their house. But in a last word to the wise of these days let it be said that of all who give gifts these two were the wisest. O all who give and receive gifts, such as they are wisest. Everywhere they are wisest. They are the magi.	\N	\N	2053	2025-07-20 13:35:34.673	2025-07-20 13:35:34.673	\N	\N	en	\N
-16	A Cosmopolite in a Café	O. Henry	In a bustling midnight café, the narrator encounters E. Rushmore Coglan, a self-proclaimed cosmopolite, who engages in a deep conversation about the true essence of being a cosmopolitan. Coglan defines a cosmopolite as someone who feels at home everywhere, without ties to any specific location, and maintains an indifference to their surroundings. The discussion, filled with philosophical insights and personal anecdotes, stretches into the early morning, leaving the narrator intrigued by Coglan's perspective. As they part ways, Coglan heads off to his next engagement, exemplifying his cosmopolitan lifestyle.	At midnight the café was crowded. By some chance the little table at which I sat had escaped the eye of incomers, and two vacant chairs at it extended their arms with venal hospitality to the influx of patrons.\n\nAnd then a cosmopolite sat in one of them, and I was glad, for I held a theory that since Adam no true citizen of the world has existed. We hear of them, and we see foreign labels on much luggage, but we find travellers instead of cosmopolites.\n\nI invoke your consideration of the scene—the marble-topped tables, the range of leather-upholstered wall seats, the gay company, the ladies dressed in demi-state toilets, speaking in an exquisite visible chorus of taste, economy, opulence or art; the seductive outpouring of light and wine, the dim suggestions of stately retinues and princely chambers conveyed by that most romantic of fruits, the great, pyriform, melting, and luscious pear. The cosmopolite was named E. Rushmore Coglan, and he will be heard from next summer at Coney Island. It was not past eleven when he came in, and he apologized for being late, explaining that he had been detained by a poker game at a friend's house. His voice was as intimate as the rustle of sheets, and he dropped easily into a chair by my side, and, filling his glass from my bottle, won his way artfully into my liking with flattering comments upon the brand of my wine and a disagreeable story about two judges who had stolen a goose from a widow in New Jersey.\n\nAs we talked we discussed many subjects, moving easily from topic to topic, but always returning to the question of cosmopolitanism, a theme which seemed to possess Mr. Coglan with a peculiar charm and fascination.\n\n"Now, to settle once for all," he said, animatedly, "let us define our terms. What is your idea of a cosmopolite, Mr. Arden?"\n\nI said something about the Brotherhood of Man, a subject upon which I am wont to be eloquent.\n\n"Exactly," said Coglan, interrupting, "but that is not it. The true cosmopolite will go much further than that. You want to know what my definition of a cosmopolite is; it's this: one who is at home even in places where he finds himself most foreign. That is my definition."\n\n"Interesting," I said. "But it strikes me that a genuine cosmopolite must be a citizen of the world without a permanent address. Don't you think so?"\n\n"My dear sir," said Coglan, with heat, "you are right, per se. But your mistake lies in your failure to note the second qualification necessary to the existence of the true cosmopolite. And that qualification is unconcern. He must be absolutely indifferent to where he is, and with whom he is. The moment he begins to make comparisons, to contrast the foreign with the familiar, he has lost his savor. He is as much out of place as a violin at a hoedown. For instance, I am in New York; but I am not a New Yorker. I am here today and gone tomorrow. Chance has brought me here; necessity will take me away. I am a cosmopolite. I make Rome my home or else wander to the farthest Indies. Another glass of this excellent claret!"\n\nTogether we finished the bottle, and called for another. Even the cosmopolite's enthusiasm for his theory did not make him monotonous. To-night he was more interesting than I had ever found him—he enlarged upon his theme.\n\n"Think of the thousands and thousands of persons," he said, "who have lived and died, who never knew the delights of a blue-point oyster. They have never heard of such a thing. Millions of them have never seen a monkey-wrench or a locomotive. They are dead and gone without ever having had a chance to see the world. What would you call them?"\n\n"I should call them unfortunate," I answered, "but not necessarily non-cosmopolites."\n\n"You are wrong," said Coglan, warmly. "They were the true cosmopolites. What is it to see the world? Nothing. But to be a cosmopolite is everything."\n\nHis ideas attracted me. We sat talking until daylight, and as I listened, I began to feel more and more that there was much reason in what he said, so much that I had not the heart to argue with him.\n\nFinally, he stood up, and reached for his coat.\n\n"Where are you off to now?" I asked.\n\n"To meet the 7:15 train," he said. "I have an engagement at Westbury at 8:30."\n\n"And you are going to walk?" I exclaimed.\n\n"Sure," he replied. "It's only six miles. Good exercise. Good morning."\n\nI watched him as he stepped briskly down the street. Yes, he was a cosmopolite—a citizen of the world.	\N	\N	795	2025-07-20 13:36:03.994	2025-07-20 14:56:52.973	\N	\N	en	\N
-9	A Blackjack Bargainer	O. Henry	\N	The most disreputable thing in Yancey Goree's law office was Goree himself, sprawled in his creaky old arm-chair. The rickety little office, built of red brick, was set flush with the street—the main street of the town of Bethel. Bethel rested upon the foot-hills of the Blue Ridge. From the windows of the office, one could see the rugged, gray crags of the mountains looming distinctly against the blue Southern sky. Bethel was a "hum" of considerable importance in the State; her principal industries being the manufacture of cotton and religion. The Court House and the Lord's House lifted their domes high above the other public buildings; and the chimneys of the cotton mills touched the low clouds with fingers grimy with the smoke of labor.\n\nBut the room seemed to deny that it was an office. Books of law there were none. One or two old chairs, a pine table, a wall calendar advertising a patent medicine, and a cast-iron stove from whose isinglass sides flickered the light of a wood fire—these things made up its appointments. On the table lay a few old newspapers, some legal blanks, and an inkstand with a dry sponge in it. The floor was covered with a green carpet, threadbare and ragged. In one corner stood a small safe with the door ajar. The safe was empty, and the door swung open, squeaking dolorously each time the draft moved it.\n\nYancey Goree was a descendant of the Gorees of Virginia. He had inherited the old Goree homestead in Bethel, where, until a few years previous, he had lived in baronial style, entertaining the countryside with a liberal hand. But the old house had burned down, and Yancey had taken to the practice of law to retrieve his fallen fortunes. This he had not accomplished, for Yancey had the besetting weakness of the Gorees, which was to wait for dead men's shoes. He had waited for them so long that his creditors had grown tired of waiting longer themselves.\n\nHis only remaining piece of property was the old brick office, originally built for a warehouse when Bethel had a river trade, and now but little better than a ruin. No clients came to seek professional services. Yancey's friends were not the kind that needed legal advice. They were more apt to seek the back room of Ben Tatum's saloon, which was entered by a side door and contained a "sideboard" and two tables for stud and draw poker.\n\nThe money derived from the occasional sale of a piece of the old Goree land barely paid for his liquor and tobacco. His credit was no longer good at the stores. It was at the lowest ebb of his fortunes that Goree had the luck to make a ten strike—in vulgar parlance. It was what the local newspapers would have called a "romantic episode" had they dared to chronicle it.\n\nOne day Goree was sitting in his office half asleep. He had been on a week's spree at Ben Tatum's, and was drowsing away the aftermath. Suddenly he was aware of a tall, elderly gentleman standing inside the door—a fine figure of a man, with a white mustache and piercing eyes. Goree knew him well. It was Colonel Abner Coltrane, of the town of Laurel, thirty miles away—a lawyer, a planter, a gentleman of the old school, who had never before acknowledged the fallen Yancey by so much as a nod or a lift of the eyebrows.\n\n"Good morning," said Colonel Coltrane, with formal politeness. "I have a matter of business that I hope you can arrange for me."\n\nGoree rose to his feet, leaning heavily upon the table. He was a tall man, heavily built, with a face too intelligent and too spiritual for his surroundings. His eyes were large and mild; his hair was a vehement red; and his clothes were much the worse for wear.\n\n"I hope so, Colonel," he said, with a tremor in his voice. "It would be a pleasure to attend to anything in the line of business you might entrust to me."\n\n"I wish you to foreclose a mortgage on a small piece of property down here," said the Colonel, laying a legal-looking document on the table. "The papers are all drawn. I have only to ask you to attend to the details."\n\nGoree's fingers trembled as he took the paper. His sensations were those of a man who, about to starve, sees food denied him by a locked glass door. Here was business, and he needed it; but the thought of foreclosing on a piece of property was repugnant to him. His extravagant Southern chivalry recoiled at the thought.\n\n"I suppose," he said, hesitatingly, to the Colonel, "that there is no chance for the owner to redeem?"\n\n"I am afraid not," said the Colonel, coldly. "My client is not in a position to trifle with his rights or his legal remedies. The time is up to-morrow. I cannot give the owner any more grace."\n\nGoree sat down and buried his face in his hands. After a while he rose up and shook himself like a great mastiff, and a new light came into his faded eyes.\n\n"It shall be done," he said, firmly. "I will attend to it at once."\n\n"I will send my man around with the money to-morrow," said the Colonel. "And now, Mr. Goree, I will bid you good morning."\n\nWhen the Colonel was gone, Goree took the paper, and ran his eye over it. His practice had been none too lucrative, and he was unfamiliar with the latest laws and decisions. He had been "going to" subscribe to a law journal, but had put it off.\n\nThe property owner was a widow—a Mrs. Ramsey, who lived in a little white cottage some distance down the mountain side. The amount of the mortgage was $400.\n\nGoree put on his hat and walked out into the sunshine. The fresh air revived him. He looked at the mountains thoughtfully. There was a time when he would have ridden fifty miles for the sake of a lady in distress. But that—was long ago. Now, he was hurrying to take from a widow her little all.\n\nHe walked rapidly in the direction of Mrs. Ramsey's cottage. When he reached it, he found her chopping wood in the back yard. She was a frail figure, dressed in a faded calico dress, with a sunbonnet hanging down her back. Her face was thin and worn, and she looked as if she might be ill.\n\n"Good morning, Mrs. Ramsey," said Goree, lifting his hat. "I am sorry to disturb you, but I have a painful duty to perform."\n\nMrs. Ramsey leaned her ax against a tree, and wiped her forehead with the back of a sunburnt hand.\n\n"Lawyer Goree, I reckon it's about that mortgage. I've been expecting you."\n\n"Yes," said Goree, "it is. I must ask you to prepare to vacate. The property must be sold."\n\nThe woman looked at him with a sudden flash of anger in her eyes.\n\n"And you can come here," she said, "and tell me this to my face! My God! have men got no more heart than that? I've worked—oh, how I've worked to keep the home together, and now to have it taken away!"\n\nGoree's face was white. He hated himself for what he was doing.\n\n"I am sorry—more sorry than I can tell you," he said, huskily. "But it is not my wish—it is the law."\n\nThe woman's eyes softened. Goree saw the tears come into them, and he turned his head away.\n\n"I can't help it, Lawyer Goree," she said, "I must say it. It's hard—it's cruel. I had hoped till the last that something would turn up. But I'll go. When must I leave?"\n\n"The sale will take place in three days," said Goree. "I advise you to make arrangements as soon as possible. I must now go back to the office and attend to the necessary details."\n\nHe left her standing by the woodpile, and strode away, with his head high, but with a heart heavy as lead.\n\nAs he walked, he began to think rapidly. By the time he had reached the office, he had made up his mind. He went quickly inside, to the safe, unlocked it, and took out a thin, old-fashioned gold watch. From the back of the watch he pried out with his knife an old daguerreotype of his mother, taken when she was a young girl. He wrapped the picture carefully in a piece of paper, and put it in his pocket. Then he closed the safe, and went out again into the street.\n\nHe went straight to Ben Tatum's saloon. He found Ben at his favorite occupation of dozing behind the bar.\n\n"Hello, Yancey," said Ben, drowsily. "What's new?"\n\n"I want to see you, Ben," said Goree, seriously. "I want to talk to you about a business matter."\n\n"All right," said Ben, becoming instantly alert. "Come into the back room."\n\nWhen they were seated at the table, Goree began, without preamble:\n\n"Ben, I want to raise some money—"\n\nThe saloon-keeper's face hardened.\n\n"That's funny," he interrupted. "So do I."\n\n"I've got to have it," continued Goree, doggedly. "It's to save somebody else, not myself. I've got a gold watch there. It's worth a hundred dollars easy."\n\nBen took the watch and looked at it critically.\n\n"I'll loan you fifty on it," he said, after a close inspection.\n\n"I'll take it," said Goree, pressing his lips together. "And I want it quick. I've got to have it to-day."\n\n"You shall have it," said Ben, writing out a check for the amount. "I'll take the watch. When will you redeem it?"\n\n"I don't know," said Goree, slowly. "Maybe—never. I don't know."\n\nAfter he had received the money, Goree went straight to the bank and deposited it to his account. Then he returned to his office and wrote a check for $400. He enclosed it in a letter to Colonel Coltrane, and sent it by a messenger.\n\nThen he sat down to wait. He felt that he had done what he could to atone for the wrong he was committing. But he was not happy about it. He knew that he had only put off the evil day.\n\nThe next morning Colonel Coltrane's man came with the money for the foreclosure. Goree took it and gave him a receipt. Then he went to Mrs. Ramsey's and told her that she could remain in her home.\n\nThe widow's face was a study. Joy, incredulity, and a premonition of trouble struggled for the mastery.\n\n"Do you mean, Mr. Goree," she asked, trembling, "that I don't have to leave my home?"\n\n"You do not," said Goree. "The mortgage is lifted. You are free from debt."\n\nThe woman broke down and wept. Goree turned away his head. When she could speak, she said:\n\n"Oh, sir, how can I ever thank you? It seems like you have been sent by Providence to help me. I had lost all hope. How can I ever thank you?"\n\n"Don't try," said Goree, gruffly. "It wasn't for your sake. It was a debt I owed to—to—well, to myself. I couldn't see you turned out. I'll send somebody around to attend to the transfer of the property."\n\nWhen he left the widow's cottage, Goree went straight to the saloon. He found Ben Tatum wiping his bar.\n\n"Ben," he said, "I want to buy back that watch."\n\n"Your credit's good," said Ben, "but the watch is gone."\n\n"Gone!" exclaimed Goree, with a sinking heart.\n\n"Yes," said Ben. "I sold it last night to a man from Atlanta. He took a fancy to it, and offered me double what I gave you. I couldn't turn down a bargain like that."\n\nGoree said nothing, but walked out of the saloon. He felt that he had indeed made a bargain with fate, and had lost. But he was not sorry. He had saved the widow's home, and that was something. He could not have borne to see her turned out. He had done what he could, and he was satisfied.\n\nThat night Yancey Goree took the train for the West, with the intention of losing himself and forgetting—something he had never succeeded in doing before.	\N	\N	2055	2025-07-20 12:15:23.027	2025-07-31 18:31:26.228	\N	1	en	1
-5	The Gift of the Magi	O. Henry	In 'The Gift of the Magi,' a young couple, Della and Jim Young, grapple with financial hardship in their modest flat as Christmas approaches. Della, determined to buy a special gift for Jim, sells her prized long hair to afford a platinum fob chain for Jim's cherished heirloom watch. Unbeknownst to her, Jim faces his own sacrifice to secure a gift for Della. The story unfolds in a modest urban setting, capturing themes of love, sacrifice, and the irony of giving.	The Gift of the Magi\n\nOne dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one's cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas.\n\nThere was clearly nothing to do but flop down on the shabby little couch and howl. So Della did it. Which instigates the moral reflection that life is made up of sobs, sniffles, and smiles, with sniffles predominating.\n\nWhile the mistress of the home is gradually subsiding from the first stage to the second, take a look at the home. A furnished flat at $8 per week. It did not exactly beggar description, but it certainly had that word on the lookout for the mendicancy squad.\n\nIn the vestibule below was a letter-box into which no letter would go, and an electric button from which no mortal finger could coax a ring. Also appertaining thereunto was a card bearing the name "Mr. James Dillingham Young."\n\nThe "Dillingham" had been flung to the breeze during a former period of prosperity when its possessor was being paid $30 per week. Now, when the income was shrunk to $20, the letters of "Dillingham" looked blurred, as though they were thinking seriously of contracting to a modest and unassuming D. But whenever Mr. James Dillingham Young came home and reached his flat above he was called "Jim" and greatly hugged by Mrs. James Dillingham Young, already introduced to you as Della. Which is all very good.\n\nDella finished her cry and attended to her cheeks with the powder rag. She stood by the window and looked out dully at a grey cat walking a grey fence in a grey backyard. Tomorrow would be Christmas Day, and she had only $1.87 with which to buy Jim a present. She had been saving every penny she could for months, with this result. Twenty dollars a week doesn't go far. Expenses had been greater than she had calculated. They always are. Only $1.87 to buy a present for Jim. Her Jim. Many a happy hour she had spent planning for something nice for him. Something fine and rare and sterling—something just a little bit near to being worthy of the honour of being owned by Jim.\n\nThere was a pier-glass between the windows of the room. Perhaps you have seen a pier-glass in an $8 flat. A very thin and very agile person may, by observing his reflection in a rapid sequence of longitudinal strips, obtain a fairly accurate conception of his looks. Della, being slender, had mastered the art.\n\nSuddenly she whirled from the window and stood before the glass. Her eyes were shining brilliantly, but her face had lost its colour within twenty seconds. Rapidly she pulled down her hair and let it fall to its full length.\n\nNow, there were two possessions of the James Dillingham Youngs in which they both took a mighty pride. One was Jim's gold watch that had been his father's and his grandfather's. The other was Della's hair. Had the Queen of Sheba lived in the flat across the airshaft, Della would have let her hair hang out the window some day to dry just to depreciate Her Majesty's jewels and gifts. Had King Solomon been the janitor, with all his treasures piled up in the basement, Jim would have pulled out his watch every time he passed, just to see him pluck at his beard from envy.\n\nSo now Della's beautiful hair fell about her rippling and shining like a cascade of brown waters. It reached below her knee and made itself almost a garment for her. And then she did it up again nervously and quickly. Once she faltered for a minute and stood still while a tear or two splashed on the worn red carpet.\n\nOn went her old brown jacket; on went her old brown hat. With a whirl of skirts and with the brilliant sparkle still in her eyes, she fluttered out the door and down the stairs to the street.\n\nWhere she stopped the sign read: "Mme. Sofronie. Hair Goods of All Kinds." One flight up Della ran, and collected herself, panting. Madame, large, too white, chilly, hardly looked the "Sofronie."\n\n"Will you buy my hair?" asked Della.\n\n"I buy hair," said Madame. "Take yer hat off and let's have a sight at the looks of it."\n\nDown rippled the brown cascade.\n\n"Twenty dollars," said Madame, lifting the mass with a practised hand.\n\n"Give it to me quick," said Della.\n\nOh, and the next two hours tripped by on rosy wings. Forget the hashed metaphor. She was ransacking the stores for Jim's present.\n\nShe found it at last. It surely had been made for Jim and no one else. There was no other like it in any of the stores, and she had turned all of them inside out. It was a platinum fob chain simple and chaste in design, properly proclaiming its value by substance alone and not by meretricious ornamentation—as all good things should do. It was even worthy of The Watch. As soon as she saw it she knew that it must be Jim's. It was like him. Quietness and value—the description applied to both. Twenty-one dollars they took from her for it, and she hurried home with the 87 cents. With that chain on his watch Jim might be properly anxious about the time in any company. Grand as the watch was, he sometimes looked at it on the sly on account of the old leather strap that he used in place of a chain.\n\nWhen Della reached home her intoxication gave way a little to prudence and reason. She got out her curling irons and lighted the gas and went to work repairing the ravages made by generosity added to love. Which is always a tremendous task, dear friends—a mammoth task.\n\nWithin forty minutes her head was covered with tiny, close-lying curls that made her look wonderfully like a truant schoolboy. She looked at her reflection in the mirror long, carefully, and critically.\n\n"If Jim doesn't kill me," she said to herself, "before he takes a second look at me, he'll say I look like a Coney Island chorus girl. But what could I do—oh! what could I do with a dollar and eighty-seven cents?"\n\nAt 7 o'clock the coffee was made and the frying-pan was on the back of the stove hot and ready to cook the chops.\n\nJim was never late. Della doubled the fob chain in her hand and sat on the corner of the table near the door that he always entered. Then she heard his step on the stair away down on the first flight, and she turned white for just a moment. She had a habit for saying little silent prayers about the simplest everyday things, and now she whispered: "Please God, make him think I am still pretty."\n\nThe door opened and Jim stepped in and closed it. He looked thin and very serious. Poor fellow, he was only twenty-two—and to be burdened with a family! He needed a new overcoat and he was without gloves.\n\nJim stopped inside the door, as immovable as a setter at the scent of quail. His eyes were fixed upon Della, and there was an expression in them that she could not read, and it terrified her. It was not anger, nor surprise, nor disapproval, nor horror, nor any of the sentiments that she had been prepared for. He simply stared at her fixedly with that peculiar expression on his face.\n\nDella wriggled off the table and went for him.\n\n"Jim, darling," she cried, "don't look at me that way. I had my hair cut off and sold because I couldn't have lived through Christmas without giving you a present. It'll grow out again—you won't mind, will you? I just had to do it. My hair grows awfully fast. Say 'Merry Christmas!' Jim, and let's be happy. You don't know what a nice—what a beautiful, nice gift I've got for you."\n\n"You've cut off your hair?" asked Jim, laboriously, as if he had not arrived at that patent fact yet even after the hardest mental labour.\n\n"Cut it off and sold it," said Della. "Don't you like me just as well, anyhow? I'm me without my hair, ain't I?"\n\nJim looked about the room curiously.\n\n"You say your hair is gone?" he said, with an air almost of idiocy.\n\n"You needn't look for it," said Della. "It's sold, I tell you—sold and gone, too. It's Christmas Eve, boy. Be good to me, for it went for you. Maybe the hairs of my head were numbered," she went on with sudden serious sweetness, "but nobody could ever count my love for you. Shall I put the chops on, Jim?"\n\nOut of his trance Jim seemed quickly to wake. He enfolded his Della. For ten seconds let us regard with discreet scrutiny some inconsequential object in the other direction. Eight dollars a week or a million a year—what is the difference? A mathematician or a wit would give you the wrong answer. The magi brought valuable gifts, but that was not among them. This dark assertion will be illuminated later on.\n\nJim drew a package from his overcoat pocket and threw it upon the table.\n\n"Don't make any mistake, Dell," he said, "about me. I don't think there's anything in the way of a haircut or a shave or a shampoo that could make me like my girl any less. But if you'll unwrap that package you may see why you had me going a while at first."\n\nWhite fingers and nimble tore at the string and paper. And then an ecstatic scream of joy; and then, alas! A quick feminine change to hysterical tears and wails, necessitating the immediate employment of all the comforting powers of the lord of the flat.\n\nFor there lay The Combs—the set of combs, side and back, that Della had worshipped for long in a Broadway window. Beautiful combs, pure tortoise shell, with jewelled rims—just the shade to wear in the beautiful vanished hair. They were expensive combs, she knew, and her heart had simply craved and yearned over them without the least hope of possession. And now, they were hers, but the tresses that should have adorned the coveted adornments were gone.\n\nBut she hugged them to her bosom, and at length she was able to look up with dim eyes and a smile and say: "My hair grows so fast, Jim!"\n\nAnd then Della leaped up like a little singed cat and cried, "Oh, oh!"\n\nJim had not yet seen his beautiful present. She held it out to him eagerly upon her open palm. The dull precious metal seemed to flash with a reflection of her bright and ardent spirit.\n\n"Isn't it a dandy, Jim? I hunted all over town to find it. You'll have to look at the time a hundred times a day now. Give me your watch. I want to see how it looks on it."\n\nInstead of obeying, Jim tumbled down on the couch and put his hands under the back of his head and smiled.\n\n"Dell," said he, "let's put our Christmas presents away and keep 'em a while. They're too nice to use just at present. I sold the watch to get the money to buy your combs. And now suppose you put the chops on."\n\nThe magi, as you know, were wise men—wonderfully wise men—who brought gifts to the Babe in the manger. They invented the art of giving Christmas presents. Being wise, their gifts were no doubt wise ones, possibly bearing the privilege of exchange in case of duplication. And here I have lamely related to you the uneventful chronicle of two foolish children in a flat who most unwisely sacrificed for each other the greatest treasures of their house. But in a last word to the wise of these days let it be said that of all who give gifts these two were the wisest. Of all who give and receive gifts, such as they are wisest. Everywhere they are wisest. They are the magi.	\N	\N	2067	2025-07-20 11:52:08.471	2025-07-20 15:14:54.297	\N	1	en	\N
-8	A Retrieved Reformation	O. Henry	Jimmy Valentine, a skilled safecracker, is released from prison with a pardon from the governor after serving ten months of a four-year sentence. Despite the warden's advice to reform, Jimmy immediately returns to his criminal activities, retrieving his specialized burglary tools from a hidden location. He resumes his life of crime under the guise of a respectable businessman, committing several successful burglaries. However, his past catches up to him as detective Ben Price begins to track his movements, recognizing the unique methods used in the recent burglaries. Jimmy's life takes an unexpected turn when he arrives in Elmore, Arkansas, and encounters Annabel Adams, a young lady whose presence challenges his criminal identity.	A guard came to the prison shoe-shop, where Jimmy Valentine was assiduously stitching uppers, and escorted him to the front office. There the warden handed Jimmy his pardon, which had been signed that morning by the governor. Jimmy took it in a tired kind of way. He had served nearly ten months of a four-year sentence. He had expected to stay only about three months, at the longest. When a man with as many friends on the outside as Jimmy Valentine had is received in the "stir" it is hardly worth while to cut his hair.\n\n"Now, Valentine," said the warden, "you'll go out in the morning. Brace up, and make a man of yourself. You're not a bad fellow at heart. Stop cracking safes, and live straight."\n\n"Me?" said Jimmy, in surprise. "Why, I never cracked a safe in my life."\n\n"Oh, no," laughed the warden. "Of course not. Let's see, now. How was it you happened to get sent up on that Springfield job? Was it because you wouldn't prove an alibi for fear of compromising somebody in extremely high-toned society? Or was it simply a case of a mean old jury that had it in for you? It's always one or the other with you innocent victims."\n\n"Me?" said Jimmy, still blankly virtuous. "Why, warden, I never was in Springfield in my life!"\n\n"Take him back, Cronin!" said the warden, "and fix him up with outgoing clothes. Unlock him at seven in the morning, and let him come to the bull-pen. Better think over my advice, Valentine."\n\nAt a quarter past seven on the next morning Jimmy stood in the warden's outer office. He had on a suit of the villainously fitting, ready-made clothes and a pair of the stiff, squeaky shoes that the state furnishes to its discharged compulsory guests. The clerk handed him a railroad ticket and the five-dollar bill with which the law expected him to rehabilitate himself into good citizenship and prosperity. The warden gave him a cigar, and shook hands. Valentine, 9762, was chronicled on the books "Pardoned by the Governor," and Mr. James Valentine walked out into the sunshine.\n\nDisregarding the song of the birds, the waving green trees, and the smell of the flowers, Jimmy headed straight for a restaurant. There he tasted the first sweet joys of liberty in the shape of a broiled chicken and a bottle of white wine---followed by a cigar a grade better than the one the warden had given him. From there he proceeded leisurely to the depot. He tossed a quarter into the hat of a blind man sitting by the door, and boarded his train. Three hours set him down in a little town near the state line. He went to the café of one Mike Dolan and shook hands with Mike, who was alone behind the bar.\n\n"Sorry we couldn't make it sooner, Jimmy, me boy," said Mike. "But we had that protest from Springfield to buck against, and the governor nearly balked. Feeling all right?"\n\n"Fine," said Jimmy. "Got my key?"\n\nHe got his key and went upstairs, unlocking the door of a room at the rear. Everything was just as he had left it. There on the floor was still Ben Price's collar-button that had been torn from that eminent detective's shirt-band when they had overpowered Jimmy to arrest him.\n\nPulling out from the wall a folding-bed, Jimmy slid back a panel in the wall and dragged out a dust-covered suitcase. He opened this and gazed fondly at the finest set of burglar's tools in the East. It was a complete set, made of specially tempered steel, the latest designs in drills, punches, braces and bits, jimmies, clamps, and augers, with two or three novelties invented by Jimmy himself, in which he took pride. Over nine hundred dollars they had cost him to have made at --- a place where they make such things for the profession.\n\nIn half an hour Jimmy went downstairs and through the café. He was now dressed in tasteful and well-fitting clothes, and carried his dusted and cleaned suitcase in his hand.\n\n"Got anything on?" asked Mike Dolan, genially.\n\n"Me?" said Jimmy, in a puzzled tone. "I don't understand. I'm representing the New York Amalgamated Short Snap Biscuit Cracker and Fraction Company."\n\nThis statement delighted Mike to such an extent that Jimmy had to take a seltzer-and-milk on the spot. He never touched "hard" drinks.\n\nA week after the release of Valentine, 9762, there was a neat job of safe-burglary done in Richmond, Indiana, with no clue to the author. A scant eight hundred dollars was all that was secured. Two weeks after that a patented, improved, burglar-proof safe in Logan sport was opened like a cheese to the tune of fifteen hundred dollars, currency; securities and silver untouched. That began to interest the rogue-catchers. Then an old-fashioned bank-safe in Jefferson City became active and threw out of its crater an eruption of bank-notes amounting to five thousand dollars. The losses were now high enough to bring the matter up into Ben Price's class of work. By comparing notes, a remarkable similarity in the methods of the burglaries was noticed. Ben Price investigated the scenes of the robberies, and was heard to remark:\n\n"That's Dandy Jim Valentine's autograph. He's resumed business. Look at that combination knob---jerked out as easy as pulling up a radish in wet weather. He's got the only clamps that can do it. And look how clean those tumblers were punched out! Jimmy never has to drill but one hole. Yes, I guess I want Mr. Valentine. He'll do his bit next time without any short-time or clemency foolishness."\n\nBen Price knew Jimmy's habits. He had learned them while working up the Springfield case. Long jumps, quick getaways, no confederates, and a taste for good society---these ways had helped Mr. Valentine to become noted as a successful dodger of retribution. It was given out that Ben Price had taken up the trail of the elusive cracksman, and other people with burglar-proof safes felt more at ease.\n\nOne afternoon Jimmy Valentine and his suitcase climbed out of the mail-hack in Elmore, a little town five miles off the railroad down in the black-jack country of Arkansas. Jimmy, looking like an athletic young senior just home from college, went down the board side-walk toward the hotel.\n\nA young lady crossed the street, passed him at the corner, and entered a door over which was the sign "The Elmore Bank." Jimmy Valentine looked into her eyes, forgot what he was, and became another man. She lowered her eyes and coloured slightly. Young men of Jimmy's style and looks were scarce in Elmore.\n\nJimmy collared a boy that was loafing on the steps of the bank as if he were one of the stockholders, and began to ask him questions about the town, feeding him dimes at intervals. By and by the young lady came out, looking royally unconscious of the young man with the suitcase, and went her way.\n\n"Naw," said the boy, "she's Annabel Adams. Her pa owns this bank. What'd you come to Elmore for? Is that a gold watch-chain? I'm going to get a bulldog. Got any more dimes?"\n\nJimmy went to the Planters' Hotel, registered as Ralph D. Spencer, and engaged a room. He leaned on the desk and declared his platform to the clerk. He said he had come to Elmore to look for a location to go into business. How was the shoe-business, now, in the town? He had thought of the shoe-business. Was there an opening?\n\nThe clerk was impressed by the clothes and manner of Jimmy. He himself was something of a pattern of fashion to the thinly gilded youth of Elmore, but he now perceived his shortcomings. While trying to figure out Jimmy's manner of tying his fourin-hand he cordially gave information.\n\nYes, there ought to be a good opening in the shoe line. There wasn't an exclusive shoe-store in the place. The dry-goods and general stores handled them. Business in all lines was fairly good. Hoped Mr. Spencer would decide to locate in Elmore. He would find it a pleasant town to live in, and the people very sociable.\n\nMr. Spencer thought he would stop over in the town a few days and look over the situation. No, the clerk needn't call the boy. He would carry up his suitcase, himself; it was rather heavy.\n\nMr. Ralph Spencer, the phoenix that arose from Jimmy Valentine's ashes---ashes left by the flame of a sudden and alterative attack of love---remained in Elmore, and prospered. He opened a shoe-store and secured a good run of trade.\n\nSocially he was also a success, and made many friends. And he accomplished the wish of his heart. He met Miss Annabel Adams, and became more and more capt...	\N	\N	1478	2025-07-20 12:06:33.803	2025-07-21 18:09:57.431	\N	1	en	1
+16	A Cosmopolite in a Café	O. Henry	In a bustling midnight café, the narrator encounters E. Rushmore Coglan, a self-proclaimed cosmopolite, who engages in a deep conversation about the true essence of being a cosmopolitan. Coglan defines a cosmopolite as someone who feels at home everywhere, without ties to any specific location, and maintains an indifference to their surroundings. The discussion, filled with philosophical insights and personal anecdotes, stretches into the early morning, leaving the narrator intrigued by Coglan's perspective. As they part ways, Coglan heads off to his next engagement, exemplifying his cosmopolitan lifestyle.	At midnight the café was crowded. By some chance the little table at which I sat had escaped the eye of incomers, and two vacant chairs at it extended their arms with venal hospitality to the influx of patrons.\n\nAnd then a cosmopolite sat in one of them, and I was glad, for I held a theory that since Adam no true citizen of the world has existed. We hear of them, and we see foreign labels on much luggage, but we find travellers instead of cosmopolites.\n\nI invoke your consideration of the scene—the marble-topped tables, the range of leather-upholstered wall seats, the gay company, the ladies dressed in demi-state toilets, speaking in an exquisite visible chorus of taste, economy, opulence or art; the seductive outpouring of light and wine, the dim suggestions of stately retinues and princely chambers conveyed by that most romantic of fruits, the great, pyriform, melting, and luscious pear. The cosmopolite was named E. Rushmore Coglan, and he will be heard from next summer at Coney Island. It was not past eleven when he came in, and he apologized for being late, explaining that he had been detained by a poker game at a friend's house. His voice was as intimate as the rustle of sheets, and he dropped easily into a chair by my side, and, filling his glass from my bottle, won his way artfully into my liking with flattering comments upon the brand of my wine and a disagreeable story about two judges who had stolen a goose from a widow in New Jersey.\n\nAs we talked we discussed many subjects, moving easily from topic to topic, but always returning to the question of cosmopolitanism, a theme which seemed to possess Mr. Coglan with a peculiar charm and fascination.\n\n"Now, to settle once for all," he said, animatedly, "let us define our terms. What is your idea of a cosmopolite, Mr. Arden?"\n\nI said something about the Brotherhood of Man, a subject upon which I am wont to be eloquent.\n\n"Exactly," said Coglan, interrupting, "but that is not it. The true cosmopolite will go much further than that. You want to know what my definition of a cosmopolite is; it's this: one who is at home even in places where he finds himself most foreign. That is my definition."\n\n"Interesting," I said. "But it strikes me that a genuine cosmopolite must be a citizen of the world without a permanent address. Don't you think so?"\n\n"My dear sir," said Coglan, with heat, "you are right, per se. But your mistake lies in your failure to note the second qualification necessary to the existence of the true cosmopolite. And that qualification is unconcern. He must be absolutely indifferent to where he is, and with whom he is. The moment he begins to make comparisons, to contrast the foreign with the familiar, he has lost his savor. He is as much out of place as a violin at a hoedown. For instance, I am in New York; but I am not a New Yorker. I am here today and gone tomorrow. Chance has brought me here; necessity will take me away. I am a cosmopolite. I make Rome my home or else wander to the farthest Indies. Another glass of this excellent claret!"\n\nTogether we finished the bottle, and called for another. Even the cosmopolite's enthusiasm for his theory did not make him monotonous. To-night he was more interesting than I had ever found him—he enlarged upon his theme.\n\n"Think of the thousands and thousands of persons," he said, "who have lived and died, who never knew the delights of a blue-point oyster. They have never heard of such a thing. Millions of them have never seen a monkey-wrench or a locomotive. They are dead and gone without ever having had a chance to see the world. What would you call them?"\n\n"I should call them unfortunate," I answered, "but not necessarily non-cosmopolites."\n\n"You are wrong," said Coglan, warmly. "They were the true cosmopolites. What is it to see the world? Nothing. But to be a cosmopolite is everything."\n\nHis ideas attracted me. We sat talking until daylight, and as I listened, I began to feel more and more that there was much reason in what he said, so much that I had not the heart to argue with him.\n\nFinally, he stood up, and reached for his coat.\n\n"Where are you off to now?" I asked.\n\n"To meet the 7:15 train," he said. "I have an engagement at Westbury at 8:30."\n\n"And you are going to walk?" I exclaimed.\n\n"Sure," he replied. "It's only six miles. Good exercise. Good morning."\n\nI watched him as he stepped briskly down the street. Yes, he was a cosmopolite—a citizen of the world.	\N	\N	795	2025-07-20 13:36:03.994	2025-08-06 00:02:24.733	\N	1	en	\N
+8	A Retrieved Reformation	O. Henry	Jimmy Valentine, a skilled safecracker, is released from prison with a pardon from the governor after serving ten months of a four-year sentence. Despite the warden's advice to reform, Jimmy immediately returns to his criminal activities, retrieving his specialized burglary tools from a hidden location. He resumes his life of crime under the guise of a respectable businessman, committing several successful burglaries. However, his past catches up to him as detective Ben Price begins to track his movements, recognizing the unique methods used in the recent burglaries. Jimmy's life takes an unexpected turn when he arrives in Elmore, Arkansas, and encounters Annabel Adams, a young lady whose presence challenges his criminal identity.	A guard came to the prison shoe-shop, where Jimmy Valentine was assiduously stitching uppers, and escorted him to the front office. There the warden handed Jimmy his pardon, which had been signed that morning by the governor. Jimmy took it in a tired kind of way. He had served nearly ten months of a four-year sentence. He had expected to stay only about three months, at the longest. When a man with as many friends on the outside as Jimmy Valentine had is received in the "stir" it is hardly worth while to cut his hair.\n\n"Now, Valentine," said the warden, "you'll go out in the morning. Brace up, and make a man of yourself. You're not a bad fellow at heart. Stop cracking safes, and live straight."\n\n"Me?" said Jimmy, in surprise. "Why, I never cracked a safe in my life."\n\n"Oh, no," laughed the warden. "Of course not. Let's see, now. How was it you happened to get sent up on that Springfield job? Was it because you wouldn't prove an alibi for fear of compromising somebody in extremely high-toned society? Or was it simply a case of a mean old jury that had it in for you? It's always one or the other with you innocent victims."\n\n"Me?" said Jimmy, still blankly virtuous. "Why, warden, I never was in Springfield in my life!"\n\n"Take him back, Cronin!" said the warden, "and fix him up with outgoing clothes. Unlock him at seven in the morning, and let him come to the bull-pen. Better think over my advice, Valentine."\n\nAt a quarter past seven on the next morning Jimmy stood in the warden's outer office. He had on a suit of the villainously fitting, ready-made clothes and a pair of the stiff, squeaky shoes that the state furnishes to its discharged compulsory guests. The clerk handed him a railroad ticket and the five-dollar bill with which the law expected him to rehabilitate himself into good citizenship and prosperity. The warden gave him a cigar, and shook hands. Valentine, 9762, was chronicled on the books "Pardoned by the Governor," and Mr. James Valentine walked out into the sunshine.\n\nDisregarding the song of the birds, the waving green trees, and the smell of the flowers, Jimmy headed straight for a restaurant. There he tasted the first sweet joys of liberty in the shape of a broiled chicken and a bottle of white wine---followed by a cigar a grade better than the one the warden had given him. From there he proceeded leisurely to the depot. He tossed a quarter into the hat of a blind man sitting by the door, and boarded his train. Three hours set him down in a little town near the state line. He went to the café of one Mike Dolan and shook hands with Mike, who was alone behind the bar.\n\n"Sorry we couldn't make it sooner, Jimmy, me boy," said Mike. "But we had that protest from Springfield to buck against, and the governor nearly balked. Feeling all right?"\n\n"Fine," said Jimmy. "Got my key?"\n\nHe got his key and went upstairs, unlocking the door of a room at the rear. Everything was just as he had left it. There on the floor was still Ben Price's collar-button that had been torn from that eminent detective's shirt-band when they had overpowered Jimmy to arrest him.\n\nPulling out from the wall a folding-bed, Jimmy slid back a panel in the wall and dragged out a dust-covered suitcase. He opened this and gazed fondly at the finest set of burglar's tools in the East. It was a complete set, made of specially tempered steel, the latest designs in drills, punches, braces and bits, jimmies, clamps, and augers, with two or three novelties invented by Jimmy himself, in which he took pride. Over nine hundred dollars they had cost him to have made at --- a place where they make such things for the profession.\n\nIn half an hour Jimmy went downstairs and through the café. He was now dressed in tasteful and well-fitting clothes, and carried his dusted and cleaned suitcase in his hand.\n\n"Got anything on?" asked Mike Dolan, genially.\n\n"Me?" said Jimmy, in a puzzled tone. "I don't understand. I'm representing the New York Amalgamated Short Snap Biscuit Cracker and Fraction Company."\n\nThis statement delighted Mike to such an extent that Jimmy had to take a seltzer-and-milk on the spot. He never touched "hard" drinks.\n\nA week after the release of Valentine, 9762, there was a neat job of safe-burglary done in Richmond, Indiana, with no clue to the author. A scant eight hundred dollars was all that was secured. Two weeks after that a patented, improved, burglar-proof safe in Logan sport was opened like a cheese to the tune of fifteen hundred dollars, currency; securities and silver untouched. That began to interest the rogue-catchers. Then an old-fashioned bank-safe in Jefferson City became active and threw out of its crater an eruption of bank-notes amounting to five thousand dollars. The losses were now high enough to bring the matter up into Ben Price's class of work. By comparing notes, a remarkable similarity in the methods of the burglaries was noticed. Ben Price investigated the scenes of the robberies, and was heard to remark:\n\n"That's Dandy Jim Valentine's autograph. He's resumed business. Look at that combination knob---jerked out as easy as pulling up a radish in wet weather. He's got the only clamps that can do it. And look how clean those tumblers were punched out! Jimmy never has to drill but one hole. Yes, I guess I want Mr. Valentine. He'll do his bit next time without any short-time or clemency foolishness."\n\nBen Price knew Jimmy's habits. He had learned them while working up the Springfield case. Long jumps, quick getaways, no confederates, and a taste for good society---these ways had helped Mr. Valentine to become noted as a successful dodger of retribution. It was given out that Ben Price had taken up the trail of the elusive cracksman, and other people with burglar-proof safes felt more at ease.\n\nOne afternoon Jimmy Valentine and his suitcase climbed out of the mail-hack in Elmore, a little town five miles off the railroad down in the black-jack country of Arkansas. Jimmy, looking like an athletic young senior just home from college, went down the board side-walk toward the hotel.\n\nA young lady crossed the street, passed him at the corner, and entered a door over which was the sign "The Elmore Bank." Jimmy Valentine looked into her eyes, forgot what he was, and became another man. She lowered her eyes and coloured slightly. Young men of Jimmy's style and looks were scarce in Elmore.\n\nJimmy collared a boy that was loafing on the steps of the bank as if he were one of the stockholders, and began to ask him questions about the town, feeding him dimes at intervals. By and by the young lady came out, looking royally unconscious of the young man with the suitcase, and went her way.\n\n"Naw," said the boy, "she's Annabel Adams. Her pa owns this bank. What'd you come to Elmore for? Is that a gold watch-chain? I'm going to get a bulldog. Got any more dimes?"\n\nJimmy went to the Planters' Hotel, registered as Ralph D. Spencer, and engaged a room. He leaned on the desk and declared his platform to the clerk. He said he had come to Elmore to look for a location to go into business. How was the shoe-business, now, in the town? He had thought of the shoe-business. Was there an opening?\n\nThe clerk was impressed by the clothes and manner of Jimmy. He himself was something of a pattern of fashion to the thinly gilded youth of Elmore, but he now perceived his shortcomings. While trying to figure out Jimmy's manner of tying his fourin-hand he cordially gave information.\n\nYes, there ought to be a good opening in the shoe line. There wasn't an exclusive shoe-store in the place. The dry-goods and general stores handled them. Business in all lines was fairly good. Hoped Mr. Spencer would decide to locate in Elmore. He would find it a pleasant town to live in, and the people very sociable.\n\nMr. Spencer thought he would stop over in the town a few days and look over the situation. No, the clerk needn't call the boy. He would carry up his suitcase, himself; it was rather heavy.\n\nMr. Ralph Spencer, the phoenix that arose from Jimmy Valentine's ashes---ashes left by the flame of a sudden and alterative attack of love---remained in Elmore, and prospered. He opened a shoe-store and secured a good run of trade.\n\nSocially he was also a success, and made many friends. And he accomplished the wish of his heart. He met Miss Annabel Adams, and became more and more capt...	\N	\N	1478	2025-07-20 12:06:33.803	2025-08-05 23:58:27.017	\N	1	en	1
+11	A Chaparral Christmas Gift	O. Henry	Set in the evolving ranching community of Los Pinos, the story contrasts the changing values between generations of settlers. The original settlers were fighters who claimed the land through conflict, while their descendants, more settled and less combative, enclosed their lands with wire fences, symbolizing a shift from conquest to cultivation. The narrative focuses on old Ramon Torres, the current owner of a large ranch, who is humorously confronted with offers to buy more wire fencing, despite his visible disdain for it. His interactions with a young salesman and Rosita, a neighboring rancher's daughter, lead to a reconsideration of the fences' impact on community and landscape. The story culminates in a decision that reconnects the community, reflecting a blend of old values and new realities.	The original first settlers of Los Pinos had been men of the vicarious, or fighting, class. They were of the opinion that the earth belonged to them and to whatsoever posterity they might beget. Time, with his innumerable sleight-of-hand tricks, had never taught them that the earth invariably wins the game.\n\nThe sons of the pioneers were a different breed. Their fathers had fought for the land, and had won it. The sons built wire fences around it, and ploughed it, and increased its value. But the fighting edge had been blunted in the pioneers' sons.\n\nLos Pinos was now a ranch of a thousand acres, owned by one man. The house in which he lived was built of adobe, low, with a wide veranda, and a garden of semitropic plants and shrubs. But from the rear one could look out upon a broad expanse of lesser ranches and see at a glance the outward changes that had come with the second generation.\n\nAmong other innovations the wire fence had been introduced. This was a grievance so bitter that it extended back from the second generation to the first. The old men riding by stopped to rail at it; they lashed their horses with their quirts when they were forced to turn and detour around its insurmountable stretches. They attacked it with knives and pistols, mutilating it, and filling its interstices with vain bullets and impotent curses.\n\nOne afternoon a young man rode through the old, weather-beaten gate of Los Pinos, and dismounted at the door of the ranch house. He was dressed in the garb of the cowpuncher, and seemed to find some difficulty in making his errand known. Old Ramon Torres, owner of Los Pinos, came out to him, chewing a straw, and exhibiting a polite interest.\n\n"I was riding by," said the young man, hesitatingly, "and I thought I'd stop in. Maybe you might want to buy some good wire fencing. I've got a sample here in my pocket."\n\nOld Ramon plucked the straw from his mouth, and his jaws ceased to masticate.\n\n"Wire fencing!" he shouted, with a sudden, grim humour. "Wire fencing! And you stop at Los Pinos with it! Wire fencing!"\n\nHe threw his head back, and laughed harshly and loudly.\n\n"Come here, sir," he said, finally, controlling his mirth. "Step this way, if you please."\n\nHe led the way to the rear of the house, and pointed to a stretch of landscape amply provided with wire fencing.\n\n"Look at that," he said, waving his hand. "Wire fencing! And you come here to sell me wire fencing! My friend, excuse these tears."\n\nHe walked to the corner of the house, and bestowed a kick upon a saddle that lay there, overturning it.\n\n"Wire fencing!" he muttered, as he walked back to the young man.\n\nThe young man had turned a little pale.\n\n"I didn't know," he said, "that you had so much already. I thought maybe you might want some more."\n\n"More!" shouted old Ramon. "More wire fencing! Look here, sir."\n\nHe took the young man by the arm, and led him to the end of the porch.\n\n"You see that enclosure?" he asked. "Well, that's where I keep my dogs. And do you know what I'm going to do with those dogs some day? I'm going to turn them loose along the road, and the first man that comes along trying to sell me wire fencing, I'm going to set the dogs on him. Wire fencing!"\n\nThe young man mounted his horse and rode away.\n\nOld Ramon sat down on the porch, and laughed until he cried.\n\nAnd then, suddenly, he ceased laughing, and his face grew grave.\n\nHe had seen a little cloud of dust rising far down the road. He knew it was the sign of a rider, and he waited, watching it with narrowed eyes.\n\nThe rider came on, became more distinct, and now he was near enough for Ramon to see that it was a woman who rode. She was young, and rode astride, and managed her horse with ease and grace. Ramon knew her well. It was Rosita, the daughter of old man Garcia, who owned the next ranch. Now, what could Rosita be coming to Los Pinos for?\n\nAs she drew near, Ramon went down to the gate to meet her.\n\n"Good-day, Señorita," he said, lifting his hat. "And what brings you to Los Pinos?"\n\n"I came," said Rosita, looking at him with her big, dark eyes, "to see if you had any wire fencing to sell."\n\nRamon felt for the moment as if the earth were giving way beneath his feet.\n\n"Wire fencing!" he gasped.\n\n"Yes," said Rosita, smiling. "We are needing some at our ranch, and I thought, perhaps, you might have some to spare."\n\nRamon recovered himself, and bowed.\n\n"I shall be most happy," he said, "to let you have all that you need. But come in, Señorita, and rest yourself. You must be tired after your ride."\n\nRosita dismounted, and Ramon led her horse away to the stable. When he returned, he found her seated on the porch, fanning herself with her sombrero.\n\nRamon sat down beside her, and they began to talk. And as they talked, Ramon's eyes were often upon the wire fencing, and he thought deeply.\n\nAnd by and by he said:\n\n"Señorita, it is true that I have much wire fencing, as you see. But I have been thinking that perhaps it would be better to do away with it altogether. It is ugly, and it mars the beauty of the landscape. And it is not hospitable, or neighbourly. What do you think, Señorita?"\n\n"I think," said Rosita, slowly, "that it would be a good idea."\n\nAnd so it came about that the wire fencing at Los Pinos was gradually removed, and the old, hospitable, neighbourly life of the ranch was resumed. And in time, Rosita came to be the mistress of Los Pinos, and brought with her the gentleness and the grace that had been somewhat lacking.\n\nAnd old Ramon was content. He had lost his wire fencing, but he had gained something better. And sometimes, when he saw the young men and the young women riding together, and heard their laughter and their happy voices, he would say to himself that the old times were not so bad, after all.\n\nAnd the wire fencing was never missed.	\N	\N	1070	2025-07-20 13:02:34.792	2025-08-06 12:01:09.048	\N	1	en	\N
+13	The Last Leaf	O. Henry	In a quaint district near Washington Square, two artist friends, Johnsy and Sue, share a studio in a lively artist community. The story unfolds in late autumn as Johnsy battles pneumonia, convinced her fate is tied to the ivy leaves falling outside her window. She believes she will die when the last leaf falls. Sue, desperate to save her friend, tries to distract her and instill hope. Amidst this poignant vigil, the narrative explores themes of friendship, hope, and the power of art.	In a little district west of Washington Square the streets have run crazy and broken themselves into small strips called "places." These "places" make strange angles and curves. One Street crosses itself a time or two. An artist once discovered a valuable possibility in this street. Suppose he should paint a picture of Madison Square Garden on a wet night. But no, the public would not have it. It was too easy; they could not understand his work.\n\nThe painter had been living in a three-story brick house. The house was more than a studio. It was an art club, a meeting place for those who loved art. Johnsy and Sue were friends who lived in the top flat of the house. Johnsy was familiar for Joanna. Sue was familiar for Susan. They had met at the table d'hote of an Eighth Street "Delmonico's," and found their tastes in art, chicory salad and bishop sleeves so congenial that the joint studio resulted.\n\nThat was in May. In November a cold, unseen stranger, whom the doctors called Pneumonia, stalked about the colony, touching one here and there with his icy fingers. Over on the east side this ravager strode boldly, smiting his victims by scores, but his feet trod slowly through the maze of the narrow and moss-grown "places."\n\nJohnsy lay, scarcely making a ripple under the bedclothes, with her face toward the window. Sue, who had been trained as a nurse in her hometown, had many opportunities to practice her profession since Johnsy fell ill. The doctor had been in to see his patient that day and had said that she had a fighting chance if she wanted to live.\n\n"She has one chance in—let us say, ten," he had said, as he shook down the mercury in his clinical thermometer. "And that chance is for her to want to live. This way people have of lining-up on the side of the gravedigger makes the entire pharmacopoeia look silly. Your little lady has made up her mind that she's not going to get well. Has she anything on her mind?"\n\n"She—she wanted to paint the Bay of Naples some day," said Sue.\n\n"Paint?—bosh! Has she anything on her mind worth thinking twice—a man for instance?"\n\n"A man?" said Sue, with a jew's-harp twang in her voice. "Is a man worth—but, no, doctor; there is nothing of the kind."\n\n"Well, it is the weakness, then," said the doctor. "I will do all that science, so far as it may filter through my efforts, can accomplish. But whenever my patient begins to count the carriages in her funeral procession I subtract 50 per cent from the curative power of medicines. If you will get her to ask one question about the new winter styles in cloak sleeves I will promise you a one-fifth of a chance for her, instead of one-tenth."\n\nWhen the doctor had gone Sue went into the workroom and cried a Japanese napkin to a pulp. Then she swaggered into Johnsy's room with her drawing board, whistling ragtime.\n\nJohnsy lay with her face toward the window. Sue stopped whistling, thinking she was asleep.\n\nShe arranged her board and began a pen-and-ink drawing to illustrate a magazine story. Young artists must pave their way to Art by drawing pictures for magazine stories that young authors write to pave their way to Literature.\n\nAs Sue was sketching a pair of elegant horse-show riding trousers and a monocle on the figure of the hero, an Idaho cowboy, she heard a low sound, several times repeated. She went quickly to the bedside.\n\nJohnsy's eyes were open wide. She was looking out the window and counting—counting backward.\n\n"Twelve," she said, and a little later "eleven"; and then "ten," and "nine"; and then "eight" and "seven," almost together.\n\nSue looked solicitously out of the window. What was there to count? There was only a bare, dreary yard to be seen, and the blank side of the brick house twenty feet away. An old, old ivy vine, gnarled and decayed at the roots, climbed half way up the brick wall. The cold breath of autumn had stricken its leaves from the vine until its skeleton branches clung, almost bare, to the crumbling bricks.\n\n"What is it, dear?" asked Sue.\n\n"Six," said Johnsy, in almost a whisper. "They're falling faster now. Three days ago there were almost a hundred. It made my head ache to count them. But now it's easy. There goes another one. There are only five left now."\n\n"Five what, dear? Tell your Sudie."\n\n"Leaves. On the ivy vine. When the last one falls I must go, too. I've known that for three days. Didn't the doctor tell you?"\n\n"Oh, I never heard of such nonsense," complained Sue, with magnificent scorn. "What have old ivy leaves to do with your getting well? And you used to love that vine so, you naughty girl. Don't be a goosey. Why, the doctor told me this morning that your chances for getting well real soon were—let's see exactly what he said—he said the chances were ten to one! Why, that's almost as good as a sure thing! And here you are talking about ivy leaves and nonsense."\n\n"I know," said Johnsy, closing her eyes and lying white and still as a fallen statue; "because I know something, Sue. The last leaf stays on the vine, I will not leave this bed alive. I know it. I feel it. If there had been one leaf on when the last one fell I would have gotten well. But if the last one goes, I must go."\n\n"But what have old ivy leaves to do with your getting well? And you used to love that vine."\n\n"I tell you I know," said Johnsy, with eyes wide open. "I've been here for three days. Didn't you wonder why I was so still? I've been waiting for that last leaf to fall. I've watched it every moment. I know I will go with the last one. It's falling now. I'm tired of waiting. I'm tired of thinking. I want to turn loose my hold on everything, and go sailing down, down, just like one of those poor, tired leaves."\n\n"To be sure, I have my own ideas of artistic effect in such matters," said Sue, who was from Maine and had been brought up on codfish and beans. "But I couldn't stand to hear you say such things. You're not going to be silly enough to let a little leaf send you to the graveyard. Come now, I'll draw the curtain, and we'll just imagine that the last leaf has fallen. Then I'll draw you a picture of a nice vine with a thousand leaves on it, all fresh and green."\n\n"I want to see the last one fall before it gets dark. Then I'll go, too," said Johnsy, still looking out the window. "I want to see the last one fall. I'm tired of waiting."\n\n"But, dear," said Sue, "just think of how you used to love that vine. You loved it because it was a part of the view from this window. Now, you know that old vine can't bring you any bad luck."\n\n"I know," said Johnsy, "but it's weak, and it's old, and the storm last night was enough to pull it down. I know it's foolish, but I feel as if I'd go with the last leaf."\n\nSue looked out of the window. What she saw was not of much help to her in her fight for Johnsy's life. There was only one leaf left on the vine. It was a very old and very sickly-looking leaf. It hung bravely from a branch about twenty feet above the ground.\n\n"It is the last one," said Johnsy. "I thought it would surely fall during the night. I heard the wind. It will fall today, and I shall die at the same time."\n\n"Dear, dear!" said Sue, leaning her worn face down to the pillow, "think of me, if you won't think of yourself. What would I do?"\n\nBut Johnsy did not answer. The last leaf was still there.\n\nSue looked out of the window. It was a cold, bare, dreary yard below. But the leaf was still there.\n\nThe ivy leaf was still there.\n\nSue went to the table and brought a drawing board. She had been working on a pen-and-ink drawing that she wanted to finish. The drawing was of an old man with a long beard. His head was covered with a wide-brimmed hat. The old man was looking up at a vine covered with leaves. Sue called the drawing "Behrman's Masterpiece."\n\nShe looked out of the window. The leaf was still there. She went to Johnsy and said, "I have something to tell you, white mouse."\n\nJohnsy lay for a long time looking at her. Then she called her name "Sudie."\n\n"What is it, dear?" Sue asked.\n\n"I've been a bad girl, Sudie," said Johnsy. "Something has made that last leaf stay there to show me how wicked I was. It is a sin to want to die."\n\n"You may be right," said Sue, "in your half-delirious condition."\n\n"No," said Johnsy, with a smile. "I'm not delirious. I've been thinking. I think the last leaf is a message from God. It is wrong to want to die. I will try to eat now. But first bring me a looking glass, so that I can see myself."\n\nAnd then she said, "I want to see the last leaf. Is it still there?"\n\n"Yes," said Sue. "It is still there."\n\n"Then I'm not going to die," said Johnsy, sitting up in bed. "I'll get well. I'll try. And I'll eat. And I'll sleep. And I'll try to be happy."\n\n"You're a good girl," said Sue. "Try to sleep. I'll paint the ivy leaf and put it where you can see it every day. We'll keep it always."\n\n"I want to see the last leaf," said Johnsy. "I want to see it now."\n\nSue took her to the window and pointed out the leaf. "It is the last one," she said. "It is still there."\n\n"I'm so glad," said Johnsy. "I'm so glad."\n\nJohnsy's eyes were open wide. She was looking at the ivy leaf. Then she lay back on her pillow and smiled.\n\n"Something has made that last leaf stay there to show me how wicked I was," she said. "It is a sin to want to die."\n\nSue looked out of the window. The ivy leaf was still there.\n\nThen she went to Behrman's room. Behrman was an old, old artist who lived on the ground floor beneath them. He was past sixty and had a Michael Angelo's Moses beard curling down from the head of a satyr along the body of an imp. Behrman was a failure in art. For forty years he had always been about to paint a masterpiece, but had never yet begun it. He had been always about to paint a masterpiece and had never yet begun it. He was a fierce little old man who scoffed terribly at softness in anyone, and yet he was always ready to befriend young artists and to buy them brandy. He had been always about to paint a masterpiece and had never yet begun it. He scoffed at softness, but he was always ready to befriend young artists and to buy them brandy.\n\nSue found him in his room. He was in his shirt sleeves, with a great smudge of yellow paint on his right arm and a blue smudge on his left. He had been painting for twenty-four hours a day for several days. He had been painting the ivy leaf.\n\n"It is the last one," he said. "It is my masterpiece."\n\nHe was ill only two days. Pneumonia finished what its icy fingers had begun.\n\nAnd the day the last ivy leaf fell, they found him dead on the floor of his room.\n\nAnd then they found a lantern still lighted, and a ladder that had been dragged from its place, and some scattered brushes, and a palette with green and yellow colors mixed on it, and—look out the window, dear, at the last ivy leaf on the wall. Didn't you wonder why it never fluttered or moved when the wind blew? Ah, darling, it's Behrman's masterpiece—he painted it there the night that the last leaf fell.	\N	\N	2075	2025-07-20 13:29:00.7	2025-08-06 11:25:46.689	\N	1	en	\N
+9	A Blackjack Bargainer	O. Henry	In the small town of Bethel, nestled in the foothills of the Blue Ridge, Yancey Goree, a descendant of a once wealthy Virginia family, struggles with his failing law practice and dwindling finances. After his grand home burns down, he relocates to a decrepit brick office, surviving on the meager income from selling parcels of his ancestral land. His fortunes seem to revive slightly when Colonel Abner Coltrane, a respected figure, enters his office with a legal job to foreclose a mortgage on a widow's property, a task that conflicts with Goree's moral values. Torn between his desperate financial situation and his innate sense of chivalry, Goree faces a moral dilemma that challenges his integrity and sense of self.	The most disreputable thing in Yancey Goree's law office was Goree himself, sprawled in his creaky old arm-chair. The rickety little office, built of red brick, was set flush with the street—the main street of the town of Bethel. Bethel rested upon the foot-hills of the Blue Ridge. From the windows of the office, one could see the rugged, gray crags of the mountains looming distinctly against the blue Southern sky. Bethel was a "hum" of considerable importance in the State; her principal industries being the manufacture of cotton and religion. The Court House and the Lord's House lifted their domes high above the other public buildings; and the chimneys of the cotton mills touched the low clouds with fingers grimy with the smoke of labor.\n\nBut the room seemed to deny that it was an office. Books of law there were none. One or two old chairs, a pine table, a wall calendar advertising a patent medicine, and a cast-iron stove from whose isinglass sides flickered the light of a wood fire—these things made up its appointments. On the table lay a few old newspapers, some legal blanks, and an inkstand with a dry sponge in it. The floor was covered with a green carpet, threadbare and ragged. In one corner stood a small safe with the door ajar. The safe was empty, and the door swung open, squeaking dolorously each time the draft moved it.\n\nYancey Goree was a descendant of the Gorees of Virginia. He had inherited the old Goree homestead in Bethel, where, until a few years previous, he had lived in baronial style, entertaining the countryside with a liberal hand. But the old house had burned down, and Yancey had taken to the practice of law to retrieve his fallen fortunes. This he had not accomplished, for Yancey had the besetting weakness of the Gorees, which was to wait for dead men's shoes. He had waited for them so long that his creditors had grown tired of waiting longer themselves.\n\nHis only remaining piece of property was the old brick office, originally built for a warehouse when Bethel had a river trade, and now but little better than a ruin. No clients came to seek professional services. Yancey's friends were not the kind that needed legal advice. They were more apt to seek the back room of Ben Tatum's saloon, which was entered by a side door and contained a "sideboard" and two tables for stud and draw poker.\n\nThe money derived from the occasional sale of a piece of the old Goree land barely paid for his liquor and tobacco. His credit was no longer good at the stores. It was at the lowest ebb of his fortunes that Goree had the luck to make a ten strike—in vulgar parlance. It was what the local newspapers would have called a "romantic episode" had they dared to chronicle it.\n\nOne day Goree was sitting in his office half asleep. He had been on a week's spree at Ben Tatum's, and was drowsing away the aftermath. Suddenly he was aware of a tall, elderly gentleman standing inside the door—a fine figure of a man, with a white mustache and piercing eyes. Goree knew him well. It was Colonel Abner Coltrane, of the town of Laurel, thirty miles away—a lawyer, a planter, a gentleman of the old school, who had never before acknowledged the fallen Yancey by so much as a nod or a lift of the eyebrows.\n\n"Good morning," said Colonel Coltrane, with formal politeness. "I have a matter of business that I hope you can arrange for me."\n\nGoree rose to his feet, leaning heavily upon the table. He was a tall man, heavily built, with a face too intelligent and too spiritual for his surroundings. His eyes were large and mild; his hair was a vehement red; and his clothes were much the worse for wear.\n\n"I hope so, Colonel," he said, with a tremor in his voice. "It would be a pleasure to attend to anything in the line of business you might entrust to me."\n\n"I wish you to foreclose a mortgage on a small piece of property down here," said the Colonel, laying a legal-looking document on the table. "The papers are all drawn. I have only to ask you to attend to the details."\n\nGoree's fingers trembled as he took the paper. His sensations were those of a man who, about to starve, sees food denied him by a locked glass door. Here was business, and he needed it; but the thought of foreclosing on a piece of property was repugnant to him. His extravagant Southern chivalry recoiled at the thought.\n\n"I suppose," he said, hesitatingly, to the Colonel, "that there is no chance for the owner to redeem?"\n\n"I am afraid not," said the Colonel, coldly. "My client is not in a position to trifle with his rights or his legal remedies. The time is up to-morrow. I cannot give the owner any more grace."\n\nGoree sat down and buried his face in his hands. After a while he rose up and shook himself like a great mastiff, and a new light came into his faded eyes.\n\n"It shall be done," he said, firmly. "I will attend to it at once."\n\n"I will send my man around with the money to-morrow," said the Colonel. "And now, Mr. Goree, I will bid you good morning."\n\nWhen the Colonel was gone, Goree took the paper, and ran his eye over it. His practice had been none too lucrative, and he was unfamiliar with the latest laws and decisions. He had been "going to" subscribe to a law journal, but had put it off.\n\nThe property owner was a widow—a Mrs. Ramsey, who lived in a little white cottage some distance down the mountain side. The amount of the mortgage was $400.\n\nGoree put on his hat and walked out into the sunshine. The fresh air revived him. He looked at the mountains thoughtfully. There was a time when he would have ridden fifty miles for the sake of a lady in distress. But that—was long ago. Now, he was hurrying to take from a widow her little all.\n\nHe walked rapidly in the direction of Mrs. Ramsey's cottage. When he reached it, he found her chopping wood in the back yard. She was a frail figure, dressed in a faded calico dress, with a sunbonnet hanging down her back. Her face was thin and worn, and she looked as if she might be ill.\n\n"Good morning, Mrs. Ramsey," said Goree, lifting his hat. "I am sorry to disturb you, but I have a painful duty to perform."\n\nMrs. Ramsey leaned her ax against a tree, and wiped her forehead with the back of a sunburnt hand.\n\n"Lawyer Goree, I reckon it's about that mortgage. I've been expecting you."\n\n"Yes," said Goree, "it is. I must ask you to prepare to vacate. The property must be sold."\n\nThe woman looked at him with a sudden flash of anger in her eyes.\n\n"And you can come here," she said, "and tell me this to my face! My God! have men got no more heart than that? I've worked—oh, how I've worked to keep the home together, and now to have it taken away!"\n\nGoree's face was white. He hated himself for what he was doing.\n\n"I am sorry—more sorry than I can tell you," he said, huskily. "But it is not my wish—it is the law."\n\nThe woman's eyes softened. Goree saw the tears come into them, and he turned his head away.\n\n"I can't help it, Lawyer Goree," she said, "I must say it. It's hard—it's cruel. I had hoped till the last that something would turn up. But I'll go. When must I leave?"\n\n"The sale will take place in three days," said Goree. "I advise you to make arrangements as soon as possible. I must now go back to the office and attend to the necessary details."\n\nHe left her standing by the woodpile, and strode away, with his head high, but with a heart heavy as lead.\n\nAs he walked, he began to think rapidly. By the time he had reached the office, he had made up his mind. He went quickly inside, to the safe, unlocked it, and took out a thin, old-fashioned gold watch. From the back of the watch he pried out with his knife an old daguerreotype of his mother, taken when she was a young girl. He wrapped the picture carefully in a piece of paper, and put it in his pocket. Then he closed the safe, and went out again into the street.\n\nHe went straight to Ben Tatum's saloon. He found Ben at his favorite occupation of dozing behind the bar.\n\n"Hello, Yancey," said Ben, drowsily. "What's new?"\n\n"I want to see you, Ben," said Goree, seriously. "I want to talk to you about a business matter."\n\n"All right," said Ben, becoming instantly alert. "Come into the back room."\n\nWhen they were seated at the table, Goree began, without preamble:\n\n"Ben, I want to raise some money—"\n\nThe saloon-keeper's face hardened.\n\n"That's funny," he interrupted. "So do I."\n\n"I've got to have it," continued Goree, doggedly. "It's to save somebody else, not myself. I've got a gold watch there. It's worth a hundred dollars easy."\n\nBen took the watch and looked at it critically.\n\n"I'll loan you fifty on it," he said, after a close inspection.\n\n"I'll take it," said Goree, pressing his lips together. "And I want it quick. I've got to have it to-day."\n\n"You shall have it," said Ben, writing out a check for the amount. "I'll take the watch. When will you redeem it?"\n\n"I don't know," said Goree, slowly. "Maybe—never. I don't know."\n\nAfter he had received the money, Goree went straight to the bank and deposited it to his account. Then he returned to his office and wrote a check for $400. He enclosed it in a letter to Colonel Coltrane, and sent it by a messenger.\n\nThen he sat down to wait. He felt that he had done what he could to atone for the wrong he was committing. But he was not happy about it. He knew that he had only put off the evil day.\n\nThe next morning Colonel Coltrane's man came with the money for the foreclosure. Goree took it and gave him a receipt. Then he went to Mrs. Ramsey's and told her that she could remain in her home.\n\nThe widow's face was a study. Joy, incredulity, and a premonition of trouble struggled for the mastery.\n\n"Do you mean, Mr. Goree," she asked, trembling, "that I don't have to leave my home?"\n\n"You do not," said Goree. "The mortgage is lifted. You are free from debt."\n\nThe woman broke down and wept. Goree turned away his head. When she could speak, she said:\n\n"Oh, sir, how can I ever thank you? It seems like you have been sent by Providence to help me. I had lost all hope. How can I ever thank you?"\n\n"Don't try," said Goree, gruffly. "It wasn't for your sake. It was a debt I owed to—to—well, to myself. I couldn't see you turned out. I'll send somebody around to attend to the transfer of the property."\n\nWhen he left the widow's cottage, Goree went straight to the saloon. He found Ben Tatum wiping his bar.\n\n"Ben," he said, "I want to buy back that watch."\n\n"Your credit's good," said Ben, "but the watch is gone."\n\n"Gone!" exclaimed Goree, with a sinking heart.\n\n"Yes," said Ben. "I sold it last night to a man from Atlanta. He took a fancy to it, and offered me double what I gave you. I couldn't turn down a bargain like that."\n\nGoree said nothing, but walked out of the saloon. He felt that he had indeed made a bargain with fate, and had lost. But he was not sorry. He had saved the widow's home, and that was something. He could not have borne to see her turned out. He had done what he could, and he was satisfied.\n\nThat night Yancey Goree took the train for the West, with the intention of losing himself and forgetting—something he had never succeeded in doing before.	a-blackjack-bargainer	\N	2055	2025-07-20 12:15:23.027	2025-08-06 00:23:30.395	\N	1	en	1
+10	A Call Loan	O. Henry	In a tale that begins with a philosophical musing on geometry and life, two friends, the narrator and Billy Winthrop, encounter a desperate woman in a dimly lit city district. After dining at the Bachelors' Club and engaging in lively discussions, they walk through a neighborhood of small shops where they meet a ragged woman who begs for help. Winthrop, moved by her plight, mistakenly gives her a ten-dollar bill instead of one. Realizing the error, he devises a plan to recover his money by tracking the bill through local shopkeepers. The scheme leads them to the woman's abode, revealing her dire circumstances and prompting a reflection on the impact of their actions, ultimately leaving the money with her as they confront the unintended consequences of their adventure.	At the hazard of wearying you this tale of vehement emotions must be prefaced by a discourse on geometry.\n\nNature moves in circles; Art in straight lines. The natural is rounded; the artificial is made up of angles. A man lost in the snow wanders, in spite of himself, in perfect circles; the city man's feet, denaturalized by rectangular streets and floors, carry him ever away from himself. The round eyes of childhood typify innocence; the narrowed line of the flirt's optic proves the invasion of art. The horizontal mouth is the mark of determined cunning; who has not read Nature's most spontaneous lyric in lips rounded for the candid kiss? Our ancestors lived in round huts and fought in the open; we square off into brick boxes, and intrigue in the heart of closets. The beasts, birds, and fishes whose guile is straightforward, and whose motion is in curves, are passing away. We are hedging them 'round with the right angle of civilization and the ninety-degree fence.\n\nBut, after all, this is an oblong story, and we must not make it too circular.\n\nSo, after this prelude, we will back to our lamb chops and mint sauce.\n\nI was to dine at the Bachelors' that evening with Billy Winthrop, and I was late. I had been to see a man about a dog, and the dog was slow in deciding. When I reached the club, Winthrop had left word that he had gone over to the St. James, and for me to follow.\n\nI found him at a table with some others of our set, and we dined hilariously and well. Afterward, we drifted into one of those discussions of things in general that begin amiably and end in smoke. At twelve o'clock, we were well fortified with reason and hoarded opinions, and Winthrop and I left the others and went out for a stroll.\n\nWe walked without choosing a way. Our course led us through a district of small shops in a neighbourhood not yet redeemed from the early disrepute of the city's first spreading. Here and there a late-working tradesman yet lingered, loath to leave his work. The streets were lighted dimly by infrequent lamps, and by the faint radiance diffused from the lighted windows of the shops.\n\nSuddenly, from a dark alley that we were passing, there sprang with a bound and a fierce cry a figure, gaunt, ragged, and terrible. With a hollow voice it cried to us for alms. I felt my ever-ready dime, that I keep for such occasions, leap and tremble in my pocket, but I restrained it. Then the figure darted from the shadow of the alley, and a stream of light from a nearby lamp fell upon it, and we saw that it was a woman.\n\nShe was young, and not without a suggestion of comeliness in her wasted form. Her hair, thick and gold, rioted beneath an old bonnet. Her eyes were wild and bright, and her face was drawn and white. She repeated her piteous cry for help, holding out a thin hand that trembled like a wind-blown leaf.\n\nBilly Winthrop is susceptible, as are all men who are worth a sou, to certain influences. Among these are bright eyes in distress, good music, burnt cork comedy, mothers' meetings, and the hoarse paging of his name in a hotel lobby. He drew out a dollar bill and pressed it into her hand. The woman seized it with a quick cry of joy that was half a sob, and then turned and fled back like a ghost into the impenetrable shadows of her alley.\n\nWinthrop and I walked on without speaking. I was wondering if the lamb chops at the Bachelors' had been as good as usual, and Winthrop was no doubt pondering on some way to evade the extra expense that his susceptible heart had brought upon him.\n\nWe had gone a little way when he suddenly stopped and exclaimed:\n\n"By George! I've made a mistake. That was a ten-dollar bill I gave that woman."\n\n"Ten dollars!" said I. "It was worth a dollar to see her wolfish snatch at it and the grin she gave us from the shadow. You'll never see it again."\n\n"I don't know about that," said Winthrop, thoughtfully. "I believe I'll get it back."\n\n"How?" I asked.\n\n"I'll advertise it," said he. "Lost, ten dollars. If the finder will return it, he can keep the change."\n\nWe laughed at Winthrop's joke, and I left him at the corner of his street and walked on to my apartment, where I found a man waiting for me with a note. It was from Winthrop, and it said:\n\n"Come back to the St. James. I've got a scheme to get my ten dollars back."\n\nI was tired, but I was younger then than now, and the word "scheme" had a lure. I went back to the St. James.\n\nWinthrop was waiting for me with his hat and coat on.\n\n"We'll get that ten back easy," he said, confidently, as we left the hotel. "I've been thinking it over. Here's the plan: We know about where she lives. She'll be sure to have that bill changed tomorrow. Now, we can get next to all the shopkeepers in that neighbourhood and explain. They'll all know that bill. They'll call us up when it's presented, and we'll go around and talk to the lady."\n\nI was doubtful, but Winthrop's enthusiasm was contagious, and we started out on his wild-goose chase. We visited every shop in the neighbourhood and explained our scheme to the shopkeepers. They all agreed to notify us when the bill was presented.\n\nThe next day I received a message at my office that the bill had been passed at a grocery store. I hurried to the place. Winthrop was already there, talking to the grocer.\n\nThe grocer told us that the bill had been given to him by a young woman who had bought fifty cents' worth of sausage. He described her so accurately that we knew it was our quarry.\n\nWe hurried to the address he had given us. It was the same dark alley from which the woman had emerged the night before. We found her in a wretched room, ill and despairing. The room was bare and cold, and in one corner was a mattress on the floor where lay a man, ill and moaning. The woman had bought the sausage for him.\n\nWinthrop's heart was touched. He forgot his ten dollars. He put his hand in his pocket, and I knew that he was fingering bills. But I caught his arm.\n\n"Come away," I said. "This is no place for comedy. Your ten dollars has brought enough tragedy already."\n\nWe went away silently, and left the ten to its fate.	\N	\N	1138	2025-07-20 12:15:53.443	2025-08-11 10:03:04.893	\N	1	en	1
+5	The Gift of the Magi	O. Henry	In 'The Gift of the Magi,' a young couple, Della and Jim Young, grapple with financial hardship in their modest flat as Christmas approaches. Della, determined to buy a special gift for Jim, sells her prized long hair to afford a platinum fob chain for Jim's cherished heirloom watch. Unbeknownst to her, Jim faces his own sacrifice to secure a gift for Della. The story unfolds in a modest urban setting, capturing themes of love, sacrifice, and the irony of giving.	The Gift of the Magi\n\nOne dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one's cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas.\n\nThere was clearly nothing to do but flop down on the shabby little couch and howl. So Della did it. Which instigates the moral reflection that life is made up of sobs, sniffles, and smiles, with sniffles predominating.\n\nWhile the mistress of the home is gradually subsiding from the first stage to the second, take a look at the home. A furnished flat at $8 per week. It did not exactly beggar description, but it certainly had that word on the lookout for the mendicancy squad.\n\nIn the vestibule below was a letter-box into which no letter would go, and an electric button from which no mortal finger could coax a ring. Also appertaining thereunto was a card bearing the name "Mr. James Dillingham Young."\n\nThe "Dillingham" had been flung to the breeze during a former period of prosperity when its possessor was being paid $30 per week. Now, when the income was shrunk to $20, the letters of "Dillingham" looked blurred, as though they were thinking seriously of contracting to a modest and unassuming D. But whenever Mr. James Dillingham Young came home and reached his flat above he was called "Jim" and greatly hugged by Mrs. James Dillingham Young, already introduced to you as Della. Which is all very good.\n\nDella finished her cry and attended to her cheeks with the powder rag. She stood by the window and looked out dully at a grey cat walking a grey fence in a grey backyard. Tomorrow would be Christmas Day, and she had only $1.87 with which to buy Jim a present. She had been saving every penny she could for months, with this result. Twenty dollars a week doesn't go far. Expenses had been greater than she had calculated. They always are. Only $1.87 to buy a present for Jim. Her Jim. Many a happy hour she had spent planning for something nice for him. Something fine and rare and sterling—something just a little bit near to being worthy of the honour of being owned by Jim.\n\nThere was a pier-glass between the windows of the room. Perhaps you have seen a pier-glass in an $8 flat. A very thin and very agile person may, by observing his reflection in a rapid sequence of longitudinal strips, obtain a fairly accurate conception of his looks. Della, being slender, had mastered the art.\n\nSuddenly she whirled from the window and stood before the glass. Her eyes were shining brilliantly, but her face had lost its colour within twenty seconds. Rapidly she pulled down her hair and let it fall to its full length.\n\nNow, there were two possessions of the James Dillingham Youngs in which they both took a mighty pride. One was Jim's gold watch that had been his father's and his grandfather's. The other was Della's hair. Had the Queen of Sheba lived in the flat across the airshaft, Della would have let her hair hang out the window some day to dry just to depreciate Her Majesty's jewels and gifts. Had King Solomon been the janitor, with all his treasures piled up in the basement, Jim would have pulled out his watch every time he passed, just to see him pluck at his beard from envy.\n\nSo now Della's beautiful hair fell about her rippling and shining like a cascade of brown waters. It reached below her knee and made itself almost a garment for her. And then she did it up again nervously and quickly. Once she faltered for a minute and stood still while a tear or two splashed on the worn red carpet.\n\nOn went her old brown jacket; on went her old brown hat. With a whirl of skirts and with the brilliant sparkle still in her eyes, she fluttered out the door and down the stairs to the street.\n\nWhere she stopped the sign read: "Mme. Sofronie. Hair Goods of All Kinds." One flight up Della ran, and collected herself, panting. Madame, large, too white, chilly, hardly looked the "Sofronie."\n\n"Will you buy my hair?" asked Della.\n\n"I buy hair," said Madame. "Take yer hat off and let's have a sight at the looks of it."\n\nDown rippled the brown cascade.\n\n"Twenty dollars," said Madame, lifting the mass with a practised hand.\n\n"Give it to me quick," said Della.\n\nOh, and the next two hours tripped by on rosy wings. Forget the hashed metaphor. She was ransacking the stores for Jim's present.\n\nShe found it at last. It surely had been made for Jim and no one else. There was no other like it in any of the stores, and she had turned all of them inside out. It was a platinum fob chain simple and chaste in design, properly proclaiming its value by substance alone and not by meretricious ornamentation—as all good things should do. It was even worthy of The Watch. As soon as she saw it she knew that it must be Jim's. It was like him. Quietness and value—the description applied to both. Twenty-one dollars they took from her for it, and she hurried home with the 87 cents. With that chain on his watch Jim might be properly anxious about the time in any company. Grand as the watch was, he sometimes looked at it on the sly on account of the old leather strap that he used in place of a chain.\n\nWhen Della reached home her intoxication gave way a little to prudence and reason. She got out her curling irons and lighted the gas and went to work repairing the ravages made by generosity added to love. Which is always a tremendous task, dear friends—a mammoth task.\n\nWithin forty minutes her head was covered with tiny, close-lying curls that made her look wonderfully like a truant schoolboy. She looked at her reflection in the mirror long, carefully, and critically.\n\n"If Jim doesn't kill me," she said to herself, "before he takes a second look at me, he'll say I look like a Coney Island chorus girl. But what could I do—oh! what could I do with a dollar and eighty-seven cents?"\n\nAt 7 o'clock the coffee was made and the frying-pan was on the back of the stove hot and ready to cook the chops.\n\nJim was never late. Della doubled the fob chain in her hand and sat on the corner of the table near the door that he always entered. Then she heard his step on the stair away down on the first flight, and she turned white for just a moment. She had a habit for saying little silent prayers about the simplest everyday things, and now she whispered: "Please God, make him think I am still pretty."\n\nThe door opened and Jim stepped in and closed it. He looked thin and very serious. Poor fellow, he was only twenty-two—and to be burdened with a family! He needed a new overcoat and he was without gloves.\n\nJim stopped inside the door, as immovable as a setter at the scent of quail. His eyes were fixed upon Della, and there was an expression in them that she could not read, and it terrified her. It was not anger, nor surprise, nor disapproval, nor horror, nor any of the sentiments that she had been prepared for. He simply stared at her fixedly with that peculiar expression on his face.\n\nDella wriggled off the table and went for him.\n\n"Jim, darling," she cried, "don't look at me that way. I had my hair cut off and sold because I couldn't have lived through Christmas without giving you a present. It'll grow out again—you won't mind, will you? I just had to do it. My hair grows awfully fast. Say 'Merry Christmas!' Jim, and let's be happy. You don't know what a nice—what a beautiful, nice gift I've got for you."\n\n"You've cut off your hair?" asked Jim, laboriously, as if he had not arrived at that patent fact yet even after the hardest mental labour.\n\n"Cut it off and sold it," said Della. "Don't you like me just as well, anyhow? I'm me without my hair, ain't I?"\n\nJim looked about the room curiously.\n\n"You say your hair is gone?" he said, with an air almost of idiocy.\n\n"You needn't look for it," said Della. "It's sold, I tell you—sold and gone, too. It's Christmas Eve, boy. Be good to me, for it went for you. Maybe the hairs of my head were numbered," she went on with sudden serious sweetness, "but nobody could ever count my love for you. Shall I put the chops on, Jim?"\n\nOut of his trance Jim seemed quickly to wake. He enfolded his Della. For ten seconds let us regard with discreet scrutiny some inconsequential object in the other direction. Eight dollars a week or a million a year—what is the difference? A mathematician or a wit would give you the wrong answer. The magi brought valuable gifts, but that was not among them. This dark assertion will be illuminated later on.\n\nJim drew a package from his overcoat pocket and threw it upon the table.\n\n"Don't make any mistake, Dell," he said, "about me. I don't think there's anything in the way of a haircut or a shave or a shampoo that could make me like my girl any less. But if you'll unwrap that package you may see why you had me going a while at first."\n\nWhite fingers and nimble tore at the string and paper. And then an ecstatic scream of joy; and then, alas! A quick feminine change to hysterical tears and wails, necessitating the immediate employment of all the comforting powers of the lord of the flat.\n\nFor there lay The Combs—the set of combs, side and back, that Della had worshipped for long in a Broadway window. Beautiful combs, pure tortoise shell, with jewelled rims—just the shade to wear in the beautiful vanished hair. They were expensive combs, she knew, and her heart had simply craved and yearned over them without the least hope of possession. And now, they were hers, but the tresses that should have adorned the coveted adornments were gone.\n\nBut she hugged them to her bosom, and at length she was able to look up with dim eyes and a smile and say: "My hair grows so fast, Jim!"\n\nAnd then Della leaped up like a little singed cat and cried, "Oh, oh!"\n\nJim had not yet seen his beautiful present. She held it out to him eagerly upon her open palm. The dull precious metal seemed to flash with a reflection of her bright and ardent spirit.\n\n"Isn't it a dandy, Jim? I hunted all over town to find it. You'll have to look at the time a hundred times a day now. Give me your watch. I want to see how it looks on it."\n\nInstead of obeying, Jim tumbled down on the couch and put his hands under the back of his head and smiled.\n\n"Dell," said he, "let's put our Christmas presents away and keep 'em a while. They're too nice to use just at present. I sold the watch to get the money to buy your combs. And now suppose you put the chops on."\n\nThe magi, as you know, were wise men—wonderfully wise men—who brought gifts to the Babe in the manger. They invented the art of giving Christmas presents. Being wise, their gifts were no doubt wise ones, possibly bearing the privilege of exchange in case of duplication. And here I have lamely related to you the uneventful chronicle of two foolish children in a flat who most unwisely sacrificed for each other the greatest treasures of their house. But in a last word to the wise of these days let it be said that of all who give gifts these two were the wisest. Of all who give and receive gifts, such as they are wisest. Everywhere they are wisest. They are the magi.	\N	\N	2067	2025-07-20 11:52:08.471	2025-08-07 10:42:53.871	\N	1	en	1
+14	After Twenty Years	O. Henry	In New York, a man named Bob returns after twenty years to fulfill a pact made with his best friend, Jimmy Wells, to meet at the location of their last dinner together before Bob left to seek fortune in the West. Waiting at the now-demolished 'Big Joe' Brady's restaurant, Bob encounters a policeman while reminiscing about his past and the promise. As the story unfolds, Bob meets someone he believes to be Jimmy, but the reunion takes an unexpected turn when the true identity and intentions of the newcomer are revealed, leading to a surprising twist involving law enforcement.	The policeman on the beat moved up the avenue impressively. The impressiveness was habitual and not for show, for spectators were few. The time was barely 10 o'clock at night, but chilly gusts of wind with a taste of rain in them had well nigh depeopled the streets.\n\nTrying doors as he went, twirling his club with many intricate and artful movements, turning now and then to cast his watchful eye adown the pacific thoroughfare, the officer, with his stalwart form and slight swagger, made a fine picture of a guardian of the peace. The vicinity was one that kept early hours. Now and then you might see the lights of a cigar store or of an all-night lunch counter; but the majority of the doors belonged to business places that had long since been closed.\n\nWhen about midway of a certain block the policeman suddenly slowed his pace. In the doorway of a darkened hardware store a man leaned, with an unlighted cigar in his mouth. As the officer walked up to him the man spoke up quickly.\n\n"It's all right, officer," he said, reassuringly. "I'm just waiting for a friend. It's an appointment made twenty years ago. Sounds a little funny to you, doesn't it? Well, I'll explain if you'd like to make certain it's all straight. About that long ago there used to be a restaurant where this store stands—'Big Joe' Brady's restaurant."\n\n"Until five years ago," said the policeman. "It was torn down then."\n\nThe man in the doorway struck a match and lit his cigar. The light showed a pale, square-jawed face with keen eyes, and a little white scar near his right eyebrow. His scarf-pin was a large diamond, oddly set.\n\n"Twenty years ago to-night," said the man, "I dined here at 'Big Joe' Brady's with Jimmy Wells, my best chum, and the finest chap in the world. He and I were raised here in New York, just like two brothers together. I was eighteen and Jimmy was twenty. The next morning I was to start for the West to make my fortune. You couldn't have dragged Jimmy out of New York; he thought it was the only place on earth. Well, we agreed that night that we'd meet here again exactly twenty years from that date and time, no matter what our conditions might be or from what distance we might have to come. We figured that in twenty years each of us ought to have our destiny worked out and our fortunes made, whatever they were going to be."\n\n"It sounds pretty interesting," said the policeman. "Rather a long time to wait for a dinner, though."\n\n"It's been twenty years," the man explained, with a touch of pride in his voice. "I've come a thousand miles to stand in this door to-night, and it's worth it if my old partner turns up."\n\nThe policeman twirled his club and took a step or two.\n\n"I'll wait a little longer," said the man. "He might turn up yet."\n\n"Have you heard from him since?" asked the policeman.\n\n"No," said the man. "The West is a pretty big proposition, and I've been hustling around over it pretty lively. But I know Jimmy will meet me here if he's alive, for he always was the truest, staunchest old chap in the world. He'd never forget. I came a thousand miles to stand here to-night, and I'm going to give him half an hour more."\n\n"He was the kind of man who is bound to turn up," said the policeman, slowly.\n\n"Right you are," said the man in the doorway. "I'll wait a bit longer. I'm not hungry. It's more the meeting than the eating."\n\nThe policeman moved up the street, twirling his club, stopping now and then to watch the lonely figure in the doorway. The man pulled out a handsome watch, the lids of it set with small diamonds.\n\n"Three minutes to ten," he announced. "It was exactly ten o'clock when we parted here at the restaurant door."\n\n"Did pretty well out West, didn't you?" asked the policeman.\n\n"You bet! I hope Jimmy has done half as well. He was a kind of plodder, though, good fellow as he was. I've had to compete with some of the sharpest wits going to get my pile. A man gets in a groove in New York. It takes the West to put a razor-edge on him."\n\nThe policeman twirled his club and took a few steps down the street.\n\n"I'll be on my way. Hope your friend comes around all right. Going to call time on him sharp?"\n\n"I should say not!" said the other. "I'll give him half an hour at least. If Jimmy is alive on earth he'll be here by that time. So long, officer."\n\n"Good-night, sir," said the policeman, starting down the street.\n\nThe man in the doorway lighted another cigar and leaned against the frame of the door.\n\nTwenty minutes passed. A tall man in a long overcoat, with collar turned up to his ears, hurried across from the opposite side of the street. He went directly to the waiting man.\n\n"Is that you, Bob?" he asked, doubtfully.\n\n"Is that you, Jimmy Wells?" cried the man in the door.\n\n"Bless my heart!" exclaimed the new arrival, grasping both the other's hands with his own. "It's Bob, sure as fate. I was certain I'd find you here if you were still in existence. Well, well, well!—twenty years is a long time. The old restaurant's gone, Bob; I wish it were here so we could have another dinner in it. Has the West treated you well?"\n\n"Better than I deserve, old man," returned the other. "I've got to hustle back there right away after we've had our talk. I was lucky enough to strike some rich pay dirt out there. I've brought a little roll in my pocket to keep me till I get back to the diggings. I'm mighty glad to see you, Jimmy."\n\n"It's been a long time, and I'm glad too, Bob. You've changed lots more than I thought you would, though. Are you going to stay East?"\n\n"No. I'm going back in a week. I just had to see you first, though. It's been eating me up all these years, not knowing how you were making out."\n\n"All right, Bob. I guess we'd better be going up to the square and have a talk over old times."\n\nThe two men started up the street, arm in arm. The man from the West, his egotism enlarged by success, was beginning to outline the history of his career. The other, submerged in his overcoat, listened with interest.\n\nAt the corner stood a drug store, brilliant with electric lights. When they came into this glare each of them turned simultaneously to gaze upon the other's face.\n\nThe man from the West stopped suddenly and released his arm.\n\n"You're not Jimmy Wells," he snapped.\n\n"Twenty years is a long time," said the tall man, coolly. "It sometimes changes a good man into a bad one. You've been under arrest for ten minutes, 'Silky' Bob. Chicago thinks you may have dropped over our way and wires us she wants to have a chat with you. Going quietly, are you? That's sensible. Now, before we go on to the station here's a note I was asked to hand you. You may read it here at the light. It's from Patrolman Wells."\n\nThe man from the West unfolded the little piece of paper handed him. His hand was steady when he began to read, but it trembled a little by the time he had finished. The note was rather short.\n\n"Bob: I was at the appointed place on time. When you struck the match to light your cigar I saw it was the face of the man wanted in Chicago. Somehow I couldn't do it myself, so I went around and got a plain clothes man to do the job. JIMMY."	\N	\N	1334	2025-07-20 13:29:34.379	2025-08-06 11:43:27.482	\N	1	en	\N
+15	A Comedy in Rubber	O. Henry	In O. Henry's classic story, set in a modest urban apartment, Della Young struggles with financial hardship as she attempts to buy a Christmas gift for her beloved husband, Jim. With only $1.87 saved from scrimping on household expenses, Della decides to sell her most prized possession, her long, beautiful hair, to afford a platinum fob chain for Jim's treasured heirloom watch. Unbeknownst to her, Jim faces his own dilemma in securing a gift for Della, leading to a poignant twist that underscores their mutual sacrifice and deep love.	One dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one's cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas.\n\nThere was clearly nothing to do but flop down on the shabby little couch and howl. So Della did it. Which instigates the moral reflection that life is made up of sobs, sniffles, and smiles, with sniffles predominating.\n\nWhile the mistress of the home is gradually subsiding from the first stage to the second, take a look at the home. A furnished flat at $8 per week. It did not exactly beggar description, but it certainly had that word on the lookout for the mendicancy squad.\n\nIn the vestibule below was a letter-box into which no letter would go, and an electric button from which no mortal finger could coax a ring. Also appertaining thereunto was a card bearing the name "Mr. James Dillingham Young."\n\nThe "Dillingham" had been flung to the breeze during a former period of prosperity when its possessor was being paid $30 per week. Now, when the income was shrunk to $20, though, they were thinking seriously of contracting to a modest and unassuming D. But whenever Mr. James Dillingham Young came home and reached his flat above he was called "Jim" and greatly hugged by Mrs. James Dillingham Young, already introduced to you as Della. Which is all very good.\n\nDella finished her cry and attended to her cheeks with the powder rag. She stood by the window and looked out dully at a gray cat walking a gray fence in a gray backyard. Tomorrow would be Christmas Day, and she had only $1.87 with which to buy Jim a present. She had been saving every penny she could for months, with this result. Twenty dollars a week doesn't go far. Expenses had been greater than she had calculated. They always are. Only $1.87 to buy a present for Jim. Her Jim. Many a happy hour she had spent planning for something nice for him. Something fine and rare and sterling—something just a little bit near to being worthy of the honor of being owned by Jim.\n\nThere was a pier glass between the windows of the room. Perhaps you have seen a pier glass in an $8 flat. A very thin and very agile person may, by observing his reflection in a rapid sequence of longitudinal strips, obtain a fairly accurate conception of his looks. Della, being slender, had mastered the art.\n\nSuddenly she whirled from the window and stood before the glass. Her eyes were shining brilliantly, but her face had lost its color within twenty seconds. Rapidly she pulled down her hair and let it fall to its full length.\n\nNow, there were two possessions of the James Dillingham Youngs in which they both took a mighty pride. One was Jim's gold watch that had been his father's and his grandfather's. The other was Della's hair. Had the queen of Sheba lived in the flat across the airshaft, Della would have let her hair hang out the window some day to dry just to depreciate Her Majesty's jewels and gifts. Had King Solomon been the janitor, with all his treasures piled up in the basement, Jim would have pulled out his watch every time he passed, just to see him pluck at his beard from envy.\n\nSo now Della's beautiful hair fell about her, rippling and shining like a cascade of brown waters. It reached below her knee and made itself almost a garment for her. And then she did it up again nervously and quickly. Once she faltered for a minute and stood still while a tear or two splashed on the worn red carpet.\n\nOn went her old brown jacket; on went her old brown hat. With a whirl of skirts and with the brilliant sparkle still in her eyes, she fluttered out the door and down the stairs to the street.\n\nWhere she stopped the sign read: "Mme. Sofronie. Hair Goods of All Kinds." One flight up Della ran, and collected herself, panting. Madame, large, too white, chilly, hardly looked the "Sofronie."\n\n"Will you buy my hair?" asked Della.\n\n"I buy hair," said Madame. "Take yer hat off and let's have a sight at the looks of it."\n\nDown rippled the brown cascade.\n\n"Twenty dollars," said Madame, lifting the mass with a practiced hand.\n\n"Give it to me quick," said Della.\n\nOh, and the next two hours tripped by on rosy wings. Forget the hashed metaphor. She was ransacking the stores for Jim's present.\n\nShe found it at last. It surely had been made for Jim and no one else. There was no other like it in any of the stores, and she had turned all of them inside out. It was a platinum fob chain simple and chaste in design, properly proclaiming its value by substance alone and not by meretricious ornamentation—as all good things should do. And it was even worthy of The Watch. As soon as she saw it she knew that it must be Jim's. It was like him. Quietness and value—the description applied to both. Twenty-one dollars they took from her for it, and she hurried home with the 87 cents. With that chain on his watch Jim might be properly anxious about the time in any company. Grand as the watch was, he sometimes looked at it on the sly on account of the old leather strap that he used in place of a chain.\n\nWhen Della reached home her intoxication gave way a little to prudence and reason. She got out her curling irons and lighted the gas and went to work repairing the ravages made by generosity added to love. Which is always a tremendous task, dear friends—a mammoth task.\n\nWithin forty minutes her head was covered with tiny, close-lying curls that made her look wonderfully like a truant schoolboy. She looked at her reflection in the mirror long, carefully, and critically.\n\n"If Jim doesn't kill me," she said to herself, "before he takes a second look at me, he'll say I look like a Coney Island chorus girl. But what could I do—oh! what could I do with a dollar and eighty-seven cents?"\n\nAt 7 o'clock the coffee was made and the frying-pan was on the back of the stove hot and ready to cook the chops.\n\nJim was never late. Della doubled the fob chain in her hand and sat on the corner of the table near the door that he always entered. Then she heard his step on the stair away down on the first flight, and she turned white for just a moment. She had a habit of saying little silent prayers about the simplest everyday things, and now she prayed that he be still okay and not too thin.\n\nHe opened the door and came in. He looked thin and very serious. Poor fellow, he was only twenty-two—and to be burdened with a family! He needed a new overcoat and was without gloves.\n\nJim stopped inside the door, as immovable as a setter at the scent of quail. His eyes were fixed upon Della, and there was an expression in them that she could not read, and it terrified her. It was not anger, nor surprise, nor disapproval, nor horror, nor any of the sentiments that she had been prepared for. He simply stared at her fixedly with that peculiar expression on his face.\n\nDella wriggled off the table and went for him.\n\n"Jim, darling," she cried, "don't look at me that way. I had my hair cut off and sold because I couldn't have lived through Christmas without giving you a present. It'll grow out again—you won't mind, will you? I just had to do it. My hair grows awfully fast. Say 'Merry Christmas!' Jim, and let's be happy. You don't know what a nice—what a beautiful, nice gift I've got for you."\n\n"You've cut off your hair?" asked Jim, laboriously, as if he had not arrived at that patent fact yet even after the hardest mental labor.\n\n"Cut it off and sold it," said Della. "Don't you like me just as well, anyhow? I'm me without my hair, ain't I?"\n\nJim looked about the room curiously.\n\n"You say your hair is gone?" he said, with an air almost of idiocy.\n\n"You needn't look for it," said Della. "It's sold, I tell you—sold and gone, too. It's Christmas Eve, boy. Be good to me, for it went for you. Maybe the hairs of my head were numbered," she went on with sudden serious sweetness, "but nobody could ever count my love for you. Shall I put the chops on, Jim?"\n\nOut of his trance Jim seemed quickly to wake. He enfolded his Della. For ten seconds let us regard with discreet scrutiny some inconsequential object in the other direction. Eight dollars a week or a million a year—what is the difference? A mathematician or a wit would give you the wrong answer. The magi brought valuable gifts, but that was not among them. This dark assertion will be illuminated later on.\n\nJim drew a package from his overcoat pocket and threw it upon the table.\n\n"Don't make any mistake, Dell," he said, "about me. I don't think there's anything in the way of a haircut or a shave or a shampoo that could make me like my girl any less. But if you'll unwrap that package you may see why you had me going a while at first."\n\nWhite fingers and nimble tore at the string and paper. And then an ecstatic scream of joy; and then, alas! a quick feminine change to hysterical tears and wails, necessitating the immediate employment of all the comforting powers of the lord of the flat.\n\nFor there lay The Combs—the set of combs, side and back, that Della had worshipped long in a Broadway window. Beautiful combs, pure tortoise shell, with jeweled rims—just the shade to wear in the beautiful vanished hair. They were expensive combs, she knew, and her heart had simply craved and yearned over them without the least hope of possession. And now, they were hers, but the tresses that should have adorned the coveted adornments were gone.\n\nBut she hugged them to her bosom, and at length she was able to look up with dim eyes and a smile and say: "My hair grows so fast, Jim!"\n\nAnd then Della leaped up like a little singed cat and cried, "Oh, oh!"\n\nJim had not yet seen his beautiful present. She held it out to him eagerly upon her open palm. The dull precious metal seemed to flash with a reflection of her bright and ardent spirit.\n\n"Isn't it a dandy, Jim? I hunted all over town to find it. You'll have to look at the time a hundred times a day now. Give me your watch. I want to see how it looks on it."\n\nInstead of obeying, Jim tumbled down on the couch and put his hands under the back of his head and smiled.\n\n"Dell," said he, "let's put our Christmas presents away and keep 'em a while. They're too nice to use just at present. I sold the watch to get the money to buy your combs. And now suppose you put the chops on."\n\nThe magi, as you know, were wise men—wonderfully wise men—who brought gifts to the Babe in the manger. They invented the art of giving Christmas presents. Being wise, their gifts were no doubt wise ones, possibly bearing the privilege of exchange in case of duplication. And here I have lamely related to you the uneventful chronicle of two foolish children in a flat who most unwisely sacrificed for each other the greatest treasures of their house. But in a last word to the wise of these days let it be said that of all who give gifts these two were the wisest. O all who give and receive gifts, such as they are wisest. Everywhere they are wisest. They are the magi.	\N	\N	2053	2025-07-20 13:35:34.673	2025-08-06 11:54:57.602	\N	1	en	\N
+12	A Chaparral Prince	O. Henry	A young Eastern man named Harris arrives in Cactus, Texas, dressed in new clothes and seeking a man named Elias Summers regarding a land purchase. Guided by a stage driver, Harris reaches the Summers residence where he meets Elias and his son Jim. Expressing interest in buying a ranch, Harris is taken by Jim to see the land, decides to purchase it, and becomes a successful ranchman after settling his affairs back East. The story highlights Harris's transition from a newcomer to a well-established member of the Texas ranching community.	The only passenger on the stage that drew up before the stage-office at Cactus, Texas, was a young man in a brand-new suit of store clothes. He was tall and slender, and his face was smooth and pink. He wore a broad-brimmed, low-crowned felt hat, and carried a solid gold-headed cane. He looked like a college senior who had just stepped out from a class-day procession.\n\nThe only other person who alighted from the stage was its driver, who threw off the mail-sack and then climbed down to the ground to water his horses.\n\nThe young man in the new clothes walked up to the driver.\n\n"Can you tell me, sir," he said, with a Northern accent, "if there is a man living here named Summers—Mr. Elias Summers?"\n\nThe stage-driver was watering his horses. He stopped and looked up.\n\n"Summers?" he repeated. "Yes, sir. Old man Summers lives about four miles out on the Silver City road. I'm going right by his place now. I can take you out there if you want to go."\n\n"Thank you," said the young man. "I'll be glad to ride out with you."\n\nHe climbed into the stage, and the driver got up on his seat and shook the reins. The horses started off at a slow trot.\n\nThe young man seemed to be interested in the scenery. He looked out of the window at the mesquite bushes and cactus plants that lined the road. He was evidently unused to the country.\n\nAfter they had gone about three miles, the driver pointed with his whip to a house that stood in a grove of live oaks about a quarter of a mile from the road.\n\n"That's old man Summers's place," he said. "I'll let you out at the next turn, and you can walk over. It's not far."\n\n"Thank you," said the young man. He got out when the stage stopped, and walked in the direction indicated.\n\nOld man Summers was sitting on the porch of his house when the young man opened the gate and walked up the path. He was a tall, lean old man, with a long white beard and sharp blue eyes. He looked up as the young man approached.\n\n"Good-morning, sir," said the young man, lifting his hat. "Are you Mr. Summers?"\n\n"That's my name," said the old man. "What can I do for you?"\n\n"My name is Harris," said the young man. "I am from the East. I have come out here to look at some land with a view to buying it."\n\n"Sit down," said old man Summers, pointing to a chair. "I'll call my son Jim. He's the one you want to see about land. He knows all about it."\n\nHe went into the house, and soon returned with a young man about the same age as Harris. Jim Summers was tall and thin, like his father, but his face was brown and his hands were rough. He looked like a man who had worked hard.\n\n"How do you do, sir?" he said, shaking hands with Harris. "I understand you are looking for land. What kind of land do you want?"\n\n"I want to buy a ranch," said Harris. "I have some capital to invest, and I think I would like to go into the cattle business."\n\nJim Summers looked at him with a smile.\n\n"You're from the East, aren't you?" he said.\n\n"Yes," said Harris.\n\n"Well," said Jim, "I'll tell you what I'll do. I'll take you out and show you some land that I think will suit you. But I must warn you that ranching is not all play. It's hard work."\n\n"I'm not afraid of work," said Harris.\n\n"All right," said Jim. "We'll start to-morrow morning. You can stay here to-night if you like."\n\n"Thank you," said Harris. "I'll be glad to."\n\nHe stayed at the Summers's house that night, and the next morning he and Jim rode out to look at the land. They were gone all day, and when they returned Harris had decided to buy the ranch.\n\n"I'll take it," he said to Jim, as they rode up to the house.\n\n"All right," said Jim. "I'll have the papers made out and we'll close the deal to-morrow."\n\nThe next day the papers were signed and Harris became the owner of a ranch in Texas. He was very much pleased with his purchase, and he and Jim Summers became good friends.\n\nHarris went back to the East to settle up his business affairs, and then returned to Texas to take charge of his ranch. He found that ranching was indeed hard work, but he was young and strong and he liked the life. He prospered and in a few years he was one of the successful ranchmen of the region.\n\nAnd he always said that it was the best thing he had ever done to come out to Texas and buy that ranch from Jim Summers.	\N	\N	838	2025-07-20 13:02:57.459	2025-08-06 08:22:05.542	\N	1	en	\N
 \.
 
 
@@ -8050,10 +8503,28 @@ COPY public.stories (id, title, author, brief, text, slug, "order", word_count, 
 --
 
 COPY public.stories_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
-1	16	1	a.generation-prompts	generation_prompts	\N
-2	5	2	a.generation-prompts	generation_prompts	\N
+2	5	2	a.generation-prompts	generation_prompts	1
+6	5	2	a.illustrations	illustrations	1
 3	8	3	a.generation-prompts	generation_prompts	1
-4	8	1	a.illustrations	illustrations	1
+11	8	4	a.illustrations	illustrations	1
+12	8	5	a.illustrations	illustrations	2
+16	8	6	a.illustrations	illustrations	3
+1	16	1	a.generation-prompts	generation_prompts	1
+8	16	3	a.illustrations	illustrations	1
+20	9	4	a.generation-prompts	generation_prompts	1
+22	9	7	a.illustrations	illustrations	1
+27	12	7	a.generation-prompts	generation_prompts	1
+28	12	9	a.illustrations	illustrations	1
+31	13	9	a.generation-prompts	generation_prompts	1
+32	13	10	a.illustrations	illustrations	1
+34	14	10	a.generation-prompts	generation_prompts	1
+35	14	11	a.illustrations	illustrations	1
+37	15	11	a.generation-prompts	generation_prompts	1
+38	15	12	a.illustrations	illustrations	1
+40	11	12	a.generation-prompts	generation_prompts	1
+41	11	13	a.illustrations	illustrations	1
+21	10	5	a.generation-prompts	generation_prompts	1
+25	10	8	a.illustrations	illustrations	1
 \.
 
 
@@ -8062,16 +8533,16 @@ COPY public.stories_components (id, entity_id, component_id, component_type, fie
 --
 
 COPY public.stories_difficulty_level_links (id, story_id, difficulty_level_id, story_order) FROM stdin;
-1	9	3	1
-2	10	3	2
-3	8	3	3
-4	5	3	4
 5	11	5	1
 6	12	4	1
 7	13	4	2
 8	14	4	3
 9	15	4	4
 10	16	5	2
+11	9	5	3
+3	8	3	1
+4	5	3	2
+12	10	5	4
 \.
 
 
@@ -8090,6 +8561,8 @@ COPY public.stories_localizations_links (id, story_id, inv_story_id, story_order
 COPY public.story_likes (id, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 3	2025-07-21 18:09:57.126	2025-07-21 18:09:57.126	\N	\N
 4	2025-07-31 18:31:25.905	2025-07-31 18:31:25.905	\N	\N
+5	2025-08-07 10:42:53.556	2025-08-07 10:42:53.556	\N	\N
+6	2025-08-11 10:03:04.583	2025-08-11 10:03:04.583	\N	\N
 \.
 
 
@@ -8100,6 +8573,8 @@ COPY public.story_likes (id, created_at, updated_at, created_by_id, updated_by_i
 COPY public.story_likes_story_links (id, story_like_id, story_id, story_like_order) FROM stdin;
 3	3	8	1
 4	4	9	1
+5	5	5	1
+6	6	10	1
 \.
 
 
@@ -8110,6 +8585,8 @@ COPY public.story_likes_story_links (id, story_like_id, story_id, story_like_ord
 COPY public.story_likes_user_links (id, story_like_id, user_id, story_like_order) FROM stdin;
 3	3	8	1
 4	4	8	2
+5	5	8	3
+6	6	47	1
 \.
 
 
@@ -8160,7 +8637,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 27	plugin_content_manager_configuration_components::a.taglist	{"uid":"a.taglist","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"tag","defaultSortBy":"tag","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"tag":{"edit":{"label":"tag","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tag","searchable":true,"sortable":true}}},"layouts":{"list":["id","tag"],"edit":[[{"name":"tag","size":6}]]},"isComponent":true}	object	\N	\N
 15	plugin_upload_settings	{"sizeOptimization":true,"responsiveDimensions":true,"autoOrientation":true}	object	\N	\N
 10	plugin_content_manager_configuration_content_types::plugin::upload.file	{"uid":"plugin::upload.file","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"alternativeText":{"edit":{"label":"alternativeText","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"alternativeText","searchable":true,"sortable":true}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}},"width":{"edit":{"label":"width","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"width","searchable":true,"sortable":true}},"height":{"edit":{"label":"height","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"height","searchable":true,"sortable":true}},"formats":{"edit":{"label":"formats","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"formats","searchable":false,"sortable":false}},"hash":{"edit":{"label":"hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"hash","searchable":true,"sortable":true}},"ext":{"edit":{"label":"ext","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"ext","searchable":true,"sortable":true}},"mime":{"edit":{"label":"mime","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"mime","searchable":true,"sortable":true}},"size":{"edit":{"label":"size","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"size","searchable":true,"sortable":true}},"url":{"edit":{"label":"url","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"url","searchable":true,"sortable":true}},"previewUrl":{"edit":{"label":"previewUrl","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"previewUrl","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"provider_metadata":{"edit":{"label":"provider_metadata","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider_metadata","searchable":false,"sortable":false}},"folder":{"edit":{"label":"folder","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"folder","searchable":true,"sortable":true}},"folderPath":{"edit":{"label":"folderPath","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"folderPath","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","alternativeText","caption"],"edit":[[{"name":"name","size":6},{"name":"alternativeText","size":6}],[{"name":"caption","size":6},{"name":"width","size":4}],[{"name":"height","size":4}],[{"name":"formats","size":12}],[{"name":"hash","size":6},{"name":"ext","size":6}],[{"name":"mime","size":6},{"name":"size","size":4}],[{"name":"url","size":6},{"name":"previewUrl","size":6}],[{"name":"provider","size":6}],[{"name":"provider_metadata","size":12}],[{"name":"folder","size":6},{"name":"folderPath","size":6}]]}}	object	\N	\N
-17	plugin_upload_metrics	{"weeklySchedule":"31 39 9 * * 3","lastWeeklyUpdate":1753893571270}	object	\N	\N
+17	plugin_upload_metrics	{"weeklySchedule":"31 39 9 * * 3","lastWeeklyUpdate":1754498371276}	object	\N	\N
 14	plugin_content_manager_configuration_content_types::plugin::i18n.locale	{"uid":"plugin::i18n.locale","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","code","createdAt"],"edit":[[{"name":"name","size":6},{"name":"code","size":6}]]}}	object	\N	\N
 21	plugin_i18n_default_locale	"en"	string	\N	\N
 42	plugin_content_manager_configuration_components::a.user-sent-ref	{"uid":"a.user-sent-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"user_sentence":{"edit":{"label":"user_sentence","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentence","searchable":true,"sortable":true}}},"layouts":{"list":["id","user_sentence"],"edit":[[{"name":"user_sentence","size":6}]]},"isComponent":true}	object	\N	\N
@@ -8176,12 +8653,12 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 33	plugin_content_manager_configuration_components::a.pagebreaker	{"uid":"a.pagebreaker","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"backbutton":{"edit":{"label":"backbutton","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"backbutton","searchable":true,"sortable":true}},"nextbutton":{"edit":{"label":"nextbutton","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"nextbutton","searchable":true,"sortable":true}}},"layouts":{"list":["id","backbutton","nextbutton"],"edit":[[{"name":"backbutton","size":4},{"name":"nextbutton","size":4}]]},"isComponent":true}	object	\N	\N
 34	plugin_content_manager_configuration_components::a.video	{"uid":"a.video","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"media":{"edit":{"label":"media","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"media","searchable":false,"sortable":false}},"thumbnail":{"edit":{"label":"thumbnail","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"thumbnail","searchable":false,"sortable":false}}},"layouts":{"list":["id","media","thumbnail"],"edit":[[{"name":"media","size":6},{"name":"thumbnail","size":6}]]},"isComponent":true}	object	\N	\N
 35	plugin_content_manager_configuration_components::a.external-video	{"uid":"a.external-video","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"url","defaultSortBy":"url","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"url":{"edit":{"label":"url","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"url","searchable":true,"sortable":true}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}}},"layouts":{"list":["id","url","caption"],"edit":[[{"name":"url","size":6},{"name":"caption","size":6}]]},"isComponent":true}	object	\N	\N
-46	plugin_content_manager_configuration_content_types::api::user-profile.user-profile	{"uid":"api::user-profile.user-profile","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"telephone","defaultSortBy":"telephone","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"telephone":{"edit":{"label":"telephone","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"telephone","searchable":true,"sortable":true}},"baseLanguage":{"edit":{"label":"baseLanguage","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"baseLanguage","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","telephone","baseLanguage"],"edit":[[{"name":"user","size":6},{"name":"telephone","size":6}],[{"name":"baseLanguage","size":6}]]}}	object	\N	\N
 49	plugin_content_manager_configuration_content_types::api::vbsetting.vbsetting	{"uid":"api::vbsetting.vbsetting","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"wordsPerPage":{"edit":{"label":"wordsPerPage","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wordsPerPage","searchable":true,"sortable":true}},"interval1":{"edit":{"label":"interval1","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"interval1","searchable":true,"sortable":true}},"interval2":{"edit":{"label":"interval2","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"interval2","searchable":true,"sortable":true}},"interval3":{"edit":{"label":"interval3","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"interval3","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","wordsPerPage","interval1"],"edit":[[{"name":"user","size":6},{"name":"wordsPerPage","size":4}],[{"name":"interval1","size":4},{"name":"interval2","size":4},{"name":"interval3","size":4}]]}}	object	\N	\N
 39	plugin_content_manager_configuration_content_types::api::user-word.user-word	{"uid":"api::user-word.user-word","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"target_text","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"part_of_speech":{"edit":{"label":"part_of_speech","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"part_of_speech","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","base_text","user","target_text"],"edit":[[{"name":"base_text","size":6},{"name":"part_of_speech","size":6}],[{"name":"lesson","size":6},{"name":"user","size":6}],[{"name":"target_text","size":6}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}]]}}	object	\N	\N
 52	plugin_content_manager_configuration_components::a.question	{"uid":"a.question","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"prompt","defaultSortBy":"prompt","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"prompt":{"edit":{"label":"prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"prompt","searchable":true,"sortable":true}},"expected_answer":{"edit":{"label":"expected_answer","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expected_answer","searchable":true,"sortable":true}}},"layouts":{"list":["id","prompt","expected_answer"],"edit":[[{"name":"prompt","size":6},{"name":"expected_answer","size":6}]]},"isComponent":true}	object	\N	\N
 53	plugin_content_manager_configuration_content_types::api::topic.topic	{"uid":"api::topic.topic","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"difficulty_level":{"edit":{"label":"difficulty_level","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"difficulty_level","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"questions":{"edit":{"label":"questions","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"questions","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":true,"sortable":true}},"is_active":{"edit":{"label":"is_active","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_active","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","difficulty_level","description"],"edit":[[{"name":"title","size":6},{"name":"difficulty_level","size":6}],[{"name":"description","size":6}],[{"name":"questions","size":12}],[{"name":"tags","size":6},{"name":"is_active","size":4}]]}}	object	\N	\N
 50	plugin_content_manager_configuration_content_types::api::difficulty-level.difficulty-level	{"uid":"api::difficulty-level.difficulty-level","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"level":{"edit":{"label":"level","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"level","searchable":true,"sortable":true}},"topics":{"edit":{"label":"topics","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"topics","searchable":false,"sortable":false}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"stories":{"edit":{"label":"stories","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"stories","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","level","code"],"edit":[[{"name":"name","size":6},{"name":"level","size":4}],[{"name":"topics","size":6},{"name":"code","size":6}],[{"name":"description","size":6},{"name":"stories","size":6}]]}}	object	\N	\N
+46	plugin_content_manager_configuration_content_types::api::user-profile.user-profile	{"uid":"api::user-profile.user-profile","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":50,"mainField":"telephone","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"telephone":{"edit":{"label":"telephone","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"telephone","searchable":true,"sortable":true}},"baseLanguage":{"edit":{"label":"baseLanguage","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"baseLanguage","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"user","size":6},{"name":"telephone","size":6}],[{"name":"baseLanguage","size":6}]],"list":["id","user","telephone","baseLanguage"]}}	object	\N	\N
 43	plugin_content_manager_configuration_content_types::api::flashcard.flashcard	{"uid":"api::flashcard.flashcard","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"last_reviewed_at":{"edit":{"label":"last_reviewed_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"last_reviewed_at","searchable":true,"sortable":true}},"correct_streak":{"edit":{"label":"correct_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"correct_streak","searchable":true,"sortable":true}},"wrong_streak":{"edit":{"label":"wrong_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"wrong_streak","searchable":true,"sortable":true}},"is_remembered":{"edit":{"label":"is_remembered","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"is_remembered","searchable":true,"sortable":true}},"reviewlogs":{"edit":{"label":"reviewlogs","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"reviewlogs","searchable":false,"sortable":false}},"review_tire":{"edit":{"label":"review_tire","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"review_tire","searchable":true,"sortable":true}},"word_definition":{"edit":{"label":"word_definition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definition","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"user","size":6}],[{"name":"last_reviewed_at","size":6}],[{"name":"is_remembered","size":4},{"name":"correct_streak","size":4},{"name":"wrong_streak","size":4}],[{"name":"reviewlogs","size":6},{"name":"review_tire","size":6}],[{"name":"word_definition","size":6}]],"list":["id","user","last_reviewed_at","correct_streak","wrong_streak","review_tire","word_definition"]}}	object	\N	\N
 54	plugin_content_manager_configuration_content_types::api::conversation.conversation	{"uid":"api::conversation.conversation","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"sessionId","defaultSortBy":"sessionId","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"sessionId":{"edit":{"label":"sessionId","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"sessionId","searchable":true,"sortable":true}},"history":{"edit":{"label":"history","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"history","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"sessionId","size":6}],[{"name":"history","size":12}]],"list":["id","sessionId"]}}	object	\N	\N
 57	plugin_content_manager_configuration_components::a.illustrations	{"uid":"a.illustrations","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"caption","defaultSortBy":"caption","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}},"alt_text":{"edit":{"label":"alt_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"alt_text","searchable":true,"sortable":true}},"media":{"edit":{"label":"media","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"media","searchable":false,"sortable":false}},"paragraph":{"edit":{"label":"paragraph","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"paragraph","searchable":true,"sortable":true}}},"layouts":{"list":["id","caption","alt_text","media"],"edit":[[{"name":"caption","size":6},{"name":"alt_text","size":6}],[{"name":"media","size":6},{"name":"paragraph","size":4}]]},"isComponent":true}	object	\N	\N
@@ -8524,6 +9001,157 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 157	api::word-definition.word-definition.delete	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
 155	api::word-definition.word-definition.find	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
 158	api::word-definition.word-definition.update	2025-08-04 19:33:22.865	2025-08-04 19:33:22.865	\N	\N
+160	api::story.story.backfillMissingFields	2025-08-06 08:06:08.58	2025-08-06 08:06:08.58	\N	\N
+161	api::story.story.like	2025-08-06 08:06:22.985	2025-08-06 08:06:22.985	\N	\N
+169	api::difficulty-level.difficulty-level.create	2025-08-06 08:06:38.109	2025-08-06 08:06:38.109	\N	\N
+172	api::difficulty-level.difficulty-level.createLocalization	2025-08-06 08:06:38.109	2025-08-06 08:06:38.109	\N	\N
+174	api::flashcard.flashcard.findForReview	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+175	api::flashcard.flashcard.getStatistics	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+177	api::flashcard.flashcard.findMine	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+180	api::flashcard.flashcard.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+182	api::flashcard.flashcard.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+190	api::lesson.lesson.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+199	api::module.module.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+210	api::ping.ping.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+219	api::review-tire.review-tire.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+230	api::section.section.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+240	api::story-like.story-like.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+250	api::unit.unit.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+259	api::user-profile.user-profile.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+269	api::user-word.user-word.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+280	api::vbsetting.vbsetting.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+290	plugin::users-permissions.role.createRole	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+162	api::story.story.fetchStoriesFromOpenAIByAuthor	2025-08-06 08:06:22.985	2025-08-06 08:06:22.985	\N	\N
+170	api::difficulty-level.difficulty-level.update	2025-08-06 08:06:38.109	2025-08-06 08:06:38.109	\N	\N
+163	api::story.story.findRecommended	2025-08-06 08:06:22.985	2025-08-06 08:06:22.985	\N	\N
+164	api::story.story.backfillMissingFields	2025-08-06 08:06:22.985	2025-08-06 08:06:22.985	\N	\N
+166	api::conversation.conversation.nextPrompt	2025-08-06 08:06:33.98	2025-08-06 08:06:33.98	\N	\N
+167	api::difficulty-level.difficulty-level.find	2025-08-06 08:06:38.109	2025-08-06 08:06:38.109	\N	\N
+171	api::difficulty-level.difficulty-level.delete	2025-08-06 08:06:38.109	2025-08-06 08:06:38.109	\N	\N
+165	api::conversation.conversation.start	2025-08-06 08:06:33.98	2025-08-06 08:06:33.98	\N	\N
+168	api::difficulty-level.difficulty-level.findOne	2025-08-06 08:06:38.109	2025-08-06 08:06:38.109	\N	\N
+173	api::flashcard.flashcard.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+176	api::flashcard.flashcard.review	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+178	api::flashcard.flashcard.validate	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+179	api::flashcard.flashcard.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+181	api::flashcard.flashcard.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+184	api::lesson.lesson.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+189	api::lessonlevel.lessonlevel.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+201	api::module.module.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+211	api::ping.ping.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+221	api::reviewlog.reviewlog.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+231	api::sentence.sentence.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+241	api::story-like.story-like.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+251	api::unit.unit.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+261	api::user-profile.user-profile.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+272	api::vbsetting.vbsetting.findMine	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+282	plugin::users-permissions.user.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+292	plugin::users-permissions.role.updateRole	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+183	api::flashcard.flashcard.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+188	api::lesson.lesson.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+198	api::module.module.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+208	api::part-of-speech.part-of-speech.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+218	api::reviewlog.reviewlog.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+228	api::section.section.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+237	api::story-like.story-like.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+247	api::translate-word.translate-word.translate	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+258	api::user-profile.user-profile.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+267	api::user-sentence.user-sentence.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+277	api::vbsetting.vbsetting.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+287	plugin::users-permissions.user.destroy	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+185	api::lesson.lesson.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+191	api::lessonlevel.lessonlevel.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+197	api::module.module.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+207	api::part-of-speech.part-of-speech.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+217	api::review-tire.review-tire.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+227	api::section.section.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+238	api::story-like.story-like.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+248	api::unit.unit.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+257	api::user-profile.user-profile.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+268	api::user-word.user-word.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+278	api::vbsetting.vbsetting.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+285	plugin::users-permissions.user.me	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+293	plugin::users-permissions.role.deleteRole	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+186	api::lesson.lesson.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+192	api::migratecount.migratecount.index	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+200	api::module.module.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+209	api::ping.ping.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+220	api::review-tire.review-tire.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+229	api::section.section.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+239	api::story-like.story-like.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+249	api::unit.unit.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+260	api::user-profile.user-profile.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+270	api::user-word.user-word.copyToZh	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+279	api::vbsetting.vbsetting.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+289	plugin::users-permissions.role.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+187	api::lesson.lesson.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+196	api::migration.migration.run	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+203	api::part-of-speech.part-of-speech.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+214	api::ping.ping.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+225	api::reviewlog.reviewlog.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+236	api::sentence.sentence.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+244	api::topic.topic.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+256	api::user-profile.user-profile.registerWithProfile	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+263	api::user-sentence.user-sentence.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+275	api::user-word.user-word.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+288	plugin::users-permissions.user.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+193	api::lessonlevel.lessonlevel.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+202	api::module.module.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+215	api::ping.ping.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+226	api::section.section.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+234	api::sentence.sentence.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+245	api::topic.topic.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+254	api::unit.unit.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+264	api::user-sentence.user-sentence.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+276	api::user-word.user-word.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+283	plugin::users-permissions.user.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+194	api::lessonlevel.lessonlevel.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+205	api::part-of-speech.part-of-speech.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+216	api::review-tire.review-tire.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+224	api::reviewlog.reviewlog.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+235	api::sentence.sentence.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+246	api::topic.topic.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+255	api::user-profile.user-profile.findMine	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+266	api::user-sentence.user-sentence.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+273	api::user-word.user-word.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+286	plugin::users-permissions.user.count	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+195	api::lessonlevel.lessonlevel.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+204	api::part-of-speech.part-of-speech.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+213	api::review-tire.review-tire.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+223	api::reviewlog.reviewlog.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+233	api::sentence.sentence.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+243	api::topic.topic.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+252	api::unit.unit.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+265	api::user-sentence.user-sentence.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+274	api::vbsetting.vbsetting.updateMine	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+284	plugin::users-permissions.user.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+206	api::part-of-speech.part-of-speech.update	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+212	api::review-tire.review-tire.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+222	api::section.section.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+232	api::sentence.sentence.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+242	api::topic.topic.findOne	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+253	api::user-profile.user-profile.updateMine	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+262	api::user-sentence.user-sentence.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+271	api::user-word.user-word.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+281	api::vbsetting.vbsetting.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+291	plugin::users-permissions.role.find	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
+294	api::story.story.regeneratePromptsWithStyle	2025-08-06 11:14:38.134	2025-08-06 11:14:38.134	\N	\N
+295	api::story.story.regeneratePromptsWithStyle	2025-08-06 11:14:46.912	2025-08-06 11:14:46.912	\N	\N
+296	api::translate-word.translate-word.translateWordInContext	2025-08-07 00:47:16.504	2025-08-07 00:47:16.504	\N	\N
+297	api::translate-word.translate-word.translateWordInContext	2025-08-07 00:47:28.017	2025-08-07 00:47:28.017	\N	\N
+298	api::word-definition.word-definition.search	2025-08-09 06:31:06.426	2025-08-09 06:31:06.426	\N	\N
+299	api::word.word.search	2025-08-09 06:31:16.016	2025-08-09 06:31:16.016	\N	\N
+302	api::topic.topic.findOne	2025-08-09 06:31:54.196	2025-08-09 06:31:54.196	\N	\N
+303	api::topic.topic.create	2025-08-09 06:31:54.196	2025-08-09 06:31:54.196	\N	\N
+300	api::word.word.delete	2025-08-09 06:31:16.016	2025-08-09 06:31:16.016	\N	\N
+301	api::topic.topic.find	2025-08-09 06:31:54.196	2025-08-09 06:31:54.196	\N	\N
+304	api::topic.topic.update	2025-08-09 06:31:54.196	2025-08-09 06:31:54.196	\N	\N
+305	api::part-of-speech.part-of-speech.find	2025-08-09 06:32:15.228	2025-08-09 06:32:15.228	\N	\N
+306	api::part-of-speech.part-of-speech.findOne	2025-08-09 06:32:15.228	2025-08-09 06:32:15.228	\N	\N
+309	api::user-profile.user-profile.find	2025-08-12 02:39:59.273	2025-08-12 02:39:59.273	\N	\N
+308	api::user-profile.user-profile.findOne	2025-08-12 02:39:59.273	2025-08-12 02:39:59.273	\N	\N
+307	api::user-profile.user-profile.create	2025-08-12 02:39:59.273	2025-08-12 02:39:59.273	\N	\N
+310	api::user-profile.user-profile.update	2025-08-12 02:39:59.273	2025-08-12 02:39:59.273	\N	\N
 137	api::word-definition.word-definition.create	2025-08-03 22:56:57.903	2025-08-03 22:56:57.903	\N	\N
 143	api::flashcard.flashcard.createLocalization	2025-08-03 22:57:38.181	2025-08-03 22:57:38.181	\N	\N
 \.
@@ -8648,6 +9276,157 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 156	154	3	8
 157	158	3	9
 158	157	3	9
+160	160	1	42
+161	163	3	10
+162	161	3	10
+163	162	3	10
+164	164	3	11
+165	165	3	12
+166	166	3	12
+167	167	3	13
+168	168	3	13
+169	170	3	13
+170	169	3	13
+171	171	3	14
+172	172	3	14
+173	173	3	15
+174	174	3	15
+176	175	3	15
+177	178	3	15
+175	176	3	15
+178	183	3	15
+179	181	3	15
+180	177	3	15
+181	179	3	15
+182	180	3	15
+183	191	3	16
+184	184	3	16
+185	190	3	16
+186	187	3	16
+187	182	3	16
+188	188	3	16
+189	186	3	16
+190	185	3	16
+191	192	3	16
+192	189	3	16
+193	196	3	17
+194	195	3	17
+195	194	3	17
+196	193	3	17
+197	199	3	17
+198	198	3	17
+199	200	3	17
+200	197	3	17
+201	201	3	17
+202	203	3	17
+212	213	3	18
+222	226	3	19
+232	233	3	20
+242	245	3	21
+252	256	3	22
+262	263	3	23
+272	272	3	24
+282	282	3	25
+292	292	3	26
+203	202	3	18
+213	214	3	19
+223	223	3	20
+233	232	3	21
+244	242	3	22
+253	254	3	23
+263	264	3	24
+274	276	3	25
+284	284	3	26
+204	206	3	18
+215	219	3	19
+227	231	3	20
+237	238	3	21
+251	249	3	22
+261	257	3	23
+269	268	3	24
+281	275	3	25
+291	283	3	26
+205	208	3	18
+220	215	3	19
+229	229	3	20
+241	239	3	21
+249	251	3	22
+257	266	3	23
+267	267	3	24
+280	274	3	25
+289	291	3	26
+206	210	3	18
+216	218	3	19
+226	225	3	20
+236	237	3	21
+247	244	3	22
+260	253	3	23
+270	261	3	24
+276	277	3	25
+285	286	3	26
+207	207	3	18
+218	212	3	19
+230	227	3	20
+240	235	3	21
+250	250	3	22
+258	260	3	23
+271	271	3	24
+279	281	3	25
+287	290	3	26
+209	209	3	18
+221	220	3	19
+228	224	3	20
+238	234	3	21
+245	248	3	22
+259	258	3	23
+266	270	3	24
+277	280	3	25
+288	288	3	26
+210	204	3	18
+214	221	3	19
+224	222	3	20
+235	236	3	21
+243	243	3	22
+256	252	3	23
+264	262	3	24
+273	278	3	25
+286	285	3	26
+211	205	3	18
+217	217	3	19
+225	230	3	20
+234	240	3	21
+246	246	3	22
+254	255	3	23
+265	265	3	24
+275	273	3	25
+283	287	3	26
+293	293	3	27
+294	294	1	43
+295	295	3	28
+296	296	1	44
+297	297	3	29
+298	298	1	45
+299	299	1	46
+301	302	1	47
+300	300	1	46
+302	301	1	47
+303	303	1	47
+306	306	1	49
+304	304	1	48
+305	305	1	49
+307	309	1	50
+308	307	1	50
+309	308	1	50
+310	310	1	51
+208	211	3	18
+219	216	3	19
+231	228	3	20
+239	241	3	21
+248	247	3	22
+255	259	3	23
+268	269	3	24
+278	279	3	25
+290	289	3	26
 \.
 
 
@@ -8657,8 +9436,8 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 
 COPY public.up_roles (id, name, description, type, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 2	Public	Default role given to unauthenticated user.	public	2025-06-23 17:47:30.213	2025-07-19 22:50:19.938	\N	\N
-1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-08-04 19:14:45.531	\N	\N
-3	admin	Administrator	admin	2025-07-20 11:32:36.414	2025-08-04 19:33:22.618	\N	\N
+3	admin	Administrator	admin	2025-07-20 11:32:36.414	2025-08-07 00:50:24.62	\N	\N
+1	Authenticated	Default role given to authenticated user.	authenticated	2025-06-23 17:47:30.092	2025-08-12 02:40:23.991	\N	\N
 \.
 
 
@@ -8680,6 +9459,8 @@ COPY public.up_users (id, username, email, provider, password, reset_password_to
 34	july84@langgo.com	july84@langgo.com	local	$2a$10$EPSSssdwR54yIkvshXQ3puYqanj9q83HKUIgFqhq0emgtN7rNL98O	\N	\N	t	f	2025-07-08 23:11:16.219	2025-07-08 23:11:16.219	\N	\N
 41	july15	july15@example.com	local	$2a$10$M6bhjcmSL3Cov19dO9TLzuDXdKiM3v260kcEJfa511UcKt7j4mzeW	\N	\N	t	f	2025-07-15 22:00:44.259	2025-07-15 22:00:44.259	\N	\N
 8	vivian	vivian@langgo.com	local	$2a$10$ONHe/w5EtfUm8ZoE8kdAqemv.KnkF68zanjCbcrHOfD6W.oEwbC8u	\N	\N	t	f	2025-06-27 23:01:16.676	2025-08-02 04:28:50.817	\N	1
+47	james@langgo.ca	james@langgo.ca	local	$2a$10$rs4tsBUH8Wlpk5MUBkBJv.Sw8Bny.e119nnmePWXnwZd8A9yHoPH2	\N	\N	t	f	2025-08-06 04:18:56.748	2025-08-06 04:18:56.748	\N	\N
+49	french@langgo.ca	french@langgo.ca	local	$2a$10$BS0Flq27mWjPZNs8p4uMFOUUTX1.BYj17itXIyK7X3fdbS8q2IcC2	\N	\N	t	f	2025-08-12 00:28:01.723	2025-08-12 00:28:01.723	\N	\N
 \.
 
 
@@ -8701,6 +9482,8 @@ COPY public.up_users_role_links (id, user_id, role_id, user_order) FROM stdin;
 28	33	1	15
 29	34	1	16
 36	41	1	17
+42	47	1	18
+44	49	1	19
 \.
 
 
@@ -8709,6 +9492,7 @@ COPY public.up_users_role_links (id, user_id, role_id, user_order) FROM stdin;
 --
 
 COPY public.upload_folders (id, name, path_id, path, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
+1	story medias	1	/1	2025-08-05 21:39:45.852	2025-08-05 21:39:45.852	1	1
 \.
 
 
@@ -8740,6 +9524,10 @@ COPY public.user_profiles (id, telephone, base_language, created_at, updated_at,
 18	\N	en	2025-08-02 01:48:00.422	2025-08-02 01:48:00.422	\N	\N
 19	\N	zh	2025-08-03 21:18:31.4	2025-08-03 21:18:31.4	1	1
 20	\N	zh	2025-08-03 21:19:35.513	2025-08-03 21:19:35.513	1	1
+21	\N	en	2025-08-06 04:18:57.023	2025-08-06 04:18:57.023	\N	\N
+22	\N	en	2025-08-05 23:23:00.772	2025-08-05 23:23:00.772	\N	\N
+23	\N	zh-Hans	2025-08-11 23:45:16.359	2025-08-11 23:45:16.359	\N	\N
+24	\N	fr	2025-08-12 00:28:01.9	2025-08-12 11:50:10.614	\N	\N
 \.
 
 
@@ -8754,6 +9542,9 @@ COPY public.user_profiles_user_links (id, user_profile_id, user_id) FROM stdin;
 13	13	8
 19	19	30
 20	20	29
+21	21	47
+22	22	7
+24	24	49
 \.
 
 
@@ -9169,6 +9960,9 @@ COPY public.vbsettings (id, words_per_page, interval_1, interval_2, interval_3, 
 14	12	1.50	2.00	2.00	2025-08-02 01:48:00.434	2025-08-02 01:48:00.434	\N	\N
 15	12	1.50	2.00	2.00	2025-08-02 01:48:00.456	2025-08-02 01:48:00.456	\N	\N
 6	15	1.50	2.00	2.00	2025-07-13 22:11:50.588	2025-08-05 18:37:36.338	\N	\N
+16	5	1.50	2.00	2.00	2025-08-06 04:18:57.231	2025-08-10 15:50:48.905	\N	\N
+17	12	1.50	2.00	2.00	2025-08-11 23:45:16.525	2025-08-11 23:45:16.525	\N	\N
+18	12	1.50	2.00	2.00	2025-08-12 00:28:02.068	2025-08-12 00:28:02.068	\N	\N
 \.
 
 
@@ -9183,6 +9977,8 @@ COPY public.vbsettings_user_links (id, vbsetting_id, user_id) FROM stdin;
 5	5	30
 6	6	8
 10	10	41
+16	16	47
+18	18	49
 \.
 
 
@@ -9357,39 +10153,54 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1020	水门汀	\N	2025-08-03 21:34:36.743	2025-08-03 21:34:40.314	\N	\N	en	\N	\N	The workers used cement to build a strong foundation for the new house.	[{"text": "海港", "isCorrect": false}, {"text": "江河岸", "isCorrect": false}, {"text": "湖滨", "isCorrect": false}, {"text": "水门汀", "isCorrect": true}]	[{"text": "plaster", "isCorrect": false}, {"text": "cement", "isCorrect": true}, {"text": "gravel", "isCorrect": false}, {"text": "asphalt", "isCorrect": false}]	\N
 1029	对抗者，对𬌗牙	\N	2025-08-03 21:34:42.97	2025-08-03 21:34:48.131	\N	\N	en	\N	\N	In the movie, the antagonist was a wicked sorcerer who tried to take over the kingdom.	[{"text": "對抗者", "isCorrect": false}, {"text": "對抗𬌗", "isCorrect": false}, {"text": "对抐木", "isCorrect": false}, {"text": "对抗者，对𬌗牙", "isCorrect": true}]	[{"text": "antagonist", "isCorrect": true}, {"text": "ally", "isCorrect": false}, {"text": "proponent", "isCorrect": false}, {"text": "rival", "isCorrect": false}]	\N
 1041	接触，曝光，暴露	\N	2025-08-03 21:34:49.185	2025-08-03 21:34:52.362	\N	\N	en	\N	\N	The child got a sunburn from too much exposure to the sun.	[{"text": "接触，曝光，暴露", "isCorrect": true}, {"text": "接管", "isCorrect": false}, {"text": "暴力", "isCorrect": false}, {"text": "开发", "isCorrect": false}]	[{"text": "vulnerability", "isCorrect": false}, {"text": "immunity", "isCorrect": false}, {"text": "susceptibility", "isCorrect": false}, {"text": "exposure", "isCorrect": true}]	\N
+1061	抛出	\N	2025-08-07 02:59:36.943	2025-08-07 02:59:40.804	\N	\N	en	\N	\N	She flung the ball across the room.	[{"text": "抛出", "isCorrect": true}, {"text": "遗弃", "isCorrect": false}, {"text": "投掷", "isCorrect": false}, {"text": "扔弃", "isCorrect": false}]	[{"text": "spurned", "isCorrect": false}, {"text": "flung", "isCorrect": true}, {"text": "chucked", "isCorrect": false}, {"text": "hurled", "isCorrect": false}]	\N
 914	卡马西平——抗癫痫药，三叉神经痛首选	\N	2025-08-03 21:33:12.535	2025-08-03 21:33:17.179	\N	\N	en	\N	\N	She takes carbamazepine to help manage her seizures.	[{"text": "卡马西平——抗癫痫药，三叉神经痛首选", "isCorrect": true}, {"text": "帕尼泮", "isCorrect": false}, {"text": "卡巴卡新", "isCorrect": false}, {"text": "利培酮", "isCorrect": false}]	[{"text": "topiramate", "isCorrect": false}, {"text": "carbamazepine", "isCorrect": true}, {"text": "phenytoin", "isCorrect": false}, {"text": "valproic acid", "isCorrect": false}]	\N
 918	盐水	\N	2025-08-03 21:33:18.34	2025-08-03 21:33:22.03	\N	\N	en	\N	\N	The nurse administered a saline solution to hydrate the patient.	[{"text": "绿茶", "isCorrect": false}, {"text": "醋", "isCorrect": false}, {"text": "盐水", "isCorrect": true}, {"text": "酱油", "isCorrect": false}]	[{"text": "brine", "isCorrect": false}, {"text": "silt", "isCorrect": false}, {"text": "alkaline", "isCorrect": false}, {"text": "saline", "isCorrect": true}]	\N
 932	生物体	\N	2025-08-03 21:33:23.15	2025-08-03 21:33:26.57	\N	\N	en	\N	\N	The frog is a small organism that lives in the pond.	[{"text": "植物体", "isCorrect": false}, {"text": "生命", "isCorrect": false}, {"text": "生物体", "isCorrect": true}, {"text": "生物学", "isCorrect": false}]	[{"text": "creature", "isCorrect": false}, {"text": "organism", "isCorrect": true}, {"text": "being", "isCorrect": false}, {"text": "entity", "isCorrect": false}]	\N
 1017	膨胀，肿胀	\N	2025-08-03 21:34:36.728	2025-08-03 21:34:40.422	\N	\N	en	\N	\N	Her ankle began to swell after she twisted it during the soccer game.	[{"text": "发胀", "isCorrect": false}, {"text": "膨胀，肿胀", "isCorrect": true}, {"text": "膨大", "isCorrect": false}, {"text": "扩张", "isCorrect": false}]	[{"text": "swell", "isCorrect": true}, {"text": "inflate", "isCorrect": false}, {"text": "magnify", "isCorrect": false}, {"text": "augment", "isCorrect": false}]	\N
 1025	概念	\N	2025-08-03 21:34:42.968	2025-08-03 21:34:46.229	\N	\N	en	\N	\N	I don't understand the concept of time travel.	[{"text": "物质", "isCorrect": false}, {"text": "情感", "isCorrect": false}, {"text": "主观", "isCorrect": false}, {"text": "概念", "isCorrect": true}]	[{"text": "belief", "isCorrect": false}, {"text": "idea", "isCorrect": false}, {"text": "notion", "isCorrect": false}, {"text": "concept", "isCorrect": true}]	\N
 1038	轮匝肌	\N	2025-08-03 21:34:49.184	2025-08-03 21:34:52.459	\N	\N	en	\N	\N	The prbicularis flower blooms in the spring.	[{"text": "轮匝肌", "isCorrect": true}, {"text": "泌尿系", "isCorrect": false}, {"text": "前臂肌", "isCorrect": false}, {"text": "骨骼肌", "isCorrect": false}]	[{"text": "particular", "isCorrect": false}, {"text": "prbicularis", "isCorrect": true}, {"text": "precipitate", "isCorrect": false}, {"text": "precarious", "isCorrect": false}]	\N
+1062	赐予	\N	2025-08-07 03:04:25.502	2025-08-07 03:04:29.352	\N	\N	en	\N	\N	The king bestowed a medal upon the brave soldier.	[{"text": "赋予", "isCorrect": false}, {"text": "授予", "isCorrect": false}, {"text": "赐赠", "isCorrect": false}, {"text": "赐予", "isCorrect": true}]	[{"text": "bequeathed", "isCorrect": false}, {"text": "imparted", "isCorrect": false}, {"text": "bestowed", "isCorrect": true}, {"text": "concealed", "isCorrect": false}]	\N
+1063	喃喃说道	\N	2025-08-07 03:04:53.02	2025-08-07 03:04:56.927	\N	\N	en	\N	\N	She muttered something under her breath during the meeting.	[{"text": "嘀咕呢喃", "isCorrect": false}, {"text": "喃喃低语", "isCorrect": false}, {"text": "喋喋不休", "isCorrect": false}, {"text": "喃喃说道", "isCorrect": true}]	[{"text": "muttered", "isCorrect": true}, {"text": "whispered", "isCorrect": false}, {"text": "grumbled", "isCorrect": false}, {"text": "stammered", "isCorrect": false}]	\N
 913	颊	\N	2025-08-03 21:33:12.534	2025-08-03 21:33:17.34	\N	\N	en	\N	\N	The dentist applied a buccal sealant to protect the molars from cavities.	[{"text": "颊", "isCorrect": true}, {"text": "Error opt 1", "isCorrect": false}, {"text": "Error opt 2", "isCorrect": false}, {"text": "Error opt 3", "isCorrect": false}]	[{"text": "buccal", "isCorrect": true}, {"text": "labial", "isCorrect": false}, {"text": "lingual", "isCorrect": false}, {"text": "palatal", "isCorrect": false}]	\N
 917	模型观测仪	\N	2025-08-03 21:33:18.339	2025-08-03 21:33:21.498	\N	\N	en	\N	\N	The surveyor measured the land to create a map.	[{"text": "测试", "isCorrect": false}, {"text": "实验", "isCorrect": false}, {"text": "模型观测仪", "isCorrect": true}, {"text": "观察", "isCorrect": false}]	[{"text": "surveyor", "isCorrect": true}, {"text": "architect", "isCorrect": false}, {"text": "navigator", "isCorrect": false}, {"text": "inspector", "isCorrect": false}]	\N
 927	龈沟内	\N	2025-08-03 21:33:23.148	2025-08-03 21:33:27.727	\N	\N	en	\N	\N	The dentist carefully cleaned the intrasulcular area to remove any debris.	[{"text": "口腔", "isCorrect": false}, {"text": "龈沟内", "isCorrect": true}, {"text": "齿颈", "isCorrect": false}, {"text": "牙龈", "isCorrect": false}]	[{"text": "supragingival", "isCorrect": false}, {"text": "intrasulcular", "isCorrect": true}, {"text": "extracoronal", "isCorrect": false}, {"text": "interproximal", "isCorrect": false}]	\N
 1023	咬𬌗面	\N	2025-08-03 21:34:36.746	2025-08-03 21:34:40.441	\N	\N	en	\N	\N	The dentist adjusted the occlusion surface of the patient's dental crown to improve their bite.	[{"text": "啃饼干", "isCorrect": false}, {"text": "嘬汤羹", "isCorrect": false}, {"text": "咬𬌗面", "isCorrect": true}, {"text": "吮面条", "isCorrect": false}]	[{"text": "enclosure boundary", "isCorrect": false}, {"text": "transparency layer", "isCorrect": false}, {"text": "exposure area", "isCorrect": false}, {"text": "occlusion surface", "isCorrect": true}]	\N
 1032	翼外肌	\N	2025-08-03 21:34:42.981	2025-08-03 21:34:47.619	\N	\N	en	\N	\N	The lateral pterygoid muscle helps with chewing and moving the jaw from side to side.	[{"text": "腹直肌", "isCorrect": false}, {"text": "翼外肌", "isCorrect": true}, {"text": "肱三头肌", "isCorrect": false}, {"text": "前斜方肌", "isCorrect": false}]	[{"text": "lateral pterygoid muscle", "isCorrect": true}, {"text": "medial pterygoid muscle", "isCorrect": false}, {"text": "zygomaticus muscle", "isCorrect": false}, {"text": "temporalis muscle", "isCorrect": false}]	\N
 1042	青霉素	\N	2025-08-03 21:34:49.186	2025-08-03 21:34:52.949	\N	\N	en	\N	\N	I took penicillin to help me get better from my infection.	[{"text": "消炎药", "isCorrect": false}, {"text": "抗生素", "isCorrect": false}, {"text": "感冒药", "isCorrect": false}, {"text": "青霉素", "isCorrect": true}]	[{"text": "penicillin", "isCorrect": true}, {"text": "azithromycin", "isCorrect": false}, {"text": "cephalexin", "isCorrect": false}, {"text": "amoxicillin", "isCorrect": false}]	\N
+1064	费力地	\N	2025-08-07 03:14:34.36	2025-08-07 03:14:38.091	\N	\N	en	\N	\N	She laboriously climbed to the top of the mountain.	[{"text": "拼命地", "isCorrect": false}, {"text": "费力地", "isCorrect": true}, {"text": "吃力地", "isCorrect": false}, {"text": "费劲地", "isCorrect": false}]	[{"text": "arduously", "isCorrect": false}, {"text": "tediously", "isCorrect": false}, {"text": "gracefully", "isCorrect": false}, {"text": "laboriously", "isCorrect": true}]	\N
+1065	奇怪的	\N	2025-08-07 03:15:32.151	2025-08-07 03:15:36.355	\N	\N	en	\N	\N	The peculiar noise coming from the old house made me feel uneasy.	[{"text": "異常的", "isCorrect": false}, {"text": "怪誕的", "isCorrect": false}, {"text": "詭異的", "isCorrect": false}, {"text": "奇怪的", "isCorrect": true}]	[{"text": "peculiar", "isCorrect": true}, {"text": "unique", "isCorrect": false}, {"text": "bizarre", "isCorrect": false}, {"text": "eccentric", "isCorrect": false}]	\N
 915	队列	\N	2025-08-03 21:33:18.338	2025-08-03 21:33:21.5	\N	\N	en	\N	\N	I waited in the queue at the grocery store.	[{"text": "队列", "isCorrect": true}, {"text": "编队", "isCorrect": false}, {"text": "列表", "isCorrect": false}, {"text": "排列", "isCorrect": false}]	[{"text": "line", "isCorrect": false}, {"text": "array", "isCorrect": false}, {"text": "queue", "isCorrect": true}, {"text": "row", "isCorrect": false}]	\N
 929	退缩	\N	2025-08-03 21:33:23.148	2025-08-03 21:33:27.148	\N	\N	en	\N	\N	She showed her retration by apologizing to her friend for being late.	[{"text": "毅力", "isCorrect": false}, {"text": "畏缩", "isCorrect": false}, {"text": "觅食", "isCorrect": false}, {"text": "退缩", "isCorrect": true}]	[{"text": "reservation", "isCorrect": false}, {"text": "retration", "isCorrect": true}, {"text": "retortion", "isCorrect": false}, {"text": "reticent", "isCorrect": false}]	\N
 1015	模量	\N	2025-08-03 21:34:36.727	2025-08-03 21:34:40.689	\N	\N	en	\N	\N	The modulus of a complex number is its distance from the origin on the complex plane.	[{"text": "弹性", "isCorrect": false}, {"text": "尺寸", "isCorrect": false}, {"text": "模量", "isCorrect": true}, {"text": "密度", "isCorrect": false}]	[{"text": "multiplicand", "isCorrect": false}, {"text": "mantissa", "isCorrect": false}, {"text": "modulus", "isCorrect": true}, {"text": "quotient", "isCorrect": false}]	\N
 1034	下	\N	2025-08-03 21:34:43.001	2025-08-03 21:34:47.072	\N	\N	en	\N	\N	The quality of the replica was inferior to the original.	[{"text": "左", "isCorrect": false}, {"text": "右", "isCorrect": false}, {"text": "上", "isCorrect": false}, {"text": "下", "isCorrect": true}]	[{"text": "unsatisfactory", "isCorrect": false}, {"text": "mediocre", "isCorrect": false}, {"text": "subpar", "isCorrect": false}, {"text": "inferior", "isCorrect": true}]	\N
 1040	青霉素酶	\N	2025-08-03 21:34:49.186	2025-08-03 21:34:52.967	\N	\N	en	\N	\N	Doctors use penicillinase to treat bacterial infections that are resistant to penicillin.	[{"text": "青霉素酶", "isCorrect": true}, {"text": "坚鑫油酶", "isCorrect": false}, {"text": "叔崽整酶", "isCorrect": false}, {"text": "床略果酶", "isCorrect": false}]	[{"text": "cephalosporinase", "isCorrect": false}, {"text": "amoxicillinase", "isCorrect": false}, {"text": "penicillinase", "isCorrect": true}, {"text": "azithromycinase", "isCorrect": false}]	\N
 1046	笑肌	\N	2025-08-03 21:35:22.728	2025-08-03 21:56:18.133	\N	1	en	\N	\N	The risorius muscle helps you smile.	[{"text": "微笑", "isCorrect": false}, {"text": "酒窝", "isCorrect": false}, {"text": "笑肌", "isCorrect": true}, {"text": "咀嚼肌", "isCorrect": false}]	[{"text": "zygomaticus", "isCorrect": false}, {"text": "frontalis", "isCorrect": false}, {"text": "risorius", "isCorrect": true}, {"text": "buccinator", "isCorrect": false}]	\N
+1066	保留龈乳头切口	\N	2025-08-09 06:25:05.019	2025-08-09 06:25:11.704	\N	\N	en	\N	\N	The dentist made an incision for a papilla preservation during the gum surgery.	[{"text": "义齿", "isCorrect": false}, {"text": "拔牙", "isCorrect": false}, {"text": "保留龈乳头切口", "isCorrect": true}, {"text": "牙槽骨", "isCorrect": false}]	[{"text": "incision for a papilla preservation", "isCorrect": true}, {"text": "excavation", "isCorrect": false}, {"text": "ligation", "isCorrect": false}, {"text": "suturing", "isCorrect": false}]	\N
 920	革兰氏阳性菌	\N	2025-08-03 21:33:18.341	2025-08-03 21:33:21.558	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the gram-positive infection.	[{"text": "链球菌", "isCorrect": false}, {"text": "流感病毒", "isCorrect": false}, {"text": "肺炎球菌", "isCorrect": false}, {"text": "革兰氏阳性菌", "isCorrect": true}]	[{"text": "gram-unknown", "isCorrect": false}, {"text": "gram-negative", "isCorrect": false}, {"text": "gram-stain", "isCorrect": false}, {"text": "gram-positive", "isCorrect": true}]	\N
 931	颅骨	\N	2025-08-03 21:33:23.149	2025-08-03 21:33:26.848	\N	\N	en	\N	\N	He fell off his bike and hit his head so hard that he fractured his skull.	[{"text": "颅骨", "isCorrect": true}, {"text": "腰骨", "isCorrect": false}, {"text": "排骨", "isCorrect": false}, {"text": "胸骨", "isCorrect": false}]	[{"text": "skull", "isCorrect": true}, {"text": "skeleton", "isCorrect": false}, {"text": "coffin", "isCorrect": false}, {"text": "peril", "isCorrect": false}]	\N
 1016	热的	\N	2025-08-03 21:34:36.728	2025-08-03 21:34:40.711	\N	\N	en	\N	\N	The thermal blanket kept me warm during the cold night.	[{"text": "冷的", "isCorrect": false}, {"text": "苦的", "isCorrect": false}, {"text": "甜的", "isCorrect": false}, {"text": "热的", "isCorrect": true}]	[{"text": "calorie", "isCorrect": false}, {"text": "thermal", "isCorrect": true}, {"text": "insulation", "isCorrect": false}, {"text": "hot", "isCorrect": false}]	\N
 1027	内侧翼肌	\N	2025-08-03 21:34:42.969	2025-08-03 21:34:46.729	\N	\N	en	\N	\N	The medial pterygoid muscle helps with chewing food.	[{"text": "胫骨前肌", "isCorrect": false}, {"text": "外侧翼肌", "isCorrect": false}, {"text": "内侧翼肌", "isCorrect": true}, {"text": "后腰部肌群", "isCorrect": false}]	[{"text": "lateral pterygoid muscle", "isCorrect": false}, {"text": "masseter muscle", "isCorrect": false}, {"text": "medial pterygoid muscle", "isCorrect": true}, {"text": "temporalis muscle", "isCorrect": false}]	\N
 1035	葡萄球菌	\N	2025-08-03 21:34:49.183	2025-08-03 21:34:52.461	\N	\N	en	\N	\N	The doctor diagnosed the infection as staphylococcus.	[{"text": "葡萄球菌", "isCorrect": true}, {"text": "铁细菌", "isCorrect": false}, {"text": "酵母菌", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}]	[{"text": "klebsiella", "isCorrect": false}, {"text": "staphylococcus", "isCorrect": true}, {"text": "bacillus", "isCorrect": false}, {"text": "streptococcus", "isCorrect": false}]	\N
+1067	伴放线放线杆菌	\N	2025-08-09 06:30:43.415	2025-08-09 06:30:52.009	\N	\N	en	\N	\N	Actinobacillus actinomycetemcomitans is a type of bacteria commonly found in the mouth.	[{"text": "光线菌", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}, {"text": "螺旋菌", "isCorrect": false}, {"text": "伴放线放线杆菌", "isCorrect": true}]	[{"text": "fusobacterium nucleatum", "isCorrect": false}, {"text": "actinobacillus actinomycetemcomitans", "isCorrect": true}, {"text": "bacteroides fragilis", "isCorrect": false}, {"text": "streptococcus pyogenes", "isCorrect": false}]	\N
 919	螺旋体	\N	2025-08-03 21:33:18.341	2025-08-03 21:33:22.094	\N	\N	en	\N	\N	Some spirochetes can cause diseases like syphilis and Lyme disease.	[{"text": "螺旋体", "isCorrect": true}, {"text": "菌株", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}, {"text": "细胞", "isCorrect": false}]	[{"text": "listeria", "isCorrect": false}, {"text": "cocci", "isCorrect": false}, {"text": "spirochetes", "isCorrect": true}, {"text": "bacilli", "isCorrect": false}]	\N
 926	简化	\N	2025-08-03 21:33:23.147	2025-08-03 21:33:26.417	\N	\N	en	\N	\N	Let's simplify the instructions so everyone can understand them.	[{"text": "抽象", "isCorrect": false}, {"text": "繁琐", "isCorrect": false}, {"text": "恰当", "isCorrect": false}, {"text": "简化", "isCorrect": true}]	[{"text": "complexify", "isCorrect": false}, {"text": "simplify", "isCorrect": true}, {"text": "complicate", "isCorrect": false}, {"text": "compensate", "isCorrect": false}]	\N
 1019	磨光面	\N	2025-08-03 21:34:36.745	2025-08-03 21:34:41.819	\N	\N	en	\N	\N	She used a cloth to polish the surface of the table.	[{"text": "磨光面", "isCorrect": true}, {"text": "研磨表面", "isCorrect": false}, {"text": "擦亮表面", "isCorrect": false}, {"text": "抛光面", "isCorrect": false}]	[{"text": "Buff", "isCorrect": false}, {"text": "Clean", "isCorrect": false}, {"text": "Polish surface", "isCorrect": true}, {"text": "Burnish", "isCorrect": false}]	\N
 1033	针尖	\N	2025-08-03 21:34:43	2025-08-03 21:34:46.346	\N	\N	en	\N	\N	Be careful when handling the needle tip of the syringe.	[{"text": "绣花", "isCorrect": false}, {"text": "筷子", "isCorrect": false}, {"text": "针尖", "isCorrect": true}, {"text": "饺子", "isCorrect": false}]	[{"text": "needle tip", "isCorrect": true}, {"text": "tiny point", "isCorrect": false}, {"text": "pointy end", "isCorrect": false}, {"text": "sharp edge", "isCorrect": false}]	\N
 1037	唇	\N	2025-08-03 21:34:49.182	2025-08-03 21:34:52.099	\N	\N	en	\N	\N	She smiled, revealing her labii.	[{"text": "唇", "isCorrect": true}, {"text": "颊", "isCorrect": false}, {"text": "齿", "isCorrect": false}, {"text": "腮", "isCorrect": false}]	[{"text": "labuii", "isCorrect": false}, {"text": "labeii", "isCorrect": false}, {"text": "labii", "isCorrect": true}, {"text": "labbii", "isCorrect": false}]	\N
+1068	伴发病变	\N	2025-08-09 06:32:24.885	2025-08-09 06:32:39.858	\N	\N	en	\N	\N	The doctor diagnosed the patient with a combined lesion in the brain.	[{"text": "伴发病变", "isCorrect": true}, {"text": "并发病变", "isCorrect": false}, {"text": "伙伴病变", "isCorrect": false}, {"text": "伴随病变", "isCorrect": false}]	[{"text": "united wound", "isCorrect": false}, {"text": "combined lesion", "isCorrect": true}, {"text": "blended sore", "isCorrect": false}, {"text": "merged injury", "isCorrect": false}]	\N
+1069	半切术	\N	2025-08-09 06:33:06.714	2025-08-09 06:33:11.346	\N	\N	en	\N	\N	The surgeon performed a hemisection on the patient's tooth to remove the infected pulp.	[{"text": "半草术", "isCorrect": false}, {"text": "切花艺术", "isCorrect": false}, {"text": "半低术", "isCorrect": false}, {"text": "半切术", "isCorrect": true}]	[{"text": "bifurcation", "isCorrect": false}, {"text": "subdivision", "isCorrect": false}, {"text": "divarication", "isCorrect": false}, {"text": "hemisection", "isCorrect": true}]	\N
 921	轮廓	\N	2025-08-03 21:33:18.352	2025-08-03 21:33:22.135	\N	\N	en	\N	\N	I updated my social media profile picture.	[{"text": "剪影", "isCorrect": false}, {"text": "躯干", "isCorrect": false}, {"text": "纤细", "isCorrect": false}, {"text": "轮廓", "isCorrect": true}]	[{"text": "profile", "isCorrect": true}, {"text": "biography", "isCorrect": false}, {"text": "persona", "isCorrect": false}, {"text": "identity", "isCorrect": false}]	\N
 925	外部的	\N	2025-08-03 21:33:23.118	2025-08-03 21:33:26.893	\N	\N	en	\N	\N	He connected the external hard drive to his computer to store extra files.	[{"text": "內在的", "isCorrect": false}, {"text": "外部的", "isCorrect": true}, {"text": "內部的", "isCorrect": false}, {"text": "外圍的", "isCorrect": false}]	[{"text": "internal", "isCorrect": false}, {"text": "outer", "isCorrect": false}, {"text": "exterior", "isCorrect": false}, {"text": "external", "isCorrect": true}]	\N
 1022	局部的	\N	2025-08-03 21:34:36.747	2025-08-03 21:34:41.956	\N	\N	en	\N	\N	The company's marketing efforts are focused on localized strategies to target specific regions.	[{"text": "整体的", "isCorrect": false}, {"text": "具体的", "isCorrect": false}, {"text": "表面的", "isCorrect": false}, {"text": "局部的", "isCorrect": true}]	[{"text": "localized", "isCorrect": true}, {"text": "dispersed", "isCorrect": false}, {"text": "scattered", "isCorrect": false}, {"text": "centralized", "isCorrect": false}]	\N
 1026	脓肿	\N	2025-08-03 21:34:42.969	2025-08-03 21:34:48.027	\N	\N	en	\N	\N	He had to go to the dentist to treat his painful abscess.	[{"text": "化脓性炎症", "isCorrect": false}, {"text": "脓肿", "isCorrect": true}, {"text": "皮脂囊肿", "isCorrect": false}, {"text": "胆结石", "isCorrect": false}]	[{"text": "abcess", "isCorrect": true}, {"text": "bolster", "isCorrect": false}, {"text": "quixotic", "isCorrect": false}, {"text": "malaise", "isCorrect": false}]	\N
 1039	感染	\N	2025-08-03 21:34:49.185	2025-08-03 21:34:52.617	\N	\N	en	\N	\N	She got a bacterial infection after cutting her finger.	[{"text": "传染", "isCorrect": false}, {"text": "感染", "isCorrect": true}, {"text": "传播", "isCorrect": false}, {"text": "发炎", "isCorrect": false}]	[{"text": "disease", "isCorrect": false}, {"text": "infection", "isCorrect": true}, {"text": "contagion", "isCorrect": false}, {"text": "virus", "isCorrect": false}]	\N
+1070	纤细	\N	2025-08-09 21:29:49.874	2025-08-09 21:29:54.138	\N	\N	en	\N	\N	She has a slender figure that makes her look elegant.	[{"text": "瘦弱", "isCorrect": false}, {"text": "纤细", "isCorrect": true}, {"text": "细长", "isCorrect": false}, {"text": "粗糙", "isCorrect": false}]	[{"text": "scrawny", "isCorrect": false}, {"text": "thin", "isCorrect": false}, {"text": "slender", "isCorrect": true}, {"text": "broad", "isCorrect": false}]	\N
+1071	宽边的	\N	2025-08-09 21:30:08.523	2025-08-09 21:30:12.261	\N	\N	en	\N	\N	The hat brimmed with flowers.	[{"text": "宽边的", "isCorrect": true}, {"text": "洞边的", "isCorrect": false}, {"text": "条纹的", "isCorrect": false}, {"text": "褶边的", "isCorrect": false}]	[{"text": "overflowed", "isCorrect": false}, {"text": "spilled", "isCorrect": false}, {"text": "brimmed", "isCorrect": true}, {"text": "flooded", "isCorrect": false}]	\N
+1072	毡料	\N	2025-08-09 21:30:29.704	2025-08-09 21:30:33.182	\N	\N	en	\N	\N	I placed a piece of felt under the vase to protect the table.	[{"text": "毡料", "isCorrect": true}, {"text": "麻布", "isCorrect": false}, {"text": "絲綢", "isCorrect": false}, {"text": "棉花", "isCorrect": false}]	[{"text": "touched", "isCorrect": false}, {"text": "feelings", "isCorrect": false}, {"text": "felt", "isCorrect": true}, {"text": "fabric", "isCorrect": false}]	\N
+1073	马车	\N	2025-08-09 21:31:23.7	2025-08-09 21:31:27.595	\N	\N	en	\N	\N	The carriage stopped at the stage to pick up passengers.	[{"text": "火车", "isCorrect": false}, {"text": "马车", "isCorrect": true}, {"text": "自行车", "isCorrect": false}, {"text": "飞机", "isCorrect": false}]	[{"text": "level", "isCorrect": false}, {"text": "stage", "isCorrect": true}, {"text": "situation", "isCorrect": false}, {"text": "phase", "isCorrect": false}]	\N
+1074	缰绳	\N	2025-08-09 21:31:36.018	2025-08-09 21:31:39.169	\N	\N	en	\N	\N	The cowboy held the reins tightly as he guided the horse through the field.	[{"text": "镍绳", "isCorrect": false}, {"text": "鞭绳", "isCorrect": false}, {"text": "缰绳", "isCorrect": true}, {"text": "绳索", "isCorrect": false}]	[{"text": "saddle", "isCorrect": false}, {"text": "reins", "isCorrect": true}, {"text": "bridle", "isCorrect": false}, {"text": "harness", "isCorrect": false}]	\N
+1075	不习惯	\N	2025-08-09 21:32:11.924	2025-08-09 21:32:15.105	\N	\N	en	\N	\N	She felt awkward and unused to the new office environment.	[{"text": "新颖", "isCorrect": false}, {"text": "不习惯", "isCorrect": true}, {"text": "不熟悉", "isCorrect": false}, {"text": "陌生", "isCorrect": false}]	[{"text": "idle", "isCorrect": false}, {"text": "neglected", "isCorrect": false}, {"text": "unused", "isCorrect": true}, {"text": "fashionable", "isCorrect": false}]	\N
 939	凹	\N	2025-08-03 21:33:30.064	2025-08-03 21:33:33.4	\N	\N	en	\N	\N	The inside of the bowl is concave.	[{"text": "凸", "isCorrect": false}, {"text": "弯", "isCorrect": false}, {"text": "凹", "isCorrect": true}, {"text": "扁", "isCorrect": false}]	[{"text": "flat", "isCorrect": false}, {"text": "curved", "isCorrect": false}, {"text": "convex", "isCorrect": false}, {"text": "concave", "isCorrect": true}]	\N
 945	止血	\N	2025-08-03 21:33:36.917	2025-08-03 21:33:41.329	\N	\N	en	\N	\N	The hemostatic bandage helped stop the bleeding quickly.	[{"text": "止血", "isCorrect": true}, {"text": "伤口", "isCorrect": false}, {"text": "救护", "isCorrect": false}, {"text": "创口", "isCorrect": false}]	[{"text": "hemostatic", "isCorrect": true}, {"text": "hypnotic", "isCorrect": false}, {"text": "homeopathic", "isCorrect": false}, {"text": "phlebotomy", "isCorrect": false}]	\N
 956	凝血病	\N	2025-08-03 21:33:45.749	2025-08-03 21:33:49.341	\N	\N	en	\N	\N	The patient's coagulopathy made it difficult for their blood to clot properly.	[{"text": "凝血病", "isCorrect": true}, {"text": "血小板减少症", "isCorrect": false}, {"text": "白血病", "isCorrect": false}, {"text": "白细胞增多症", "isCorrect": false}]	[{"text": "coagulopathy", "isCorrect": true}, {"text": "hepatomegaly", "isCorrect": false}, {"text": "thrombocytopenia", "isCorrect": false}, {"text": "hematochezia", "isCorrect": false}]	\N
@@ -9399,6 +10210,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1002	颤动线	\N	2025-08-03 21:34:12.222	2025-08-03 21:34:15.801	\N	\N	en	\N	\N	The vibrating line on the graph showed the frequency of the sound wave.	[{"text": "颈动线", "isCorrect": false}, {"text": "摇晃线", "isCorrect": false}, {"text": "颤动线", "isCorrect": true}, {"text": "跳动线", "isCorrect": false}]	[{"text": "oscillating stripe", "isCorrect": false}, {"text": "vibrating line", "isCorrect": true}, {"text": "resonating curve", "isCorrect": false}, {"text": "pulsating cord", "isCorrect": false}]	\N
 1005	副承托区	\N	2025-08-03 21:34:18.308	2025-08-03 21:34:21.418	\N	\N	en	\N	\N	The heel is a secondary stress-bearing area of the foot.	[{"text": "借贷区", "isCorrect": false}, {"text": "附着区", "isCorrect": false}, {"text": "副承托区", "isCorrect": true}, {"text": "委托区", "isCorrect": false}]	[{"text": "secondary stress-bearing area", "isCorrect": true}, {"text": "secondary pressure zone", "isCorrect": false}, {"text": "secondary weight-bearing sector", "isCorrect": false}, {"text": "secondary load-carrying region", "isCorrect": false}]	\N
 1048	策略	\N	2025-08-03 22:57:45.117	2025-08-03 23:00:51.744	\N	\N	en	\N	\N	She developed a new marketing strategy to attract more customers.	[{"text": "计策", "isCorrect": false}, {"text": "战略", "isCorrect": false}, {"text": "计谋", "isCorrect": false}, {"text": "策略", "isCorrect": true}]	[{"text": "approach", "isCorrect": false}, {"text": "scheme", "isCorrect": false}, {"text": "method", "isCorrect": false}, {"text": "strategy", "isCorrect": true}]	\N
+1076	冷酷	\N	2025-08-10 16:51:25.559	2025-08-10 16:51:30.312	\N	\N	en	\N	\N	The criminal's grim expression sent shivers down my spine.	[{"text": "无情", "isCorrect": false}, {"text": "冷酷", "isCorrect": true}, {"text": "狡猾", "isCorrect": false}, {"text": "残酷", "isCorrect": false}]	[{"text": "bleak", "isCorrect": false}, {"text": "dire", "isCorrect": false}, {"text": "grim", "isCorrect": true}, {"text": "dreary", "isCorrect": false}]	\N
 944	频繁地	\N	2025-08-03 21:33:30.077	2025-08-03 21:33:33.448	\N	\N	en	\N	\N	She frequently goes jogging in the park.	[{"text": "罕见地", "isCorrect": false}, {"text": "稀疏地", "isCorrect": false}, {"text": "勤快地", "isCorrect": false}, {"text": "频繁地", "isCorrect": true}]	[{"text": "frequently", "isCorrect": true}, {"text": "often", "isCorrect": false}, {"text": "regularly", "isCorrect": false}, {"text": "infrequently", "isCorrect": false}]	\N
 953	干扰	\N	2025-08-03 21:33:36.949	2025-08-03 21:33:40.022	\N	\N	en	\N	\N	The loud music from the party caused a disturbance in the neighborhood.	[{"text": "阻挠", "isCorrect": false}, {"text": "干扰", "isCorrect": true}, {"text": "打扰", "isCorrect": false}, {"text": "影响", "isCorrect": false}]	[{"text": "tumult", "isCorrect": false}, {"text": "commotion", "isCorrect": false}, {"text": "confusion", "isCorrect": false}, {"text": "disturbance", "isCorrect": true}]	\N
 964	上颌骨	\N	2025-08-03 21:33:45.762	2025-08-03 21:33:49.357	\N	\N	en	\N	\N	The maxilla bone forms part of the upper jaw.	[{"text": "头盖骨", "isCorrect": false}, {"text": "耳骨", "isCorrect": false}, {"text": "上颌骨", "isCorrect": true}, {"text": "下颌骨", "isCorrect": false}]	[{"text": "mandible", "isCorrect": false}, {"text": "clavicle", "isCorrect": false}, {"text": "scapula", "isCorrect": false}, {"text": "maxilla", "isCorrect": true}]	\N
@@ -9407,7 +10219,11 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 994	结节	\N	2025-08-03 21:34:02.419	2025-08-03 21:34:11.09	\N	\N	en	\N	\N	He felt pain in his knee due to the tuberosity on his shin bone.	[{"text": "结节", "isCorrect": true}, {"text": "肉眼", "isCorrect": false}, {"text": "肿块", "isCorrect": false}, {"text": "葫芦", "isCorrect": false}]	[{"text": "bump", "isCorrect": false}, {"text": "prominence", "isCorrect": false}, {"text": "knoll", "isCorrect": false}, {"text": "tuberosity", "isCorrect": true}]	\N
 1001	腭皱	\N	2025-08-03 21:34:12.22	2025-08-03 21:34:16.573	\N	\N	en	\N	\N	The dentist examined the patient's mouth and noted the presence of palatal rugae.	[{"text": "噱头", "isCorrect": false}, {"text": "舌苔", "isCorrect": false}, {"text": "喉抗", "isCorrect": false}, {"text": "腭皱", "isCorrect": true}]	[{"text": "palatal rugae", "isCorrect": true}, {"text": "uvula", "isCorrect": false}, {"text": "alveolar ridge", "isCorrect": false}, {"text": "mesial cusp", "isCorrect": false}]	\N
 1013	下颌舌骨嵴	\N	2025-08-03 21:34:18.341	2025-08-03 21:34:35.636	\N	\N	en	\N	\N	The mylohyoid ridge is a bony ridge on the inner surface of the lower jaw.	[{"text": "额颌骨嵴", "isCorrect": false}, {"text": "蝴蝶骨嵴", "isCorrect": false}, {"text": "颌下骨嵴", "isCorrect": false}, {"text": "下颌舌骨嵴", "isCorrect": true}]	[{"text": "hyoid bone", "isCorrect": false}, {"text": "mandible", "isCorrect": false}, {"text": "lingual frenulum", "isCorrect": false}, {"text": "mylohyoid ridge", "isCorrect": true}]	\N
+1080	阳台	\N	2025-08-10 16:54:37.098	2025-08-10 16:54:40.257	\N	\N	en	\N	\N	I like to sit on the veranda and enjoy the view.	[{"text": "廳堂", "isCorrect": false}, {"text": "屋頂", "isCorrect": false}, {"text": "阳台", "isCorrect": true}, {"text": "靜心", "isCorrect": false}]	[{"text": "balcony", "isCorrect": false}, {"text": "terrace", "isCorrect": false}, {"text": "porch", "isCorrect": false}, {"text": "veranda", "isCorrect": true}]	\N
 1049	兼容性	\N	2025-08-04 02:56:52.218	2025-08-04 11:07:40.009	\N	1	en	\N	\N	This software has good compatibility with various operating systems.	[{"text": "互換性", "isCorrect": false}, {"text": "支援性", "isCorrect": false}, {"text": "匹配", "isCorrect": false}, {"text": "compatibility", "isCorrect": true}]	[{"text": "容納性", "isCorrect": false}, {"text": "同調性", "isCorrect": false}, {"text": "相容性", "isCorrect": false}, {"text": "兼容性", "isCorrect": true}]	\N
+1077	冷酷	\N	2025-08-10 16:51:25.582	2025-08-10 16:51:29.531	\N	\N	en	\N	\N	His grim expression made everyone in the room feel uneasy.	[{"text": "残酷", "isCorrect": false}, {"text": "凶暴", "isCorrect": false}, {"text": "冷酷", "isCorrect": true}, {"text": "刻薄", "isCorrect": false}]	[{"text": "dark", "isCorrect": false}, {"text": "bleak", "isCorrect": false}, {"text": "grim", "isCorrect": true}, {"text": "gloomy", "isCorrect": false}]	\N
+1078	骑跨	\N	2025-08-10 16:52:40.328	2025-08-10 16:52:43.652	\N	\N	en	\N	\N	He sat astride the horse, holding the reins tightly.	[{"text": "溜达", "isCorrect": false}, {"text": "骑跨", "isCorrect": true}, {"text": "驾驶", "isCorrect": false}, {"text": "骑乘", "isCorrect": false}]	[{"text": "span", "isCorrect": false}, {"text": "strive", "isCorrect": false}, {"text": "astride", "isCorrect": true}, {"text": "stagger", "isCorrect": false}]	\N
+1079	喘息	\N	2025-08-10 16:53:14.258	2025-08-10 16:53:17.491	\N	\N	en	\N	\N	She gasped for air after running up the stairs.	[{"text": "紅蓮", "isCorrect": false}, {"text": "混淆", "isCorrect": false}, {"text": "喘息", "isCorrect": true}, {"text": "嘶喊", "isCorrect": false}]	[{"text": "hissed", "isCorrect": false}, {"text": "panted", "isCorrect": false}, {"text": "collapsed", "isCorrect": false}, {"text": "gasped", "isCorrect": true}]	\N
 935	凸	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.593	\N	\N	en	\N	\N	The mirror was convex, making my reflection appear distorted.	[{"text": "插", "isCorrect": false}, {"text": "凹", "isCorrect": false}, {"text": "凸", "isCorrect": true}, {"text": "厚", "isCorrect": false}]	[{"text": "level", "isCorrect": false}, {"text": "concave", "isCorrect": false}, {"text": "convex", "isCorrect": true}, {"text": "curved", "isCorrect": false}]	\N
 950	牙髓摘除术	\N	2025-08-03 21:33:36.93	2025-08-03 21:33:44.778	\N	\N	en	\N	\N	The dentist recommended a pulpectomy to treat the infected tooth.	[{"text": "牙髓摘除术", "isCorrect": true}, {"text": "牙龈病", "isCorrect": false}, {"text": "根管治疗", "isCorrect": false}, {"text": "牙周炎", "isCorrect": false}]	[{"text": "endodontics", "isCorrect": false}, {"text": "pulpectomy", "isCorrect": true}, {"text": "orthodontics", "isCorrect": false}, {"text": "periodontics", "isCorrect": false}]	\N
 958	未确诊	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.532	\N	\N	en	\N	\N	She has been experiencing unexplained symptoms due to her undiagnosed condition.	[{"text": "未确诊", "isCorrect": true}, {"text": "未诊断", "isCorrect": false}, {"text": "未明确", "isCorrect": false}, {"text": "未确定", "isCorrect": false}]	[{"text": "misdiagnosed", "isCorrect": false}, {"text": "undesigned", "isCorrect": false}, {"text": "undiagnosed", "isCorrect": true}, {"text": "unqualified", "isCorrect": false}]	\N
@@ -9417,6 +10233,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1003	翼下颌韧带	\N	2025-08-03 21:34:12.223	2025-08-03 21:34:15.769	\N	\N	en	\N	\N	The pterygomandibular ligament attaches to the raphe in the mouth.	[{"text": "颈内动脉", "isCorrect": false}, {"text": "颌下腺体", "isCorrect": false}, {"text": "颈下动静脉", "isCorrect": false}, {"text": "翼下颌韧带", "isCorrect": true}]	[{"text": "temporomandibular ligament", "isCorrect": false}, {"text": "lateral pterygoid muscle", "isCorrect": false}, {"text": "superficial temporal artery", "isCorrect": false}, {"text": "pterygomandibular ligament，raphe", "isCorrect": true}]	\N
 1008	边缘封闭区	\N	2025-08-03 21:34:18.339	2025-08-03 21:34:21.663	\N	\N	en	\N	\N	The border seal area was heavily guarded to prevent unauthorized entry.	[{"text": "旁路封闭区", "isCorrect": false}, {"text": "周围禁区", "isCorrect": false}, {"text": "边缘封闭区", "isCorrect": true}, {"text": "边际抑制区", "isCorrect": false}]	[{"text": "border seal area", "isCorrect": true}, {"text": "perimeter zone", "isCorrect": false}, {"text": "boundary mark zone", "isCorrect": false}, {"text": "frontier stamp region", "isCorrect": false}]	\N
 1050	反抗	\N	2025-08-04 02:57:23.211	2025-08-04 11:07:20.512	\N	1	en	\N	\N	The citizens staged a protest in  反抗 of the new law.	[{"text": "抗议", "isCorrect": false}, {"text": "resistance", "isCorrect": true}, {"text": "阻挡", "isCorrect": false}, {"text": "耐用", "isCorrect": false}]	[{"text": "抗议", "isCorrect": false}, {"text": "反弹", "isCorrect": false}, {"text": "反抗", "isCorrect": true}, {"text": "抵抗", "isCorrect": false}]	\N
+1081	鞭打	\N	2025-08-10 19:31:35.746	2025-08-10 19:31:39.415	\N	\N	en	\N	\N	The angry horse lashed its tail against the rider's leg.	[{"text": "spank", "isCorrect": false}, {"text": "lash", "isCorrect": false}, {"text": "smack", "isCorrect": false}, {"text": "鞭打", "isCorrect": true}]	[{"text": "whipped", "isCorrect": false}, {"text": "struck", "isCorrect": false}, {"text": "beaten", "isCorrect": false}, {"text": "lashed", "isCorrect": true}]	\N
 938	主要地	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.622	\N	\N	en	\N	\N	The sky is predominantly blue during the day.	[{"text": "重要", "isCorrect": false}, {"text": "基本", "isCorrect": false}, {"text": "主要地", "isCorrect": true}, {"text": "大约", "isCorrect": false}]	[{"text": "majorly", "isCorrect": false}, {"text": "principally", "isCorrect": false}, {"text": "largely", "isCorrect": false}, {"text": "predominantly", "isCorrect": true}]	\N
 952	牙髓切断术	\N	2025-08-03 21:33:36.931	2025-08-03 21:33:40.381	\N	\N	en	\N	\N	The dentist performed a pulpotomy to remove the infected pulp from the tooth.	[{"text": "牙髓抽取术", "isCorrect": false}, {"text": "牙髓填充术", "isCorrect": false}, {"text": "牙髓治疗术", "isCorrect": false}, {"text": "牙髓切断术", "isCorrect": true}]	[{"text": "root canal", "isCorrect": false}, {"text": "pulpotomy", "isCorrect": true}, {"text": "extraction", "isCorrect": false}, {"text": "cavity", "isCorrect": false}]	\N
 962	尊重 方面	\N	2025-08-03 21:33:45.753	2025-08-03 21:33:49.668	\N	\N	en	\N	\N	She always treats her classmates with respect.	[{"text": "理解", "isCorrect": false}, {"text": "重视", "isCorrect": false}, {"text": "尊重 方面", "isCorrect": true}, {"text": "关注", "isCorrect": false}]	[{"text": "praise", "isCorrect": false}, {"text": "admiration", "isCorrect": false}, {"text": "respect", "isCorrect": true}, {"text": "esteem", "isCorrect": false}]	\N
@@ -9426,6 +10243,8 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 998	上颌硬区	\N	2025-08-03 21:34:12.219	2025-08-03 21:34:17.257	\N	\N	en	\N	\N	The desert is a hard area to survive in because of the extreme heat and lack of water.	[{"text": "颌骨", "isCorrect": false}, {"text": "牙龈", "isCorrect": false}, {"text": "下颌软区", "isCorrect": false}, {"text": "上颌硬区", "isCorrect": true}]	[{"text": "hard area", "isCorrect": true}, {"text": "difficult terrain", "isCorrect": false}, {"text": "challenging location", "isCorrect": false}, {"text": "tough spot", "isCorrect": false}]	\N
 1007	腺	\N	2025-08-03 21:34:18.309	2025-08-03 21:34:21.865	\N	\N	en	\N	\N	The thyroid gland produces hormones that regulate metabolism.	[{"text": "肚", "isCorrect": false}, {"text": "膀", "isCorrect": false}, {"text": "脾", "isCorrect": false}, {"text": "腺", "isCorrect": true}]	[{"text": "organ", "isCorrect": false}, {"text": "gland", "isCorrect": true}, {"text": "hormone", "isCorrect": false}, {"text": "node", "isCorrect": false}]	\N
 1051	决定	\N	2025-08-04 03:35:22.21	2025-08-04 11:06:41.152	\N	1	en	\N	\N	I have made a decision to study Chinese every day.	[{"text": "decision", "isCorrect": true}, {"text": "创新 (chuàng xīn)", "isCorrect": false}, {"text": "解答 (jiědá)", "isCorrect": false}, {"text": "判断 (pànduàn)", "isCorrect": false}]	[{"text": "挑战", "isCorrect": false}, {"text": "断定", "isCorrect": false}, {"text": "选择", "isCorrect": false}, {"text": "决定", "isCorrect": true}]	\N
+1082	破旧的	\N	2025-08-11 09:10:50.956	2025-08-11 09:10:55.449	\N	\N	en	\N	\N	The old couch in the living room looked shabby.	[{"text": "shiny", "isCorrect": false}, {"text": "ancient", "isCorrect": false}, {"text": "worn-out", "isCorrect": false}, {"text": "破旧的", "isCorrect": true}]	[{"text": "dilapidated", "isCorrect": false}, {"text": "shabby", "isCorrect": true}, {"text": "neglected", "isCorrect": false}, {"text": "fashionable", "isCorrect": false}]	\N
+1083	倒下	\N	2025-08-11 09:11:16.294	2025-08-11 09:11:19.935	\N	\N	en	\N	\N	The tired hiker flopped down on the grass to rest.	[{"text": "倒塌", "isCorrect": false}, {"text": "降低", "isCorrect": false}, {"text": "折叠", "isCorrect": false}, {"text": "倒下", "isCorrect": true}]	[{"text": "fizzle", "isCorrect": false}, {"text": "fizz", "isCorrect": false}, {"text": "fluke", "isCorrect": false}, {"text": "flop", "isCorrect": true}]	\N
 937	革兰氏阴性	\N	2025-08-03 21:33:30.061	2025-08-03 21:33:33.697	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the infection caused by the gram-negative bacteria.	[{"text": "红色阴性杆菌", "isCorrect": false}, {"text": "罗德卡特", "isCorrect": false}, {"text": "白色李斯特氏", "isCorrect": false}, {"text": "革兰氏阴性", "isCorrect": true}]	[{"text": "orthodox", "isCorrect": false}, {"text": "non-toxic", "isCorrect": false}, {"text": "gram- negative", "isCorrect": true}, {"text": "unbiased", "isCorrect": false}]	\N
 948	变色	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:40.647	\N	\N	en	\N	\N	The discolored leaves on the plant indicated that it needed more sunlight.	[{"text": "转变形态", "isCorrect": false}, {"text": "变色", "isCorrect": true}, {"text": "改变颜色", "isCorrect": false}, {"text": "变换外观", "isCorrect": false}]	[{"text": "blotchy", "isCorrect": false}, {"text": "blemished", "isCorrect": false}, {"text": "dingy", "isCorrect": false}, {"text": "discolored", "isCorrect": true}]	\N
 960	按时间顺序排列	\N	2025-08-03 21:33:45.75	2025-08-03 21:33:49.53	\N	\N	en	\N	\N	The chronogic order of events in the story helped me understand the plot better.	[{"text": "按大小顺序排列", "isCorrect": false}, {"text": "按时间顺序排列", "isCorrect": true}, {"text": "按颜色顺序排列", "isCorrect": false}, {"text": "按字母顺序排列", "isCorrect": false}]	[{"text": "chronological", "isCorrect": false}, {"text": "chronogic", "isCorrect": true}, {"text": "chronoscale", "isCorrect": false}, {"text": "chronology", "isCorrect": false}]	\N
@@ -9444,6 +10263,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 999	舌下的	\N	2025-08-03 21:34:12.22	2025-08-03 21:34:16.147	\N	\N	en	\N	\N	I take a sublingual tablet for my allergies.	[{"text": "舌下的", "isCorrect": true}, {"text": "腋下的", "isCorrect": false}, {"text": "颏下的", "isCorrect": false}, {"text": "鼻梁的", "isCorrect": false}]	[{"text": "sublingual", "isCorrect": true}, {"text": "ephemeral", "isCorrect": false}, {"text": "subterfuge", "isCorrect": false}, {"text": "epistolary", "isCorrect": false}]	\N
 1014	(下颌）舌骨后窝	\N	2025-08-03 21:34:18.343	2025-08-03 21:34:21.52	\N	\N	en	\N	\N	The retromylohyoid fossa is located in the mouth.	[{"text": "梨状窝", "isCorrect": false}, {"text": "舌背", "isCorrect": false}, {"text": "(下颌）舌骨后窝", "isCorrect": true}, {"text": "舌头", "isCorrect": false}]	[{"text": "carotid canal", "isCorrect": false}, {"text": "mental foramen", "isCorrect": false}, {"text": "vestibulocochlear nerve", "isCorrect": false}, {"text": "retromylohyoid fossa", "isCorrect": true}]	\N
 1053	层	\N	2025-08-04 04:05:24.161	2025-08-04 04:05:29.041	\N	\N	en	\N	\N	The cake had three tiers decorated with fresh flowers.	[{"text": "阶", "isCorrect": false}, {"text": "户", "isCorrect": false}, {"text": "层", "isCorrect": true}, {"text": "楼", "isCorrect": false}]	[{"text": "grade", "isCorrect": false}, {"text": "section", "isCorrect": false}, {"text": "tier", "isCorrect": true}, {"text": "level", "isCorrect": false}]	\N
+1085	唤起	\N	2025-08-11 16:18:29.465	2025-08-11 16:18:36.324	\N	\N	en	\N	\N	She invoked the spirits to help guide her through the forest.	[{"text": "唤起", "isCorrect": true}, {"text": "激发", "isCorrect": false}, {"text": "激发", "isCorrect": false}, {"text": "唤醒", "isCorrect": false}]	[{"text": "summon", "isCorrect": false}, {"text": "evoke", "isCorrect": false}, {"text": "invoke", "isCorrect": true}, {"text": "recite", "isCorrect": false}]	\N
 942	碎片	\N	2025-08-03 21:33:30.077	2025-08-03 21:33:33.755	\N	\N	en	\N	\N	After the tornado passed, there was debris scattered everywhere.	[{"text": "碎片", "isCorrect": true}, {"text": "残缺", "isCorrect": false}, {"text": "零星", "isCorrect": false}, {"text": "混凝土", "isCorrect": false}]	[{"text": "trash", "isCorrect": false}, {"text": "garbage", "isCorrect": false}, {"text": "rubble", "isCorrect": false}, {"text": "debris", "isCorrect": true}]	\N
 947	突眼	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:41.02	\N	\N	en	\N	\N	The doctor noticed the patient's exophthalmous eyes during the examination.	[{"text": "对眠", "isCorrect": false}, {"text": "突眼", "isCorrect": true}, {"text": "溜刃", "isCorrect": false}, {"text": "食消", "isCorrect": false}]	[{"text": "mythopoeic", "isCorrect": false}, {"text": "prognathous", "isCorrect": false}, {"text": "exophthalmous", "isCorrect": true}, {"text": "chrysanthemum", "isCorrect": false}]	\N
 959	硬骨板	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.687	\N	\N	en	\N	\N	The laminia dura is a tough outer layer protecting the brain and spinal cord.	[{"text": "硬質板", "isCorrect": false}, {"text": "硬木板", "isCorrect": false}, {"text": "硬骨板", "isCorrect": true}, {"text": "堅固板", "isCorrect": false}]	[{"text": "dura mater", "isCorrect": false}, {"text": "pial sheath", "isCorrect": false}, {"text": "plesiomorphic", "isCorrect": false}, {"text": "laminia dura", "isCorrect": true}]	\N
@@ -9453,6 +10273,9 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 995	腭小凹	\N	2025-08-03 21:34:12.219	2025-08-03 21:34:15.771	\N	\N	en	\N	\N	The palatine fovea is a small depression located on the roof of the mouth.	[{"text": "口腔", "isCorrect": false}, {"text": "下颚", "isCorrect": false}, {"text": "舌头", "isCorrect": false}, {"text": "腭小凹", "isCorrect": true}]	[{"text": "submandibular gland", "isCorrect": false}, {"text": "palatine fovea", "isCorrect": true}, {"text": "lingual frenulum", "isCorrect": false}, {"text": "alveolar ridge", "isCorrect": false}]	\N
 1009	组织面	\N	2025-08-03 21:34:18.339	2025-08-03 21:34:22.839	\N	\N	en	\N	\N	The doctor examined the tissue surface under the microscope.	[{"text": "编织表", "isCorrect": false}, {"text": "结构面", "isCorrect": false}, {"text": "组织面", "isCorrect": true}, {"text": "组装聚", "isCorrect": false}]	[{"text": "membrane", "isCorrect": false}, {"text": "tissue surface", "isCorrect": true}, {"text": "dermal", "isCorrect": false}, {"text": "epidermis", "isCorrect": false}]	\N
 1054	神经元	\N	2025-08-04 11:03:29.71	2025-08-04 11:03:35.4	\N	\N	en	\N	\N	Neurons send signals throughout the brain and body.	[{"text": "神经元", "isCorrect": true}, {"text": "视网膜", "isCorrect": false}, {"text": "脊柱", "isCorrect": false}, {"text": "脑部", "isCorrect": false}]	[{"text": "Neurons", "isCorrect": true}, {"text": "Cellulose", "isCorrect": false}, {"text": "Axons", "isCorrect": false}, {"text": "Dendrites", "isCorrect": false}]	\N
+1086	世界主义者	\N	2025-08-11 18:43:49.315	2025-08-11 18:43:54.013	\N	\N	en	\N	\N	Many cosmopolites enjoy traveling to different countries to experience new cultures.	[{"text": "全球化", "isCorrect": false}, {"text": "独裁主义者", "isCorrect": false}, {"text": "爱国主义者", "isCorrect": false}, {"text": "世界主义者", "isCorrect": true}]	[{"text": "globetrotters", "isCorrect": false}, {"text": "itinerants", "isCorrect": false}, {"text": "cosmopolites", "isCorrect": true}, {"text": "citizens of the world", "isCorrect": false}]	\N
+1087	涌入	\N	2025-08-11 19:51:31.52	2025-08-11 19:51:36.164	\N	\N	en	\N	\N	There has been a recent influx of tourists to the city.	[{"text": "涌出", "isCorrect": false}, {"text": "涌动", "isCorrect": false}, {"text": "涌入", "isCorrect": true}, {"text": "涌缩", "isCorrect": false}]	[{"text": "stream", "isCorrect": false}, {"text": "torrent", "isCorrect": false}, {"text": "influx", "isCorrect": true}, {"text": "deluge", "isCorrect": false}]	\N
+1088	顾客	\N	2025-08-11 19:51:47.696	2025-08-11 19:51:52.446	\N	\N	en	\N	\N	The cafe is always full of patrons enjoying their coffee and pastries.	[{"text": "顾主", "isCorrect": false}, {"text": "顾问", "isCorrect": false}, {"text": "顾客", "isCorrect": true}, {"text": "客户", "isCorrect": false}]	[{"text": "customers", "isCorrect": false}, {"text": "patrons", "isCorrect": true}, {"text": "users", "isCorrect": false}, {"text": "supporters", "isCorrect": false}]	\N
 936	倒凹区域	\N	2025-08-03 21:33:30.063	2025-08-03 21:33:33.953	\N	\N	en	\N	\N	The undercut area of the rock provided a cool and shady spot to relax.	[{"text": "方圆区域", "isCorrect": false}, {"text": "倾斜区域", "isCorrect": false}, {"text": "平坦区域", "isCorrect": false}, {"text": "倒凹区域", "isCorrect": true}]	[{"text": "undersell terrain", "isCorrect": false}, {"text": "subpar location", "isCorrect": false}, {"text": "below deck", "isCorrect": false}, {"text": "undercut area", "isCorrect": true}]	\N
 946	不耐受	\N	2025-08-03 21:33:36.918	2025-08-03 21:33:40.987	\N	\N	en	\N	\N	She has a severe intolerance to dairy products.	[{"text": "不可否认", "isCorrect": false}, {"text": "不屈服", "isCorrect": false}, {"text": "不耐受", "isCorrect": true}, {"text": "不容忍", "isCorrect": false}]	[{"text": "discrimination", "isCorrect": false}, {"text": "bigotry", "isCorrect": false}, {"text": "intolerance", "isCorrect": true}, {"text": "bias", "isCorrect": false}]	\N
 955	甲状旁腺	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.372	\N	\N	en	\N	\N	The doctor explained that the patient would need surgery to remove a parathyroid gland.	[{"text": "颅咽管", "isCorrect": false}, {"text": "甲状旁腺", "isCorrect": true}, {"text": "下丘脑", "isCorrect": false}, {"text": "腹膜后腔", "isCorrect": false}]	[{"text": "thymus", "isCorrect": false}, {"text": "pancreas", "isCorrect": false}, {"text": "hypothalamus", "isCorrect": false}, {"text": "parathyroid", "isCorrect": true}]	\N
@@ -9462,6 +10285,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 996	腭穹窿	\N	2025-08-03 21:34:12.218	2025-08-03 21:34:15.944	\N	\N	en	\N	\N	The palatal vault is the curved, bony roof of the mouth.	[{"text": "喉嚨", "isCorrect": false}, {"text": "唾津", "isCorrect": false}, {"text": "腭穹窿", "isCorrect": true}, {"text": "稜齒", "isCorrect": false}]	[{"text": "nasopharynx", "isCorrect": false}, {"text": "uvula", "isCorrect": false}, {"text": "gingiva", "isCorrect": false}, {"text": "palatal vault", "isCorrect": true}]	\N
 1006	主承托区	\N	2025-08-03 21:34:18.309	2025-08-03 21:34:22.483	\N	\N	en	\N	\N	The arches of the foot are the primary stress-bearing areas during walking and running.	[{"text": "主承托区", "isCorrect": true}, {"text": "次要区域", "isCorrect": false}, {"text": "中央核心", "isCorrect": false}, {"text": "外围地区", "isCorrect": false}]	[{"text": "main tension point", "isCorrect": false}, {"text": "emphasis zone", "isCorrect": false}, {"text": "primary stress-bearing area", "isCorrect": true}, {"text": "central accent spot", "isCorrect": false}]	\N
 1055	压缩	\N	2025-08-04 11:04:23.84	2025-08-04 11:04:31.928	\N	\N	en	\N	\N	I need to compress this file before sending it via email.	[{"text": "缩减", "isCorrect": false}, {"text": "压缩", "isCorrect": true}, {"text": "收缩", "isCorrect": false}, {"text": "紧缩", "isCorrect": false}]	[{"text": "condense", "isCorrect": false}, {"text": "compress", "isCorrect": true}, {"text": "deflate", "isCorrect": false}, {"text": "expand", "isCorrect": false}]	\N
+1089	pomme	\N	2025-08-12 12:22:34.908	2025-08-12 12:22:40.394	\N	\N	fr	\N	\N	I like to eat an apple every day.	[{"text": "pomme", "isCorrect": true}, {"text": "orange", "isCorrect": false}, {"text": "poire", "isCorrect": false}, {"text": "banane", "isCorrect": false}]	[{"text": "apple", "isCorrect": true}, {"text": "banana", "isCorrect": false}, {"text": "orange", "isCorrect": false}, {"text": "pear", "isCorrect": false}]	\N
 941	溶液	\N	2025-08-03 21:33:30.075	2025-08-03 21:33:35.937	\N	\N	en	\N	\N	She found a solution to her math problem by asking her teacher for help.	[{"text": "浓缩液", "isCorrect": false}, {"text": "悬浮液", "isCorrect": false}, {"text": "凝固液", "isCorrect": false}, {"text": "溶液", "isCorrect": true}]	[{"text": "response", "isCorrect": false}, {"text": "conclusion", "isCorrect": false}, {"text": "solution", "isCorrect": true}, {"text": "answer", "isCorrect": false}]	\N
 954	固定的	\N	2025-08-03 21:33:36.951	2025-08-03 21:33:40.707	\N	\N	en	\N	\N	The mechanic fixed my car yesterday.	[{"text": "变化的", "isCorrect": false}, {"text": "固定的", "isCorrect": true}, {"text": "常规的", "isCorrect": false}, {"text": "特殊的", "isCorrect": false}]	[{"text": "stuck", "isCorrect": false}, {"text": "set", "isCorrect": false}, {"text": "fixed", "isCorrect": true}, {"text": "steady", "isCorrect": false}]	\N
 961	可靠的	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.458	\N	\N	en	\N	\N	My new car is reliable and never breaks down.	[{"text": "可信任的", "isCorrect": false}, {"text": "可靠的", "isCorrect": true}, {"text": "不靠谱的", "isCorrect": false}, {"text": "靠不住的", "isCorrect": false}]	[{"text": "variable", "isCorrect": false}, {"text": "faithful", "isCorrect": false}, {"text": "unreliable", "isCorrect": false}, {"text": "reliable", "isCorrect": true}]	\N
@@ -9486,6 +10310,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 --
 
 COPY public.word_definitions_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
+1	1085	2	a.verb-meta	verb_meta	\N
 \.
 
 
@@ -9653,6 +10478,11 @@ COPY public.word_definitions_part_of_speech_links (id, word_definition_id, part_
 1043	1051	1	33
 1045	1053	1	35
 1047	1055	1	37
+1053	1062	2	5
+1054	1063	2	6
+1057	1066	1	39
+1059	1068	1	41
+1060	1069	1	42
 835	842	1	8
 836	841	1	8
 838	846	1	8
@@ -9788,6 +10618,29 @@ COPY public.word_definitions_part_of_speech_links (id, word_definition_id, part_
 1044	1052	1	34
 1046	1054	1	36
 1048	1056	1	38
+1052	1061	2	4
+1055	1064	4	3
+1056	1065	3	7
+1058	1067	1	40
+1061	1070	3	8
+1062	1071	3	9
+1063	1072	1	43
+1064	1073	1	44
+1065	1074	1	45
+1066	1075	3	10
+1067	1076	3	11
+1068	1077	3	11
+1069	1078	4	4
+1070	1079	2	7
+1071	1080	1	46
+1072	1081	2	8
+1073	1082	3	12
+1074	1083	2	9
+1076	1085	2	10
+1077	1086	1	47
+1078	1087	1	48
+1079	1088	1	49
+1080	1089	1	50
 \.
 
 
@@ -10091,6 +10944,34 @@ COPY public.word_definitions_word_links (id, word_definition_id, word_id, word_d
 1054	1054	1806	1
 1055	1055	1807	1
 1056	1056	1808	1
+1061	1061	1810	1
+1062	1062	1811	1
+1063	1063	1812	1
+1064	1064	1813	1
+1065	1065	1814	1
+1066	1066	1815	1
+1067	1067	1816	1
+1068	1068	1817	1
+1069	1069	1818	1
+1070	1070	1819	1
+1071	1071	1820	1
+1072	1072	1821	1
+1073	1073	1822	1
+1074	1074	1823	1
+1075	1075	1824	1
+1076	1076	1825	1
+1077	1077	1825	1
+1078	1078	1826	1
+1079	1079	1827	1
+1080	1080	1828	1
+1081	1081	1829	1
+1082	1082	1830	1
+1083	1083	1831	1
+1085	1085	1833	1
+1086	1086	1834	1
+1087	1087	1835	1
+1088	1088	1836	1
+1089	1089	1605	3
 \.
 
 
@@ -10220,6 +11101,15 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 1803	decision	2025-08-04 03:35:21.843	2025-08-04 11:06:19.282	\N	1
 1801	compatibility	2025-08-04 02:56:51.811	2025-08-04 11:07:34.757	\N	1
 1809	test1	2025-08-05 11:11:08.739	2025-08-05 11:11:08.739	\N	\N
+1811	bestowed	2025-08-07 03:04:25.097	2025-08-07 03:04:25.097	\N	\N
+1812	muttered	2025-08-07 03:04:52.65	2025-08-07 03:04:52.65	\N	\N
+1813	laboriously	2025-08-07 03:14:33.968	2025-08-07 03:14:33.968	\N	\N
+1814	peculiar	2025-08-07 03:15:31.791	2025-08-07 03:15:31.791	\N	\N
+1815	incision for a papilla preservation	2025-08-09 06:25:04.936	2025-08-09 06:25:04.936	\N	\N
+1816	actinobacillus actinomycetemcomitans	2025-08-09 06:30:43.336	2025-08-09 06:30:43.336	\N	\N
+1817	combined lesion	2025-08-09 06:32:24.816	2025-08-09 06:32:24.816	\N	\N
+1818	hemisection	2025-08-09 06:33:06.652	2025-08-09 06:33:06.652	\N	\N
+1819	slender	2025-08-09 21:29:49.4	2025-08-09 21:29:49.4	\N	\N
 1630	fraud	2025-08-03 21:32:27.25	2025-08-03 21:32:27.25	\N	\N
 1629	market	2025-08-03 21:32:27.248	2025-08-03 21:32:27.248	\N	\N
 1632	focus	2025-08-03 21:32:27.25	2025-08-03 21:32:27.25	\N	\N
@@ -10350,6 +11240,23 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 1804	hunter	2025-08-04 03:36:30.628	2025-08-04 11:06:09.27	\N	1
 1802	resistance	2025-08-04 02:57:22.801	2025-08-04 11:07:15.335	\N	1
 1808	bark	2025-08-04 13:56:39.683	2025-08-04 13:56:39.683	\N	\N
+1810	flung	2025-08-07 02:59:36.415	2025-08-07 02:59:36.415	\N	\N
+1820	brimmed	2025-08-09 21:30:08.107	2025-08-09 21:30:08.107	\N	\N
+1821	felt	2025-08-09 21:30:29.31	2025-08-09 21:30:29.31	\N	\N
+1822	stage	2025-08-09 21:31:23.306	2025-08-09 21:31:23.306	\N	\N
+1823	reins	2025-08-09 21:31:35.618	2025-08-09 21:31:35.618	\N	\N
+1824	unused	2025-08-09 21:32:11.518	2025-08-09 21:32:11.518	\N	\N
+1825	grim	2025-08-10 16:51:24.711	2025-08-10 16:51:24.711	\N	\N
+1826	astride	2025-08-10 16:52:39.928	2025-08-10 16:52:39.928	\N	\N
+1827	gasped	2025-08-10 16:53:13.869	2025-08-10 16:53:13.869	\N	\N
+1828	veranda	2025-08-10 16:54:36.695	2025-08-10 16:54:36.695	\N	\N
+1829	lashed	2025-08-10 19:31:35.338	2025-08-10 19:31:35.338	\N	\N
+1830	shabby	2025-08-11 09:10:50.427	2025-08-11 09:10:50.427	\N	\N
+1831	flop	2025-08-11 09:11:15.867	2025-08-11 09:11:15.867	\N	\N
+1833	invoke	2025-08-11 16:18:28.994	2025-08-11 16:18:28.994	\N	\N
+1834	cosmopolites	2025-08-11 18:43:48.847	2025-08-11 18:43:48.847	\N	\N
+1835	influx	2025-08-11 19:51:31.061	2025-08-11 19:51:31.061	\N	\N
+1836	patrons	2025-08-11 19:51:47.115	2025-08-11 19:51:47.115	\N	\N
 \.
 
 
@@ -10357,14 +11264,14 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 -- Name: admin_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.admin_permissions_id_seq', 508, true);
+SELECT pg_catalog.setval('public.admin_permissions_id_seq', 514, true);
 
 
 --
 -- Name: admin_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.admin_permissions_role_links_id_seq', 544, true);
+SELECT pg_catalog.setval('public.admin_permissions_role_links_id_seq', 799, true);
 
 
 --
@@ -10399,28 +11306,28 @@ SELECT pg_catalog.setval('public.components_a_external_videos_id_seq', 1, false)
 -- Name: components_a_generation_prompts_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_generation_prompts_components_id_seq', 10, true);
+SELECT pg_catalog.setval('public.components_a_generation_prompts_components_id_seq', 97, true);
 
 
 --
 -- Name: components_a_generation_prompts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_generation_prompts_id_seq', 3, true);
+SELECT pg_catalog.setval('public.components_a_generation_prompts_id_seq', 12, true);
 
 
 --
 -- Name: components_a_illustration_prompts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_illustration_prompts_id_seq', 5, true);
+SELECT pg_catalog.setval('public.components_a_illustration_prompts_id_seq', 46, true);
 
 
 --
 -- Name: components_a_illustrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_illustrations_id_seq', 1, true);
+SELECT pg_catalog.setval('public.components_a_illustrations_id_seq', 13, true);
 
 
 --
@@ -10497,7 +11404,7 @@ SELECT pg_catalog.setval('public.components_a_user_word_refs_user_word_links_id_
 -- Name: components_a_verb_metas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_verb_metas_id_seq', 1, true);
+SELECT pg_catalog.setval('public.components_a_verb_metas_id_seq', 2, true);
 
 
 --
@@ -10518,7 +11425,7 @@ SELECT pg_catalog.setval('public.components_a_word_refs_id_seq', 4, true);
 -- Name: conversations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.conversations_id_seq', 48, true);
+SELECT pg_catalog.setval('public.conversations_id_seq', 69, true);
 
 
 --
@@ -10539,28 +11446,28 @@ SELECT pg_catalog.setval('public.difficulty_levels_localizations_links_id_seq', 
 -- Name: files_folder_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.files_folder_links_id_seq', 1, false);
+SELECT pg_catalog.setval('public.files_folder_links_id_seq', 10, true);
 
 
 --
 -- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.files_id_seq', 1, true);
+SELECT pg_catalog.setval('public.files_id_seq', 15, true);
 
 
 --
 -- Name: files_related_morphs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.files_related_morphs_id_seq', 1, true);
+SELECT pg_catalog.setval('public.files_related_morphs_id_seq', 18, true);
 
 
 --
 -- Name: flashcards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_id_seq', 669, true);
+SELECT pg_catalog.setval('public.flashcards_id_seq', 699, true);
 
 
 --
@@ -10574,28 +11481,28 @@ SELECT pg_catalog.setval('public.flashcards_localizations_links_id_seq', 1, fals
 -- Name: flashcards_review_tire_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 596, true);
+SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 629, true);
 
 
 --
 -- Name: flashcards_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 670, true);
+SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 700, true);
 
 
 --
 -- Name: flashcards_word_definition_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 936, true);
+SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 966, true);
 
 
 --
 -- Name: i18n_locale_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.i18n_locale_id_seq', 2, true);
+SELECT pg_catalog.setval('public.i18n_locale_id_seq', 7, true);
 
 
 --
@@ -10693,21 +11600,21 @@ SELECT pg_catalog.setval('public.review_tires_localizations_links_id_seq', 1, fa
 -- Name: reviewlogs_flashcard_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 348, true);
+SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 417, true);
 
 
 --
 -- Name: reviewlogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_id_seq', 375, true);
+SELECT pg_catalog.setval('public.reviewlogs_id_seq', 444, true);
 
 
 --
 -- Name: reviewlogs_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 375, true);
+SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 444, true);
 
 
 --
@@ -10763,14 +11670,14 @@ SELECT pg_catalog.setval('public.sentences_localizations_links_id_seq', 1, false
 -- Name: stories_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.stories_components_id_seq', 5, true);
+SELECT pg_catalog.setval('public.stories_components_id_seq', 44, true);
 
 
 --
 -- Name: stories_difficulty_level_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.stories_difficulty_level_links_id_seq', 10, true);
+SELECT pg_catalog.setval('public.stories_difficulty_level_links_id_seq', 14, true);
 
 
 --
@@ -10791,21 +11698,21 @@ SELECT pg_catalog.setval('public.stories_localizations_links_id_seq', 1, false);
 -- Name: story_likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.story_likes_id_seq', 4, true);
+SELECT pg_catalog.setval('public.story_likes_id_seq', 6, true);
 
 
 --
 -- Name: story_likes_story_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.story_likes_story_links_id_seq', 4, true);
+SELECT pg_catalog.setval('public.story_likes_story_links_id_seq', 6, true);
 
 
 --
 -- Name: story_likes_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.story_likes_user_links_id_seq', 4, true);
+SELECT pg_catalog.setval('public.story_likes_user_links_id_seq', 6, true);
 
 
 --
@@ -10931,14 +11838,14 @@ SELECT pg_catalog.setval('public.units_precondition_links_id_seq', 2, true);
 -- Name: up_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_id_seq', 158, true);
+SELECT pg_catalog.setval('public.up_permissions_id_seq', 310, true);
 
 
 --
 -- Name: up_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 158, true);
+SELECT pg_catalog.setval('public.up_permissions_role_links_id_seq', 310, true);
 
 
 --
@@ -10952,21 +11859,21 @@ SELECT pg_catalog.setval('public.up_roles_id_seq', 3, true);
 -- Name: up_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_users_id_seq', 46, true);
+SELECT pg_catalog.setval('public.up_users_id_seq', 49, true);
 
 
 --
 -- Name: up_users_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.up_users_role_links_id_seq', 41, true);
+SELECT pg_catalog.setval('public.up_users_role_links_id_seq', 44, true);
 
 
 --
 -- Name: upload_folders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.upload_folders_id_seq', 1, false);
+SELECT pg_catalog.setval('public.upload_folders_id_seq', 1, true);
 
 
 --
@@ -10980,14 +11887,14 @@ SELECT pg_catalog.setval('public.upload_folders_parent_links_id_seq', 1, false);
 -- Name: user_profiles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_profiles_id_seq', 20, true);
+SELECT pg_catalog.setval('public.user_profiles_id_seq', 24, true);
 
 
 --
 -- Name: user_profiles_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.user_profiles_user_links_id_seq', 20, true);
+SELECT pg_catalog.setval('public.user_profiles_user_links_id_seq', 24, true);
 
 
 --
@@ -11050,28 +11957,28 @@ SELECT pg_catalog.setval('public.user_words_user_links_id_seq', 165, true);
 -- Name: vbsettings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.vbsettings_id_seq', 15, true);
+SELECT pg_catalog.setval('public.vbsettings_id_seq', 18, true);
 
 
 --
 -- Name: vbsettings_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.vbsettings_user_links_id_seq', 15, true);
+SELECT pg_catalog.setval('public.vbsettings_user_links_id_seq', 18, true);
 
 
 --
 -- Name: word_definitions_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_components_id_seq', 1, false);
+SELECT pg_catalog.setval('public.word_definitions_components_id_seq', 1, true);
 
 
 --
 -- Name: word_definitions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_id_seq', 1060, true);
+SELECT pg_catalog.setval('public.word_definitions_id_seq', 1089, true);
 
 
 --
@@ -11085,7 +11992,7 @@ SELECT pg_catalog.setval('public.word_definitions_localizations_links_id_seq', 1
 -- Name: word_definitions_part_of_speech_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1051, true);
+SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1080, true);
 
 
 --
@@ -11099,14 +12006,14 @@ SELECT pg_catalog.setval('public.word_definitions_section_links_id_seq', 1, fals
 -- Name: word_definitions_word_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1060, true);
+SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1089, true);
 
 
 --
 -- Name: words_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.words_id_seq', 1809, true);
+SELECT pg_catalog.setval('public.words_id_seq', 1836, true);
 
 
 --
