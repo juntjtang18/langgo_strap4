@@ -36,11 +36,11 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
 
     try {
       const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
+        locale: userLocale, // 'locale' is now a top-level parameter
         filters: {
           base_text: {
-            $containsi: term, // Case-insensitive search on the base text
+            $containsi: term,
           },
-          locale: userLocale,
         },
         limit: 10,
         populate: {

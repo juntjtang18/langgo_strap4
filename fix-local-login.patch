@@ -1,0 +1,15 @@
+--- a/src/extensions/users-permissions/strapi-server.js
++++ b/src/extensions/users-permissions/strapi-server.js
+@@ -95,7 +95,10 @@
+       }
+ 
+       // --- 1. Authenticate the User ---
+-      const { user, sanitzedUser } = await strapi.plugin('users...permissions').service('providers').connect(provider, ctx.query);
++      const { user } = await strapi
++        .plugin('users-permissions')
++        .service('providers')
++        .connect('local', { identifier: params.identifier, password: params.password });
+       if (!user) {
+         throw new ValidationError('Invalid identifier or password');
+       }
+
