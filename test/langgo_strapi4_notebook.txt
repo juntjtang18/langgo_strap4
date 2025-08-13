@@ -347,7 +347,7 @@ curl -X POST http://localhost:1338/api/word-definitions \
     "target_text": "test1",
     "base_text": "A prefix meaning 'down' or 'from'.",
     "part_of_speech": "prefix",
-    "locale": "en"
+    "locale": "fr"
   }
 }' | jq .
 
@@ -432,13 +432,13 @@ gcloud redis instances create langgo-cache \
 >   --region=us-west1 \
 >   --tier=basic \
 >   --network=default
-API [redis.googleapis.com] not enabled on project [lucid-arch-451211-b0]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
+API %5Bredis.googleapis.com%5D not enabled on project %5Blucid-arch-451211-b0%5D. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
 
-Enabling service [redis.googleapis.com] on project [lucid-arch-451211-b0]...
+Enabling service %5Bredis.googleapis.com%5D on project %5Blucid-arch-451211-b0%5D...
 Operation "operations/acf.p2-852311377699-be507688-2e25-4d09-bc06-4b03fc9ef529" finished successfully.
-Create request issued for: [langgo-cache]
-Waiting for operation [projects/lucid-arch-451211-b0/locations/us-west1/operations/operation-1754607662475-63bce6e712aad-a07a3ceb-a8fff3f2] to complete...done.                               
-Created instance [langgo-cache].
+Create request issued for: %5Blanggo-cache%5D
+Waiting for operation %5Bprojects/lucid-arch-451211-b0/locations/us-west1/operations/operation-1754607662475-63bce6e712aad-a07a3ceb-a8fff3f2%5D to complete...done.                               
+Created instance %5Blanggo-cache%5D.
 
 
 Updates are available for some Google Cloud CLI components.  To install them,
@@ -497,5 +497,45 @@ curl -sS 'http://localhost:1338/api/word-definitions?locale=fr' \
 echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDU0OTA1LCJleHAiOjE3NTc2NDY5MDV9.05RVhajGmjGfd6haXxXYWxionxXTcCQKqQ5VrNq5VV0" | base64 -d
 echo -n "eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDU0OTA1LCJleHAiOjE3NTc2NDY5MDV9" | base64 -D
 
-curl -X GET "http://localhost:1338/api/word-definitions/search?term=pom" \
--H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDU0OTA1LCJleHAiOjE3NTc2NDY5MDV9.05RVhajGmjGfd6haXxXYWxionxXTcCQKqQ5VrNq5VV0"
+curl -X GET "http://localhost:1338/api/word-definitions/search?term=pom&locale=fr" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" | jq .
+
+
+curl -X GET 'http://192.168.1.69:1338/api/words/search?term=po' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET 'http://192.168.1.69:1338/api/words' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" | jq .
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET 'http://localhost:1338/api/word-definitions/search-by-target?term=po&locale=fr' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X GET 'http://localhost:1338/api/words?filters%5Btarget_text%5D%5B$containsi%5D=po&locale=all' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" | jq .
+
+
+curl -X GET 'http://localhost:1338/api/words?filters%5Btarget_text%5D%5B$containsi%5D=po&locale=all&populate=word_definitions' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" | jq .
+
+curl -X GET 'http://localhost:1338/api/words?filters%5Btarget_text%5D%5B$containsi%5D=po&locale=all&populate%5Bword_definitions%5D%5Bfilters%5D%5Blocale%5D%5B$eq%5D=fr' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" | jq .
+
+
+curl -X POST http://localhost:1338/api/word-definitions \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI" \
+-H "Content-Type: application/json" \
+-d '{
+  "data": {
+    "target_text": "test1",
+    "base_text": "A prefix meaning 'down' or 'from'.",
+    "part_of_speech": "prefix",
+    "locale": "fr"
+  }
+}' | jq .
