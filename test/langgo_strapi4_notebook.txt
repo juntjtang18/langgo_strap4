@@ -471,11 +471,11 @@ git tag -a snapshot-2025-08-10 -m "Snapshot taken on August 10, 2025"
 
 curl -X POST "http://localhost:1338/api/auth/local" \
 -H "Content-Type: application/json" \
--d '{  "identifier": "james@langgo.ca",  "password": "Passw0rd"}' \
+-d '{  "identifier": "french@langgo.ca",  "password": "Passw0rd"}' \
 | jq .
 
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDcsImlhdCI6MTc1NDk0OTMxOCwiZXhwIjoxNzU3NTQxMzE4fQ.PhIfDcp5XYWS9nqu18g2DEfPzdkaN8YXyqNS4N-pGvI
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI
 
 curl -X POST http://localhost:1338/api/word-definitions \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDcsImlhdCI6MTc1NDk0OTMxOCwiZXhwIjoxNzU3NTQxMzE4fQ.PhIfDcp5XYWS9nqu18g2DEfPzdkaN8YXyqNS4N-pGvI" \
@@ -489,3 +489,13 @@ curl -X POST http://localhost:1338/api/word-definitions \
   }
 }' | jq .
 
+curl -sS 'http://localhost:1338/api/word-definitions?locale=fr' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDYwMzAyLCJleHAiOjE3NTc2NTIzMDJ9.hqozEQN39mAZlQYRON-0ANdLpZNvvGXaOISwD34TDSI'
+
+
+
+echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDU0OTA1LCJleHAiOjE3NTc2NDY5MDV9.05RVhajGmjGfd6haXxXYWxionxXTcCQKqQ5VrNq5VV0" | base64 -d
+echo -n "eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDU0OTA1LCJleHAiOjE3NTc2NDY5MDV9" | base64 -D
+
+curl -X GET "http://localhost:1338/api/word-definitions/search?term=pom" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MDU0OTA1LCJleHAiOjE3NTc2NDY5MDV9.05RVhajGmjGfd6haXxXYWxionxXTcCQKqQ5VrNq5VV0"
