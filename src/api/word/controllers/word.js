@@ -1,102 +1,105 @@
 'use strict';
 
-/**
- * word controller
- */
-
 const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::word.word', ({ strapi }) => ({
   /**
-   * Custom search action to find words by target_text, and populate their definitions and flashcards.
-   * This version uses a more robust two-step fetch to avoid deep filtering issues.
-   * @param {object} ctx - The Koa context object.
+   * Searches for words by their target_text.
+   * This definitive implementation uses a robust two-step query to ensure
+   * that all word definitions are correctly filtered by the authenticated user's
+   * specific locale, which is fetched from their user profile.
    */
   async search(ctx) {
     const { term } = ctx.query;
-    const user = ctx.state.user; // Get the authenticated user
+    const { user } = ctx.state;
 
-    if (user) {
-      strapi.log.info(`Searching for words for user ID: ${user.id}`);
-    } else {
-      strapi.log.warn('Word search executed by an unauthenticated user.');
+    // 1. Validate the incoming request
+    if (!user) {
+      return ctx.unauthorized('Authentication is required for this action.');
     }
-
     if (!term) {
       return ctx.badRequest('A "term" query parameter is required.');
     }
 
     try {
-      // Step 1: Find the words and their definitions
+      // 2. Reliably get the user's true language preference from their profile.
+      // This step is critical and addresses the core issue we identified.
+      const userWithProfile = await strapi.entityService.findOne(
+        'plugin::users-permissions.user',
+        user.id,
+        { populate: { user_profile: true } }
+      );
+
+      const userLocale = userWithProfile?.user_profile?.baseLanguage;
+
+      if (!userLocale) {
+        strapi.log.warn(`User ${user.id} has no baseLanguage set in their profile.`);
+        return ctx.badRequest("User profile is missing the 'baseLanguage' setting.");
+      }
+
+      strapi.log.info(`Executing word search for term: "${term}", with user's actual locale: "${userLocale}"`);
+
+      // 3. Step One of the Query: Find all parent words that match the search term.
+      // We do not populate any relations here to keep the query clean and fast.
       const words = await strapi.entityService.findMany('api::word.word', {
         filters: {
-          // Filter the parent 'word' entity
           target_text: {
             $containsi: term,
           },
-          // AND filter the populated 'word_definitions' relation
-          word_definitions: {
-            locale: user ? user.baseLanguage : process.env.DEFAULT_LOCALE || 'en',
+        },
+      });
+
+      if (!words.length) {
+        strapi.log.info('No words found matching the term. Returning empty response.');
+        return this.transformResponse([]);
+      }
+
+      const wordIds = words.map(w => w.id);
+
+      // 4. Step Two of the Query: Fetch only the word definitions that match BOTH the word IDs AND the user's specific locale.
+      // This is the most important filtering step.
+      const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
+        locale: userLocale, // The key to correct filtering
+        filters: {
+          word: {
+            id: { $in: wordIds },
           },
         },
-        limit: 10,
         populate: {
-          // Populate only the definitions that matched the filter above
-          word_definitions: {
-            populate: {
-              part_of_speech: true,
-            },
+          word: true,
+          part_of_speech: true,
+          flashcards: { // Pre-filter flashcards for the current user at the database level
+            filters: { user: user.id }
           },
         },
       });
-
-      if (!user) {
-        words.forEach(word => {
-          if (word.word_definitions) {
-            word.word_definitions.forEach(def => {
-              def.flashcards = []; // Ensure consistent response structure
-            });
-          }
-        });
-        return this.transformResponse(words);
-      }
       
-      const definitionIds = words.flatMap(word => (word.word_definitions || []).map(def => def.id));
+      strapi.log.info(`Found ${definitions.length} definitions with locale "${userLocale}" for the matched words.`);
 
-      let flashcardMap = new Map();
-
-      if (definitionIds.length > 0) {
-        const userFlashcards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-          filters: {
-            user: user.id,
-            word_definition: { id: { $in: definitionIds } },
-          },
-          populate: { user: true, word_definition: true },
-        });
-
-        userFlashcards.forEach(fc => {
-          const defId = fc.word_definition.id;
-          if (!flashcardMap.has(defId)) {
-            flashcardMap.set(defId, []);
-          }
-          flashcardMap.get(defId).push(fc);
-        });
-      }
-
-      // Step 4: Attach the flashcards to the correct definitions (THE FIX IS HERE)
-      words.forEach(word => {
-        if (word.word_definitions) {
-          word.word_definitions.forEach(def => {
-            // Assign the raw array. The sanitizer will create the { data: [...] } wrapper.
-            def.flashcards = flashcardMap.get(def.id) || [];
-          });
+      // 5. Manually assemble the final, correctly-structured response.
+      // This prevents any potential issues with Strapi's automatic data handling.
+      const definitionsByWordId = definitions.reduce((acc, def) => {
+        const parentWordId = def.word.id;
+        if (!acc[parentWordId]) {
+          acc[parentWordId] = [];
         }
+        acc[parentWordId].push(def);
+        return acc;
+      }, {});
+      
+      // Attach the correctly-filtered definitions to each word.
+      words.forEach(word => {
+        word.word_definitions = definitionsByWordId[word.id] || [];
       });
 
-      return this.transformResponse(words);
+      // 6. Filter out any words that have no definitions in the user's locale.
+      const finalWords = words.filter(word => word.word_definitions.length > 0);
+
+      return this.transformResponse(finalWords);
+
     } catch (error) {
-      strapi.log.error('Error in custom word search controller:', error);
-      return ctx.internalServerError('An error occurred during the search.');
+      strapi.log.error('A critical error occurred in the custom word search controller:', error);
+      return ctx.internalServerError('An error occurred during the search. Please try again later.');
     }
   },
 }));

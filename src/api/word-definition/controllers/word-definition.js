@@ -5,24 +5,20 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::word-definition.word-definition', ({ strapi }) => ({
   /**
+   * [Existing Function - Unchanged]
    * Custom search action to find word definitions by base_text.
-   * This allows searching for a word in one language (e.g., Chinese) and seeing all its
-   * potential translations (e.g., in English).
-   * @param {object} ctx - The Koa context object.
    */
   async search(ctx) {
     const { term } = ctx.query;
-    const user = ctx.state.user;
+    const { user } = ctx.state;
 
     if (!user) {
       return ctx.unauthorized('Authentication is required to perform a search.');
     }
-
     if (!term) {
       return ctx.badRequest('A "term" query parameter is required.');
     }
     
-    // 1. Get the user's base language from their profile
     const userWithProfile = await strapi.entityService.findOne(
         'plugin::users-permissions.user',
         user.id,
@@ -36,7 +32,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
 
     try {
       const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
-        locale: userLocale, // 'locale' is now a top-level parameter
+        locale: userLocale,
         filters: {
           base_text: {
             $containsi: term,
@@ -44,7 +40,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
         },
         limit: 10,
         populate: {
-          word: true, // Populate the parent 'word' to get the target_text
+          word: true,
           part_of_speech: true,
           flashcards: {
             filters: {
@@ -63,39 +59,97 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.internalServerError('An error occurred during the search.');
     }
   },
-    /**
-   * Creates or finds a word/definition and an associated flashcard for the user,
-   * then enqueues a background job to populate the entry with AI-generated content.
-   * Accepts an optional `example_sentence`.
+
+  /**
+   * [Corrected Function]
+   * Searches for word definitions by the word's target_text, filtered by the user's locale.
+   * This version places the 'locale' parameter correctly for proper filtering.
    */
+  async searchByTarget(ctx) {
+    const { term } = ctx.query;
+    const { user } = ctx.state;
+
+    if (!user) {
+      return ctx.unauthorized('Authentication is required.');
+    }
+    if (!term) {
+      return ctx.badRequest('A "term" query parameter is required.');
+    }
+
+    const userLocale = user.baseLanguage || 'en';
+    strapi.log.info(`Searching definitions by target text for term "${term}" in locale "${userLocale}"`);
+
+    try {
+      // The 'locale' parameter is now correctly placed at the top level.
+      const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
+        locale: userLocale, // Correct placement
+        filters: {
+          word: {
+            target_text: {
+              $containsi: term,
+            },
+          },
+        },
+        limit: 10,
+        populate: {
+          word: true,
+          part_of_speech: true,
+          flashcards: {
+            filters: {
+              user: user.id,
+            },
+          },
+        },
+      });
+
+      return this.transformResponse(definitions);
+    } catch (error) {
+      strapi.log.error('Error in searchByTarget controller:', error);
+      return ctx.internalServerError('An error occurred during the search.');
+    }
+  },
+
   async create(ctx) {
     const { user } = ctx.state;
+    // Destructure the locale sent from the client
+    const { 
+        target_text, 
+        base_text, 
+        part_of_speech, 
+        example_sentence,
+        locale: clientLocale 
+    } = ctx.request.body?.data || {};
+
+    // 1. Validate User and Input
     if (!user) {
       return ctx.unauthorized('Authenticated user not found.');
     }
-    
-    // 1. Get the user's base language
-    const userWithProfile = await strapi.entityService.findOne(
-        'plugin::users-permissions.user',
-        user.id,
-        { populate: { user_profile: true } }
-    );
-    const userLocale = userWithProfile?.user_profile?.baseLanguage;
-
-    if (!userLocale) {
-        return ctx.badRequest("User's base language is not set.");
-    }
-
-    const { target_text, base_text, part_of_speech, example_sentence } = ctx.request.body?.data || {};
-
     if (!target_text || !base_text) {
       return ctx.badRequest('Missing required fields: target_text and base_text.');
     }
-    
-    const trimmedTarget = target_text.trim();
-    const trimmedBase = base_text.trim();
 
     try {
+      // 2. Determine the Correct Locale to Use
+      let finalLocale;
+      if (clientLocale) {
+        // Prioritize the locale sent directly from the client
+        finalLocale = clientLocale;
+        strapi.log.info(`Using locale from client payload: "${finalLocale}"`);
+      } else {
+        // As a fallback, fetch the user's profile to get their base language
+        const userWithProfile = await strapi.entityService.findOne(
+          'plugin::users-permissions.user',
+          user.id,
+          { populate: { user_profile: true } }
+        );
+        finalLocale = userWithProfile?.user_profile?.baseLanguage || 'en'; // Default to 'en' if all else fails
+        strapi.log.info(`Using locale from user profile: "${finalLocale}"`);
+      }
+
+      // 3. Continue with your existing logic, but use 'finalLocale'
+      const trimmedTarget = target_text.trim();
+      const trimmedBase = base_text.trim();
+
       let word = (await strapi.entityService.findMany('api::word.word', {
         filters: { target_text: trimmedTarget },
       }))[0];
@@ -126,7 +180,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
           word: word.id,
           base_text: trimmedBase,
           part_of_speech: posId || null,
-          locale: userLocale,
+          locale: finalLocale, // Use the corrected locale here
         },
         populate: { word: true, part_of_speech: true },
       }))[0];
@@ -140,8 +194,9 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
               word: word.id,
               base_text: trimmedBase,
               part_of_speech: posId,
-              example_sentence: example_sentence || null, // Save the example sentence
-              locale: userLocale,
+              example_sentence: example_sentence || null,
+              locale: finalLocale, // Use the corrected locale here
+              publishedAt: new Date(), // Publish immediately
             },
             db: trx,
           });
@@ -185,4 +240,5 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.internalServerError('An error occurred while creating the word entry.');
     }
   },
+
 }));
