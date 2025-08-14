@@ -1762,6 +1762,8 @@ export interface ApiUserProfileUserProfile extends Schema.CollectionType {
     >;
     telephone: Attribute.String;
     baseLanguage: Attribute.String & Attribute.Required;
+    proficiency: Attribute.String;
+    reminder_enabled: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
