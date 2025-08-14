@@ -24,6 +24,12 @@
     "baseLanguage": {
       "type": "string",
       "required": true
+    },
+    "proficiency": {
+      "type": "string"
+    },
+    "reminder_enabled": {
+      "type": "boolean"
     }
   }
 }
