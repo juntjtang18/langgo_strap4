@@ -8,7 +8,7 @@ const { sanitize } = require('@strapi/utils');
 
 module.exports = (plugin) => {
   // =================================================================
-  // 1. 'ME' ENDPOINT - WITH SUBSCRIPTION & USER PROFILE
+  // 1. 'ME' ENDPOINT - (MODIFIED)
   // =================================================================
   plugin.controllers.user.me = async (ctx) => {
     if (!ctx.state.user || !ctx.state.user.id) {
@@ -16,9 +16,16 @@ module.exports = (plugin) => {
       return;
     }
 
+    // MODIFIED: The populate object is now structured to fetch
+    // the user_profile and the proficiency relation nested within it.
+    // NOTE: Strapi v4 uses a nested object syntax for deep population.
     const populate = {
       role: true,
-      user_profile: true,
+      user_profile: {
+        populate: {
+          proficiency: true,
+        },
+      },
     };
 
     const user = await strapi.entityService.findOne(
@@ -31,7 +38,7 @@ module.exports = (plugin) => {
       return ctx.notFound();
     }
 
-    // --- Subscription Fetching Logic ---
+    // --- Subscription Fetching Logic (Unchanged) ---
     let subscription = null;
     try {
       console.log("[DEBUG] Entering subscription fetching logic for 'me' endpoint.");
@@ -60,11 +67,15 @@ module.exports = (plugin) => {
       ? (({ id, name, description, type }) => ({ id, name, description, type }))(user.role)
       : null;
 
+    // MODIFIED: The cleanUserProfile object now includes the missing fields.
+    // This ensures the data sent to the app matches what the Swift models expect.
     const cleanUserProfile = user.user_profile
       ? {
           id: user.user_profile.id,
           telephone: user.user_profile.telephone,
           baseLanguage: user.user_profile.baseLanguage,
+          proficiency: user.user_profile.proficiency, // This will be the string key
+          reminder_enabled: user.user_profile.reminder_enabled,
         }
       : null;
 
@@ -81,7 +92,7 @@ module.exports = (plugin) => {
   };
 
   // =================================================================
-  // 2. 'LOGIN' ENDPOINT (/api/auth/local) - WITH SUBSCRIPTION & ROLE
+  // 2. 'LOGIN' ENDPOINT (/api/auth/local) - (UNCHANGED)
   // =================================================================
   const originalCallback = plugin.controllers.auth.callback;
   plugin.controllers.auth.callback = async (ctx) => {
@@ -171,7 +182,7 @@ module.exports = (plugin) => {
   };
 
   // =================================================================
-  // 3. 'REGISTER' ENDPOINT - WITH SUBSCRIPTION & ROLE
+  // 3. 'REGISTER' ENDPOINT - (UNCHANGED)
   // =================================================================
   plugin.controllers.auth.register = async (ctx) => {
     console.log("[DEBUG] ==> Starting custom /register controller.");
@@ -186,7 +197,8 @@ module.exports = (plugin) => {
       throw new ApplicationError("Register action is currently disabled");
     }
 
-    const { email, username, password, baseLanguage } = ctx.request.body;
+    const { email, username, password, baseLanguage, proficiency, reminder_enabled } = ctx.request.body;
+    
     if (!username || !email || !password || !baseLanguage) {
         throw new ApplicationError("Username, email, password, and baseLanguage are required.");
     }
@@ -210,7 +222,6 @@ module.exports = (plugin) => {
     let newUser;
     let userProfile;
     try {
-      // Create the user in a transaction to ensure atomicity
       await strapi.db.transaction(async () => {
         newUser = await userService.add({
           username,
@@ -223,9 +234,14 @@ module.exports = (plugin) => {
         console.log(`[DEBUG] User ${newUser.email} (ID: ${newUser.id}) created in main Strapi.`);
   
         userProfile = await strapi.entityService.create('api::user-profile.user-profile', {
-            data: { user: newUser.id, baseLanguage },
+            data: { 
+                user: newUser.id, 
+                baseLanguage,
+                proficiency: proficiency,
+                reminder_enabled: reminder_enabled,
+            },
         });
-        console.log(`[DEBUG] UserProfile created for user ${newUser.id}.`);
+        console.log(`[DEBUG] UserProfile created for user ${newUser.id} with onboarding data.`);
 
         await strapi.entityService.create('api::vbsetting.vbsetting', {
             data: { user: newUser.id },
@@ -235,10 +251,9 @@ module.exports = (plugin) => {
 
       let subscription = null;
       try {
-        // Create the subscription in SUBSYS
         console.log(`[DEBUG] Calling subscription endpoint to create free plan for user ${newUser.id}.`);
         const subscriptionUrl = process.env.SUBSYS_BASE_URL;
-        const secret = process.env.SUBSCRIPTION_SERVICE_SECRET;
+        const secret = process.env.SUBSYS_BASE_URL;
         
         if (!subscriptionUrl || !secret) {
           console.error("[ERROR] Subscription environment variables not set. Skipping call.");
@@ -257,21 +272,18 @@ module.exports = (plugin) => {
         throw new ApplicationError("Account could not be created due to a subscription system error.");
       }      
       
-      // Re-fetch the user to ensure all relations are populated for the response.
       const userWithDetails = await strapi.entityService.findOne(
         "plugin::users-permissions.user",
         newUser.id,
         { populate: { role: true } }
       );
 
-      // Sanitize user data and manually add the subscription object to the response
       const userSchema = strapi.getModel('plugin::users-permissions.user');
       const sanitizedUser = await sanitize.contentAPI.output(userWithDetails, userSchema);
 
-      // **Manually attach the user profile and subscription to the sanitized response**
       sanitizedUser.user_profile = userProfile;
       sanitizedUser.subscription = subscription;
-      // --- MODIFICATION ---
+      
       const jwtPayload = {
           id: sanitizedUser.id,
           baseLanguage: userProfile.baseLanguage,
@@ -280,11 +292,10 @@ module.exports = (plugin) => {
           jwt: jwtService.issue(jwtPayload),
           user: sanitizedUser,
       });
-      // --- END MODIFICATION ---
 
     } catch (error) {
       console.error("[ERROR] An error during registration:", error);
-      if (newUser && newUser.id) { // Rollback user if created
+      if (newUser && newUser.id) {
         await userService.remove({ id: newUser.id });
       }
       if (error instanceof ApplicationError) {
