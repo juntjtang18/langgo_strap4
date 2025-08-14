@@ -1184,6 +1184,72 @@ export interface ApiPingPing extends Schema.CollectionType {
   };
 }
 
+export interface ApiProficiencyLevelProficiencyLevel
+  extends Schema.CollectionType {
+  collectionName: 'proficiency_levels';
+  info: {
+    singularName: 'proficiency-level';
+    pluralName: 'proficiency-levels';
+    displayName: 'proficiency level';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    key: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    displayName: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    level: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::proficiency-level.proficiency-level',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::proficiency-level.proficiency-level',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::proficiency-level.proficiency-level',
+      'oneToMany',
+      'api::proficiency-level.proficiency-level'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiReviewTireReviewTire extends Schema.CollectionType {
   collectionName: 'review_tires';
   info: {
@@ -2145,6 +2211,7 @@ declare module '@strapi/types' {
       'api::module.module': ApiModuleModule;
       'api::part-of-speech.part-of-speech': ApiPartOfSpeechPartOfSpeech;
       'api::ping.ping': ApiPingPing;
+      'api::proficiency-level.proficiency-level': ApiProficiencyLevelProficiencyLevel;
       'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
       'api::section.section': ApiSectionSection;
