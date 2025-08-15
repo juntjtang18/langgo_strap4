@@ -67,7 +67,7 @@ module.exports = createCoreController(
         const allCards = await strapi.entityService.findMany(
           'api::flashcard.flashcard',
           {
-            filters: { user: user.id },
+            filters: { user: user.id, word_definition: { $not: null } },
             populate: { review_tire: true },
             locale: 'all',
           }
@@ -76,13 +76,24 @@ module.exports = createCoreController(
         const now = new Date();
         const dueCardIds = allCards
           .filter((card) => {
-            const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
-            if (!tierForCheck) return false;
-            if (!card.last_reviewed_at) return true;
+            // Rule 1: New cards that have never been reviewed are always due.
+            if (!card.last_reviewed_at) {
+              return true;
+            }
 
+            const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
+            // If a card has no tier, it's not due (to be safe).
+            if (!tierForCheck) {
+              return false;
+            }
             const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
-            const cutoff = new Date(now - effectiveCooldown * 3600e3);
-            return new Date(card.last_reviewed_at) <= cutoff;
+            const lastReviewTime = new Date(card.last_reviewed_at);
+
+            // Calculate the exact time the card is due next.
+            const dueTime = new Date(lastReviewTime.getTime() + (effectiveCooldown * 3600 * 1000));
+            
+            // A card is due if the current time is on or after the due time.
+            return now >= dueTime;
           })
           .map(card => card.id);
 
@@ -230,31 +241,39 @@ module.exports = createCoreController(
         const allCards = await strapi.entityService.findMany(
           'api::flashcard.flashcard',
           {
-            filters: { user: user.id },
+            filters: { user: user.id, word_definition: { $not: null } },
             populate: { review_tire: true }, // Populate the tier for calculation
             fields: ['is_remembered', 'correct_streak', 'wrong_streak', 'last_reviewed_at'],
           }
         );
 
-        // --- Calculate Due for Review ---
         const now = new Date();
-        const dueForReview = allCards.filter((card) => {
-          // A card is due if it has never been reviewed.
+        let dueForReview = 0;
+        let reviewed = 0; // Initialize the new counter
+
+        allCards.forEach((card) => {
+          // Rule 1: New cards are always due.
           if (!card.last_reviewed_at) {
-            return true;
+            dueForReview++;
+            return;
           }
-          // Find the correct tier for the card.
+
           const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
           if (!tierForCheck) {
-            return false; // Cannot determine cooldown if tier is missing.
+            return; // If a card has no tier, it's not due (to be safe).
           }
-          // Calculate the effective cooldown period.
+
           const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
-          // Determine the cutoff time.
-          const cutoff = new Date(now - effectiveCooldown * 3600e3);
-          // A card is due if its last review was before the cutoff time.
-          return new Date(card.last_reviewed_at) <= cutoff;
-        }).length;
+          const lastReviewTime = new Date(card.last_reviewed_at);
+          const dueTime = new Date(lastReviewTime.getTime() + (effectiveCooldown * 3600 * 1000));
+
+          if (now >= dueTime) {
+            dueForReview++;
+          } else if (!card.is_remembered) {
+            // This is the new logic: if it's not due yet and not remembered, it's "reviewed".
+            reviewed++;
+          }
+        });
         
         // --- Calculate Other Statistics ---
         const total = allCards.length;
@@ -280,7 +299,8 @@ module.exports = createCoreController(
             weekly, 
             monthly, 
             hardToRemember,
-            dueForReview, // Added the new statistic here
+            dueForReview,
+            reviewed, // Add the new count to the response
           } 
         });
       } catch (err) {
@@ -302,16 +322,16 @@ module.exports = createCoreController(
 
       const [results, total] = await Promise.all([
         strapi.entityService.findMany('api::flashcard.flashcard', {
-          filters: { user: user.id },
+          filters: { user: user.id, word_definition: { $not: null } },
           populate: this._commonPopulate(),
           sort: { createdAt: 'asc' },
           start,
           limit: pageSize,
-          locale: 'all', // <-- Add this line
+          locale: 'all',
         }),
         strapi.entityService.count('api::flashcard.flashcard', {
-          filters: { user: user.id },
-          locale: 'all', // <-- And also this one for an accurate count
+          filters: { user: user.id, word_definition: { $not: null } },
+          locale: 'all',
         }),
       ]);
 
@@ -344,7 +364,6 @@ module.exports = createCoreController(
       const { id } = ctx.params;
       
       try {
-        // --- THIS IS THE CORRECTED LINE ---
         const validationService = strapi.service('flashcard-validate');
         
         const updatedFlashcard = await validationService.validateAndFix(id);
