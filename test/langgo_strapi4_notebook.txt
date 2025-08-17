@@ -533,9 +533,64 @@ curl -X POST http://localhost:1338/api/word-definitions \
 -H "Content-Type: application/json" \
 -d '{
   "data": {
-    "target_text": "test1",
-    "base_text": "A prefix meaning 'down' or 'from'.",
+    "target_text": "target text1",
+    "base_text": "base text1",
     "part_of_speech": "prefix",
     "locale": "fr"
   }
 }' | jq .
+
+
+curl -X POST "http://localhost:1338/api/auth/local/register" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "aug13",
+  "email": "aug13@example.com",
+  "password": "Passw0rd!",
+  "baseLanguage": "fr",
+  "proficiency": "beginner",
+  "reminder_enabled": true
+}' \
+| jq .
+
+
+curl -X GET "http://localhost:1338/api/proficiency-levels?locale=zh-Hans&sort=level:asc" \
+| jq .
+
+curl -X POST "http://localhost:1338/api/auth/local" \
+-H "Content-Type: application/json" \
+-d '{  "identifier": "french@langgo.ca",  "password": "Passw0rd"}' \
+| jq .
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTUxNTM3NzAsImV4cCI6MTc1Nzc0NTc3MH0.ntsgZmvntY9A-uxjmibtZVDdDn8HFZ8hRPG_-MXMuoI
+
+curl -X GET "http://localhost:1338/api/users/me" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTUxNTM3NzAsImV4cCI6MTc1Nzc0NTc3MH0.ntsgZmvntY9A-uxjmibtZVDdDn8HFZ8hRPG_-MXMuoI" \
+-H "Content-Type: application/json" | jq .
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MTYxODY2LCJleHAiOjE3NTc3NTM4NjZ9.8GZFb3NkayGCo-mnMRo83qB_9cOSUnDFsvxAK7Csw6Q
+
+curl -X GET 'http://localhost:1338/api/review-flashcards?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MTYxODY2LCJleHAiOjE3NTc3NTM4NjZ9.8GZFb3NkayGCo-mnMRo83qB_9cOSUnDFsvxAK7Csw6Q" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X GET http://192.168.1.69:1338/api/flashcard-stat \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImJhc2VMYW5ndWFnZSI6ImZyIiwiaWF0IjoxNzU1MTYxODY2LCJleHAiOjE3NTc3NTM4NjZ9.8GZFb3NkayGCo-mnMRo83qB_9cOSUnDFsvxAK7Csw6Q" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X POST "http://localhost:1338/api/auth/local/register" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "aug16",
+  "email": "aug16@langgo.ca",
+  "password": "Passw0rd",
+  "baseLanguage": "fr",
+  "proficiency": 1,
+  "reminder_enabled": true
+}' \
+| jq .
+

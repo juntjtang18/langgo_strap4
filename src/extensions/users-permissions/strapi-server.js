@@ -253,7 +253,7 @@ module.exports = (plugin) => {
       try {
         console.log(`[DEBUG] Calling subscription endpoint to create free plan for user ${newUser.id}.`);
         const subscriptionUrl = process.env.SUBSYS_BASE_URL;
-        const secret = process.env.SUBSYS_BASE_URL;
+        const secret = process.env.SUBSCRIPTION_SERVICE_SECRET;
         
         if (!subscriptionUrl || !secret) {
           console.error("[ERROR] Subscription environment variables not set. Skipping call.");
