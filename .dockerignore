@@ -1,0 +1,33 @@
+# Node / Strapi
+node_modules
+.cache
+.tmp
+build
+dist
+coverage
+logs
+npm-debug.log*
+yarn-error.log*
+.pnpm-store
+.yarn
+
+# Local data & media (don’t bake these)
+database
+public/uploads
+
+# VCS / editor
+.git
+.gitmodules
+.gitignore
+.idea
+.vscode
+
+# Env & keys
+.env
+.env.*
+!.env.example
+
+# OS / misc
+.DS_Store
+Thumbs.db
+

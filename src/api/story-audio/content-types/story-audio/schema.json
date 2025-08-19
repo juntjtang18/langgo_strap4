@@ -1,0 +1,83 @@
+{
+  "kind": "collectionType",
+  "collectionName": "story_audios",
+  "info": {
+    "singularName": "story-audio",
+    "pluralName": "story-audios",
+    "displayName": "story audio",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "key_hash": {
+      "type": "uid",
+      "required": true
+    },
+    "source_text": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "enumeration",
+      "enum": [
+        "azure",
+        "google",
+        "polly",
+        "openapi"
+      ]
+    },
+    "engine_ver": {
+      "type": "string"
+    },
+    "voice_id": {
+      "type": "string"
+    },
+    "format": {
+      "type": "enumeration",
+      "enum": [
+        "mp3",
+        "m4a",
+        "wav",
+        "opus"
+      ]
+    },
+    "rate": {
+      "type": "decimal"
+    },
+    "duration_s": {
+      "type": "decimal"
+    },
+    "audio": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "videos",
+        "audios"
+      ]
+    },
+    "expires_at": {
+      "type": "datetime"
+    },
+    "story": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::story.story",
+      "inversedBy": "story_audios"
+    },
+    "paragraph_index": {
+      "type": "integer"
+    },
+    "sentence_index": {
+      "type": "integer"
+    },
+    "pitch": {
+      "type": "decimal"
+    },
+    "volume": {
+      "type": "decimal"
+    }
+  }
+}

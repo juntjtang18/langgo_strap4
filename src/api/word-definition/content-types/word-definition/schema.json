@@ -133,6 +133,12 @@
       "relation": "oneToMany",
       "target": "api::flashcard.flashcard",
       "mappedBy": "word_definition"
+    },
+    "word_def_audios": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::word-def-audio.word-def-audio",
+      "mappedBy": "word_definition"
     }
   }
 }

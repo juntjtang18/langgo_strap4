@@ -115,6 +115,12 @@
       "relation": "oneToMany",
       "target": "api::story-like.story-like",
       "mappedBy": "story"
+    },
+    "story_audios": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::story-audio.story-audio",
+      "mappedBy": "story"
     }
   }
 }
