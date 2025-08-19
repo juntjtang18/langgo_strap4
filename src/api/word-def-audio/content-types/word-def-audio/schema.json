@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "word_def_audios",
+  "info": {
+    "singularName": "word-def-audio",
+    "pluralName": "word-def-audios",
+    "displayName": "word def audio"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "key_hash": {
+      "type": "uid",
+      "required": true
+    },
+    "provider": {
+      "type": "enumeration",
+      "enum": [
+        "azure",
+        "google",
+        "polly",
+        "openai"
+      ]
+    },
+    "engine_ver": {
+      "type": "string"
+    },
+    "voice_id": {
+      "type": "string"
+    },
+    "format": {
+      "type": "enumeration",
+      "enum": [
+        "mp3",
+        "m4a",
+        "wav",
+        "opus"
+      ]
+    },
+    "rate": {
+      "type": "decimal"
+    },
+    "duration_s": {
+      "type": "decimal"
+    },
+    "pitch": {
+      "type": "decimal"
+    },
+    "volume": {
+      "type": "decimal"
+    },
+    "audio": {
+      "allowedTypes": [
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "expires_at": {
+      "type": "datetime"
+    },
+    "word_definition": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::word-definition.word-definition",
+      "inversedBy": "word_def_audios"
+    }
+  }
+}

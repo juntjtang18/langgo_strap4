@@ -28,12 +28,14 @@ module.exports = createCoreController(
             word: {
               populate: ['audio', 'tags'],
             },
+            part_of_speech: true,  // ✅ include POS
+            tags: true,            // (optional) component
+            verb_meta: true,       // (optional) component
           },
         },
         review_tire: true,
       };
     },
-
     /**
      * GET /flashcards/:id
      */
@@ -42,11 +44,20 @@ module.exports = createCoreController(
       if (!user) return ctx.unauthorized('You must be logged in.');
 
       const { id } = ctx.params;
-      const entity = await strapi.entityService.findOne(
-        'api::flashcard.flashcard',
-        id,
-        { populate: this._commonPopulate(), filters: { user: user.id } }
-      );
+      const entity = await strapi.entityService.findOne('api::flashcard.flashcard', id, {
+        populate: this._commonPopulate(),
+        filters: { user: user.id },
+        locale: 'all',
+      });
+
+      // 🔎 Debug log for this single flashcard
+      if (entity?.word_definition?.data?.attributes) {
+        const wd = entity.word_definition.data.attributes;
+        const word = wd.word?.data?.attributes?.target_text;
+        const pos = wd.part_of_speech?.data?.attributes?.name;
+        strapi.log.debug(`🧩 findOne card=${id} word='${word}' pos='${pos}'`);
+      }
+
       return this.transformResponse(entity);
     },
 
@@ -64,44 +75,28 @@ module.exports = createCoreController(
         const tierService = strapi.service('tier-service');
         const allTiers = await tierService.getAllTiers();
 
-        const allCards = await strapi.entityService.findMany(
-          'api::flashcard.flashcard',
-          {
-            filters: { user: user.id, word_definition: { $not: null } },
-            populate: { review_tire: true },
-            locale: 'all',
-          }
-        );
+        // We don't need word_definition here; just tire for the due calculation
+        const allCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
+          filters: { user: user.id, word_definition: { $not: null } },
+          populate: { review_tire: true },
+          locale: 'all',
+        });
 
         const now = new Date();
         const dueCardIds = allCards
           .filter((card) => {
-            // Rule 1: New cards that have never been reviewed are always due.
-            if (!card.last_reviewed_at) {
-              return true;
-            }
-
+            if (!card.last_reviewed_at) return true;
             const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
-            // If a card has no tier, it's not due (to be safe).
-            if (!tierForCheck) {
-              return false;
-            }
+            if (!tierForCheck) return false;
             const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
-            const lastReviewTime = new Date(card.last_reviewed_at);
-
-            // Calculate the exact time the card is due next.
-            const dueTime = new Date(lastReviewTime.getTime() + (effectiveCooldown * 3600 * 1000));
-            
-            // A card is due if the current time is on or after the due time.
+            const dueTime = new Date(new Date(card.last_reviewed_at).getTime() + (effectiveCooldown * 3600 * 1000));
             return now >= dueTime;
           })
-          .map(card => card.id);
+          .map((card) => card.id);
 
         const totalDue = dueCardIds.length;
         if (totalDue === 0) {
-          return this.transformResponse([], {
-            pagination: { page, pageSize, pageCount: 0, total: 0 },
-          });
+          return this.transformResponse([], { pagination: { page, pageSize, pageCount: 0, total: 0 } });
         }
 
         const pageCount = Math.ceil(totalDue / pageSize);
@@ -109,19 +104,31 @@ module.exports = createCoreController(
         const paginatedDueCardIds = dueCardIds.slice(start, start + pageSize);
 
         if (paginatedDueCardIds.length === 0) {
-          return this.transformResponse([], {
-            pagination: { page, pageSize, pageCount, total: totalDue },
-          });
+          return this.transformResponse([], { pagination: { page, pageSize, pageCount, total: totalDue } });
         }
 
+        // ✅ Fetch due cards WITH the full word-definition details now (includes POS).
         const populatedDueCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-            filters: { id: { $in: paginatedDueCardIds } },
-            populate: this._commonPopulate()
+          filters: { id: { $in: paginatedDueCardIds } },
+          populate: this._commonPopulate(),
+          locale: 'all',
         });
+
+        // 🔎 Log a quick preview so you can confirm POS is present
+        try {
+          const preview = populatedDueCards.slice(0, 5).map((c) => {
+            const wd = c?.word_definition?.data?.attributes;
+            return {
+              id: c.id,
+              word: wd?.word?.data?.attributes?.target_text,
+              pos: wd?.part_of_speech?.data?.attributes?.name || null,
+            };
+          });
+          strapi.log.debug(`📦 review-flashcards page=${page} size=${pageSize} preview=${JSON.stringify(preview)}`);
+        } catch (e) { /* ignore logging errors */ }
 
         const pagination = { page, pageSize, pageCount, total: totalDue };
         return this.transformResponse(populatedDueCards, { pagination });
-
       } catch (err) {
         strapi.log.error(`findForReview error: ${err.message}`, { stack: err.stack });
         return ctx.internalServerError('Error fetching review flashcards.');
@@ -320,21 +327,38 @@ module.exports = createCoreController(
       const pageSize = Math.max(1, parseInt(ctx.query.pagination?.pageSize || '10', 10));
       const start = (page - 1) * pageSize;
 
+      // ✅ --- FIX: Use the robust, centralized population helper ---
+      const populate = this._commonPopulate();
+
       const [results, total] = await Promise.all([
         strapi.entityService.findMany('api::flashcard.flashcard', {
           filters: { user: user.id, word_definition: { $not: null } },
-          populate: this._commonPopulate(),
+          populate, // Use the helper's result here
           sort: { createdAt: 'asc' },
           start,
           limit: pageSize,
-          locale: 'all',
         }),
         strapi.entityService.count('api::flashcard.flashcard', {
           filters: { user: user.id, word_definition: { $not: null } },
-          locale: 'all',
         }),
       ]);
 
+      // 🔎 Preview log (should now include the POS)
+      try {
+        const preview = results.slice(0, 5).map((c) => {
+          const wd = c?.word_definition; // Note: data is not nested here with this populate
+          return {
+            id: c.id,
+            word: wd?.word?.target_text ?? null,
+            pos: wd?.part_of_speech?.name ?? null // Adjusted for direct access
+          };
+        });
+        strapi.log.debug(`📦 mine[fixed] page=${page} size=${pageSize} preview=${JSON.stringify(preview)}`);
+      } catch (_) {}
+      
+      // The complex manual hydration block is no longer needed and has been removed.
+
+      // Your existing tier enrichment logic remains the same
       const tierService = strapi.service('tier-service');
       const allTiers = await tierService.getAllTiers();
       const enriched = results.map((card) => {
@@ -344,15 +368,10 @@ module.exports = createCoreController(
         return card;
       });
 
-      const pagination = {
-        page,
-        pageSize,
-        pageCount: Math.ceil(total / pageSize),
-        total,
-      };
-
+      const pagination = { page, pageSize, pageCount: Math.ceil(total / pageSize), total };
       return this.transformResponse(enriched, { pagination });
     },
+
 
    /**
    * POST /flashcards/:id/validate

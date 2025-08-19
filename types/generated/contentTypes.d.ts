@@ -1123,18 +1123,8 @@ export interface ApiPartOfSpeechPartOfSpeech extends Schema.CollectionType {
   options: {
     draftAndPublish: false;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
-    name: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    name: Attribute.String;
     word_definitions: Attribute.Relation<
       'api::part-of-speech.part-of-speech',
       'oneToMany',
@@ -1154,12 +1144,6 @@ export interface ApiPartOfSpeechPartOfSpeech extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::part-of-speech.part-of-speech',
-      'oneToMany',
-      'api::part-of-speech.part-of-speech'
-    >;
-    locale: Attribute.String;
   };
 }
 
@@ -1638,6 +1622,11 @@ export interface ApiStoryStory extends Schema.CollectionType {
       'oneToMany',
       'api::story-like.story-like'
     >;
+    story_audios: Attribute.Relation<
+      'api::story.story',
+      'oneToMany',
+      'api::story-audio.story-audio'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1658,6 +1647,54 @@ export interface ApiStoryStory extends Schema.CollectionType {
       'api::story.story'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiStoryAudioStoryAudio extends Schema.CollectionType {
+  collectionName: 'story_audios';
+  info: {
+    singularName: 'story-audio';
+    pluralName: 'story-audios';
+    displayName: 'story audio';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    key_hash: Attribute.UID & Attribute.Required;
+    source_text: Attribute.String;
+    provider: Attribute.Enumeration<['azure', 'google', 'polly', 'openapi']>;
+    engine_ver: Attribute.String;
+    voice_id: Attribute.String;
+    format: Attribute.Enumeration<['mp3', 'm4a', 'wav', 'opus']>;
+    rate: Attribute.Decimal;
+    duration_s: Attribute.Decimal;
+    audio: Attribute.Media & Attribute.Required;
+    expires_at: Attribute.DateTime;
+    story: Attribute.Relation<
+      'api::story-audio.story-audio',
+      'manyToOne',
+      'api::story.story'
+    >;
+    paragraph_index: Attribute.Integer;
+    sentence_index: Attribute.Integer;
+    pitch: Attribute.Decimal;
+    volume: Attribute.Decimal;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::story-audio.story-audio',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::story-audio.story-audio',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -2067,6 +2104,50 @@ export interface ApiWordWord extends Schema.CollectionType {
   };
 }
 
+export interface ApiWordDefAudioWordDefAudio extends Schema.CollectionType {
+  collectionName: 'word_def_audios';
+  info: {
+    singularName: 'word-def-audio';
+    pluralName: 'word-def-audios';
+    displayName: 'word def audio';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    key_hash: Attribute.UID & Attribute.Required;
+    provider: Attribute.Enumeration<['azure', 'google', 'polly', 'openai']>;
+    engine_ver: Attribute.String;
+    voice_id: Attribute.String;
+    format: Attribute.Enumeration<['mp3', 'm4a', 'wav', 'opus']>;
+    rate: Attribute.Decimal;
+    duration_s: Attribute.Decimal;
+    pitch: Attribute.Decimal;
+    volume: Attribute.Decimal;
+    audio: Attribute.Media;
+    expires_at: Attribute.DateTime;
+    word_definition: Attribute.Relation<
+      'api::word-def-audio.word-def-audio',
+      'manyToOne',
+      'api::word-definition.word-definition'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::word-def-audio.word-def-audio',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::word-def-audio.word-def-audio',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
   collectionName: 'word_definitions';
   info: {
@@ -2164,6 +2245,11 @@ export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
       'oneToMany',
       'api::flashcard.flashcard'
     >;
+    word_def_audios: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'oneToMany',
+      'api::word-def-audio.word-def-audio'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2217,6 +2303,7 @@ declare module '@strapi/types' {
       'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::story.story': ApiStoryStory;
+      'api::story-audio.story-audio': ApiStoryAudioStoryAudio;
       'api::story-like.story-like': ApiStoryLikeStoryLike;
       'api::topic.topic': ApiTopicTopic;
       'api::unit.unit': ApiUnitUnit;
@@ -2225,6 +2312,7 @@ declare module '@strapi/types' {
       'api::user-word.user-word': ApiUserWordUserWord;
       'api::vbsetting.vbsetting': ApiVbsettingVbsetting;
       'api::word.word': ApiWordWord;
+      'api::word-def-audio.word-def-audio': ApiWordDefAudioWordDefAudio;
       'api::word-definition.word-definition': ApiWordDefinitionWordDefinition;
     }
   }
