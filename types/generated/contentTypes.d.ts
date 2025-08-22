@@ -1294,6 +1294,12 @@ export interface ApiReviewTireReviewTire extends Schema.CollectionType {
       'oneToMany',
       'api::flashcard.flashcard'
     >;
+    display_name: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
