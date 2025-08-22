@@ -236,82 +236,146 @@ module.exports = createCoreController(
 
     /**
      * GET /flashcards/statistics
+     * Fast, tier-driven counters (no per-card loop)
      */
     async getStatistics(ctx) {
       const { user } = ctx.state;
       if (!user) return ctx.unauthorized('You must be logged in to view statistics.');
-    
+
       try {
         const tierService = strapi.service('tier-service');
-        const allTiers = await tierService.getAllTiers();
+        // [{ id, tier, min_streak, max_streak, cooldown_hours, demote_bar, display_name }, ...]
+        const tiers = await tierService.getAllTiers();
 
-        const allCards = await strapi.entityService.findMany(
-          'api::flashcard.flashcard',
-          {
-            filters: { user: user.id, word_definition: { $not: null } },
-            populate: { review_tire: true }, // Populate the tier for calculation
-            fields: ['is_remembered', 'correct_streak', 'wrong_streak', 'last_reviewed_at'],
-          }
-        );
-
+        const baseFilter = { user: user.id, word_definition: { $not: null } };
+        const totalCards = await strapi.entityService.count('api::flashcard.flashcard', { filters: baseFilter });
         const now = new Date();
-        let dueForReview = 0;
-        let reviewed = 0; // Initialize the new counter
 
-        allCards.forEach((card) => {
-          // Rule 1: New cards are always due.
-          if (!card.last_reviewed_at) {
-            dueForReview++;
-            return;
-          }
-
-          const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
-          if (!tierForCheck) {
-            return; // If a card has no tier, it's not due (to be safe).
-          }
-
-          const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
-          const lastReviewTime = new Date(card.last_reviewed_at);
-          const dueTime = new Date(lastReviewTime.getTime() + (effectiveCooldown * 3600 * 1000));
-
-          if (now >= dueTime) {
-            dueForReview++;
-          } else if (!card.is_remembered) {
-            // This is the new logic: if it's not due yet and not remembered, it's "reviewed".
-            reviewed++;
-          }
+        // Build a membership filter for one tier:
+        // either linked to this tier OR (no link && streak is within [min, max]).
+        const membershipForTier = (t) => ({
+          $or: [
+            { review_tire: t.id },
+            {
+              $and: [
+                { review_tire: null },
+                { correct_streak: { $gte: t.min_streak } },
+                { correct_streak: { $lte: t.max_streak } },
+              ],
+            },
+          ],
         });
-        
-        // --- Calculate Other Statistics ---
-        const total = allCards.length;
-        const remembered = allCards.filter(
-          (c) => c.is_remembered || c.correct_streak >= 11
-        ).length;
-    
-        const active = allCards.filter(
-          (c) => !c.is_remembered && c.correct_streak < 11
+
+        // Per-tier counts in parallel
+        const perTier = await Promise.all(
+          tiers.map(async (t) => {
+            const membership = membershipForTier(t);
+            const hours = getEffectiveCooldown(t.cooldown_hours);
+            const thresholdIso = new Date(now.getTime() - hours * 3600 * 1000).toISOString();
+
+            // total in this tier
+            const count = await strapi.entityService.count('api::flashcard.flashcard', {
+              filters: { ...baseFilter, ...membership }, // only one $or at top-level here
+            });
+
+            // due in this tier: never reviewed OR last_reviewed_at <= threshold
+            const dueCount = await strapi.entityService.count('api::flashcard.flashcard', {
+              filters: {
+                ...baseFilter,
+                $and: [
+                  membership, // keep membership intact
+                  {
+                    $or: [
+                      { last_reviewed_at: null },
+                      { last_reviewed_at: { $lte: thresholdIso } },
+                    ],
+                  },
+                ],
+              },
+            });
+
+            // hard-to-remember in this tier (use tier.demote_bar)
+            const hardToRememberCount = await strapi.entityService.count('api::flashcard.flashcard', {
+              filters: {
+                ...baseFilter,
+                $and: [
+                  membership,
+                  { wrong_streak: { $gte: t.demote_bar } },
+                ],
+              },
+            });
+
+            return { t, count, dueCount, hardToRememberCount };
+          })
         );
-        const newCards = active.filter((c) => c.correct_streak <= 3).length;
-        const warmUp = active.filter((c) => c.correct_streak >= 4 && c.correct_streak <= 6).length;
-        const weekly = active.filter((c) => c.correct_streak >= 7 && c.correct_streak <= 8).length;
-        const monthly = active.filter((c) => c.correct_streak >= 9 && c.correct_streak <= 10).length;
-        const hardToRemember = active.filter((c) => c.wrong_streak >= 3).length;
-    
-        return ctx.send({ 
-          data: { 
-            totalCards: total, 
-            remembered, 
-            newCards, 
-            warmUp, 
-            weekly, 
-            monthly, 
+
+        // Remembered (global): explicit flag OR belongs to remembered tier (by relation or by streak range)
+        const rememberedTier = tiers.find((x) => x.tier === 'remembered');
+        let remembered = 0;
+        if (rememberedTier) {
+          const rememberedFilters = {
+            ...baseFilter,
+            $or: [
+              { is_remembered: true },
+              { review_tire: rememberedTier.id },
+              {
+                $and: [
+                  { review_tire: null },
+                  { correct_streak: { $gte: rememberedTier.min_streak } },
+                ],
+              },
+            ],
+          };
+          remembered = await strapi.entityService.count('api::flashcard.flashcard', { filters: rememberedFilters });
+        } else {
+          // Fallback: only explicit flag
+          remembered = await strapi.entityService.count('api::flashcard.flashcard', {
+            filters: { ...baseFilter, is_remembered: true },
+          });
+        }
+
+        // Fold results
+        const byTier = perTier.map(({ t, count, dueCount, hardToRememberCount }) => ({
+          id: t.id,
+          tier: t.tier,
+          display_name: t.display_name || null,
+          min_streak: t.min_streak,
+          max_streak: t.max_streak,
+          cooldown_hours: t.cooldown_hours,
+          count,
+          dueCount,
+          hardToRememberCount,
+        }));
+
+        const countBySlug = Object.fromEntries(byTier.map((x) => [x.tier, x.count]));
+        const dueForReview  = byTier.reduce((s, x) => s + x.dueCount, 0);
+        const hardToRemember = byTier.reduce((s, x) => s + x.hardToRememberCount, 0);
+
+        // Reviewed = total - due - remembered (clamped to >= 0)
+        const reviewed = Math.max(0, totalCards - dueForReview - remembered);
+
+        // Legacy buckets (derived from tiers; no hard-coded ranges)
+        const newCards = countBySlug['new'] || 0;
+        const warmUp   = countBySlug['warmup'] || 0;
+        const weekly   = countBySlug['weekly'] || 0;
+        const monthly  = countBySlug['monthly'] || 0;
+
+        return ctx.send({
+          data: {
+            totalCards,
+            remembered,
+            newCards,
+            warmUp,
+            weekly,
+            monthly,
             hardToRemember,
             dueForReview,
-            reviewed, // Add the new count to the response
-          } 
+            reviewed,
+            byTier,
+          },
         });
       } catch (err) {
-        strapi.log.error(`getStatistics error: ${err.message}`);
+        strapi.log.error(`getStatistics error: ${err.message}`, { stack: err.stack });
         return ctx.internalServerError('An error occurred while fetching statistics.');
       }
     },

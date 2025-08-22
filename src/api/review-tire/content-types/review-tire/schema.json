@@ -74,6 +74,14 @@
       "relation": "oneToMany",
       "target": "api::flashcard.flashcard",
       "mappedBy": "review_tire"
+    },
+    "display_name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }

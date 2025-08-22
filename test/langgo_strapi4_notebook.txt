@@ -269,10 +269,18 @@ curl -X GET 'http://localhost:1338/api/review-tires' \
 curl -X GET 'https://langgo-subsys.geniusparentingai.ca/api/pings' 
 
 
-curl -X GET 'https://langgo-en-strapi.geniusparentingai.ca/api/flashcards/mine?pagination%5Bpage%5D=10&pagination%5BpageSize%5D=5&populate=content,review_tire' \
+curl -X GET 'https://langgo-en-strapi.geniusparentingai.ca/api/flashcards/mine?pagination%5Bpage%5D=10&pagination%5BpageSize%5D=2&populate=content,review_tire' \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
 -H "Content-Type: application/json" | jq .
 
+curl -X GET "https://langgo-en-strapi.geniusparentingai.ca/api/flashcards/mine?pagination%5Bpage%5D=10&pagination%5BpageSize%5D=2&populate%5Bword_definition%5D%5Bpopulate%5D=word,part_of_speech,tags,verb_meta&populate%5Bword_definition%5D%5Bpopulate%5D%5Bword%5D%5Bpopulate%5D=audio,tags&populate%5Breview_tire%5D=true" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
+-H "Content-Type: application/json" | jq .
+
+
+curl -X GET "http://localhost:1338/api/flashcards/mine?pagination%5Bpage%5D=10&pagination%5BpageSize%5D=2&populate%5Bword_definition%5D%5Bpopulate%5D=word,part_of_speech,tags,verb_meta&populate%5Bword_definition%5D%5Bpopulate%5D%5Bword%5D%5Bpopulate%5D=audio,tags&populate%5Breview_tire%5D=true" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNzUzOTgyMTUzLCJleHAiOjE3NTY1NzQxNTN9._mWscarOK2d5q6f1oSdc4B2zRKWXGolxvphis0rou7I" \
+-H "Content-Type: application/json" | jq .
 
 # backup_user_words.sh
 curl -s 'http://localhost:1338/api/user-words?pagination%5BpageSize%5D=1000' \
@@ -594,3 +602,24 @@ curl -X POST "http://localhost:1338/api/auth/local/register" \
 }' \
 | jq .
 
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc1NTc1MDA5MywiZXhwIjoxNzU4MzQyMDkzfQ.BQKDouluQeRtl3IDNe26m6i2dXEi1qzZaeTfjijT6Ik
+
+curl -X GET "http://localhost:8080/api/user-profiles/mine" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc1NTc1MDA5MywiZXhwIjoxNzU4MzQyMDkzfQ.BQKDouluQeRtl3IDNe26m6i2dXEi1qzZaeTfjijT6Ik" | jq .
+
+curl -X GET "http://localhost:8080/api/personality-results" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc1NTc1MDA5MywiZXhwIjoxNzU4MzQyMDkzfQ.BQKDouluQeRtl3IDNe26m6i2dXEi1qzZaeTfjijT6Ik" | jq .
+
+curl -X GET "http://localhost:1338/api/review-tires" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc1NTc1MDA5MywiZXhwIjoxNzU4MzQyMDkzfQ.BQKDouluQeRtl3IDNe26m6i2dXEi1qzZaeTfjijT6Ik" | jq .
+
+
+curl -X POST "http://localhost:1338/api/auth/local" \
+-H "Content-Type: application/json" \
+-d '{  "identifier": "chinese@langgo.com",  "password": "Passw0rd"}' \
+| jq .
