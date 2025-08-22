@@ -236,7 +236,7 @@ module.exports = createCoreController(
 
     /**
      * GET /flashcards/statistics
-     * Fast, tier-driven counters (no per-card loop)
+     * Tier-driven stats (no hard-coded ranges; no per-card loop)
      */
     async getStatistics(ctx) {
       const { user } = ctx.state;
@@ -251,8 +251,7 @@ module.exports = createCoreController(
         const totalCards = await strapi.entityService.count('api::flashcard.flashcard', { filters: baseFilter });
         const now = new Date();
 
-        // Build a membership filter for one tier:
-        // either linked to this tier OR (no link && streak is within [min, max]).
+        // Membership for a tier: relation OR (no relation && streak in [min,max])
         const membershipForTier = (t) => ({
           $or: [
             { review_tire: t.id },
@@ -275,7 +274,7 @@ module.exports = createCoreController(
 
             // total in this tier
             const count = await strapi.entityService.count('api::flashcard.flashcard', {
-              filters: { ...baseFilter, ...membership }, // only one $or at top-level here
+              filters: { ...baseFilter, ...membership }, // one $or only
             });
 
             // due in this tier: never reviewed OR last_reviewed_at <= threshold
@@ -294,7 +293,7 @@ module.exports = createCoreController(
               },
             });
 
-            // hard-to-remember in this tier (use tier.demote_bar)
+            // hard to remember in this tier
             const hardToRememberCount = await strapi.entityService.count('api::flashcard.flashcard', {
               filters: {
                 ...baseFilter,
@@ -305,73 +304,58 @@ module.exports = createCoreController(
               },
             });
 
-            return { t, count, dueCount, hardToRememberCount };
+            return {
+              id: t.id,
+              tier: t.tier,
+              display_name: t.display_name || null,
+              min_streak: t.min_streak,
+              max_streak: t.max_streak,
+              cooldown_hours: t.cooldown_hours,
+              count,
+              dueCount,
+              hardToRememberCount,
+            };
           })
         );
 
-        // Remembered (global): explicit flag OR belongs to remembered tier (by relation or by streak range)
+        // Remembered: explicit flag OR in remembered tier (by relation or by streak)
         const rememberedTier = tiers.find((x) => x.tier === 'remembered');
         let remembered = 0;
         if (rememberedTier) {
-          const rememberedFilters = {
-            ...baseFilter,
-            $or: [
-              { is_remembered: true },
-              { review_tire: rememberedTier.id },
-              {
-                $and: [
-                  { review_tire: null },
-                  { correct_streak: { $gte: rememberedTier.min_streak } },
-                ],
-              },
-            ],
-          };
-          remembered = await strapi.entityService.count('api::flashcard.flashcard', { filters: rememberedFilters });
+          remembered = await strapi.entityService.count('api::flashcard.flashcard', {
+            filters: {
+              ...baseFilter,
+              $or: [
+                { is_remembered: true },
+                { review_tire: rememberedTier.id },
+                {
+                  $and: [
+                    { review_tire: null },
+                    { correct_streak: { $gte: rememberedTier.min_streak } },
+                  ],
+                },
+              ],
+            },
+          });
         } else {
-          // Fallback: only explicit flag
           remembered = await strapi.entityService.count('api::flashcard.flashcard', {
             filters: { ...baseFilter, is_remembered: true },
           });
         }
 
-        // Fold results
-        const byTier = perTier.map(({ t, count, dueCount, hardToRememberCount }) => ({
-          id: t.id,
-          tier: t.tier,
-          display_name: t.display_name || null,
-          min_streak: t.min_streak,
-          max_streak: t.max_streak,
-          cooldown_hours: t.cooldown_hours,
-          count,
-          dueCount,
-          hardToRememberCount,
-        }));
-
-        const countBySlug = Object.fromEntries(byTier.map((x) => [x.tier, x.count]));
-        const dueForReview  = byTier.reduce((s, x) => s + x.dueCount, 0);
-        const hardToRemember = byTier.reduce((s, x) => s + x.hardToRememberCount, 0);
-
-        // Reviewed = total - due - remembered (clamped to >= 0)
-        const reviewed = Math.max(0, totalCards - dueForReview - remembered);
-
-        // Legacy buckets (derived from tiers; no hard-coded ranges)
-        const newCards = countBySlug['new'] || 0;
-        const warmUp   = countBySlug['warmup'] || 0;
-        const weekly   = countBySlug['weekly'] || 0;
-        const monthly  = countBySlug['monthly'] || 0;
+        // Fold up the results
+        const dueForReview   = perTier.reduce((s, x) => s + x.dueCount, 0);
+        const hardToRemember = perTier.reduce((s, x) => s + x.hardToRememberCount, 0);
+        const reviewed       = Math.max(0, totalCards - dueForReview - remembered);
 
         return ctx.send({
           data: {
             totalCards,
             remembered,
-            newCards,
-            warmUp,
-            weekly,
-            monthly,
-            hardToRemember,
             dueForReview,
             reviewed,
-            byTier,
+            hardToRemember,
+            byTier: perTier,
           },
         });
       } catch (err) {
