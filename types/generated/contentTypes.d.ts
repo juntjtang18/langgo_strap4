@@ -833,46 +833,21 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
   options: {
     draftAndPublish: false;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
     user: Attribute.Relation<
       'api::flashcard.flashcard',
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    last_reviewed_at: Attribute.DateTime &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    last_reviewed_at: Attribute.DateTime;
     correct_streak: Attribute.Integer &
       Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Attribute.DefaultTo<0>;
     wrong_streak: Attribute.Integer &
       Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Attribute.DefaultTo<0>;
     is_remembered: Attribute.Boolean &
       Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Attribute.DefaultTo<false>;
     reviewlogs: Attribute.Relation<
       'api::flashcard.flashcard',
@@ -903,12 +878,6 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::flashcard.flashcard',
-      'oneToMany',
-      'api::flashcard.flashcard'
-    >;
-    locale: Attribute.String;
   };
 }
 

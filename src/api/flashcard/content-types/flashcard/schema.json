@@ -10,11 +10,7 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "user": {
       "type": "relation",
@@ -23,39 +19,23 @@
       "inversedBy": "flashcards"
     },
     "last_reviewed_at": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "datetime"
     },
     "correct_streak": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "integer",
       "default": 0,
       "required": true
     },
     "wrong_streak": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "integer",
       "default": 0,
       "required": true
     },
     "is_remembered": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "boolean",
       "default": false,
       "required": true
