@@ -1103,11 +1103,11 @@ CREATE TABLE public.flashcards (
     updated_at timestamp(6) without time zone,
     created_by_id integer,
     updated_by_id integer,
-    locale character varying(255),
     last_reviewed_at timestamp(6) without time zone,
     is_remembered boolean,
     correct_streak integer,
-    wrong_streak integer
+    wrong_streak integer,
+    locale character varying(255)
 );
 
 
@@ -1791,7 +1791,8 @@ CREATE TABLE public.review_tires (
     updated_at timestamp(6) without time zone,
     created_by_id integer,
     updated_by_id integer,
-    locale character varying(255)
+    locale character varying(255),
+    display_name character varying(255)
 );
 
 
@@ -2409,12 +2410,12 @@ CREATE TABLE public.story_audios (
     expires_at timestamp(6) without time zone,
     paragraph_index integer,
     sentence_index integer,
+    pitch numeric(10,2),
+    volume numeric(10,2),
     created_at timestamp(6) without time zone,
     updated_at timestamp(6) without time zone,
     created_by_id integer,
-    updated_by_id integer,
-    pitch numeric(10,2),
-    volume numeric(10,2)
+    updated_by_id integer
 );
 
 
@@ -5177,20 +5178,15 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 195	plugin::content-manager.explorer.delete	{}	api::reviewlog.reviewlog	{}	[]	2025-06-28 13:06:40.586	2025-06-28 13:06:40.586	\N	\N
 245	plugin::content-manager.explorer.delete	{}	api::user-profile.user-profile	{}	[]	2025-07-01 11:10:40.682	2025-07-01 11:10:40.682	\N	\N
 424	plugin::content-manager.explorer.create	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.486	2025-08-02 12:29:28.486	\N	\N
+593	plugin::content-manager.explorer.create	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards", "display_name"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-22 01:10:49.564	2025-08-22 01:10:49.564	\N	\N
+594	plugin::content-manager.explorer.read	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards", "display_name"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-22 01:10:49.738	2025-08-22 01:10:49.738	\N	\N
 425	plugin::content-manager.explorer.read	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.669	2025-08-02 12:29:28.669	\N	\N
 426	plugin::content-manager.explorer.update	{}	api::ping.ping	{"fields": ["status"]}	[]	2025-08-02 12:29:28.846	2025-08-02 12:29:28.846	\N	\N
 427	plugin::content-manager.explorer.delete	{}	api::ping.ping	{}	[]	2025-08-02 12:29:29.012	2025-08-02 12:29:29.012	\N	\N
-544	plugin::content-manager.explorer.create	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"]}	[]	2025-08-19 11:32:01.171	2025-08-19 11:32:01.171	\N	\N
-545	plugin::content-manager.explorer.create	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes", "story_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-19 11:32:01.348	2025-08-19 11:32:01.348	\N	\N
-547	plugin::content-manager.explorer.read	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"]}	[]	2025-08-19 11:32:01.69	2025-08-19 11:32:01.69	\N	\N
-548	plugin::content-manager.explorer.read	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes", "story_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-19 11:32:01.861	2025-08-19 11:32:01.861	\N	\N
+595	plugin::content-manager.explorer.update	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards", "display_name"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-22 01:10:49.912	2025-08-22 01:10:49.912	\N	\N
 521	plugin::content-manager.explorer.create	{}	api::user-profile.user-profile	{"fields": ["user", "telephone", "baseLanguage", "proficiency", "reminder_enabled"]}	[]	2025-08-13 18:32:18.089	2025-08-13 18:32:18.089	\N	\N
 522	plugin::content-manager.explorer.read	{}	api::user-profile.user-profile	{"fields": ["user", "telephone", "baseLanguage", "proficiency", "reminder_enabled"]}	[]	2025-08-13 18:32:18.354	2025-08-13 18:32:18.354	\N	\N
 523	plugin::content-manager.explorer.update	{}	api::user-profile.user-profile	{"fields": ["user", "telephone", "baseLanguage", "proficiency", "reminder_enabled"]}	[]	2025-08-13 18:32:18.547	2025-08-13 18:32:18.547	\N	\N
-550	plugin::content-manager.explorer.update	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"]}	[]	2025-08-19 11:32:02.221	2025-08-19 11:32:02.221	\N	\N
-551	plugin::content-manager.explorer.update	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes", "story_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-19 11:32:02.397	2025-08-19 11:32:02.397	\N	\N
-553	plugin::content-manager.explorer.delete	{}	api::part-of-speech.part-of-speech	{}	[]	2025-08-19 11:32:02.754	2025-08-19 11:32:02.754	\N	\N
-554	plugin::content-manager.explorer.delete	{}	api::story-audio.story-audio	{}	[]	2025-08-19 11:32:02.973	2025-08-19 11:32:02.973	\N	\N
 361	plugin::content-manager.explorer.create	{}	api::topic.topic	{"fields": ["title", "difficulty_level", "description", "questions.prompt", "questions.expected_answer", "tags", "is_active"]}	[]	2025-07-18 22:10:45.695	2025-07-18 22:10:45.695	\N	\N
 363	plugin::content-manager.explorer.read	{}	api::topic.topic	{"fields": ["title", "difficulty_level", "description", "questions.prompt", "questions.expected_answer", "tags", "is_active"]}	[]	2025-07-18 22:10:46.071	2025-07-18 22:10:46.071	\N	\N
 365	plugin::content-manager.explorer.update	{}	api::topic.topic	{"fields": ["title", "difficulty_level", "description", "questions.prompt", "questions.expected_answer", "tags", "is_active"]}	[]	2025-07-18 22:10:46.425	2025-07-18 22:10:46.425	\N	\N
@@ -5201,7 +5197,6 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 384	plugin::content-manager.explorer.update	{}	api::conversation.conversation	{"fields": ["sessionId", "history"]}	[]	2025-07-19 23:05:13.203	2025-07-19 23:05:13.203	\N	\N
 412	plugin::content-manager.explorer.create	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:11.964	2025-07-20 20:34:11.964	\N	\N
 172	plugin::content-manager.explorer.delete	{}	api::user-sentence.user-sentence	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:00.87	2025-08-13 14:39:00.87	\N	\N
-555	plugin::content-manager.explorer.create	{}	api::word-def-audio.word-def-audio	{"fields": ["key_hash", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "pitch", "volume", "audio", "expires_at", "word_definition"]}	[]	2025-08-19 11:56:19.932	2025-08-19 11:56:19.932	\N	\N
 415	plugin::content-manager.explorer.read	{}	api::story-like.story-like	{"fields": ["user", "story"]}	[]	2025-07-20 20:34:12.739	2025-07-20 20:34:12.739	\N	\N
 392	plugin::content-manager.explorer.create	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:01.301	2025-08-13 14:39:01.301	\N	\N
 430	plugin::content-manager.explorer.update	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:01.489	2025-08-13 14:39:01.489	\N	\N
@@ -5209,7 +5204,6 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 419	plugin::content-manager.explorer.delete	{}	api::story-like.story-like	{}	[]	2025-07-20 20:34:13.423	2025-07-20 20:34:13.423	\N	\N
 509	plugin::content-manager.explorer.create	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:01.674	2025-08-13 14:39:01.674	\N	\N
 388	plugin::content-manager.explorer.delete	{}	api::story.story	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:02.123	2025-08-13 14:39:02.123	\N	\N
-511	plugin::content-manager.explorer.read	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:02.314	2025-08-13 14:39:02.314	\N	\N
 267	plugin::content-manager.explorer.read	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:02.503	2025-08-13 14:39:02.503	\N	\N
 350	plugin::content-manager.explorer.read	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:02.694	2025-08-13 14:39:02.694	\N	\N
 434	plugin::content-manager.explorer.delete	{}	api::word.word	{}	[]	2025-08-03 12:54:11.431	2025-08-03 12:54:11.431	\N	\N
@@ -5222,24 +5216,20 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 442	plugin::content-manager.explorer.update	{}	api::word.word	{"fields": ["target_text", "word_definitions"]}	[]	2025-08-03 13:32:08.089	2025-08-03 13:32:08.089	\N	\N
 149	plugin::content-manager.explorer.delete	{}	api::section.section	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:03.901	2025-08-13 14:39:03.901	\N	\N
 505	plugin::content-manager.explorer.read	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:04.338	2025-08-13 14:39:04.338	\N	\N
-556	plugin::content-manager.explorer.create	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards", "word_def_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-19 11:56:20.09	2025-08-19 11:56:20.09	\N	\N
-557	plugin::content-manager.explorer.read	{}	api::word-def-audio.word-def-audio	{"fields": ["key_hash", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "pitch", "volume", "audio", "expires_at", "word_definition"]}	[]	2025-08-19 11:56:20.265	2025-08-19 11:56:20.265	\N	\N
-558	plugin::content-manager.explorer.read	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards", "word_def_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-19 11:56:20.443	2025-08-19 11:56:20.443	\N	\N
-559	plugin::content-manager.explorer.update	{}	api::word-def-audio.word-def-audio	{"fields": ["key_hash", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "pitch", "volume", "audio", "expires_at", "word_definition"]}	[]	2025-08-19 11:56:20.611	2025-08-19 11:56:20.611	\N	\N
-560	plugin::content-manager.explorer.update	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards", "word_def_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-19 11:56:20.785	2025-08-19 11:56:20.785	\N	\N
 438	plugin::content-manager.explorer.read	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:04.518	2025-08-13 14:39:04.518	\N	\N
 435	plugin::content-manager.explorer.create	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:04.704	2025-08-13 14:39:04.704	\N	\N
-490	plugin::content-manager.explorer.create	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:05.375	2025-08-13 14:39:05.375	\N	\N
-561	plugin::content-manager.explorer.delete	{}	api::word-def-audio.word-def-audio	{}	[]	2025-08-19 11:56:20.95	2025-08-19 11:56:20.95	\N	\N
 441	plugin::content-manager.explorer.update	{}	api::section.section	{"fields": ["title", "lesson", "order", "components", "word_definitions"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:05.738	2025-08-13 14:39:05.738	\N	\N
 512	plugin::content-manager.explorer.update	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:05.934	2025-08-13 14:39:05.934	\N	\N
 351	plugin::content-manager.explorer.update	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:06.119	2025-08-13 14:39:06.119	\N	\N
 269	plugin::content-manager.explorer.update	{}	api::user-sentence.user-sentence	{"fields": ["user", "target_text", "base_text", "lesson"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:06.393	2025-08-13 14:39:06.393	\N	\N
 513	plugin::content-manager.explorer.delete	{}	api::lesson.lesson	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:06.59	2025-08-13 14:39:06.59	\N	\N
 97	plugin::content-manager.explorer.delete	{}	api::sentence.sentence	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:06.774	2025-08-13 14:39:06.774	\N	\N
-182	plugin::content-manager.explorer.delete	{}	api::flashcard.flashcard	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:06.959	2025-08-13 14:39:06.959	\N	\N
+600	plugin::content-manager.explorer.create	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-23 22:39:24.621	2025-08-23 22:39:24.621	\N	\N
 396	plugin::content-manager.explorer.update	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:07.406	2025-08-13 14:39:07.406	\N	\N
 503	plugin::content-manager.explorer.create	{}	api::module.module	{"fields": ["name", "description", "goal", "icon_media", "units"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:07.599	2025-08-13 14:39:07.599	\N	\N
+601	plugin::content-manager.explorer.read	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-23 22:39:24.656	2025-08-23 22:39:24.656	\N	\N
+602	plugin::content-manager.explorer.update	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-23 22:39:24.674	2025-08-23 22:39:24.674	\N	\N
+603	plugin::content-manager.explorer.delete	{}	api::flashcard.flashcard	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-23 22:39:24.693	2025-08-23 22:39:24.693	\N	\N
 478	plugin::content-manager.explorer.create	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:21.608	2025-08-03 15:07:21.608	\N	\N
 480	plugin::content-manager.explorer.create	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:21.97	2025-08-03 15:07:21.97	\N	\N
 482	plugin::content-manager.explorer.read	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:22.323	2025-08-03 15:07:22.323	\N	\N
@@ -5247,21 +5237,14 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 486	plugin::content-manager.explorer.update	{}	plugin::users-permissions.user	{"fields": ["username", "email", "provider", "password", "resetPasswordToken", "confirmationToken", "confirmed", "blocked", "role", "flashcards", "reviewlogs", "user_profile", "user_words", "user_sentences", "vbsetting", "story_likes"]}	[]	2025-08-03 15:07:23.018	2025-08-03 15:07:23.018	\N	\N
 488	plugin::content-manager.explorer.update	{}	api::reviewlog.reviewlog	{"fields": ["user", "reviewed_at", "level", "result", "flashcard"]}	[]	2025-08-03 15:07:23.383	2025-08-03 15:07:23.383	\N	\N
 497	plugin::content-manager.explorer.update	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:04.926	2025-08-13 14:39:04.926	\N	\N
-562	plugin::content-manager.explorer.create	{}	api::story-audio.story-audio	{"fields": ["key_hash", "source_text", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "audio", "expires_at", "story", "paragraph_index", "sentence_index", "pitch", "volume"]}	[]	2025-08-19 11:58:34.26	2025-08-19 11:58:34.26	\N	\N
-563	plugin::content-manager.explorer.read	{}	api::story-audio.story-audio	{"fields": ["key_hash", "source_text", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "audio", "expires_at", "story", "paragraph_index", "sentence_index", "pitch", "volume"]}	[]	2025-08-19 11:58:34.436	2025-08-19 11:58:34.436	\N	\N
-564	plugin::content-manager.explorer.update	{}	api::story-audio.story-audio	{"fields": ["key_hash", "source_text", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "audio", "expires_at", "story", "paragraph_index", "sentence_index", "pitch", "volume"]}	[]	2025-08-19 11:58:34.609	2025-08-19 11:58:34.609	\N	\N
 502	plugin::content-manager.explorer.delete	{}	api::module.module	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:07.786	2025-08-13 14:39:07.786	\N	\N
-479	plugin::content-manager.explorer.create	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:08.138	2025-08-13 14:39:08.138	\N	\N
 510	plugin::content-manager.explorer.read	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:08.389	2025-08-13 14:39:08.389	\N	\N
-496	plugin::content-manager.explorer.update	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:08.786	2025-08-13 14:39:08.786	\N	\N
-493	plugin::content-manager.explorer.read	{}	api::flashcard.flashcard	{"fields": ["user", "last_reviewed_at", "correct_streak", "wrong_streak", "is_remembered", "reviewlogs", "review_tire", "word_definition"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:08.98	2025-08-13 14:39:08.98	\N	\N
 73	plugin::content-manager.explorer.delete	{}	api::unit.unit	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:09.176	2025-08-13 14:39:09.176	\N	\N
 349	plugin::content-manager.explorer.create	{}	api::user-word.user-word	{"fields": ["user", "target_text", "base_text", "part_of_speech", "lesson", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:09.442	2025-08-13 14:39:09.442	\N	\N
 429	plugin::content-manager.explorer.read	{}	api::sentence.sentence	{"fields": ["title", "instruction", "base_text", "target_text", "target_audio", "tags.tag", "register", "exam_base", "exam_target"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:09.634	2025-08-13 14:39:09.634	\N	\N
 370	plugin::content-manager.explorer.delete	{}	api::difficulty-level.difficulty-level	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:09.823	2025-08-13 14:39:09.823	\N	\N
 226	plugin::content-manager.explorer.delete	{}	api::review-tire.review-tire	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:10.011	2025-08-13 14:39:10.011	\N	\N
 506	plugin::content-manager.explorer.read	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:10.201	2025-08-13 14:39:10.201	\N	\N
-487	plugin::content-manager.explorer.update	{}	api::review-tire.review-tire	{"fields": ["tier", "min_streak", "max_streak", "cooldown_hours", "demote_bar", "flashcards"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:10.684	2025-08-13 14:39:10.684	\N	\N
 491	plugin::content-manager.explorer.create	{}	api::lesson.lesson	{"fields": ["title", "slug", "description", "order", "tags.tag", "lessonlevel", "sections", "user_words", "user_sentences", "unit"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:10.873	2025-08-13 14:39:10.873	\N	\N
 504	plugin::content-manager.explorer.create	{}	api::unit.unit	{"fields": ["title", "slug", "description", "order", "lessons", "precondition", "unlocks", "module"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:11.054	2025-08-13 14:39:11.054	\N	\N
 394	plugin::content-manager.explorer.read	{}	api::difficulty-level.difficulty-level	{"fields": ["name", "level", "topics", "code", "description", "stories"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 14:39:11.237	2025-08-13 14:39:11.237	\N	\N
@@ -5269,6 +5252,24 @@ COPY public.admin_permissions (id, action, action_parameters, subject, propertie
 533	plugin::content-manager.explorer.read	{}	api::proficiency-level.proficiency-level	{"fields": ["key", "displayName", "description", "level"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 22:50:25.8	2025-08-13 22:50:25.8	\N	\N
 534	plugin::content-manager.explorer.update	{}	api::proficiency-level.proficiency-level	{"fields": ["key", "displayName", "description", "level"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 22:50:26.067	2025-08-13 22:50:26.067	\N	\N
 535	plugin::content-manager.explorer.delete	{}	api::proficiency-level.proficiency-level	{"locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-13 22:50:26.264	2025-08-13 22:50:26.264	\N	\N
+575	plugin::content-manager.explorer.create	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"]}	[]	2025-08-21 22:46:49.075	2025-08-21 22:46:49.075	\N	\N
+576	plugin::content-manager.explorer.create	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes", "story_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-21 22:46:49.261	2025-08-21 22:46:49.261	\N	\N
+577	plugin::content-manager.explorer.create	{}	api::story-audio.story-audio	{"fields": ["key_hash", "source_text", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "audio", "expires_at", "story", "paragraph_index", "sentence_index", "pitch", "volume"]}	[]	2025-08-21 22:46:49.438	2025-08-21 22:46:49.438	\N	\N
+578	plugin::content-manager.explorer.create	{}	api::word-def-audio.word-def-audio	{"fields": ["key_hash", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "pitch", "volume", "audio", "expires_at", "word_definition"]}	[]	2025-08-21 22:46:49.641	2025-08-21 22:46:49.641	\N	\N
+579	plugin::content-manager.explorer.create	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards", "word_def_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-21 22:46:49.817	2025-08-21 22:46:49.817	\N	\N
+580	plugin::content-manager.explorer.read	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"]}	[]	2025-08-21 22:46:49.995	2025-08-21 22:46:49.995	\N	\N
+581	plugin::content-manager.explorer.read	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes", "story_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-21 22:46:50.176	2025-08-21 22:46:50.176	\N	\N
+582	plugin::content-manager.explorer.read	{}	api::story-audio.story-audio	{"fields": ["key_hash", "source_text", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "audio", "expires_at", "story", "paragraph_index", "sentence_index", "pitch", "volume"]}	[]	2025-08-21 22:46:50.355	2025-08-21 22:46:50.355	\N	\N
+583	plugin::content-manager.explorer.read	{}	api::word-def-audio.word-def-audio	{"fields": ["key_hash", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "pitch", "volume", "audio", "expires_at", "word_definition"]}	[]	2025-08-21 22:46:50.533	2025-08-21 22:46:50.533	\N	\N
+584	plugin::content-manager.explorer.read	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards", "word_def_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-21 22:46:50.709	2025-08-21 22:46:50.709	\N	\N
+585	plugin::content-manager.explorer.update	{}	api::part-of-speech.part-of-speech	{"fields": ["name", "word_definitions"]}	[]	2025-08-21 22:46:50.89	2025-08-21 22:46:50.89	\N	\N
+586	plugin::content-manager.explorer.update	{}	api::story.story	{"fields": ["title", "author", "brief", "text", "slug", "order", "word_count", "difficulty_level", "illustrations.caption", "illustrations.alt_text", "illustrations.media", "illustrations.paragraph", "generation_prompts.cover_image_prompt", "generation_prompts.brief_video_prompt", "generation_prompts.illustration_prompts.prompt", "like_count", "story_likes", "story_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-21 22:46:51.067	2025-08-21 22:46:51.067	\N	\N
+587	plugin::content-manager.explorer.update	{}	api::story-audio.story-audio	{"fields": ["key_hash", "source_text", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "audio", "expires_at", "story", "paragraph_index", "sentence_index", "pitch", "volume"]}	[]	2025-08-21 22:46:51.244	2025-08-21 22:46:51.244	\N	\N
+588	plugin::content-manager.explorer.update	{}	api::word-def-audio.word-def-audio	{"fields": ["key_hash", "provider", "engine_ver", "voice_id", "format", "rate", "duration_s", "pitch", "volume", "audio", "expires_at", "word_definition"]}	[]	2025-08-21 22:46:51.428	2025-08-21 22:46:51.428	\N	\N
+589	plugin::content-manager.explorer.update	{}	api::word-definition.word-definition	{"fields": ["word", "section", "base_text", "instruction", "part_of_speech", "gender", "article", "tags.tag", "example_sentence", "verb_meta.simple_past", "verb_meta.past_participle", "verb_meta.present_participle", "verb_meta.thirdperson_singular", "verb_meta.auxiliary_verb", "verb_meta.conjugations", "exam_base", "exam_target", "register", "flashcards", "word_def_audios"], "locales": ["en", "zh", "fr", "es", "ko", "ja", "vi", "zh-Hans"]}	[]	2025-08-21 22:46:51.612	2025-08-21 22:46:51.612	\N	\N
+590	plugin::content-manager.explorer.delete	{}	api::part-of-speech.part-of-speech	{}	[]	2025-08-21 22:46:51.789	2025-08-21 22:46:51.789	\N	\N
+591	plugin::content-manager.explorer.delete	{}	api::story-audio.story-audio	{}	[]	2025-08-21 22:46:51.957	2025-08-21 22:46:51.957	\N	\N
+592	plugin::content-manager.explorer.delete	{}	api::word-def-audio.word-def-audio	{}	[]	2025-08-21 22:46:52.132	2025-08-21 22:46:52.132	\N	\N
 \.
 
 
@@ -5351,29 +5352,21 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 448	412	1	356
 114	114	1	93
 451	415	1	359
-892	555	1	475
 134	134	1	95
 137	137	1	98
 140	140	1	101
-893	556	1	476
 454	418	1	362
 455	419	1	363
 460	424	1	364
 461	425	1	365
 462	426	1	366
 463	427	1	367
-894	557	1	477
-895	558	1	478
-896	559	1	479
 245	245	1	192
-897	560	1	480
-898	561	1	481
 801	172	1	406
 803	392	1	408
 804	430	1	409
 805	509	1	410
 807	388	1	412
-808	511	1	413
 809	267	1	414
 810	350	1	415
 811	508	1	416
@@ -5385,14 +5378,12 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 819	438	1	424
 820	435	1	425
 821	497	1	426
-822	490	1	427
 824	441	1	429
 825	512	1	430
 826	351	1	431
 827	269	1	432
 828	513	1	433
 829	97	1	434
-830	182	1	435
 397	361	1	321
 399	363	1	323
 401	365	1	325
@@ -5402,50 +5393,60 @@ COPY public.admin_permissions_role_links (id, permission_id, role_id, permission
 419	383	1	343
 420	384	1	344
 832	396	1	437
+930	593	1	482
+931	594	1	483
 858	521	1	457
 859	522	1	458
+932	595	1	484
+937	600	1	485
+938	601	1	486
+939	602	1	487
 470	434	1	374
+940	603	1	488
 472	436	1	376
 475	439	1	379
 478	442	1	382
 860	523	1	459
-881	544	1	464
-882	545	1	465
 514	478	1	394
-884	547	1	467
 516	480	1	396
-885	548	1	468
 518	482	1	398
 520	484	1	400
 833	503	1	438
 522	486	1	402
 834	502	1	439
 524	488	1	404
-836	479	1	441
 837	510	1	442
-839	496	1	444
-840	493	1	445
 841	73	1	446
 842	349	1	447
 843	429	1	448
 844	370	1	449
 845	226	1	450
 846	506	1	451
-887	550	1	470
-848	487	1	453
 849	491	1	454
 850	504	1	455
 851	394	1	456
-888	551	1	471
-890	553	1	473
-891	554	1	474
-899	562	1	482
-900	563	1	483
-901	564	1	484
 869	532	1	460
 870	533	1	461
 871	534	1	462
 872	535	1	463
+912	575	1	464
+913	576	1	465
+914	577	1	466
+915	578	1	467
+916	579	1	468
+917	580	1	469
+918	581	1	470
+919	582	1	471
+920	583	1	472
+921	584	1	473
+922	585	1	474
+923	586	1	475
+924	587	1	476
+925	588	1	477
+926	589	1	478
+927	590	1	479
+928	591	1	480
+929	592	1	481
 \.
 
 
@@ -6074,6 +6075,11 @@ COPY public.components_a_verb_metas (id, simple_past, past_participle, present_p
 1	did	done	doing	does	have	\N
 2	invoked	invoked	invoking	\N	\N	\N
 3	helped	helped	helping	\N	\N	\N
+4	conveyed	conveyed	conveying	\N	\N	\N
+5	ploughed	ploughed	ploughing	\N	\N	\N
+6	stalked	stalked	stalking	\N	\N	\N
+7	strode	stridden	striding	\N	\N	\N
+8	trod	trodden	treading	\N	\N	\N
 \.
 
 
@@ -6184,6 +6190,12 @@ COPY public.conversations (id, created_at, updated_at, created_by_id, updated_by
 80	2025-08-18 22:37:56.622	2025-08-18 22:37:56.622	\N	\N	4cb3f2e1-51ef-4273-8a64-a4d316dda1be	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Polite Expressions\\"? Or, you can suggest a topic."}]
 81	2025-08-19 00:40:32.757	2025-08-19 00:40:32.757	\N	\N	d650ff75-87f6-4672-80a3-ac97e6ffd58c	[{"role": "assistant", "content": "Hello! How about we talk about \\"Days of the Week\\"? Or, you can suggest a topic."}]
 82	2025-08-19 09:42:19.335	2025-08-19 09:42:19.335	\N	\N	ee2e2e3c-6013-4dac-a695-a377f80af475	[{"role": "assistant", "content": "Hello! How about we talk about \\"Months of the Year\\"? Or, you can suggest a topic."}]
+83	2025-08-23 09:48:50.394	2025-08-23 09:48:50.394	\N	\N	e8893d93-f87e-4f53-86b2-41664fd12de6	[{"role": "assistant", "content": "Hello! How about we talk about \\"Alphabet and Phonetics\\"? Or, you can suggest a topic."}]
+84	2025-08-23 10:56:57.33	2025-08-23 10:56:57.33	\N	\N	ce27739e-2a1d-47c5-9578-b4c82b2edad3	[{"role": "assistant", "content": "Hello! How about we talk about \\"Days of the Week\\"? Or, you can suggest a topic."}]
+85	2025-08-23 11:56:17.206	2025-08-23 11:56:17.206	\N	\N	293f7ba6-b372-4481-956c-4650ff3af929	[{"role": "assistant", "content": "Hello! How about we talk about \\"Common Courtesy Phrases\\"? Or, you can suggest a topic."}]
+86	2025-08-23 12:37:38.658	2025-08-23 12:37:38.658	\N	\N	c3b6e6b2-8761-46d3-be4d-1341153937e5	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Everyday Phrases\\"? Or, you can suggest a topic."}]
+87	2025-08-23 13:30:41.569	2025-08-23 13:30:41.569	\N	\N	a893058a-f931-46f7-8af0-d37097d2a6f7	[{"role": "assistant", "content": "Hello! How about we talk about \\"Greetings and Introductions\\"? Or, you can suggest a topic."}]
+88	2025-08-23 18:06:43.306	2025-08-23 18:06:43.306	\N	\N	2e05fe07-6641-4f47-8a55-773c3d0e547d	[{"role": "assistant", "content": "Hello! How about we talk about \\"Basic Greetings and Introductions\\"? Or, you can suggest a topic."}]
 \.
 
 
@@ -6272,362 +6284,378 @@ COPY public.files_related_morphs (id, file_id, related_id, related_type, field, 
 -- Data for Name: flashcards; Type: TABLE DATA; Schema: public; Owner: strapi
 --
 
-COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id, locale, last_reviewed_at, is_remembered, correct_streak, wrong_streak) FROM stdin;
-421	2025-07-07 17:09:39.931	2025-08-03 21:32:25.866	\N	\N	en	\N	f	0	0
-482	2025-08-02 16:44:11.045	2025-08-19 01:21:19.86	\N	\N	en	2025-08-19 01:21:19.827	f	2	0
-500	2025-08-02 16:26:02.995	2025-08-19 01:28:03.435	\N	\N	en	2025-08-19 01:28:03.375	f	2	0
-487	2025-07-14 03:17:29.301	2025-08-19 01:35:25.375	\N	\N	en	2025-08-19 01:35:25.348	f	1	0
-426	2025-07-07 17:09:36.192	2025-08-03 21:32:26.138	\N	\N	en	\N	f	0	0
-434	2025-07-02 13:55:27.94	2025-08-19 01:34:56.655	\N	\N	en	2025-08-19 01:34:56.608	f	5	0
-428	2025-07-07 17:09:39.008	2025-08-03 21:32:26.202	\N	\N	en	\N	f	0	0
-366	2025-07-07 08:56:13.37	2025-08-03 21:31:40.938	\N	\N	en	2025-07-09 19:09:29.242	f	1	0
-427	2025-07-07 17:09:33.304	2025-08-03 21:32:26.266	\N	\N	en	\N	f	0	0
-510	2025-08-02 16:50:54.958	2025-08-19 01:28:07.485	\N	\N	en	2025-08-19 01:28:07.439	f	2	0
-425	2025-07-01 17:19:27.722	2025-08-17 22:44:08.016	\N	\N	en	2025-08-17 22:44:07.963	f	8	0
-370	2025-07-07 09:59:13.186	2025-08-03 21:31:45.56	\N	\N	en	\N	f	0	0
-485	2025-07-07 07:43:19.693	2025-08-17 23:07:57.454	\N	\N	en	2025-08-17 23:07:57.244	f	9	0
-374	2025-07-07 08:37:09.202	2025-08-03 21:31:45.609	\N	\N	en	2025-07-10 05:14:03.955	f	7	0
-431	2025-07-01 17:18:17.982	2025-08-17 22:44:05.317	\N	\N	en	2025-08-17 22:44:05.258	f	8	0
-499	2025-08-02 16:26:18.946	2025-08-19 01:21:22.122	\N	\N	en	2025-08-19 01:21:22.075	f	2	0
-368	2025-07-01 17:27:11.407	2025-08-19 01:20:40.753	\N	\N	en	2025-08-19 01:20:40.721	f	6	1
-429	2025-06-30 18:10:08.461	2025-08-17 22:43:50.5	\N	\N	en	2025-08-17 22:43:50.441	f	8	0
-501	2025-08-02 11:53:36.036	2025-08-19 01:35:29.002	\N	\N	en	2025-08-19 01:35:28.964	f	3	0
-521	2025-07-15 07:44:33.972	2025-08-17 23:09:30.129	\N	\N	en	2025-08-17 23:09:30.082	f	7	0
-377	2025-07-02 03:32:16.142	2025-08-19 01:21:15.639	\N	\N	en	2025-08-19 01:21:15.594	f	4	0
-380	2025-07-07 10:54:29.235	2025-08-03 21:31:58.088	\N	\N	en	\N	f	0	0
-455	2025-07-02 17:33:13	2025-08-19 01:35:49.523	\N	\N	en	2025-08-19 01:35:49.49	f	3	0
-388	2025-07-07 08:48:22.237	2025-08-03 21:31:58.235	\N	\N	en	\N	f	0	0
-454	2025-07-02 05:15:22.24	2025-08-19 01:36:18.63	\N	\N	en	2025-08-19 01:36:18.594	f	6	0
-387	2025-07-07 10:19:23.797	2025-08-03 21:31:58.422	\N	\N	en	\N	f	0	0
-382	2025-07-07 10:45:53.697	2025-08-03 21:31:58.591	\N	\N	en	\N	f	0	0
-386	2025-07-07 10:36:38.724	2025-08-03 21:31:58.969	\N	\N	en	\N	f	0	0
-451	2025-07-07 17:13:08.835	2025-08-03 21:32:40.706	\N	\N	en	\N	f	0	0
-376	2025-07-02 03:31:41.445	2025-08-19 01:21:12.376	\N	\N	en	2025-08-19 01:21:12.341	f	5	0
-445	2025-07-02 05:40:13.5	2025-08-19 01:36:06.764	\N	\N	en	2025-08-19 01:36:06.731	f	0	0
-398	2025-07-07 16:47:09.191	2025-08-03 21:32:03.268	\N	\N	en	\N	f	0	0
-449	2025-07-07 17:13:11.798	2025-08-03 21:32:41.206	\N	\N	en	\N	f	0	0
-393	2025-07-07 16:47:07.271	2025-08-03 21:32:03.655	\N	\N	en	\N	f	0	0
-444	2025-07-02 05:37:06.574	2025-08-19 01:36:03.77	\N	\N	en	2025-08-19 01:36:03.73	f	4	0
-394	2025-07-07 17:08:55.672	2025-08-03 21:32:03.853	\N	\N	en	\N	f	0	0
-395	2025-07-07 16:47:08.243	2025-08-03 21:32:04.033	\N	\N	en	\N	f	0	0
-396	2025-07-07 16:47:04.406	2025-08-03 21:32:04.126	\N	\N	en	\N	f	0	0
-462	2025-07-07 17:13:18.591	2025-08-03 21:32:45.848	\N	\N	en	\N	f	0	0
-463	2025-07-07 17:13:14.691	2025-08-03 21:32:46.101	\N	\N	en	\N	f	0	0
-461	2025-07-07 17:13:22.44	2025-08-03 21:32:46.229	\N	\N	en	\N	f	0	0
-458	2025-07-07 17:13:17.575	2025-08-03 21:32:46.518	\N	\N	en	\N	f	0	0
-400	2025-07-07 17:08:57.685	2025-08-03 21:32:08.218	\N	\N	en	\N	f	0	0
-465	2025-07-07 17:13:16.602	2025-08-03 21:32:46.609	\N	\N	en	\N	f	0	0
-406	2025-07-07 17:08:54.748	2025-08-03 21:32:08.43	\N	\N	en	\N	f	0	0
-399	2025-07-07 17:08:58.657	2025-08-03 21:32:09.313	\N	\N	en	\N	f	0	0
-408	2025-07-07 17:09:03.438	2025-08-03 21:32:09.313	\N	\N	en	\N	f	0	0
-404	2025-07-07 17:08:56.675	2025-08-03 21:32:12.163	\N	\N	en	\N	f	0	0
-467	2025-07-07 17:13:27.288	2025-08-03 21:32:50.653	\N	\N	en	\N	f	0	0
-469	2025-07-07 17:13:25.381	2025-08-03 21:32:50.652	\N	\N	en	\N	f	0	0
-470	2025-07-07 17:13:23.373	2025-08-03 21:32:50.883	\N	\N	en	\N	f	0	0
-466	2025-07-07 17:13:26.375	2025-08-03 21:32:51.062	\N	\N	en	\N	f	0	0
-409	2025-07-07 17:09:27.594	2025-08-03 21:32:16.132	\N	\N	en	\N	f	0	0
-474	2025-07-07 17:13:30.091	2025-08-03 21:32:53.498	\N	\N	en	\N	f	0	0
-416	2025-07-07 17:09:35.199	2025-08-03 21:32:16.414	\N	\N	en	\N	f	0	0
-411	2025-07-07 17:09:31.381	2025-08-03 21:32:16.511	\N	\N	en	\N	f	0	0
-415	2025-07-07 17:09:05.412	2025-08-03 21:32:16.911	\N	\N	en	\N	f	0	0
-418	2025-07-07 17:09:28.558	2025-08-03 21:32:17.355	\N	\N	en	\N	f	0	0
-477	2025-07-07 17:13:32.974	2025-08-03 21:32:57.731	\N	\N	en	\N	f	0	0
-479	2025-07-15 11:28:36.869	2025-08-03 21:32:57.794	\N	\N	en	\N	f	0	0
-497	2025-08-02 16:26:53.481	2025-08-19 01:21:24.431	\N	\N	en	2025-08-19 01:21:24.385	f	2	0
-484	2025-07-07 08:57:47.635	2025-08-03 21:32:58.622	\N	\N	en	2025-07-09 19:10:56.203	f	1	0
-502	2025-07-01 17:16:17.349	2025-08-17 22:44:01.85	\N	\N	en	2025-08-17 22:44:01.809	f	8	0
-491	2025-07-18 07:24:16.429	2025-08-03 21:33:11.135	\N	\N	en	2025-08-02 12:43:44.396	f	9	0
-437	2025-07-07 08:34:26.509	2025-08-17 23:08:04.67	\N	\N	en	2025-08-17 23:08:04.628	f	7	0
-442	2025-07-02 05:59:39.843	2025-08-19 01:35:37.575	\N	\N	en	2025-08-19 01:35:37.535	f	5	0
-513	2025-08-02 16:48:23.543	2025-08-19 01:28:11.193	\N	\N	en	2025-08-19 01:28:11.151	f	2	0
-526	2025-08-02 16:38:50.378	2025-08-19 01:28:22.028	\N	\N	en	2025-08-19 01:28:21.99	f	0	0
-453	2025-07-05 17:30:36.668	2025-08-19 01:35:40.612	\N	\N	en	2025-08-19 01:35:40.578	f	4	0
-436	2025-07-01 17:49:19.437	2025-08-19 01:20:58.953	\N	\N	en	2025-08-19 01:20:58.921	f	5	0
-509	2025-08-02 16:28:51.304	2025-08-19 01:21:28.827	\N	\N	en	2025-08-19 01:21:28.792	f	2	0
-511	2025-08-02 16:30:19.521	2025-08-19 01:21:32.289	\N	\N	en	2025-08-19 01:21:32.253	f	2	0
-506	2025-08-02 16:50:26.252	2025-08-19 01:21:37.199	\N	\N	en	2025-08-19 01:21:37.165	f	2	0
-539	2025-08-02 16:55:00.065	2025-08-19 01:28:30.78	\N	\N	en	2025-08-19 01:28:30.748	f	2	0
-363	2025-07-02 17:34:21.477	2025-08-19 01:34:10.284	\N	\N	en	2025-08-19 01:34:10.245	f	0	0
-523	2025-08-02 16:36:45.186	2025-08-19 01:21:40.508	\N	\N	en	2025-08-19 01:21:40.476	f	2	0
-519	2025-08-02 16:36:53.224	2025-08-19 01:21:46.105	\N	\N	en	2025-08-19 01:21:46.059	f	1	0
-492	2025-08-02 16:44:40.795	2025-08-19 01:27:47.687	\N	\N	en	2025-08-19 01:27:47.649	f	1	1
-518	2025-08-02 16:37:15.526	2025-08-19 01:21:48.757	\N	\N	en	2025-08-19 01:21:48.721	f	2	0
-494	2025-07-17 18:43:24.736	2025-08-04 01:23:57.343	\N	\N	en	2025-08-04 01:23:57.023	f	10	0
-364	2025-07-05 17:31:27.887	2025-08-19 01:34:14.891	\N	\N	en	2025-08-19 01:34:14.853	f	3	0
-528	2025-08-02 16:53:59.614	2025-08-19 01:21:57.74	\N	\N	en	2025-08-19 01:21:57.706	f	1	0
-360	2025-07-05 17:54:28.143	2025-08-19 01:34:18.528	\N	\N	en	2025-08-19 01:34:18.491	f	3	0
-525	2025-08-02 16:42:51.182	2025-08-19 01:22:03.163	\N	\N	en	2025-08-19 01:22:03.105	f	2	0
-742	2025-08-18 22:58:00.423	2025-08-18 22:58:00.423	\N	\N	en	\N	f	0	0
-530	2025-08-02 16:54:09.079	2025-08-19 01:22:06.154	\N	\N	en	2025-08-19 01:22:06.083	f	2	0
-538	2025-08-02 20:30:38.313	2025-08-19 01:22:09.162	\N	\N	en	2025-08-19 01:22:09.123	f	2	0
-536	2025-08-02 20:30:00.872	2025-08-19 01:22:13.216	\N	\N	en	2025-08-19 01:22:13.156	f	2	0
-541	2025-08-02 16:56:32.703	2025-08-19 01:22:20.272	\N	\N	en	2025-08-19 01:22:20.246	f	2	0
-727	2025-08-14 02:28:24.503	2025-08-15 22:39:35.082	\N	\N	en	2025-08-15 22:39:34.761	f	2	0
-728	2025-08-14 02:28:53.106	2025-08-15 22:39:46.047	\N	\N	en	2025-08-15 22:39:45.716	f	0	0
-443	2025-07-02 05:32:50.67	2025-08-19 01:35:53.788	\N	\N	en	2025-08-19 01:35:53.719	f	0	1
-367	2025-07-02 03:04:23.193	2025-08-19 01:21:03.966	\N	\N	en	2025-08-19 01:21:03.929	f	0	0
-419	2025-07-07 09:55:22.4	2025-08-03 21:32:25.971	\N	\N	en	2025-07-10 05:14:51.865	f	1	0
-371	2025-07-06 14:28:53.219	2025-08-19 01:34:32.721	\N	\N	en	2025-08-19 01:34:32.686	f	3	0
-423	2025-07-07 17:09:37.112	2025-08-03 21:32:26.168	\N	\N	en	\N	f	0	0
-420	2025-07-07 17:09:38.039	2025-08-03 21:32:26.293	\N	\N	en	\N	f	0	0
-422	2025-07-07 17:10:41.741	2025-08-03 21:32:26.619	\N	\N	en	\N	f	0	0
-372	2025-07-07 08:49:16.501	2025-08-03 21:31:45.324	\N	\N	en	2025-07-10 04:17:23.684	f	12	0
-369	2025-07-07 10:07:18.436	2025-08-03 21:31:45.533	\N	\N	en	\N	f	0	0
-507	2025-07-15 07:37:59.731	2025-08-19 01:34:59.896	\N	\N	en	2025-08-19 01:34:59.857	f	0	0
-435	2025-07-02 07:06:51.25	2025-08-19 01:34:37.732	\N	\N	en	2025-08-19 01:34:37.693	f	6	0
-433	2025-07-02 07:18:58.472	2025-08-19 01:34:43.629	\N	\N	en	2025-08-19 01:34:43.6	f	0	0
-432	2025-07-02 07:07:30.586	2025-08-19 01:34:40.614	\N	\N	en	2025-08-19 01:34:40.587	f	5	0
-378	2025-07-02 03:16:30.841	2025-08-19 01:21:09.51	\N	\N	en	2025-08-19 01:21:09.456	f	5	0
-439	2025-07-01 17:46:03.056	2025-08-19 01:20:55.989	\N	\N	en	2025-08-19 01:20:55.944	f	7	0
-488	2025-07-02 07:39:06.405	2025-08-19 01:34:49.15	\N	\N	en	2025-08-19 01:34:49.11	f	6	0
-384	2025-07-07 10:32:54.674	2025-08-03 21:31:58.091	\N	\N	en	\N	f	0	0
-381	2025-07-07 10:54:28.269	2025-08-03 21:31:58.153	\N	\N	en	\N	f	0	0
-383	2025-07-07 10:54:30.398	2025-08-03 21:31:58.221	\N	\N	en	\N	f	0	0
-430	2025-07-01 17:08:15.505	2025-08-19 01:20:37.962	\N	\N	en	2025-08-19 01:20:37.924	f	7	0
-385	2025-07-07 09:50:32.835	2025-08-03 21:31:58.593	\N	\N	en	2025-07-10 05:14:50.56	f	1	0
-441	2025-07-07 07:25:52.939	2025-08-19 01:36:10.983	\N	\N	en	2025-08-19 01:36:10.901	f	6	0
-379	2025-07-07 10:54:31.344	2025-08-03 21:31:58.715	\N	\N	en	\N	f	0	0
-424	2025-07-07 08:27:52.291	2025-08-17 23:08:01.97	\N	\N	en	2025-08-17 23:08:01.923	f	8	0
-397	2025-07-07 16:47:06.321	2025-08-03 21:32:02.945	\N	\N	en	\N	f	0	0
-452	2025-07-07 17:13:06.936	2025-08-03 21:32:40.9	\N	\N	en	\N	f	0	0
-389	2025-07-07 16:47:10.186	2025-08-03 21:32:03.299	\N	\N	en	\N	f	0	0
-447	2025-07-07 17:13:12.757	2025-08-03 21:32:40.92	\N	\N	en	\N	f	0	0
-390	2025-07-07 16:47:05.401	2025-08-03 21:32:03.313	\N	\N	en	\N	f	0	0
-448	2025-07-07 17:13:09.818	2025-08-03 21:32:40.988	\N	\N	en	\N	f	0	0
-391	2025-07-07 17:08:53.728	2025-08-03 21:32:03.388	\N	\N	en	\N	f	0	0
-450	2025-07-07 17:13:10.828	2025-08-03 21:32:41.363	\N	\N	en	\N	f	0	0
-392	2025-07-07 17:08:52.693	2025-08-03 21:32:03.433	\N	\N	en	\N	f	0	0
-446	2025-07-07 17:13:07.875	2025-08-03 21:32:41.616	\N	\N	en	\N	f	0	0
-407	2025-07-07 17:09:04.462	2025-08-03 21:32:08.046	\N	\N	en	\N	f	0	0
-464	2025-07-07 17:13:19.565	2025-08-03 21:32:45.689	\N	\N	en	\N	f	0	0
-401	2025-07-07 17:09:00.52	2025-08-03 21:32:08.307	\N	\N	en	\N	f	0	0
-459	2025-07-07 17:13:13.738	2025-08-03 21:32:45.85	\N	\N	en	\N	f	0	0
-402	2025-07-07 17:09:01.463	2025-08-03 21:32:08.308	\N	\N	en	\N	f	0	0
-456	2025-07-07 17:13:21.48	2025-08-03 21:32:46.02	\N	\N	en	\N	f	0	0
-403	2025-07-07 17:08:59.591	2025-08-03 21:32:08.488	\N	\N	en	\N	f	0	0
-460	2025-07-07 17:13:15.642	2025-08-03 21:32:46.102	\N	\N	en	\N	f	0	0
-405	2025-07-07 17:09:02.399	2025-08-03 21:32:09.101	\N	\N	en	\N	f	0	0
-457	2025-07-07 17:13:20.543	2025-08-03 21:32:46.548	\N	\N	en	\N	f	0	0
-410	2025-07-07 17:09:29.548	2025-08-03 21:32:16.101	\N	\N	en	\N	f	0	0
-468	2025-07-07 17:13:32.037	2025-08-03 21:32:50.804	\N	\N	en	\N	f	0	0
-414	2025-07-07 08:52:20.828	2025-08-03 21:32:16.164	\N	\N	en	2025-07-08 13:53:38.172	f	1	0
-472	2025-07-07 17:13:31.045	2025-08-03 21:32:51.123	\N	\N	en	\N	f	0	0
-413	2025-07-07 17:09:34.248	2025-08-03 21:32:16.602	\N	\N	en	\N	f	0	0
-473	2025-07-07 17:13:29.164	2025-08-03 21:32:51.297	\N	\N	en	\N	f	0	0
-417	2025-07-07 17:09:32.353	2025-08-03 21:32:16.755	\N	\N	en	\N	f	0	0
-475	2025-07-07 17:13:28.193	2025-08-03 21:32:52.385	\N	\N	en	\N	f	0	0
-412	2025-07-07 17:09:30.443	2025-08-03 21:32:21.979	\N	\N	en	\N	f	0	0
-471	2025-07-07 17:13:24.412	2025-08-03 21:32:52.629	\N	\N	en	\N	f	0	0
-476	2025-07-07 17:13:33.977	2025-08-03 21:32:57.376	\N	\N	en	\N	f	0	0
-483	2025-07-08 19:31:19.396	2025-08-03 21:32:57.89	\N	\N	en	\N	f	0	0
-478	2025-07-07 17:13:34.946	2025-08-03 21:32:57.918	\N	\N	en	\N	f	0	0
-480	2025-07-09 12:47:14.981	2025-08-03 21:32:58.314	\N	\N	en	\N	f	0	0
-481	2025-07-15 07:53:00.603	2025-08-03 21:33:06.538	\N	\N	en	\N	f	0	0
-493	2025-07-18 11:45:49.378	2025-08-03 21:33:10.434	\N	\N	en	2025-08-02 12:43:47.505	f	9	0
-512	2025-07-15 07:40:58.372	2025-08-19 01:35:12.248	\N	\N	en	2025-08-19 01:35:12.199	f	0	0
-438	2025-07-07 08:07:10.695	2025-08-17 23:07:59.574	\N	\N	en	2025-08-17 23:07:59.532	f	7	0
-496	2025-06-27 02:06:57.998	2025-08-05 10:42:32.75	\N	\N	en	2025-08-05 10:42:32.368	t	12	0
-486	2025-07-15 11:03:56.994	2025-08-04 01:23:50.556	\N	\N	en	2025-08-04 01:23:50.246	f	9	0
-515	2025-08-02 16:34:58.661	2025-08-19 01:28:15.97	\N	\N	en	2025-08-19 01:28:15.93	f	2	0
-520	2025-08-02 16:33:31.993	2025-08-19 01:22:30.61	\N	\N	en	2025-08-19 01:22:30.581	f	2	0
-505	2025-08-02 16:29:14.209	2025-08-19 01:28:43.819	\N	\N	en	2025-08-19 01:28:43.772	f	2	0
-361	2025-07-01 17:19:46.977	2025-08-17 22:44:15.35	\N	\N	en	2025-08-17 22:44:15.305	f	4	0
-508	2025-08-02 16:31:44.481	2025-08-19 01:28:47.223	\N	\N	en	2025-08-19 01:28:47.195	f	2	0
-514	2025-07-15 07:42:41.507	2025-08-19 01:35:17.088	\N	\N	en	2025-08-19 01:35:17.043	f	0	0
-522	2025-08-02 16:32:50.473	2025-08-19 01:22:37.895	\N	\N	en	2025-08-19 01:22:37.849	f	2	0
-516	2025-08-02 16:38:22.99	2025-08-19 01:28:49.747	\N	\N	en	2025-08-19 01:28:49.701	f	2	0
-533	2025-08-02 16:42:04.779	2025-08-19 01:28:58.742	\N	\N	en	2025-08-19 01:28:58.704	f	2	0
-490	2025-07-14 15:43:34.208	2025-08-19 01:35:20.828	\N	\N	en	2025-08-19 01:35:20.795	f	5	0
-498	2025-08-02 16:45:43.419	2025-08-19 01:28:38.199	\N	\N	en	2025-08-19 01:28:38.163	f	2	0
-504	2025-08-02 16:29:35.059	2025-08-19 01:22:27.071	\N	\N	en	2025-08-19 01:22:27.03	f	2	0
-495	2025-08-02 16:27:04.214	2025-08-19 01:22:24.31	\N	\N	en	2025-08-19 01:22:24.255	f	2	0
-373	2025-07-06 14:49:40.573	2025-08-19 01:34:35.195	\N	\N	en	2025-08-19 01:34:35.143	f	2	0
-529	2025-08-02 16:51:16.963	2025-08-19 01:29:01.819	\N	\N	en	2025-08-19 01:29:01.785	f	2	0
-524	2025-08-02 16:51:30.427	2025-08-19 01:22:45.317	\N	\N	en	2025-08-19 01:22:45.287	f	2	0
-440	2025-07-02 05:46:07.357	2025-08-19 01:35:33.28	\N	\N	en	2025-08-19 01:35:33.247	f	3	0
-527	2025-08-02 16:40:09.702	2025-08-19 01:29:04.546	\N	\N	en	2025-08-19 01:29:04.51	f	2	0
-543	2025-08-02 20:31:33.839	2025-08-19 01:22:50.012	\N	\N	en	2025-08-19 01:22:49.974	f	2	0
-537	2025-08-02 20:30:18.693	2025-08-19 01:29:07.231	\N	\N	en	2025-08-19 01:29:07.187	f	2	0
-542	2025-08-02 16:54:27.327	2025-08-19 01:22:53.351	\N	\N	en	2025-08-19 01:22:53.317	f	2	0
-359	2025-07-05 17:54:53.245	2025-08-19 01:34:21.753	\N	\N	en	2025-08-19 01:34:21.716	f	0	0
-365	2025-07-05 18:19:02.38	2025-08-19 01:34:28.785	\N	\N	en	2025-08-19 01:34:28.74	f	1	0
-551	2025-08-02 20:38:35.01	2025-08-19 01:23:02.42	\N	\N	en	2025-08-19 01:23:02.374	f	2	0
-362	2025-07-01 17:43:22.852	2025-08-19 01:20:53.781	\N	\N	en	2025-08-19 01:20:53.693	f	6	0
-489	2025-07-15 12:57:24.691	2025-08-04 01:23:54.556	\N	\N	en	2025-08-04 01:23:54.234	t	11	0
-503	2025-08-02 16:27:52.062	2025-08-19 01:28:33.748	\N	\N	en	2025-08-19 01:28:33.705	f	2	0
-517	2025-08-02 16:38:05.897	2025-08-19 01:28:56.322	\N	\N	en	2025-08-19 01:28:56.283	f	2	0
-545	2025-08-02 20:37:21.74	2025-08-19 01:29:10.729	\N	\N	en	2025-08-19 01:29:10.575	f	0	0
-729	2025-08-14 02:54:22.089	2025-08-15 22:39:55.691	\N	\N	en	2025-08-15 22:39:55.379	f	2	0
-534	2025-08-02 20:31:48.397	2025-08-19 01:29:20.11	\N	\N	en	2025-08-19 01:29:20.073	f	1	0
-550	2025-08-02 20:32:22.998	2025-08-19 01:29:26.377	\N	\N	en	2025-08-19 01:29:26.34	f	0	0
-575	2025-08-02 21:01:05.264	2025-08-19 01:29:34.007	\N	\N	en	2025-08-19 01:29:33.97	f	2	0
-555	2025-08-02 20:45:57.011	2025-08-19 01:23:07.598	\N	\N	en	2025-08-19 01:23:07.57	f	2	0
-565	2025-08-02 20:49:10.508	2025-08-19 01:23:12.933	\N	\N	en	2025-08-19 01:23:12.892	f	1	0
-596	2025-08-02 21:16:03.762	2025-08-19 01:23:17.143	\N	\N	en	2025-08-19 01:23:17.086	f	2	0
-588	2025-08-02 21:05:15.868	2025-08-19 01:29:38.363	\N	\N	en	2025-08-19 01:29:38.322	f	1	0
-540	2025-08-02 20:31:14.535	2025-08-19 01:29:41.365	\N	\N	en	2025-08-19 01:29:41.336	f	2	0
-548	2025-08-02 20:32:04.18	2025-08-19 01:29:45.312	\N	\N	en	2025-08-19 01:29:45.268	f	1	0
-569	2025-08-02 20:53:08.908	2025-08-19 01:29:48.419	\N	\N	en	2025-08-19 01:29:48.378	f	2	0
-730	2025-08-14 03:05:20.606	2025-08-15 22:40:00.65	\N	\N	en	2025-08-15 22:40:00.353	f	2	0
-577	2025-08-02 20:53:52.389	2025-08-19 01:30:01.307	\N	\N	en	2025-08-19 01:30:01.255	f	2	0
-561	2025-08-02 20:43:11.978	2025-08-19 01:23:20.247	\N	\N	en	2025-08-19 01:23:20.217	f	2	0
-584	2025-08-02 21:09:11.432	2025-08-19 01:23:28.121	\N	\N	en	2025-08-19 01:23:28.085	f	1	0
-598	2025-08-02 21:17:00.754	2025-08-19 01:23:32.892	\N	\N	en	2025-08-19 01:23:32.846	f	2	0
-544	2025-08-02 20:38:14.166	2025-08-19 01:30:04.751	\N	\N	en	2025-08-19 01:30:04.709	f	2	0
-559	2025-08-02 20:42:34.023	2025-08-19 01:30:07.172	\N	\N	en	2025-08-19 01:30:07.126	f	2	0
-568	2025-08-02 20:47:12.67	2025-08-19 01:30:10.101	\N	\N	en	2025-08-19 01:30:10.055	f	1	0
-591	2025-08-02 21:04:27.949	2025-08-19 01:30:14.795	\N	\N	en	2025-08-19 01:30:14.742	f	2	0
-595	2025-08-02 21:10:18.77	2025-08-19 01:30:17.138	\N	\N	en	2025-08-19 01:30:17.106	f	2	0
-726	2025-08-14 02:28:12.55	2025-08-15 22:40:11.997	\N	\N	en	2025-08-15 22:40:11.704	f	1	1
-582	2025-08-02 20:57:53.418	2025-08-19 01:23:36.779	\N	\N	en	2025-08-19 01:23:36.736	f	1	0
-554	2025-08-02 20:45:43.822	2025-08-19 01:30:20.173	\N	\N	en	2025-08-19 01:30:20.138	f	2	0
-546	2025-08-02 20:35:50.032	2025-08-19 01:23:43.239	\N	\N	en	2025-08-19 01:23:42.941	f	2	0
-564	2025-08-02 20:46:45.291	2025-08-19 01:23:45.626	\N	\N	en	2025-08-19 01:23:45.565	f	2	0
-578	2025-08-02 20:54:28.272	2025-08-19 01:23:49.185	\N	\N	en	2025-08-19 01:23:49.141	f	2	0
-585	2025-08-02 21:06:33.371	2025-08-19 01:23:54.249	\N	\N	en	2025-08-19 01:23:54.195	f	2	0
-594	2025-08-02 21:15:13.175	2025-08-19 01:23:57.047	\N	\N	en	2025-08-19 01:23:56.995	f	2	0
-731	2025-08-14 11:01:06.843	2025-08-14 14:58:35.901	\N	\N	en	2025-08-14 14:58:35.433	f	1	0
-711	2025-08-13 13:16:43.212	2025-08-15 22:39:08.36	\N	\N	en	2025-08-15 22:39:08.035	f	6	0
-712	2025-08-13 13:33:27.433	2025-08-15 22:39:10.766	\N	\N	en	2025-08-15 22:39:10.455	f	6	0
-549	2025-08-02 20:35:05.449	2025-08-19 01:24:03.182	\N	\N	en	2025-08-19 01:24:03.119	f	1	0
-556	2025-08-02 20:41:14.486	2025-08-19 01:24:05.969	\N	\N	en	2025-08-19 01:24:05.91	f	2	0
-567	2025-08-02 20:52:16.87	2025-08-19 01:24:10.463	\N	\N	en	2025-08-19 01:24:10.43	f	2	0
-574	2025-08-02 20:57:24.09	2025-08-19 01:24:13.472	\N	\N	en	2025-08-19 01:24:13.418	f	2	0
-599	2025-08-02 21:18:08.486	2025-08-19 01:30:23.799	\N	\N	en	2025-08-19 01:30:23.753	f	2	0
-589	2025-08-02 21:06:05.165	2025-08-19 01:24:17.013	\N	\N	en	2025-08-19 01:24:16.986	f	2	0
-642	2025-08-04 03:36:31.292	2025-08-19 01:24:20.845	\N	\N	en	2025-08-19 01:24:20.815	f	2	0
-732	2025-08-14 11:01:50.42	2025-08-14 14:58:39.359	\N	\N	en	2025-08-14 14:58:39.008	f	1	0
-713	2025-08-13 13:36:13.263	2025-08-15 22:39:17.261	\N	\N	en	2025-08-15 22:39:16.956	f	6	0
-715	2025-08-13 14:02:45.849	2025-08-15 22:39:26.529	\N	\N	en	2025-08-15 22:39:26.205	f	6	0
-573	2025-08-02 20:49:01.178	2025-08-19 01:30:26.872	\N	\N	en	2025-08-19 01:30:26.846	f	2	0
-590	2025-08-02 21:01:34.227	2025-08-19 01:30:33.413	\N	\N	en	2025-08-19 01:30:33.381	f	2	0
-602	2025-08-02 21:12:04.576	2025-08-19 01:30:37.975	\N	\N	en	2025-08-19 01:30:37.929	f	2	0
-552	2025-08-02 20:40:47.84	2025-08-19 01:20:34.161	\N	\N	en	2025-08-19 01:20:34.098	f	0	1
-562	2025-08-02 20:44:46.129	2025-08-19 01:24:25.758	\N	\N	en	2025-08-19 01:24:25.711	f	2	0
-733	2025-08-14 13:15:29.123	2025-08-14 14:58:46.415	\N	\N	en	2025-08-14 14:58:46.068	f	1	0
-714	2025-08-13 13:56:16.244	2025-08-15 22:39:13.312	\N	\N	en	2025-08-15 22:39:12.96	f	6	0
-580	2025-08-02 20:58:48.057	2025-08-19 01:24:30.215	\N	\N	en	2025-08-19 01:24:30.168	f	2	0
-643	2025-08-04 04:05:24.473	2025-08-19 01:24:33.577	\N	\N	en	2025-08-19 01:24:33.545	f	0	0
-558	2025-08-02 20:46:15.076	2025-08-19 01:30:41.723	\N	\N	en	2025-08-19 01:30:41.689	f	2	0
-570	2025-08-02 20:48:35.001	2025-08-19 01:30:46.525	\N	\N	en	2025-08-19 01:30:46.485	f	1	0
-603	2025-08-02 21:13:13.96	2025-08-19 01:30:55.672	\N	\N	en	2025-08-19 01:30:55.63	f	2	0
-644	2025-08-04 11:03:30.02	2025-08-19 01:36:21.88	\N	\N	en	2025-08-19 01:36:21.848	f	4	0
-670	2025-08-06 05:01:28.811	2025-08-14 18:10:13.414	\N	\N	en	2025-08-14 18:10:13.07	f	5	0
-734	2025-08-14 15:27:48.474	2025-08-15 22:38:28.313	\N	\N	en	2025-08-15 22:38:27.759	f	1	0
-716	2025-08-13 14:39:23.703	2025-08-16 23:26:18.64	\N	\N	en	2025-08-16 23:26:18.25	f	1	0
-553	2025-08-02 20:37:48.485	2025-08-19 01:24:51.652	\N	\N	en	2025-08-19 01:24:51.612	f	1	0
-583	2025-08-02 20:58:12.103	2025-08-19 01:24:55.946	\N	\N	en	2025-08-19 01:24:55.875	f	2	0
-593	2025-08-02 21:10:06.888	2025-08-19 01:25:01.807	\N	\N	en	2025-08-19 01:25:01.758	f	2	0
-563	2025-08-02 20:44:04.147	2025-08-19 01:30:59.565	\N	\N	en	2025-08-19 01:30:59.523	f	2	0
-587	2025-08-02 21:01:58.482	2025-08-19 01:31:02.522	\N	\N	en	2025-08-19 01:31:02.469	f	2	0
-706	2025-08-13 11:55:37.371	2025-08-15 22:38:57.425	\N	\N	en	2025-08-15 22:38:57.104	f	6	0
-645	2025-08-04 11:04:24.143	2025-08-19 01:36:25.157	\N	\N	en	2025-08-19 01:36:25.122	f	4	0
-671	2025-08-07 02:59:37.262	2025-08-19 01:36:34.62	\N	\N	en	2025-08-19 01:36:34.59	f	0	0
-725	2025-08-14 00:10:27.341	2025-08-14 00:10:27.341	\N	\N	en	\N	f	0	0
-717	2025-08-14 00:08:11.196	2025-08-16 23:26:19.049	\N	\N	en	2025-08-16 23:26:18.691	f	1	0
-718	2025-08-14 00:08:37.15	2025-08-16 23:26:19.606	\N	\N	en	2025-08-16 23:26:19.255	f	1	0
-719	2025-08-14 00:08:55.056	2025-08-16 23:26:19.639	\N	\N	en	2025-08-16 23:26:19.289	f	1	0
-720	2025-08-14 00:09:10.526	2025-08-16 23:26:19.668	\N	\N	en	2025-08-16 23:26:19.319	f	1	0
-721	2025-08-14 00:09:23.707	2025-08-16 23:27:05.142	\N	\N	en	2025-08-16 23:27:04.815	f	0	1
-722	2025-08-14 00:09:38.1	2025-08-16 23:27:09.536	\N	\N	en	2025-08-16 23:27:09.219	f	0	1
-723	2025-08-14 00:09:56.77	2025-08-16 23:27:14.83	\N	\N	en	2025-08-16 23:27:14.479	f	1	0
-724	2025-08-14 00:10:11.776	2025-08-18 20:03:06.507	\N	\N	en	2025-08-18 20:03:06.171	f	0	1
-572	2025-08-02 20:46:55.723	2025-08-19 01:25:05.032	\N	\N	en	2025-08-19 01:25:04.987	f	2	0
-579	2025-08-02 20:58:30.702	2025-08-19 01:25:08.62	\N	\N	en	2025-08-19 01:25:08.586	f	2	0
-600	2025-08-02 21:17:42.129	2025-08-19 01:25:15.401	\N	\N	en	2025-08-19 01:25:15.352	f	1	0
-566	2025-08-02 20:50:53.576	2025-08-19 01:25:25.882	\N	\N	en	2025-08-19 01:25:25.841	f	1	0
-672	2025-08-07 03:04:25.823	2025-08-19 01:31:09.347	\N	\N	en	2025-08-19 01:31:09.308	f	1	0
-576	2025-08-02 21:00:24.505	2025-08-19 01:25:30.369	\N	\N	en	2025-08-19 01:25:30.33	f	2	0
-586	2025-08-02 21:01:44.116	2025-08-19 01:25:33.707	\N	\N	en	2025-08-19 01:25:33.671	f	2	0
-707	2025-08-13 11:58:09.31	2025-08-15 22:39:03.593	\N	\N	en	2025-08-15 22:39:03.269	f	6	0
-735	2025-08-17 06:01:22.758	2025-08-19 01:31:12.293	\N	\N	en	2025-08-19 01:31:12.24	f	2	0
-738	2025-08-17 06:02:47.615	2025-08-19 01:31:17.198	\N	\N	en	2025-08-19 01:31:17.167	f	0	0
-646	2025-08-04 13:56:40.711	2025-08-19 01:36:30.168	\N	\N	en	2025-08-19 01:36:30.136	f	4	0
-601	2025-08-02 21:14:19.288	2025-08-19 01:25:36.882	\N	\N	en	2025-08-19 01:25:36.845	f	2	0
-673	2025-08-07 03:04:53.301	2025-08-19 01:25:42.691	\N	\N	en	2025-08-19 01:25:42.642	f	2	0
-736	2025-08-17 06:01:51.083	2025-08-19 01:25:45.035	\N	\N	en	2025-08-19 01:25:44.993	f	2	0
-737	2025-08-17 06:02:22.903	2025-08-19 01:25:48.089	\N	\N	en	2025-08-19 01:25:48.038	f	2	0
-740	2025-08-17 06:03:29.259	2025-08-19 01:25:53.611	\N	\N	en	2025-08-19 01:25:53.566	f	1	0
-604	2025-08-02 21:23:01.085	2025-08-19 01:31:25.078	\N	\N	en	2025-08-19 01:31:25.028	f	2	0
-619	2025-08-02 21:25:42.043	2025-08-19 01:25:58.164	\N	\N	en	2025-08-19 01:25:58.107	f	2	0
-704	2025-08-13 11:34:38.61	2025-08-15 22:38:48.013	\N	\N	en	2025-08-15 22:38:47.702	f	6	0
-674	2025-08-07 03:14:34.657	2025-08-19 01:31:28.357	\N	\N	en	2025-08-19 01:31:28.274	f	1	0
-675	2025-08-07 03:15:32.446	2025-08-19 01:31:35.609	\N	\N	en	2025-08-19 01:31:35.572	f	2	0
-625	2025-08-02 21:30:32.208	2025-08-19 01:26:09.74	\N	\N	en	2025-08-19 01:26:09.7	f	1	0
-739	2025-08-17 06:03:10.008	2025-08-19 01:31:39.185	\N	\N	en	2025-08-19 01:31:39.139	f	2	0
-605	2025-08-02 21:20:16.528	2025-08-19 01:31:44.15	\N	\N	en	2025-08-19 01:31:44.106	f	2	0
-621	2025-08-02 21:23:38.474	2025-08-19 01:31:47.826	\N	\N	en	2025-08-19 01:31:47.797	f	2	0
-629	2025-08-02 21:28:45.831	2025-08-19 01:26:14.974	\N	\N	en	2025-08-19 01:26:14.911	f	2	0
-635	2025-08-02 21:31:26.313	2025-08-19 01:26:21.096	\N	\N	en	2025-08-19 01:26:21.057	f	2	0
-676	2025-08-09 06:25:05.088	2025-08-19 01:26:29.398	\N	\N	en	2025-08-19 01:26:29.36	f	2	0
-705	2025-08-13 11:35:12.532	2025-08-15 22:38:54.357	\N	\N	en	2025-08-15 22:38:54.05	f	6	0
-741	2025-08-17 18:44:27.328	2025-08-19 01:26:38.062	\N	\N	en	2025-08-19 01:26:37.825	f	2	0
-606	2025-08-02 21:20:39.293	2025-08-19 01:31:50.001	\N	\N	en	2025-08-19 01:31:49.974	f	2	0
-624	2025-08-02 21:29:07.109	2025-08-19 01:31:57.512	\N	\N	en	2025-08-19 01:31:57.469	f	2	0
-532	2025-08-02 16:53:36.863	2025-08-19 01:21:51.849	\N	\N	en	2025-08-19 01:21:51.806	f	1	0
-535	2025-08-02 16:55:44.065	2025-08-19 01:22:17.351	\N	\N	en	2025-08-19 01:22:17.325	f	2	0
-531	2025-08-02 16:53:26.815	2025-08-19 01:22:41.918	\N	\N	en	2025-08-19 01:22:41.882	f	2	0
-557	2025-08-02 20:43:32.439	2025-08-19 01:23:05.318	\N	\N	en	2025-08-19 01:23:05.281	f	2	0
-618	2025-08-02 21:24:55.053	2025-08-19 01:26:42.749	\N	\N	en	2025-08-19 01:26:42.711	f	2	0
-677	2025-08-09 06:30:43.553	2025-08-19 01:26:50.913	\N	\N	en	2025-08-19 01:26:50.883	f	2	0
-607	2025-08-02 21:21:06.275	2025-08-19 01:32:04.692	\N	\N	en	2025-08-19 01:32:04.653	f	2	0
-614	2025-08-02 21:26:51.163	2025-08-19 01:32:08.102	\N	\N	en	2025-08-19 01:32:08.075	f	2	0
-633	2025-08-02 21:30:04.894	2025-08-19 01:32:11.636	\N	\N	en	2025-08-19 01:32:11.586	f	1	0
-634	2025-08-02 21:32:31.776	2025-08-19 01:32:15.234	\N	\N	en	2025-08-19 01:32:15.201	f	2	0
-678	2025-08-09 06:32:24.943	2025-08-19 01:32:18.578	\N	\N	en	2025-08-19 01:32:18.541	f	2	0
-679	2025-08-09 06:33:06.752	2025-08-19 01:32:23.176	\N	\N	en	2025-08-19 01:32:23.138	f	2	0
-608	2025-08-02 21:19:58.136	2025-08-19 01:26:54.095	\N	\N	en	2025-08-19 01:26:54.052	f	2	0
-617	2025-08-02 21:27:01.031	2025-08-19 01:26:58.23	\N	\N	en	2025-08-19 01:26:58.198	f	2	0
-627	2025-08-02 21:29:51.797	2025-08-19 01:27:01.803	\N	\N	en	2025-08-19 01:27:01.767	f	2	0
-680	2025-08-09 21:29:50.237	2025-08-14 18:10:18.361	\N	\N	en	2025-08-14 18:10:17.946	f	0	0
-681	2025-08-09 21:30:08.832	2025-08-14 18:46:49.424	\N	\N	en	2025-08-14 18:46:49	f	0	0
-682	2025-08-09 21:30:30.017	2025-08-14 18:46:52.881	\N	\N	en	2025-08-14 18:46:52.528	f	1	0
-683	2025-08-09 21:31:24.013	2025-08-14 18:46:57.064	\N	\N	en	2025-08-14 18:46:56.671	f	1	0
-684	2025-08-09 21:31:36.331	2025-08-14 18:49:26.075	\N	\N	en	2025-08-14 18:49:25.594	f	1	0
-685	2025-08-09 21:32:12.238	2025-08-14 18:49:29.274	\N	\N	en	2025-08-14 18:49:28.914	f	2	0
-609	2025-08-02 21:18:54.086	2025-08-19 01:32:26.337	\N	\N	en	2025-08-19 01:32:26.284	f	2	0
-623	2025-08-02 21:25:24.704	2025-08-19 01:32:31.304	\N	\N	en	2025-08-19 01:32:31.267	f	2	0
-632	2025-08-02 21:28:30.903	2025-08-19 01:32:33.726	\N	\N	en	2025-08-19 01:32:33.686	f	2	0
-686	2025-08-10 16:51:25.987	2025-08-14 18:49:32.187	\N	\N	en	2025-08-14 18:49:31.821	f	1	0
-610	2025-08-02 21:22:17.737	2025-08-19 01:32:39.576	\N	\N	en	2025-08-19 01:32:39.533	f	2	0
-620	2025-08-02 21:23:12.936	2025-08-19 01:32:42.389	\N	\N	en	2025-08-19 01:32:42.353	f	2	0
-631	2025-08-02 21:28:14.015	2025-08-19 01:32:45.088	\N	\N	en	2025-08-19 01:32:45.038	f	2	0
-687	2025-08-10 16:51:26.027	2025-08-11 23:36:51.044	\N	\N	en	2025-08-11 23:36:50.75	f	0	1
-688	2025-08-10 16:52:40.645	2025-08-11 23:36:55.291	\N	\N	en	2025-08-11 23:36:54.963	f	1	0
-689	2025-08-10 16:53:14.562	2025-08-11 23:36:59.763	\N	\N	en	2025-08-11 23:36:59.435	f	1	0
-690	2025-08-10 16:54:37.403	2025-08-11 23:37:06.447	\N	\N	en	2025-08-11 23:37:06.082	f	0	1
-611	2025-08-02 21:22:39.942	2025-08-19 01:32:53.645	\N	\N	en	2025-08-19 01:32:53.587	f	1	1
-615	2025-08-02 21:24:14.184	2025-08-19 01:32:59.81	\N	\N	en	2025-08-19 01:32:59.777	f	2	0
-630	2025-08-02 21:29:24.926	2025-08-19 01:33:02.388	\N	\N	en	2025-08-19 01:33:02.348	f	2	0
-636	2025-08-02 21:30:58.169	2025-08-19 01:36:14.993	\N	\N	en	2025-08-19 01:36:14.931	f	1	0
-691	2025-08-10 19:31:36.059	2025-08-11 23:37:16.002	\N	\N	en	2025-08-11 23:37:15.597	f	1	0
-616	2025-08-02 21:26:36.729	2025-08-19 01:27:10.221	\N	\N	en	2025-08-19 01:27:10.171	f	2	0
-628	2025-08-02 21:27:56.032	2025-08-19 01:27:13.308	\N	\N	en	2025-08-19 01:27:13.265	f	2	0
-612	2025-08-02 21:21:37.008	2025-08-19 01:33:05.202	\N	\N	en	2025-08-19 01:33:05.163	f	2	0
-692	2025-08-11 09:10:51.316	2025-08-11 23:37:20.205	\N	\N	en	2025-08-11 23:37:19.798	f	2	0
-693	2025-08-11 09:11:16.607	2025-08-11 23:37:26.78	\N	\N	en	2025-08-11 23:37:26.483	f	0	1
-622	2025-08-02 21:23:26.234	2025-08-19 01:27:17.039	\N	\N	en	2025-08-19 01:27:17.005	f	2	0
-613	2025-08-02 21:19:34.648	2025-08-19 01:33:08.299	\N	\N	en	2025-08-19 01:33:08.267	f	2	0
-626	2025-08-02 21:30:14.761	2025-08-19 01:33:17.411	\N	\N	en	2025-08-19 01:33:17.369	f	2	0
-695	2025-08-11 16:18:29.876	2025-08-14 18:09:54.072	\N	\N	en	2025-08-14 18:09:53.607	f	2	0
-637	2025-08-03 22:57:45.449	2025-08-19 01:33:21.951	\N	\N	en	2025-08-19 01:33:21.915	f	2	0
-696	2025-08-11 18:43:49.632	2025-08-14 18:10:00.545	\N	\N	en	2025-08-14 18:10:00.207	f	0	0
-697	2025-08-11 19:51:31.947	2025-08-14 18:10:05.133	\N	\N	en	2025-08-14 18:10:04.584	f	1	1
-698	2025-08-11 19:51:48.084	2025-08-14 18:10:09.773	\N	\N	en	2025-08-14 18:10:09.35	f	1	0
-639	2025-08-04 02:56:52.531	2025-08-19 01:27:20.52	\N	\N	en	2025-08-19 01:27:20.482	f	2	0
-699	2025-08-12 12:22:35.224	2025-08-15 22:38:30.813	\N	\N	en	2025-08-15 22:38:30.484	f	6	0
-640	2025-08-04 02:57:23.785	2025-08-19 01:33:25.636	\N	\N	en	2025-08-19 01:33:25.588	f	2	0
-700	2025-08-12 23:04:04.091	2025-08-15 22:38:34.938	\N	\N	en	2025-08-15 22:38:34.62	f	6	0
-702	2025-08-13 02:34:00.237	2025-08-15 22:39:31.391	\N	\N	en	2025-08-15 22:39:31.086	f	5	0
-641	2025-08-04 03:35:22.495	2025-08-19 01:33:28.342	\N	\N	en	2025-08-19 01:33:28.3	f	2	0
-701	2025-08-13 01:15:27.3	2025-08-15 22:38:38.651	\N	\N	en	2025-08-15 22:38:38.342	f	4	1
-560	2025-08-02 20:41:04.932	2025-08-19 01:27:25.906	\N	\N	en	2025-08-19 01:27:25.858	f	2	0
-547	2025-08-02 20:36:48.452	2025-08-19 01:33:34.703	\N	\N	en	2025-08-19 01:33:34.665	f	2	0
-571	2025-08-02 20:49:30.789	2025-08-19 01:33:37.082	\N	\N	en	2025-08-19 01:33:37.045	f	2	0
-581	2025-08-02 20:59:18.521	2025-08-19 01:33:39.655	\N	\N	en	2025-08-19 01:33:39.615	f	2	0
-592	2025-08-02 21:07:43.298	2025-08-19 01:33:42.91	\N	\N	en	2025-08-19 01:33:42.875	f	2	0
-597	2025-08-02 21:11:22.531	2025-08-19 01:33:51.456	\N	\N	en	2025-08-19 01:33:51.404	f	0	0
-703	2025-08-13 03:38:48.791	2025-08-15 22:38:42.165	\N	\N	en	2025-08-15 22:38:41.838	f	5	0
+COPY public.flashcards (id, created_at, updated_at, created_by_id, updated_by_id, last_reviewed_at, is_remembered, correct_streak, wrong_streak, locale) FROM stdin;
+756	2025-08-23 18:47:03.967	2025-08-23 18:48:04.488	\N	\N	2025-08-23 18:48:04.203	f	0	1	\N
+757	2025-08-23 18:47:23.673	2025-08-23 18:48:12.341	\N	\N	2025-08-23 18:48:12.048	f	1	0	\N
+755	2025-08-23 18:46:47.169	2025-08-24 00:53:05.291	\N	\N	2025-08-24 00:53:05.004	f	1	1	\N
+421	2025-07-07 17:09:39.931	2025-08-03 21:32:25.866	\N	\N	\N	f	0	0	en
+511	2025-08-02 16:30:19.521	2025-08-23 21:54:17.635	\N	\N	2025-08-23 21:54:17.609	f	6	0	en
+539	2025-08-02 16:55:00.065	2025-08-23 22:00:20.556	\N	\N	2025-08-23 22:00:20.516	f	6	0	en
+442	2025-07-02 05:59:39.843	2025-08-22 04:51:35.664	\N	\N	2025-08-22 04:51:35.637	f	7	0	en
+758	2025-08-24 00:18:42.325	2025-08-24 00:19:33.551	\N	\N	2025-08-24 00:19:33.213	f	1	0	\N
+426	2025-07-07 17:09:36.192	2025-08-03 21:32:26.138	\N	\N	\N	f	0	0	en
+363	2025-07-02 17:34:21.477	2025-08-23 22:04:38.041	\N	\N	2025-08-23 22:04:37.974	f	1	0	en
+428	2025-07-07 17:09:39.008	2025-08-03 21:32:26.202	\N	\N	\N	f	0	0	en
+366	2025-07-07 08:56:13.37	2025-08-03 21:31:40.938	\N	\N	2025-07-09 19:09:29.242	f	1	0	en
+427	2025-07-07 17:09:33.304	2025-08-03 21:32:26.266	\N	\N	\N	f	0	0	en
+360	2025-07-05 17:54:28.143	2025-08-23 22:04:46.727	\N	\N	2025-08-23 22:04:46.689	f	6	0	en
+425	2025-07-01 17:19:27.722	2025-08-17 22:44:08.016	\N	\N	2025-08-17 22:44:07.963	f	8	0	en
+370	2025-07-07 09:59:13.186	2025-08-03 21:31:45.56	\N	\N	\N	f	0	0	en
+485	2025-07-07 07:43:19.693	2025-08-17 23:07:57.454	\N	\N	2025-08-17 23:07:57.244	f	9	0	en
+374	2025-07-07 08:37:09.202	2025-08-03 21:31:45.609	\N	\N	2025-07-10 05:14:03.955	f	7	0	en
+431	2025-07-01 17:18:17.982	2025-08-17 22:44:05.317	\N	\N	2025-08-17 22:44:05.258	f	8	0	en
+506	2025-08-02 16:50:26.252	2025-08-23 21:54:19.86	\N	\N	2025-08-23 21:54:19.83	f	6	0	en
+376	2025-07-02 03:31:41.445	2025-08-22 04:50:57.31	\N	\N	2025-08-22 04:50:57.271	f	7	0	en
+429	2025-06-30 18:10:08.461	2025-08-17 22:43:50.5	\N	\N	2025-08-17 22:43:50.441	f	8	0	en
+455	2025-07-02 17:33:13	2025-08-23 21:53:13.716	\N	\N	2025-08-23 21:53:13.684	f	5	1	en
+521	2025-07-15 07:44:33.972	2025-08-17 23:09:30.129	\N	\N	2025-08-17 23:09:30.082	f	7	0	en
+509	2025-08-02 16:28:51.304	2025-08-23 21:54:15.26	\N	\N	2025-08-23 21:54:15.228	f	6	0	en
+380	2025-07-07 10:54:29.235	2025-08-03 21:31:58.088	\N	\N	\N	f	0	0	en
+499	2025-08-02 16:26:18.946	2025-08-23 21:54:10.312	\N	\N	2025-08-23 21:54:10.256	f	6	0	en
+388	2025-07-07 08:48:22.237	2025-08-03 21:31:58.235	\N	\N	\N	f	0	0	en
+497	2025-08-02 16:26:53.481	2025-08-23 21:54:12.667	\N	\N	2025-08-23 21:54:12.616	f	6	0	en
+387	2025-07-07 10:19:23.797	2025-08-03 21:31:58.422	\N	\N	\N	f	0	0	en
+382	2025-07-07 10:45:53.697	2025-08-03 21:31:58.591	\N	\N	\N	f	0	0	en
+386	2025-07-07 10:36:38.724	2025-08-03 21:31:58.969	\N	\N	\N	f	0	0	en
+451	2025-07-07 17:13:08.835	2025-08-03 21:32:40.706	\N	\N	\N	f	0	0	en
+501	2025-08-02 11:53:36.036	2025-08-23 21:52:57.037	\N	\N	2025-08-23 21:52:57.002	f	6	0	en
+454	2025-07-02 05:15:22.24	2025-08-20 04:09:11.695	\N	\N	2025-08-20 04:09:11.657	f	7	0	en
+398	2025-07-07 16:47:09.191	2025-08-03 21:32:03.268	\N	\N	\N	f	0	0	en
+449	2025-07-07 17:13:11.798	2025-08-03 21:32:41.206	\N	\N	\N	f	0	0	en
+393	2025-07-07 16:47:07.271	2025-08-03 21:32:03.655	\N	\N	\N	f	0	0	en
+436	2025-07-01 17:49:19.437	2025-08-22 04:50:50.937	\N	\N	2025-08-22 04:50:50.897	f	7	0	en
+394	2025-07-07 17:08:55.672	2025-08-03 21:32:03.853	\N	\N	\N	f	0	0	en
+395	2025-07-07 16:47:08.243	2025-08-03 21:32:04.033	\N	\N	\N	f	0	0	en
+396	2025-07-07 16:47:04.406	2025-08-03 21:32:04.126	\N	\N	\N	f	0	0	en
+462	2025-07-07 17:13:18.591	2025-08-03 21:32:45.848	\N	\N	\N	f	0	0	en
+463	2025-07-07 17:13:14.691	2025-08-03 21:32:46.101	\N	\N	\N	f	0	0	en
+461	2025-07-07 17:13:22.44	2025-08-03 21:32:46.229	\N	\N	\N	f	0	0	en
+458	2025-07-07 17:13:17.575	2025-08-03 21:32:46.518	\N	\N	\N	f	0	0	en
+400	2025-07-07 17:08:57.685	2025-08-03 21:32:08.218	\N	\N	\N	f	0	0	en
+465	2025-07-07 17:13:16.602	2025-08-03 21:32:46.609	\N	\N	\N	f	0	0	en
+406	2025-07-07 17:08:54.748	2025-08-03 21:32:08.43	\N	\N	\N	f	0	0	en
+399	2025-07-07 17:08:58.657	2025-08-03 21:32:09.313	\N	\N	\N	f	0	0	en
+408	2025-07-07 17:09:03.438	2025-08-03 21:32:09.313	\N	\N	\N	f	0	0	en
+404	2025-07-07 17:08:56.675	2025-08-03 21:32:12.163	\N	\N	\N	f	0	0	en
+467	2025-07-07 17:13:27.288	2025-08-03 21:32:50.653	\N	\N	\N	f	0	0	en
+469	2025-07-07 17:13:25.381	2025-08-03 21:32:50.652	\N	\N	\N	f	0	0	en
+470	2025-07-07 17:13:23.373	2025-08-03 21:32:50.883	\N	\N	\N	f	0	0	en
+466	2025-07-07 17:13:26.375	2025-08-03 21:32:51.062	\N	\N	\N	f	0	0	en
+409	2025-07-07 17:09:27.594	2025-08-03 21:32:16.132	\N	\N	\N	f	0	0	en
+474	2025-07-07 17:13:30.091	2025-08-03 21:32:53.498	\N	\N	\N	f	0	0	en
+416	2025-07-07 17:09:35.199	2025-08-03 21:32:16.414	\N	\N	\N	f	0	0	en
+411	2025-07-07 17:09:31.381	2025-08-03 21:32:16.511	\N	\N	\N	f	0	0	en
+415	2025-07-07 17:09:05.412	2025-08-03 21:32:16.911	\N	\N	\N	f	0	0	en
+418	2025-07-07 17:09:28.558	2025-08-03 21:32:17.355	\N	\N	\N	f	0	0	en
+477	2025-07-07 17:13:32.974	2025-08-03 21:32:57.731	\N	\N	\N	f	0	0	en
+479	2025-07-15 11:28:36.869	2025-08-03 21:32:57.794	\N	\N	\N	f	0	0	en
+523	2025-08-02 16:36:45.186	2025-08-23 21:54:22.217	\N	\N	2025-08-23 21:54:22.18	f	6	0	en
+484	2025-07-07 08:57:47.635	2025-08-03 21:32:58.622	\N	\N	2025-07-09 19:10:56.203	f	1	0	en
+502	2025-07-01 17:16:17.349	2025-08-17 22:44:01.85	\N	\N	2025-08-17 22:44:01.809	f	8	0	en
+491	2025-07-18 07:24:16.429	2025-08-03 21:33:11.135	\N	\N	2025-08-02 12:43:44.396	f	9	0	en
+437	2025-07-07 08:34:26.509	2025-08-17 23:08:04.67	\N	\N	2025-08-17 23:08:04.628	f	7	0	en
+444	2025-07-02 05:37:06.574	2025-08-23 21:53:24.048	\N	\N	2025-08-23 21:53:24.005	f	7	0	en
+487	2025-07-14 03:17:29.301	2025-08-23 22:05:10.172	\N	\N	2025-08-23 22:05:10.143	f	2	0	en
+445	2025-07-02 05:40:13.5	2025-08-23 22:05:18.468	\N	\N	2025-08-23 22:05:18.385	f	2	0	en
+482	2025-08-02 16:44:11.045	2025-08-23 21:54:08.067	\N	\N	2025-08-23 21:54:07.983	f	6	0	en
+364	2025-07-05 17:31:27.887	2025-08-23 21:52:37.791	\N	\N	2025-08-23 21:52:37.704	f	6	0	en
+519	2025-08-02 16:36:53.224	2025-08-23 21:54:25.26	\N	\N	2025-08-23 21:54:25.178	f	5	0	en
+518	2025-08-02 16:37:15.526	2025-08-23 21:54:27.95	\N	\N	2025-08-23 21:54:27.92	f	6	0	en
+528	2025-08-02 16:53:59.614	2025-08-23 21:54:57.328	\N	\N	2025-08-23 21:54:57.279	f	4	1	en
+434	2025-07-02 13:55:27.94	2025-08-22 04:51:14.745	\N	\N	2025-08-22 04:51:14.689	f	7	0	en
+525	2025-08-02 16:42:51.182	2025-08-23 21:55:06.971	\N	\N	2025-08-23 21:55:06.938	f	6	0	en
+530	2025-08-02 16:54:09.079	2025-08-23 21:55:09.344	\N	\N	2025-08-23 21:55:09.303	f	6	0	en
+526	2025-08-02 16:38:50.378	2025-08-23 22:00:17.259	\N	\N	2025-08-23 22:00:17.222	f	3	0	en
+538	2025-08-02 20:30:38.313	2025-08-23 21:55:15.246	\N	\N	2025-08-23 21:55:15.212	f	6	0	en
+494	2025-07-17 18:43:24.736	2025-08-04 01:23:57.343	\N	\N	2025-08-04 01:23:57.023	f	10	0	en
+536	2025-08-02 20:30:00.872	2025-08-23 21:55:17.981	\N	\N	2025-08-23 21:55:17.953	f	6	0	en
+513	2025-08-02 16:48:23.543	2025-08-23 22:00:10.537	\N	\N	2025-08-23 22:00:10.512	f	6	0	en
+453	2025-07-05 17:30:36.668	2025-08-23 21:53:03.762	\N	\N	2025-08-23 21:53:03.732	f	7	0	en
+541	2025-08-02 16:56:32.703	2025-08-23 21:55:23.646	\N	\N	2025-08-23 21:55:23.618	f	6	0	en
+492	2025-08-02 16:44:40.795	2025-08-23 22:00:01.08	\N	\N	2025-08-23 22:00:01.055	f	3	0	en
+500	2025-08-02 16:26:02.995	2025-08-23 22:00:04.394	\N	\N	2025-08-23 22:00:04.34	f	6	0	en
+510	2025-08-02 16:50:54.958	2025-08-23 22:00:07.752	\N	\N	2025-08-23 22:00:07.433	f	6	0	en
+377	2025-07-02 03:32:16.142	2025-08-23 21:52:35.07	\N	\N	2025-08-23 21:52:35.026	f	7	0	en
+742	2025-08-18 22:58:00.423	2025-08-22 22:51:51.51	\N	\N	2025-08-22 22:51:51.114	f	0	0	en
+727	2025-08-14 02:28:24.503	2025-08-15 22:39:35.082	\N	\N	2025-08-15 22:39:34.761	f	2	0	en
+728	2025-08-14 02:28:53.106	2025-08-15 22:39:46.047	\N	\N	2025-08-15 22:39:45.716	f	0	0	en
+441	2025-07-07 07:25:52.939	2025-08-20 04:09:00.741	\N	\N	2025-08-20 04:09:00.71	f	7	0	en
+490	2025-07-14 15:43:34.208	2025-08-23 21:52:54.108	\N	\N	2025-08-23 21:52:54.062	f	7	0	en
+419	2025-07-07 09:55:22.4	2025-08-03 21:32:25.971	\N	\N	2025-07-10 05:14:51.865	f	1	0	en
+512	2025-07-15 07:40:58.372	2025-08-23 22:05:03.654	\N	\N	2025-08-23 22:05:03.608	f	4	0	en
+754	2025-08-23 00:47:32.843	2025-08-23 18:48:36.808	\N	\N	2025-08-23 18:48:36.515	f	0	0	en
+753	2025-08-23 00:24:22.533	2025-08-24 00:52:59.874	\N	\N	2025-08-24 00:52:59.585	f	0	1	en
+423	2025-07-07 17:09:37.112	2025-08-03 21:32:26.168	\N	\N	\N	f	0	0	en
+420	2025-07-07 17:09:38.039	2025-08-03 21:32:26.293	\N	\N	\N	f	0	0	en
+422	2025-07-07 17:10:41.741	2025-08-03 21:32:26.619	\N	\N	\N	f	0	0	en
+372	2025-07-07 08:49:16.501	2025-08-03 21:31:45.324	\N	\N	2025-07-10 04:17:23.684	f	12	0	en
+369	2025-07-07 10:07:18.436	2025-08-03 21:31:45.533	\N	\N	\N	f	0	0	en
+440	2025-07-02 05:46:07.357	2025-08-23 21:52:59.708	\N	\N	2025-08-23 21:52:59.682	f	6	0	en
+488	2025-07-02 07:39:06.405	2025-08-20 04:07:50.43	\N	\N	2025-08-20 04:07:50.389	f	7	0	en
+514	2025-07-15 07:42:41.507	2025-08-23 22:05:07.244	\N	\N	2025-08-23 22:05:07.183	f	4	0	en
+522	2025-08-02 16:32:50.473	2025-08-23 21:56:13.621	\N	\N	2025-08-23 21:56:13.581	f	6	0	en
+439	2025-07-01 17:46:03.056	2025-08-19 01:20:55.989	\N	\N	2025-08-19 01:20:55.944	f	7	0	en
+443	2025-07-02 05:32:50.67	2025-08-23 22:05:13.326	\N	\N	2025-08-23 22:05:13.259	f	4	0	en
+384	2025-07-07 10:32:54.674	2025-08-03 21:31:58.091	\N	\N	\N	f	0	0	en
+381	2025-07-07 10:54:28.269	2025-08-03 21:31:58.153	\N	\N	\N	f	0	0	en
+378	2025-07-02 03:16:30.841	2025-08-22 04:50:54.636	\N	\N	2025-08-22 04:50:54.604	f	7	0	en
+383	2025-07-07 10:54:30.398	2025-08-03 21:31:58.221	\N	\N	\N	f	0	0	en
+430	2025-07-01 17:08:15.505	2025-08-19 01:20:37.962	\N	\N	2025-08-19 01:20:37.924	f	7	0	en
+385	2025-07-07 09:50:32.835	2025-08-03 21:31:58.593	\N	\N	2025-07-10 05:14:50.56	f	1	0	en
+504	2025-08-02 16:29:35.059	2025-08-23 21:55:29.644	\N	\N	2025-08-23 21:55:29.599	f	6	0	en
+379	2025-07-07 10:54:31.344	2025-08-03 21:31:58.715	\N	\N	\N	f	0	0	en
+424	2025-07-07 08:27:52.291	2025-08-17 23:08:01.97	\N	\N	2025-08-17 23:08:01.923	f	8	0	en
+397	2025-07-07 16:47:06.321	2025-08-03 21:32:02.945	\N	\N	\N	f	0	0	en
+452	2025-07-07 17:13:06.936	2025-08-03 21:32:40.9	\N	\N	\N	f	0	0	en
+389	2025-07-07 16:47:10.186	2025-08-03 21:32:03.299	\N	\N	\N	f	0	0	en
+447	2025-07-07 17:13:12.757	2025-08-03 21:32:40.92	\N	\N	\N	f	0	0	en
+390	2025-07-07 16:47:05.401	2025-08-03 21:32:03.313	\N	\N	\N	f	0	0	en
+448	2025-07-07 17:13:09.818	2025-08-03 21:32:40.988	\N	\N	\N	f	0	0	en
+391	2025-07-07 17:08:53.728	2025-08-03 21:32:03.388	\N	\N	\N	f	0	0	en
+450	2025-07-07 17:13:10.828	2025-08-03 21:32:41.363	\N	\N	\N	f	0	0	en
+392	2025-07-07 17:08:52.693	2025-08-03 21:32:03.433	\N	\N	\N	f	0	0	en
+446	2025-07-07 17:13:07.875	2025-08-03 21:32:41.616	\N	\N	\N	f	0	0	en
+407	2025-07-07 17:09:04.462	2025-08-03 21:32:08.046	\N	\N	\N	f	0	0	en
+464	2025-07-07 17:13:19.565	2025-08-03 21:32:45.689	\N	\N	\N	f	0	0	en
+401	2025-07-07 17:09:00.52	2025-08-03 21:32:08.307	\N	\N	\N	f	0	0	en
+459	2025-07-07 17:13:13.738	2025-08-03 21:32:45.85	\N	\N	\N	f	0	0	en
+402	2025-07-07 17:09:01.463	2025-08-03 21:32:08.308	\N	\N	\N	f	0	0	en
+456	2025-07-07 17:13:21.48	2025-08-03 21:32:46.02	\N	\N	\N	f	0	0	en
+403	2025-07-07 17:08:59.591	2025-08-03 21:32:08.488	\N	\N	\N	f	0	0	en
+460	2025-07-07 17:13:15.642	2025-08-03 21:32:46.102	\N	\N	\N	f	0	0	en
+405	2025-07-07 17:09:02.399	2025-08-03 21:32:09.101	\N	\N	\N	f	0	0	en
+457	2025-07-07 17:13:20.543	2025-08-03 21:32:46.548	\N	\N	\N	f	0	0	en
+410	2025-07-07 17:09:29.548	2025-08-03 21:32:16.101	\N	\N	\N	f	0	0	en
+468	2025-07-07 17:13:32.037	2025-08-03 21:32:50.804	\N	\N	\N	f	0	0	en
+414	2025-07-07 08:52:20.828	2025-08-03 21:32:16.164	\N	\N	2025-07-08 13:53:38.172	f	1	0	en
+472	2025-07-07 17:13:31.045	2025-08-03 21:32:51.123	\N	\N	\N	f	0	0	en
+413	2025-07-07 17:09:34.248	2025-08-03 21:32:16.602	\N	\N	\N	f	0	0	en
+473	2025-07-07 17:13:29.164	2025-08-03 21:32:51.297	\N	\N	\N	f	0	0	en
+417	2025-07-07 17:09:32.353	2025-08-03 21:32:16.755	\N	\N	\N	f	0	0	en
+475	2025-07-07 17:13:28.193	2025-08-03 21:32:52.385	\N	\N	\N	f	0	0	en
+412	2025-07-07 17:09:30.443	2025-08-03 21:32:21.979	\N	\N	\N	f	0	0	en
+471	2025-07-07 17:13:24.412	2025-08-03 21:32:52.629	\N	\N	\N	f	0	0	en
+476	2025-07-07 17:13:33.977	2025-08-03 21:32:57.376	\N	\N	\N	f	0	0	en
+483	2025-07-08 19:31:19.396	2025-08-03 21:32:57.89	\N	\N	\N	f	0	0	en
+478	2025-07-07 17:13:34.946	2025-08-03 21:32:57.918	\N	\N	\N	f	0	0	en
+480	2025-07-09 12:47:14.981	2025-08-03 21:32:58.314	\N	\N	\N	f	0	0	en
+481	2025-07-15 07:53:00.603	2025-08-03 21:33:06.538	\N	\N	\N	f	0	0	en
+493	2025-07-18 11:45:49.378	2025-08-03 21:33:10.434	\N	\N	2025-08-02 12:43:47.505	f	9	0	en
+438	2025-07-07 08:07:10.695	2025-08-17 23:07:59.574	\N	\N	2025-08-17 23:07:59.532	f	7	0	en
+496	2025-06-27 02:06:57.998	2025-08-05 10:42:32.75	\N	\N	2025-08-05 10:42:32.368	t	12	0	en
+486	2025-07-15 11:03:56.994	2025-08-04 01:23:50.556	\N	\N	2025-08-04 01:23:50.246	f	9	0	en
+516	2025-08-02 16:38:22.99	2025-08-23 22:00:36.747	\N	\N	2025-08-23 22:00:36.71	f	6	0	en
+542	2025-08-02 16:54:27.327	2025-08-23 21:56:29.855	\N	\N	2025-08-23 21:56:29.828	f	6	0	en
+529	2025-08-02 16:51:16.963	2025-08-23 22:00:46.391	\N	\N	2025-08-23 22:00:46.352	f	6	0	en
+362	2025-07-01 17:43:22.852	2025-08-20 03:52:36.873	\N	\N	2025-08-20 03:52:36.81	f	7	0	en
+527	2025-08-02 16:40:09.702	2025-08-23 22:00:49.31	\N	\N	2025-08-23 22:00:49.285	f	6	0	en
+367	2025-07-02 03:04:23.193	2025-08-23 21:53:53.141	\N	\N	2025-08-23 21:53:53.114	f	2	1	en
+551	2025-08-02 20:38:35.01	2025-08-23 21:56:32.805	\N	\N	2025-08-23 21:56:32.777	f	6	0	en
+537	2025-08-02 20:30:18.693	2025-08-23 22:00:52.533	\N	\N	2025-08-23 22:00:52.509	f	6	0	en
+359	2025-07-05 17:54:53.245	2025-08-23 22:04:49.213	\N	\N	2025-08-23 22:04:49.164	f	4	0	en
+495	2025-08-02 16:27:04.214	2025-08-23 21:55:27.049	\N	\N	2025-08-23 21:55:27.023	f	6	0	en
+533	2025-08-02 16:42:04.779	2025-08-23 22:00:43.025	\N	\N	2025-08-23 22:00:42.999	f	6	0	en
+365	2025-07-05 18:19:02.38	2025-08-23 22:04:52.321	\N	\N	2025-08-23 22:04:52.271	f	5	0	en
+543	2025-08-02 20:31:33.839	2025-08-23 21:56:26.368	\N	\N	2025-08-23 21:56:26.325	f	6	0	en
+524	2025-08-02 16:51:30.427	2025-08-23 21:56:22.755	\N	\N	2025-08-23 21:56:22.722	f	6	0	en
+435	2025-07-02 07:06:51.25	2025-08-20 04:07:37.266	\N	\N	2025-08-20 04:07:37.234	f	7	0	en
+373	2025-07-06 14:49:40.573	2025-08-23 22:04:55.209	\N	\N	2025-08-23 22:04:55.182	f	6	0	en
+515	2025-08-02 16:34:58.661	2025-08-23 22:00:12.986	\N	\N	2025-08-23 22:00:12.956	f	6	0	en
+371	2025-07-06 14:28:53.219	2025-08-23 21:52:41.944	\N	\N	2025-08-23 21:52:41.914	f	5	1	en
+433	2025-07-02 07:18:58.472	2025-08-23 22:04:57.975	\N	\N	2025-08-23 22:04:57.944	f	1	0	en
+498	2025-08-02 16:45:43.419	2025-08-23 22:00:27.866	\N	\N	2025-08-23 22:00:27.828	f	6	0	en
+507	2025-07-15 07:37:59.731	2025-08-23 22:05:01.028	\N	\N	2025-08-23 22:05:01.004	f	2	0	en
+505	2025-08-02 16:29:14.209	2025-08-23 22:00:31.06	\N	\N	2025-08-23 22:00:31.013	f	6	0	en
+432	2025-07-02 07:07:30.586	2025-08-22 04:51:10.474	\N	\N	2025-08-22 04:51:10.439	f	7	0	en
+508	2025-08-02 16:31:44.481	2025-08-23 22:00:34.054	\N	\N	2025-08-23 22:00:34.021	f	6	0	en
+520	2025-08-02 16:33:31.993	2025-08-23 21:56:10.724	\N	\N	2025-08-23 21:56:10.687	f	6	0	en
+489	2025-07-15 12:57:24.691	2025-08-04 01:23:54.556	\N	\N	2025-08-04 01:23:54.234	t	11	0	en
+555	2025-08-02 20:45:57.011	2025-08-23 21:56:38.19	\N	\N	2025-08-23 21:56:38.158	f	6	0	en
+729	2025-08-14 02:54:22.089	2025-08-15 22:39:55.691	\N	\N	2025-08-15 22:39:55.379	f	2	0	en
+565	2025-08-02 20:49:10.508	2025-08-23 21:56:40.758	\N	\N	2025-08-23 21:56:40.732	f	5	0	en
+596	2025-08-02 21:16:03.762	2025-08-23 21:56:45.237	\N	\N	2025-08-23 21:56:45.211	f	6	0	en
+503	2025-08-02 16:27:52.062	2025-08-23 22:00:22.831	\N	\N	2025-08-23 22:00:22.789	f	6	0	en
+517	2025-08-02 16:38:05.897	2025-08-23 22:00:39.985	\N	\N	2025-08-23 22:00:39.956	f	6	0	en
+368	2025-07-01 17:27:11.407	2025-08-20 03:52:33.457	\N	\N	2025-08-20 03:52:33.413	f	7	0	en
+545	2025-08-02 20:37:21.74	2025-08-23 22:00:55.103	\N	\N	2025-08-23 22:00:55.077	f	4	0	en
+744	2025-08-22 16:02:53.668	2025-08-22 22:55:28.736	\N	\N	2025-08-22 22:55:28.393	f	2	0	en
+534	2025-08-02 20:31:48.397	2025-08-23 22:00:59.147	\N	\N	2025-08-23 22:00:59.104	f	5	0	en
+550	2025-08-02 20:32:22.998	2025-08-23 22:01:03.276	\N	\N	2025-08-23 22:01:03.226	f	4	0	en
+575	2025-08-02 21:01:05.264	2025-08-23 22:01:05.916	\N	\N	2025-08-23 22:01:05.884	f	6	0	en
+588	2025-08-02 21:05:15.868	2025-08-23 22:01:09.248	\N	\N	2025-08-23 22:01:09.215	f	5	0	en
+361	2025-07-01 17:19:46.977	2025-08-23 21:52:26.178	\N	\N	2025-08-23 21:52:26.072	f	7	0	en
+561	2025-08-02 20:43:11.978	2025-08-23 21:56:48.086	\N	\N	2025-08-23 21:56:48.046	f	6	0	en
+584	2025-08-02 21:09:11.432	2025-08-23 21:56:51.4	\N	\N	2025-08-23 21:56:51.367	f	5	0	en
+730	2025-08-14 03:05:20.606	2025-08-15 22:40:00.65	\N	\N	2025-08-15 22:40:00.353	f	2	0	en
+598	2025-08-02 21:17:00.754	2025-08-23 21:56:57.544	\N	\N	2025-08-23 21:56:57.493	f	6	0	en
+540	2025-08-02 20:31:14.535	2025-08-23 22:01:11.993	\N	\N	2025-08-23 22:01:11.93	f	6	0	en
+745	2025-08-22 16:26:32.57	2025-08-22 22:55:32.019	\N	\N	2025-08-22 22:55:31.663	f	2	0	en
+548	2025-08-02 20:32:04.18	2025-08-23 22:01:16.482	\N	\N	2025-08-23 22:01:16.443	f	5	0	en
+569	2025-08-02 20:53:08.908	2025-08-23 22:01:20.412	\N	\N	2025-08-23 22:01:20.383	f	6	0	en
+577	2025-08-02 20:53:52.389	2025-08-23 22:01:23.323	\N	\N	2025-08-23 22:01:23.27	f	5	0	en
+582	2025-08-02 20:57:53.418	2025-08-23 21:57:03.496	\N	\N	2025-08-23 21:57:03.464	f	5	0	en
+544	2025-08-02 20:38:14.166	2025-08-23 22:01:25.977	\N	\N	2025-08-23 22:01:25.927	f	6	0	en
+559	2025-08-02 20:42:34.023	2025-08-23 22:01:28.238	\N	\N	2025-08-23 22:01:28.204	f	6	0	en
+568	2025-08-02 20:47:12.67	2025-08-23 22:01:31.207	\N	\N	2025-08-23 22:01:31.179	f	5	0	en
+591	2025-08-02 21:04:27.949	2025-08-23 22:01:35.008	\N	\N	2025-08-23 22:01:34.983	f	6	0	en
+726	2025-08-14 02:28:12.55	2025-08-15 22:40:11.997	\N	\N	2025-08-15 22:40:11.704	f	1	1	en
+595	2025-08-02 21:10:18.77	2025-08-23 22:01:38.057	\N	\N	2025-08-23 22:01:38.018	f	6	0	en
+746	2025-08-22 16:39:51.807	2025-08-22 22:56:38.947	\N	\N	2025-08-22 22:56:38.623	f	1	1	en
+546	2025-08-02 20:35:50.032	2025-08-23 21:57:06.307	\N	\N	2025-08-23 21:57:06.275	f	6	0	en
+564	2025-08-02 20:46:45.291	2025-08-23 21:57:08.572	\N	\N	2025-08-23 21:57:08.54	f	6	0	en
+747	2025-08-22 16:50:04.987	2025-08-22 22:56:52.152	\N	\N	2025-08-22 22:56:51.831	f	2	0	en
+578	2025-08-02 20:54:28.272	2025-08-23 21:57:13.02	\N	\N	2025-08-23 21:57:12.97	f	6	0	en
+585	2025-08-02 21:06:33.371	2025-08-23 21:57:15.862	\N	\N	2025-08-23 21:57:15.833	f	6	0	en
+731	2025-08-14 11:01:06.843	2025-08-14 14:58:35.901	\N	\N	2025-08-14 14:58:35.433	f	1	0	en
+711	2025-08-13 13:16:43.212	2025-08-15 22:39:08.36	\N	\N	2025-08-15 22:39:08.035	f	6	0	en
+712	2025-08-13 13:33:27.433	2025-08-15 22:39:10.766	\N	\N	2025-08-15 22:39:10.455	f	6	0	en
+594	2025-08-02 21:15:13.175	2025-08-23 21:57:19.026	\N	\N	2025-08-23 21:57:18.989	f	6	0	en
+554	2025-08-02 20:45:43.822	2025-08-23 22:01:42.112	\N	\N	2025-08-23 22:01:42.084	f	6	0	en
+748	2025-08-22 18:01:21.99	2025-08-23 09:29:10.886	\N	\N	2025-08-23 09:29:10.748	f	2	0	en
+549	2025-08-02 20:35:05.449	2025-08-23 21:57:22.351	\N	\N	2025-08-23 21:57:22.32	f	5	0	en
+556	2025-08-02 20:41:14.486	2025-08-23 21:57:24.6	\N	\N	2025-08-23 21:57:24.573	f	6	0	en
+567	2025-08-02 20:52:16.87	2025-08-23 21:57:27.028	\N	\N	2025-08-23 21:57:27	f	6	0	en
+574	2025-08-02 20:57:24.09	2025-08-23 21:57:29.925	\N	\N	2025-08-23 21:57:29.892	f	6	0	en
+732	2025-08-14 11:01:50.42	2025-08-14 14:58:39.359	\N	\N	2025-08-14 14:58:39.008	f	1	0	en
+713	2025-08-13 13:36:13.263	2025-08-15 22:39:17.261	\N	\N	2025-08-15 22:39:16.956	f	6	0	en
+715	2025-08-13 14:02:45.849	2025-08-15 22:39:26.529	\N	\N	2025-08-15 22:39:26.205	f	6	0	en
+589	2025-08-02 21:06:05.165	2025-08-23 21:57:34.224	\N	\N	2025-08-23 21:57:34.145	f	6	0	en
+642	2025-08-04 03:36:31.292	2025-08-23 21:57:37.23	\N	\N	2025-08-23 21:57:37.202	f	6	0	en
+599	2025-08-02 21:18:08.486	2025-08-23 22:01:45.362	\N	\N	2025-08-23 22:01:45.328	f	6	0	en
+749	2025-08-22 19:45:25.616	2025-08-23 09:47:50.067	\N	\N	2025-08-23 09:47:50.013	f	1	1	en
+552	2025-08-02 20:40:47.84	2025-08-23 21:53:45.135	\N	\N	2025-08-23 21:53:45.1	f	4	0	en
+562	2025-08-02 20:44:46.129	2025-08-23 21:57:40.037	\N	\N	2025-08-23 21:57:39.989	f	0	1	en
+733	2025-08-14 13:15:29.123	2025-08-14 14:58:46.415	\N	\N	2025-08-14 14:58:46.068	f	1	0	en
+714	2025-08-13 13:56:16.244	2025-08-15 22:39:13.312	\N	\N	2025-08-15 22:39:12.96	f	6	0	en
+580	2025-08-02 20:58:48.057	2025-08-23 21:57:52.137	\N	\N	2025-08-23 21:57:52.099	f	6	0	en
+643	2025-08-04 04:05:24.473	2025-08-23 21:57:56.276	\N	\N	2025-08-23 21:57:56.213	f	4	0	en
+573	2025-08-02 20:49:01.178	2025-08-23 22:01:48.977	\N	\N	2025-08-23 22:01:48.922	f	6	0	en
+590	2025-08-02 21:01:34.227	2025-08-23 22:01:51.647	\N	\N	2025-08-23 22:01:51.343	f	5	0	en
+602	2025-08-02 21:12:04.576	2025-08-23 22:01:59.594	\N	\N	2025-08-23 22:01:59.558	f	6	0	en
+670	2025-08-06 05:01:28.811	2025-08-23 18:13:56.615	\N	\N	2025-08-23 18:13:56.437	f	7	0	en
+716	2025-08-13 14:39:23.703	2025-08-24 00:52:09.53	\N	\N	2025-08-24 00:52:09.223	f	4	0	en
+644	2025-08-04 11:03:30.02	2025-08-23 21:53:26.569	\N	\N	2025-08-23 21:53:26.533	f	7	0	en
+553	2025-08-02 20:37:48.485	2025-08-23 21:57:59.814	\N	\N	2025-08-23 21:57:59.775	f	4	0	en
+583	2025-08-02 20:58:12.103	2025-08-23 21:58:03.33	\N	\N	2025-08-23 21:58:03.243	f	6	0	en
+734	2025-08-14 15:27:48.474	2025-08-15 22:38:28.313	\N	\N	2025-08-15 22:38:27.759	f	1	0	en
+593	2025-08-02 21:10:06.888	2025-08-23 21:58:06.842	\N	\N	2025-08-23 21:58:06.813	f	6	0	en
+750	2025-08-22 19:59:34.486	2025-08-22 19:59:49.575	\N	\N	2025-08-22 19:59:49.232	f	1	0	en
+558	2025-08-02 20:46:15.076	2025-08-23 22:02:02.554	\N	\N	2025-08-23 22:02:02.517	f	6	0	en
+570	2025-08-02 20:48:35.001	2025-08-23 22:02:06.223	\N	\N	2025-08-23 22:02:06.16	f	1	0	en
+603	2025-08-02 21:13:13.96	2025-08-23 22:02:11.408	\N	\N	2025-08-23 22:02:11.372	f	6	0	en
+671	2025-08-07 02:59:37.262	2025-08-23 22:05:24.367	\N	\N	2025-08-23 22:05:24.335	f	3	0	en
+645	2025-08-04 11:04:24.143	2025-08-23 21:53:31.001	\N	\N	2025-08-23 21:53:30.976	f	6	1	en
+706	2025-08-13 11:55:37.371	2025-08-15 22:38:57.425	\N	\N	2025-08-15 22:38:57.104	f	6	0	en
+572	2025-08-02 20:46:55.723	2025-08-23 21:58:10.231	\N	\N	2025-08-23 21:58:10.144	f	6	0	en
+579	2025-08-02 20:58:30.702	2025-08-23 21:58:13.145	\N	\N	2025-08-23 21:58:13.073	f	6	0	en
+600	2025-08-02 21:17:42.129	2025-08-23 21:58:17.153	\N	\N	2025-08-23 21:58:17.11	f	4	0	en
+563	2025-08-02 20:44:04.147	2025-08-23 22:02:16.277	\N	\N	2025-08-23 22:02:16.241	f	6	0	en
+723	2025-08-14 00:09:56.77	2025-08-23 18:48:20.041	\N	\N	2025-08-23 18:48:19.736	f	0	0	en
+725	2025-08-14 00:10:27.341	2025-08-24 00:19:37.312	\N	\N	2025-08-24 00:19:36.993	f	2	0	en
+717	2025-08-14 00:08:11.196	2025-08-24 00:52:13.647	\N	\N	2025-08-24 00:52:13.167	f	3	0	en
+587	2025-08-02 21:01:58.482	2025-08-23 22:02:18.816	\N	\N	2025-08-23 22:02:18.748	f	6	0	en
+718	2025-08-14 00:08:37.15	2025-08-24 00:52:17.286	\N	\N	2025-08-24 00:52:16.965	f	4	0	en
+719	2025-08-14 00:08:55.056	2025-08-24 00:52:31.27	\N	\N	2025-08-24 00:52:30.953	f	4	0	en
+751	2025-08-22 20:04:49.827	2025-08-22 20:05:03.543	\N	\N	2025-08-22 20:05:03.219	f	0	1	en
+720	2025-08-14 00:09:10.526	2025-08-24 00:52:33.043	\N	\N	2025-08-24 00:52:32.734	f	4	0	en
+722	2025-08-14 00:09:38.1	2025-08-24 00:52:40.105	\N	\N	2025-08-24 00:52:39.787	f	3	0	en
+724	2025-08-14 00:10:11.776	2025-08-24 00:52:45.904	\N	\N	2025-08-24 00:52:45.585	f	1	0	en
+721	2025-08-14 00:09:23.707	2025-08-24 00:52:50.494	\N	\N	2025-08-24 00:52:50.181	f	3	0	en
+752	2025-08-22 20:07:38.287	2025-08-22 20:07:52.185	\N	\N	2025-08-22 20:07:51.831	f	1	0	en
+646	2025-08-04 13:56:40.711	2025-08-23 21:53:41.957	\N	\N	2025-08-23 21:53:41.886	f	7	0	en
+566	2025-08-02 20:50:53.576	2025-08-23 21:58:25.951	\N	\N	2025-08-23 21:58:25.922	f	4	1	en
+576	2025-08-02 21:00:24.505	2025-08-23 21:58:38.117	\N	\N	2025-08-23 21:58:38.085	f	5	0	en
+707	2025-08-13 11:58:09.31	2025-08-15 22:39:03.593	\N	\N	2025-08-15 22:39:03.269	f	6	0	en
+586	2025-08-02 21:01:44.116	2025-08-23 21:58:40.831	\N	\N	2025-08-23 21:58:40.786	f	6	0	en
+601	2025-08-02 21:14:19.288	2025-08-23 21:58:48.363	\N	\N	2025-08-23 21:58:48.282	f	6	0	en
+673	2025-08-07 03:04:53.301	2025-08-23 21:58:51.077	\N	\N	2025-08-23 21:58:51.039	f	6	0	en
+736	2025-08-17 06:01:51.083	2025-08-23 21:58:56.478	\N	\N	2025-08-23 21:58:56.444	f	6	0	en
+737	2025-08-17 06:02:22.903	2025-08-23 21:58:58.756	\N	\N	2025-08-23 21:58:58.728	f	6	0	en
+740	2025-08-17 06:03:29.259	2025-08-23 21:59:02.528	\N	\N	2025-08-23 21:59:02.47	f	5	0	en
+672	2025-08-07 03:04:25.823	2025-08-23 22:02:21.939	\N	\N	2025-08-23 22:02:21.842	f	5	0	en
+735	2025-08-17 06:01:22.758	2025-08-23 22:02:26.269	\N	\N	2025-08-23 22:02:26.236	f	6	0	en
+738	2025-08-17 06:02:47.615	2025-08-23 22:02:29.312	\N	\N	2025-08-23 22:02:29.22	f	4	0	en
+619	2025-08-02 21:25:42.043	2025-08-23 21:59:05.376	\N	\N	2025-08-23 21:59:05.349	f	6	0	en
+743	2025-08-22 16:01:32.145	2025-08-22 22:55:27.236	\N	\N	2025-08-22 22:55:26.885	f	2	0	en
+704	2025-08-13 11:34:38.61	2025-08-15 22:38:48.013	\N	\N	2025-08-15 22:38:47.702	f	6	0	en
+625	2025-08-02 21:30:32.208	2025-08-23 21:59:08.515	\N	\N	2025-08-23 21:59:08.492	f	3	0	en
+604	2025-08-02 21:23:01.085	2025-08-23 22:02:31.796	\N	\N	2025-08-23 22:02:31.765	f	6	0	en
+674	2025-08-07 03:14:34.657	2025-08-23 22:02:36.76	\N	\N	2025-08-23 22:02:36.728	f	5	0	en
+675	2025-08-07 03:15:32.446	2025-08-23 22:02:47.827	\N	\N	2025-08-23 22:02:47.784	f	5	0	en
+739	2025-08-17 06:03:10.008	2025-08-23 22:02:50.971	\N	\N	2025-08-23 22:02:50.924	f	6	0	en
+629	2025-08-02 21:28:45.831	2025-08-23 21:59:13.029	\N	\N	2025-08-23 21:59:13	f	6	0	en
+635	2025-08-02 21:31:26.313	2025-08-23 21:59:17.896	\N	\N	2025-08-23 21:59:17.852	f	6	0	en
+676	2025-08-09 06:25:05.088	2025-08-23 21:59:20.252	\N	\N	2025-08-23 21:59:20.222	f	6	0	en
+741	2025-08-17 18:44:27.328	2025-08-23 21:59:23.981	\N	\N	2025-08-23 21:59:23.936	f	6	0	en
+605	2025-08-02 21:20:16.528	2025-08-23 22:02:53.653	\N	\N	2025-08-23 22:02:53.616	f	6	0	en
+705	2025-08-13 11:35:12.532	2025-08-15 22:38:54.357	\N	\N	2025-08-15 22:38:54.05	f	6	0	en
+621	2025-08-02 21:23:38.474	2025-08-23 22:02:56.338	\N	\N	2025-08-23 22:02:56.272	f	6	0	en
+532	2025-08-02 16:53:36.863	2025-08-23 21:54:43.242	\N	\N	2025-08-23 21:54:43.145	f	3	0	en
+535	2025-08-02 16:55:44.065	2025-08-23 21:55:21.138	\N	\N	2025-08-23 21:55:21.105	f	6	0	en
+531	2025-08-02 16:53:26.815	2025-08-23 21:56:17.432	\N	\N	2025-08-23 21:56:17.401	f	2	0	en
+557	2025-08-02 20:43:32.439	2025-08-23 21:56:35.826	\N	\N	2025-08-23 21:56:35.758	f	6	0	en
+618	2025-08-02 21:24:55.053	2025-08-23 21:59:27.506	\N	\N	2025-08-23 21:59:27.474	f	6	0	en
+677	2025-08-09 06:30:43.553	2025-08-23 21:59:31.237	\N	\N	2025-08-23 21:59:31.205	f	6	0	en
+606	2025-08-02 21:20:39.293	2025-08-23 22:02:58.706	\N	\N	2025-08-23 22:02:58.673	f	6	0	en
+624	2025-08-02 21:29:07.109	2025-08-23 22:03:01.582	\N	\N	2025-08-23 22:03:01.547	f	0	0	en
+607	2025-08-02 21:21:06.275	2025-08-23 22:03:07.024	\N	\N	2025-08-23 22:03:06.982	f	6	0	en
+614	2025-08-02 21:26:51.163	2025-08-23 22:03:10.802	\N	\N	2025-08-23 22:03:10.732	f	1	0	en
+633	2025-08-02 21:30:04.894	2025-08-23 22:03:14.349	\N	\N	2025-08-23 22:03:14.293	f	5	0	en
+634	2025-08-02 21:32:31.776	2025-08-23 22:03:16.803	\N	\N	2025-08-23 22:03:16.77	f	6	0	en
+678	2025-08-09 06:32:24.943	2025-08-23 22:03:19.647	\N	\N	2025-08-23 22:03:19.599	f	6	0	en
+679	2025-08-09 06:33:06.752	2025-08-23 22:03:22	\N	\N	2025-08-23 22:03:21.965	f	6	0	en
+608	2025-08-02 21:19:58.136	2025-08-23 21:59:34.758	\N	\N	2025-08-23 21:59:34.712	f	6	0	en
+617	2025-08-02 21:27:01.031	2025-08-23 21:59:38.949	\N	\N	2025-08-23 21:59:38.923	f	6	0	en
+627	2025-08-02 21:29:51.797	2025-08-23 21:59:42.545	\N	\N	2025-08-23 21:59:42.515	f	6	0	en
+680	2025-08-09 21:29:50.237	2025-08-22 22:53:56.364	\N	\N	2025-08-22 22:53:56.034	f	0	0	en
+681	2025-08-09 21:30:08.832	2025-08-22 22:54:21.887	\N	\N	2025-08-22 22:54:21.548	f	0	0	en
+682	2025-08-09 21:30:30.017	2025-08-22 22:54:25.408	\N	\N	2025-08-22 22:54:25.067	f	2	0	en
+683	2025-08-09 21:31:24.013	2025-08-22 22:54:30.259	\N	\N	2025-08-22 22:54:29.924	f	2	0	en
+684	2025-08-09 21:31:36.331	2025-08-22 22:54:43.353	\N	\N	2025-08-22 22:54:43.012	f	3	0	en
+685	2025-08-09 21:32:12.238	2025-08-22 22:55:19.677	\N	\N	2025-08-22 22:55:19.33	f	4	0	en
+609	2025-08-02 21:18:54.086	2025-08-23 22:03:26.04	\N	\N	2025-08-23 22:03:25.992	f	6	0	en
+623	2025-08-02 21:25:24.704	2025-08-23 22:03:29.097	\N	\N	2025-08-23 22:03:29.071	f	6	0	en
+632	2025-08-02 21:28:30.903	2025-08-23 22:03:31.804	\N	\N	2025-08-23 22:03:31.743	f	6	0	en
+686	2025-08-10 16:51:25.987	2025-08-22 22:55:24.59	\N	\N	2025-08-22 22:55:24.242	f	3	0	en
+610	2025-08-02 21:22:17.737	2025-08-23 22:03:34.456	\N	\N	2025-08-23 22:03:34.402	f	6	0	en
+620	2025-08-02 21:23:12.936	2025-08-23 22:03:36.893	\N	\N	2025-08-23 22:03:36.869	f	6	0	en
+631	2025-08-02 21:28:14.015	2025-08-23 22:03:39.201	\N	\N	2025-08-23 22:03:39.173	f	5	0	en
+687	2025-08-10 16:51:26.027	2025-08-22 22:51:58.007	\N	\N	2025-08-22 22:51:57.684	f	1	0	en
+688	2025-08-10 16:52:40.645	2025-08-22 22:52:08.377	\N	\N	2025-08-22 22:52:08.039	f	0	0	en
+689	2025-08-10 16:53:14.562	2025-08-22 22:52:13.09	\N	\N	2025-08-22 22:52:12.758	f	2	0	en
+690	2025-08-10 16:54:37.403	2025-08-22 22:52:23.602	\N	\N	2025-08-22 22:52:23.294	f	0	1	en
+611	2025-08-02 21:22:39.942	2025-08-23 22:03:42.527	\N	\N	2025-08-23 22:03:42.309	f	5	0	en
+615	2025-08-02 21:24:14.184	2025-08-23 22:03:45.351	\N	\N	2025-08-23 22:03:45.299	f	6	0	en
+630	2025-08-02 21:29:24.926	2025-08-23 22:03:47.663	\N	\N	2025-08-23 22:03:47.64	f	6	0	en
+636	2025-08-02 21:30:58.169	2025-08-23 22:05:21.474	\N	\N	2025-08-23 22:05:21.449	f	4	0	en
+691	2025-08-10 19:31:36.059	2025-08-22 22:52:41.021	\N	\N	2025-08-22 22:52:40.686	f	2	0	en
+616	2025-08-02 21:26:36.729	2025-08-23 21:59:45.152	\N	\N	2025-08-23 21:59:45.099	f	6	0	en
+628	2025-08-02 21:27:56.032	2025-08-23 21:59:48.146	\N	\N	2025-08-23 21:59:48.091	f	6	0	en
+612	2025-08-02 21:21:37.008	2025-08-23 22:03:50.122	\N	\N	2025-08-23 22:03:50.094	f	6	0	en
+692	2025-08-11 09:10:51.316	2025-08-22 22:53:01.835	\N	\N	2025-08-22 22:53:01.496	f	3	0	en
+693	2025-08-11 09:11:16.607	2025-08-22 22:53:13.717	\N	\N	2025-08-22 22:53:13.397	f	0	1	en
+622	2025-08-02 21:23:26.234	2025-08-23 21:59:50.881	\N	\N	2025-08-23 21:59:50.838	f	6	0	en
+613	2025-08-02 21:19:34.648	2025-08-23 22:03:52.753	\N	\N	2025-08-23 22:03:52.726	f	6	0	en
+626	2025-08-02 21:30:14.761	2025-08-23 22:03:56.64	\N	\N	2025-08-23 22:03:56.602	f	6	0	en
+637	2025-08-03 22:57:45.449	2025-08-23 22:03:59.205	\N	\N	2025-08-23 22:03:59.166	f	6	0	en
+695	2025-08-11 16:18:29.876	2025-08-22 22:53:28.61	\N	\N	2025-08-22 22:53:28.289	f	3	1	en
+696	2025-08-11 18:43:49.632	2025-08-22 22:53:38.812	\N	\N	2025-08-22 22:53:38.464	f	0	0	en
+697	2025-08-11 19:51:31.947	2025-08-22 22:53:45.236	\N	\N	2025-08-22 22:53:44.922	f	0	1	en
+698	2025-08-11 19:51:48.084	2025-08-22 22:53:49.409	\N	\N	2025-08-22 22:53:49.085	f	3	0	en
+639	2025-08-04 02:56:52.531	2025-08-23 21:59:54.42	\N	\N	2025-08-23 21:59:54.394	f	6	0	en
+699	2025-08-12 12:22:35.224	2025-08-15 22:38:30.813	\N	\N	2025-08-15 22:38:30.484	f	6	0	en
+640	2025-08-04 02:57:23.785	2025-08-23 22:04:01.602	\N	\N	2025-08-23 22:04:01.553	f	5	1	en
+700	2025-08-12 23:04:04.091	2025-08-15 22:38:34.938	\N	\N	2025-08-15 22:38:34.62	f	6	0	en
+702	2025-08-13 02:34:00.237	2025-08-15 22:39:31.391	\N	\N	2025-08-15 22:39:31.086	f	5	0	en
+641	2025-08-04 03:35:22.495	2025-08-23 22:04:06.13	\N	\N	2025-08-23 22:04:06.099	f	6	0	en
+701	2025-08-13 01:15:27.3	2025-08-15 22:38:38.651	\N	\N	2025-08-15 22:38:38.342	f	4	1	en
+560	2025-08-02 20:41:04.932	2025-08-23 21:59:57.604	\N	\N	2025-08-23 21:59:57.548	f	6	0	en
+547	2025-08-02 20:36:48.452	2025-08-23 22:04:09.69	\N	\N	2025-08-23 22:04:09.657	f	6	0	en
+571	2025-08-02 20:49:30.789	2025-08-23 22:04:12.152	\N	\N	2025-08-23 22:04:12.126	f	6	0	en
+581	2025-08-02 20:59:18.521	2025-08-23 22:04:14.206	\N	\N	2025-08-23 22:04:14.184	f	6	0	en
+592	2025-08-02 21:07:43.298	2025-08-23 22:04:17.833	\N	\N	2025-08-23 22:04:17.78	f	6	0	en
+703	2025-08-13 03:38:48.791	2025-08-15 22:38:42.165	\N	\N	2025-08-15 22:38:41.838	f	5	0	en
+597	2025-08-02 21:11:22.531	2025-08-23 22:04:32.051	\N	\N	2025-08-23 22:04:32.003	f	2	0	en
 \.
 
 
@@ -6644,356 +6672,375 @@ COPY public.flashcards_localizations_links (id, flashcard_id, inv_flashcard_id, 
 --
 
 COPY public.flashcards_review_tire_links (id, flashcard_id, review_tire_id, flashcard_order) FROM stdin;
-1100	646	2	35
 904	521	3	9
+1872	719	2	179
+1104	368	3	12
+1460	442	3	23
 909	430	3	10
-1098	644	2	33
-897	442	2	29
-749	378	2	24
+1105	362	3	13
 892	485	4	5
 911	439	3	11
-890	434	2	27
-696	702	2	21
-891	490	2	28
-750	376	2	25
-680	713	2	16
-685	701	2	19
-365	435	2	1
-374	441	2	2
-888	432	2	26
-622	670	2	7
+1853	725	1	145
+1671	722	1	142
+1672	724	1	143
+1457	434	3	22
+1673	721	1	144
+295	363	1	1
+294	367	1	2
+300	366	1	3
+305	369	1	4
+329	392	1	21
+347	416	1	39
+1638	743	1	132
 893	438	3	7
+348	411	1	40
+349	413	1	41
+350	417	1	42
+351	415	1	43
+352	418	1	44
+383	447	1	54
 436	496	5	2
+382	452	1	55
+381	451	1	56
+386	449	1	57
+1873	720	2	180
 420	493	4	1
 421	494	4	2
 425	491	4	3
 895	437	3	8
-1099	645	2	34
-295	363	1	1
-294	367	1	2
-298	360	1	3
-299	364	1	4
-301	365	1	5
-300	366	1	6
-303	359	1	7
-305	369	1	8
-307	371	1	9
-308	373	1	10
-329	392	1	27
-376	440	1	61
-383	447	1	62
-382	452	1	63
-381	451	1	64
-386	449	1	65
-384	448	1	66
-387	455	1	67
-390	446	1	68
-388	450	1	69
-394	456	1	70
-393	462	1	71
-551	614	1	218
-552	617	1	219
-697	727	1	256
-715	734	1	265
-730	728	1	266
-735	718	1	269
-789	642	1	273
-799	673	1	274
+1317	564	2	49
+1391	573	2	108
+1360	510	2	85
+1287	506	2	26
+1318	578	2	50
+1414	679	2	124
+1390	599	2	107
+1351	617	2	77
+1282	482	2	21
+1288	523	2	27
+1256	364	2	16
+696	702	2	14
+680	713	2	9
+685	701	2	12
+1099	645	2	15
+681	714	2	10
+670	700	2	2
+1373	527	2	97
+1306	542	2	41
+1361	513	2	86
+1410	607	2	121
+1412	634	2	122
+1676	361	3	25
+690	703	2	13
+1259	371	2	17
+1352	627	2	78
+1413	678	2	123
+1305	543	2	40
+1392	590	2	109
+1290	518	2	28
+1685	646	3	31
 304	372	5	1
-681	714	2	17
-670	700	2	9
-1091	453	2	31
-800	736	1	275
-801	737	1	276
-805	676	1	277
-806	741	1	278
-875	637	1	286
-876	640	1	287
-877	641	1	288
-896	487	1	289
-964	643	1	290
-978	740	1	291
-1035	672	1	292
-330	393	1	28
-331	394	1	29
-332	395	1	30
-585	454	2	5
-690	703	2	20
-916	377	2	30
-333	396	1	31
-334	407	1	32
-335	400	1	33
-336	401	1	34
-337	402	1	35
-338	406	1	36
-339	403	1	37
-342	408	1	38
-341	399	1	39
-340	405	1	40
-343	404	1	41
-344	410	1	42
-345	409	1	43
-346	414	1	44
-347	416	1	45
-348	411	1	46
-349	413	1	47
-350	417	1	48
-351	415	1	49
-352	418	1	50
-353	412	1	51
-355	421	1	52
-358	426	1	53
-356	419	1	54
-359	428	1	55
-362	423	1	56
-361	420	1	57
-360	427	1	58
-363	422	1	59
-373	443	1	60
-392	459	1	72
-409	471	1	88
-410	474	1	89
-411	476	1	90
-412	477	1	91
-415	478	1	92
-414	483	1	93
-413	479	1	94
-417	482	1	95
-416	480	1	96
-418	484	1	97
-419	481	1	98
-428	492	1	99
-432	501	1	100
-510	577	1	177
-540	607	1	207
-541	612	1	208
-542	604	1	209
-543	609	1	210
-553	615	1	220
-554	618	1	221
-555	621	1	222
-556	623	1	223
-557	620	1	224
-558	616	1	225
-559	626	1	226
-560	628	1	227
-561	625	1	228
-562	624	1	229
-563	631	1	230
-564	627	1	231
-698	729	1	257
-736	719	1	271
-808	677	1	279
-815	639	1	280
-850	735	1	281
-852	675	1	282
-853	739	1	283
-861	678	1	284
-862	679	1	285
-587	362	2	6
-682	715	2	18
-1093	444	2	32
-447	506	1	115
-473	536	1	140
-474	539	1	141
-475	535	1	142
-476	541	1	143
-477	534	1	144
-478	540	1	145
-479	553	1	146
-480	550	1	147
-481	546	1	148
-482	552	1	149
-483	551	1	150
-484	548	1	151
-485	545	1	152
-486	544	1	153
-487	549	1	154
-488	547	1	155
-490	561	1	156
-489	556	1	157
-491	557	1	158
-492	560	1	159
-565	633	1	232
-566	632	1	233
-567	629	1	234
-568	630	1	235
-569	635	1	236
-570	636	1	237
-571	634	1	238
-699	730	1	258
-700	726	1	259
-737	720	1	270
-738	723	1	272
-1037	738	1	293
-1039	674	1	294
-1080	433	1	295
-1094	445	1	296
+1682	453	3	28
+1862	753	1	146
+1261	435	3	14
+1263	488	3	15
+330	393	1	22
+331	394	1	23
+1675	670	3	24
+332	395	1	24
+333	396	1	25
+334	407	1	26
+335	400	1	27
+336	401	1	28
+337	402	1	29
+338	406	1	30
+339	403	1	31
+342	408	1	32
+341	399	1	33
+340	405	1	34
+343	404	1	35
+344	410	1	36
+1683	444	3	29
+345	409	1	37
+346	414	1	38
+1639	744	1	133
+1677	377	3	26
+1684	644	3	30
+1427	637	2	135
+1436	360	2	142
+1428	640	2	136
+1371	533	2	95
+1566	548	2	154
+1594	633	2	160
+1476	519	2	144
+1507	549	2	149
+1561	534	2	152
+1586	674	2	158
+1619	365	2	163
+1603	631	2	161
+1496	565	2	146
+1521	566	2	150
+1568	577	2	155
+1478	528	2	145
+1571	568	2	156
+1604	611	2	162
+1499	584	2	147
+1527	740	2	151
+1679	490	3	27
+1564	588	2	153
+1582	672	2	157
+1587	675	2	159
+1501	582	2	148
+1732	643	2	166
+1847	514	2	174
+1805	738	2	171
+1863	755	1	147
+1864	757	1	148
+1866	754	1	149
+1733	553	2	167
+1738	600	2	168
+1779	545	2	169
+1841	359	2	172
+1275	441	3	16
+1276	454	3	17
+1308	557	2	43
+1362	515	2	87
+1415	609	2	125
+1365	503	2	89
+1374	537	2	98
+1416	623	2	126
+682	715	2	11
+1272	455	2	20
+1268	501	2	18
+1269	440	2	19
+1307	551	2	42
+1378	575	2	99
+1380	540	2	100
+1319	585	2	51
+1320	594	2	52
+1322	556	2	53
+1353	616	2	79
+1364	539	2	88
+1393	602	2	110
+384	448	1	58
+390	446	1	59
+388	450	1	60
+1849	443	2	175
+418	484	1	87
+353	412	1	45
+355	421	1	46
+1781	550	2	170
+393	462	1	62
+1640	745	1	134
+392	459	1	63
+409	471	1	79
+410	474	1	80
+419	481	1	88
+428	492	1	89
+1846	512	2	173
+439	507	1	90
+561	625	1	98
+562	624	1	99
+1686	552	2	165
+600	671	1	100
+602	680	1	101
+1851	636	2	176
+1867	758	1	150
 354	424	3	2
 366	431	3	3
 370	429	3	4
 309	374	3	1
 580	502	3	5
 581	425	3	6
-744	361	2	22
-422	488	2	3
-748	436	2	23
-669	699	2	8
-674	704	2	10
-306	370	1	11
-318	388	1	12
-314	380	1	13
-315	384	1	14
-316	381	1	15
+306	370	1	5
+318	388	1	6
+314	380	1	7
+315	384	1	8
+316	381	1	9
+317	383	1	10
+319	387	1	11
+320	382	1	12
+321	385	1	13
+322	379	1	14
+323	386	1	15
+324	397	1	16
+325	398	1	17
+326	389	1	18
+327	390	1	19
+1641	746	1	135
+697	727	1	116
+698	729	1	117
+699	730	1	118
+700	726	1	119
+1293	525	2	29
+1355	622	2	81
+1400	735	2	115
+1406	605	2	118
+1356	639	2	82
+669	699	2	1
+674	704	2	3
+1397	563	2	113
+1402	604	2	116
+1407	621	2	119
+1396	603	2	112
+1354	628	2	80
+1394	558	2	111
+1398	587	2	114
+1405	739	2	117
+1408	606	2	120
+1357	560	2	83
+1283	499	2	22
+1294	530	2	30
+1323	567	2	54
+701	731	1	120
 576	486	4	4
 577	489	5	3
-317	383	1	16
-319	387	1	17
-320	382	1	18
-321	385	1	19
-322	379	1	20
-323	386	1	21
-324	397	1	22
-325	398	1	23
-326	389	1	24
-327	390	1	25
-328	391	1	26
-391	464	1	73
-397	461	1	74
-395	460	1	75
-396	463	1	76
-399	457	1	77
-398	458	1	78
-400	465	1	79
-404	470	1	80
-403	468	1	81
-402	467	1	82
-401	469	1	83
-405	466	1	84
-701	731	1	260
-702	732	1	261
-703	733	1	262
-408	475	1	87
-430	500	1	101
-675	705	2	11
-431	495	1	102
-435	499	1	103
-434	503	1	104
-437	498	1	105
-438	497	1	106
-443	513	1	107
-441	509	1	108
-439	507	1	109
-440	504	1	110
-442	510	1	111
-448	512	1	112
-445	505	1	113
-446	508	1	114
-444	511	1	116
-449	516	1	117
-450	523	1	118
-452	520	1	119
-453	515	1	120
-454	519	1	121
-455	514	1	122
-456	517	1	123
-457	518	1	124
-458	522	1	125
-459	531	1	126
-460	533	1	127
-461	532	1	128
-462	526	1	129
-463	528	1	130
-464	529	1	131
-705	696	1	263
-706	698	1	264
-511	581	1	178
-512	578	1	179
-582	368	2	4
-513	574	1	180
-514	582	1	181
-515	575	1	182
-516	579	1	183
-517	576	1	184
-518	580	1	185
-519	589	1	186
-520	587	1	187
-521	584	1	188
-522	588	1	189
-523	585	1	190
-524	586	1	191
-525	593	1	192
-526	590	1	193
-527	592	1	194
-528	591	1	195
-529	596	1	196
-530	603	1	197
-531	598	1	198
-532	595	1	199
-533	597	1	200
-534	594	1	201
-535	600	1	202
-536	599	1	203
-537	601	1	204
-538	602	1	205
-539	608	1	206
-544	605	1	211
-545	606	1	212
-546	611	1	213
-547	613	1	214
-548	610	1	215
-549	619	1	216
-550	622	1	217
-407	473	1	85
-406	472	1	86
-493	555	1	160
-494	562	1	161
-676	706	2	12
-677	707	2	13
-495	558	1	162
-496	559	1	163
-497	563	1	164
-498	554	1	165
-499	565	1	166
-500	566	1	167
-501	571	1	168
-502	572	1	169
-503	573	1	170
-504	570	1	171
-505	567	1	172
-506	568	1	173
-507	564	1	174
-508	569	1	175
-509	583	1	176
-733	716	1	267
-465	524	1	132
-466	525	1	133
-467	530	1	134
-468	527	1	135
-469	543	1	136
-678	711	2	14
-679	712	2	15
-470	538	1	137
-471	537	1	138
-472	542	1	139
-600	671	1	239
-602	680	1	240
-603	681	1	241
-604	683	1	242
-605	692	1	243
-607	682	1	244
-611	684	1	245
-613	686	1	246
-612	685	1	247
-614	687	1	248
-615	688	1	249
-616	689	1	250
-619	693	1	251
-618	691	1	252
-617	690	1	253
-620	695	1	254
-621	697	1	255
-734	717	1	268
+1869	716	2	177
+1871	718	2	178
+1642	747	1	136
+358	426	1	47
+356	419	1	48
+359	428	1	49
+362	423	1	50
+361	420	1	51
+360	427	1	52
+363	422	1	53
+1387	591	2	104
+1284	497	2	23
+1419	620	2	129
+1417	632	2	127
+1384	544	2	102
+675	705	2	4
+1388	595	2	105
+1366	498	2	90
+1418	610	2	128
+1309	555	2	44
+1285	509	2	24
+1385	559	2	103
+1422	615	2	130
+1367	505	2	91
+1382	569	2	101
+394	456	1	61
+404	470	1	71
+403	468	1	72
+402	467	1	73
+401	469	1	74
+405	466	1	75
+408	475	1	78
+411	476	1	81
+412	477	1	82
+415	478	1	83
+414	483	1	84
+413	479	1	85
+416	480	1	86
+603	681	1	102
+618	691	1	112
+617	690	1	113
+620	695	1	114
+621	697	1	115
+702	732	1	121
+703	733	1	122
+705	696	1	123
+706	698	1	124
+715	734	1	125
+1424	612	2	132
+1333	579	2	62
+1311	596	2	45
+1330	583	2	59
+1425	613	2	133
+1312	561	2	46
+1331	593	2	60
+1314	598	2	47
+1332	572	2	61
+1423	630	2	131
+1316	546	2	48
+1368	508	2	92
+1426	626	2	134
+1335	576	2	63
+1369	516	2	93
+1643	748	1	137
+1450	436	3	18
+407	473	1	76
+1451	378	3	19
+1359	500	2	84
+406	472	1	77
+494	562	1	94
+504	570	1	95
+604	683	1	103
+605	692	1	104
+607	682	1	105
+611	684	1	106
+613	686	1	107
+614	687	1	108
+615	688	1	109
+616	689	1	110
+1452	376	3	20
+1327	580	2	58
+1389	554	2	106
+1304	524	2	39
+1370	517	2	94
+1431	571	2	139
+1439	373	2	143
+676	706	2	5
+677	707	2	6
+1429	641	2	137
+1433	592	2	141
+1324	574	2	55
+1325	589	2	56
+1372	529	2	96
+1430	547	2	138
+1326	642	2	57
+1456	432	3	21
+1432	581	2	140
+619	693	1	111
+730	728	1	126
+734	717	1	127
+738	723	1	128
+896	487	1	129
+1080	433	1	130
+1094	445	1	131
+1644	749	1	138
+1645	750	1	139
+1336	586	2	64
+1337	601	2	65
+1338	673	2	66
+678	711	2	7
+679	712	2	8
+1339	736	2	67
+1340	737	2	68
+1342	619	2	69
+1347	741	2	73
+1344	629	2	70
+1345	635	2	71
+1349	677	2	75
+1346	676	2	72
+1295	538	2	31
+1348	618	2	74
+1350	608	2	76
+1646	752	1	140
+533	597	1	96
+551	614	1	97
+1286	511	2	25
+1296	536	2	32
+1297	535	2	33
+1298	541	2	34
+1660	685	2	164
+328	391	1	20
+391	464	1	64
+397	461	1	65
+395	460	1	66
+396	463	1	67
+399	457	1	68
+398	458	1	69
+400	465	1	70
+1647	742	1	141
+1299	495	2	35
+459	531	1	91
+461	532	1	92
+462	526	1	93
+1300	504	2	36
+1301	520	2	37
+1302	522	2	38
 \.
 
 
@@ -7165,8 +7212,10 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 519	518	8	11
 521	521	8	11
 671	670	47	1
+744	743	47	21
 523	522	8	11
 672	671	8	34
+745	744	47	22
 525	524	8	12
 526	532	8	12
 537	541	8	13
@@ -7185,6 +7234,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 601	599	8	19
 673	672	8	35
 674	673	8	36
+746	745	47	23
 527	531	8	12
 535	534	8	13
 550	550	8	14
@@ -7195,6 +7245,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 597	596	8	19
 675	674	8	37
 676	675	8	38
+747	746	47	24
 528	526	8	12
 539	538	8	13
 547	544	8	14
@@ -7204,6 +7255,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 593	591	8	18
 596	595	8	19
 677	676	8	39
+748	747	47	25
 530	527	8	12
 531	530	8	12
 540	539	8	13
@@ -7221,6 +7273,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 599	597	8	19
 603	600	8	19
 678	677	8	40
+749	748	47	26
 529	525	8	12
 536	535	8	13
 545	546	8	14
@@ -7231,6 +7284,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 595	594	8	19
 679	678	8	41
 680	679	8	42
+750	749	47	27
 532	533	8	12
 544	543	8	13
 553	552	8	14
@@ -7245,6 +7299,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 684	683	47	5
 685	684	47	6
 686	685	47	7
+751	750	47	28
 533	529	8	12
 541	537	8	13
 546	545	8	14
@@ -7254,6 +7309,7 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 592	586	8	18
 600	601	8	19
 687	686	47	8
+752	751	47	29
 534	528	8	12
 542	536	8	13
 554	553	8	14
@@ -7266,23 +7322,30 @@ COPY public.flashcards_user_links (id, flashcard_id, user_id, flashcard_order) F
 689	688	47	9
 690	689	47	10
 691	690	47	11
+753	752	47	30
 605	605	8	20
 620	621	8	21
 629	629	8	22
 635	635	8	23
 692	691	47	12
+754	753	50	11
 606	606	8	20
 619	618	8	21
 625	624	8	22
 693	692	47	13
 694	693	47	14
+755	754	50	12
 607	604	8	20
 622	619	8	21
 627	625	8	22
+756	755	50	13
+757	756	50	14
+758	757	50	15
 608	610	8	20
 621	620	8	21
 632	631	8	22
 696	695	47	16
+759	758	50	16
 609	608	8	20
 617	617	8	21
 628	627	8	22
@@ -7720,6 +7783,22 @@ COPY public.flashcards_word_definition_links (id, flashcard_id, word_definition_
 1007	740	1130	1
 1008	741	1131	1
 1009	742	1132	1
+1010	743	1133	1
+1011	744	1134	1
+1012	745	1135	1
+1013	746	1136	1
+1014	747	1137	1
+1015	748	1138	1
+1016	749	1139	1
+1017	750	1140	1
+1018	751	1141	1
+1019	752	1142	1
+1020	753	1143	1
+1021	754	1144	1
+1022	755	1145	1
+1023	756	1146	1
+1024	757	1147	1
+1025	758	1148	1
 \.
 
 
@@ -7866,12 +7945,12 @@ COPY public.proficiency_levels_localizations_links (id, proficiency_level_id, in
 -- Data for Name: review_tires; Type: TABLE DATA; Schema: public; Owner: strapi
 --
 
-COPY public.review_tires (id, tier, min_streak, max_streak, cooldown_hours, demote_bar, created_at, updated_at, created_by_id, updated_by_id, locale) FROM stdin;
-2	warmup	4	6	24	2	2025-06-30 17:35:20.03	2025-06-30 17:35:20.03	1	1	en
-3	weekly	7	8	168	2	2025-06-30 17:35:38.495	2025-06-30 17:35:38.495	1	1	en
-4	monthly	9	10	720	2	2025-06-30 17:35:55.31	2025-06-30 17:35:55.31	1	1	en
-5	remembered	11	10000000	1000000	1	2025-06-30 17:36:31.912	2025-06-30 17:36:31.912	1	1	en
-1	new	0	3	6	2	2025-06-30 17:35:06.322	2025-07-01 09:47:07.983	1	1	en
+COPY public.review_tires (id, tier, min_streak, max_streak, cooldown_hours, demote_bar, created_at, updated_at, created_by_id, updated_by_id, locale, display_name) FROM stdin;
+3	weekly	7	8	168	2	2025-06-30 17:35:38.495	2025-08-22 01:13:25.446	1	1	en	Well Practiced
+4	monthly	9	10	720	2	2025-06-30 17:35:55.31	2025-08-22 03:19:30.848	1	1	en	Almost Remembered
+5	remembered	11	10000000	1000000	1	2025-06-30 17:36:31.912	2025-08-22 03:19:42.184	1	1	en	Remembered
+1	new	0	2	6	2	2025-06-30 17:35:06.322	2025-08-23 18:06:13.032	1	1	en	New Word
+2	warmup	3	6	24	2	2025-06-30 17:35:20.03	2025-08-23 18:06:20.231	1	1	en	Getting Familiar
 \.
 
 
@@ -8475,6 +8554,7 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 585	warmup	correct	2025-08-14 01:53:05.61	2025-08-14 01:53:05.61	\N	\N	2025-08-14 01:53:05.549
 586	warmup	correct	2025-08-14 01:53:05.861	2025-08-14 01:53:05.861	\N	\N	2025-08-14 01:53:05.8
 587	new	correct	2025-08-14 01:53:06.164	2025-08-14 01:53:06.164	\N	\N	2025-08-14 01:53:06.099
+1216	new	correct	2025-08-20 04:03:37.857	2025-08-20 04:03:37.857	\N	\N	2025-08-20 04:03:37.851
 589	new	correct	2025-08-14 01:53:06.59	2025-08-14 01:53:06.59	\N	\N	2025-08-14 01:53:06.52
 590	warmup	correct	2025-08-14 01:53:06.802	2025-08-14 01:53:06.802	\N	\N	2025-08-14 01:53:06.74
 592	warmup	correct	2025-08-14 01:53:07.66	2025-08-14 01:53:07.66	\N	\N	2025-08-14 01:53:07.595
@@ -8490,6 +8570,104 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 607	warmup	correct	2025-08-14 01:54:08.732	2025-08-14 01:54:08.732	\N	\N	2025-08-14 01:54:08.66
 609	warmup	correct	2025-08-14 01:54:09.279	2025-08-14 01:54:09.279	\N	\N	2025-08-14 01:54:09.213
 612	warmup	correct	2025-08-14 01:54:09.701	2025-08-14 01:54:09.701	\N	\N	2025-08-14 01:54:09.635
+1217	new	correct	2025-08-20 04:03:41.87	2025-08-20 04:03:41.87	\N	\N	2025-08-20 04:03:41.852
+1218	new	correct	2025-08-20 04:03:44.144	2025-08-20 04:03:44.144	\N	\N	2025-08-20 04:03:44.137
+1219	new	correct	2025-08-20 04:03:47.625	2025-08-20 04:03:47.625	\N	\N	2025-08-20 04:03:47.619
+1220	new	correct	2025-08-20 04:03:50.507	2025-08-20 04:03:50.507	\N	\N	2025-08-20 04:03:50.501
+1221	new	correct	2025-08-20 04:03:53.141	2025-08-20 04:03:53.141	\N	\N	2025-08-20 04:03:53.135
+1222	new	correct	2025-08-20 04:03:56.748	2025-08-20 04:03:56.748	\N	\N	2025-08-20 04:03:56.741
+1223	new	correct	2025-08-20 04:04:05.526	2025-08-20 04:04:05.526	\N	\N	2025-08-20 04:04:05.52
+1224	new	correct	2025-08-20 04:04:08.05	2025-08-20 04:04:08.05	\N	\N	2025-08-20 04:04:08.043
+1225	new	wrong	2025-08-20 04:04:11.089	2025-08-20 04:04:11.089	\N	\N	2025-08-20 04:04:11.084
+1226	new	correct	2025-08-20 04:04:26.224	2025-08-20 04:04:26.224	\N	\N	2025-08-20 04:04:26.218
+1227	new	correct	2025-08-20 04:04:29.653	2025-08-20 04:04:29.653	\N	\N	2025-08-20 04:04:29.646
+1228	new	correct	2025-08-20 04:04:32.391	2025-08-20 04:04:32.391	\N	\N	2025-08-20 04:04:32.385
+1229	new	correct	2025-08-20 04:04:35.74	2025-08-20 04:04:35.74	\N	\N	2025-08-20 04:04:35.731
+1230	new	correct	2025-08-20 04:04:38.121	2025-08-20 04:04:38.121	\N	\N	2025-08-20 04:04:38.115
+1231	new	correct	2025-08-20 04:04:42.982	2025-08-20 04:04:42.982	\N	\N	2025-08-20 04:04:42.976
+1232	new	correct	2025-08-20 04:04:45.564	2025-08-20 04:04:45.564	\N	\N	2025-08-20 04:04:45.558
+1233	new	correct	2025-08-20 04:04:48.866	2025-08-20 04:04:48.866	\N	\N	2025-08-20 04:04:48.86
+1234	new	wrong	2025-08-20 04:04:55.966	2025-08-20 04:04:55.966	\N	\N	2025-08-20 04:04:55.96
+1235	new	correct	2025-08-20 04:05:03.146	2025-08-20 04:05:03.146	\N	\N	2025-08-20 04:05:03.138
+1236	new	correct	2025-08-20 04:05:06.224	2025-08-20 04:05:06.224	\N	\N	2025-08-20 04:05:06.217
+1237	new	correct	2025-08-20 04:05:10.211	2025-08-20 04:05:10.211	\N	\N	2025-08-20 04:05:10.204
+1238	new	correct	2025-08-20 04:05:12.443	2025-08-20 04:05:12.443	\N	\N	2025-08-20 04:05:12.438
+1239	new	wrong	2025-08-20 04:05:15.953	2025-08-20 04:05:15.953	\N	\N	2025-08-20 04:05:15.943
+1240	new	correct	2025-08-20 04:05:26.324	2025-08-20 04:05:26.324	\N	\N	2025-08-20 04:05:26.317
+1241	new	correct	2025-08-20 04:05:29.768	2025-08-20 04:05:29.768	\N	\N	2025-08-20 04:05:29.762
+1242	new	correct	2025-08-20 04:05:33.006	2025-08-20 04:05:33.006	\N	\N	2025-08-20 04:05:32.999
+1243	new	correct	2025-08-20 04:05:35.611	2025-08-20 04:05:35.611	\N	\N	2025-08-20 04:05:35.605
+1244	new	correct	2025-08-20 04:05:38.714	2025-08-20 04:05:38.714	\N	\N	2025-08-20 04:05:38.709
+1245	new	correct	2025-08-20 04:05:42.72	2025-08-20 04:05:42.72	\N	\N	2025-08-20 04:05:42.714
+1246	new	correct	2025-08-20 04:05:46.505	2025-08-20 04:05:46.505	\N	\N	2025-08-20 04:05:46.499
+1247	new	correct	2025-08-20 04:05:49.798	2025-08-20 04:05:49.798	\N	\N	2025-08-20 04:05:49.791
+1248	new	correct	2025-08-20 04:05:52.256	2025-08-20 04:05:52.256	\N	\N	2025-08-20 04:05:52.249
+1249	new	correct	2025-08-20 04:05:55.415	2025-08-20 04:05:55.415	\N	\N	2025-08-20 04:05:55.409
+1250	new	correct	2025-08-20 04:05:57.694	2025-08-20 04:05:57.694	\N	\N	2025-08-20 04:05:57.687
+1251	new	wrong	2025-08-20 04:05:59.906	2025-08-20 04:05:59.906	\N	\N	2025-08-20 04:05:59.898
+1252	new	correct	2025-08-20 04:06:04.429	2025-08-20 04:06:04.429	\N	\N	2025-08-20 04:06:04.421
+1253	new	correct	2025-08-20 04:06:06.477	2025-08-20 04:06:06.477	\N	\N	2025-08-20 04:06:06.471
+1254	new	correct	2025-08-20 04:06:09.575	2025-08-20 04:06:09.575	\N	\N	2025-08-20 04:06:09.569
+1255	new	correct	2025-08-20 04:06:13.1	2025-08-20 04:06:13.1	\N	\N	2025-08-20 04:06:13.093
+1256	new	correct	2025-08-20 04:06:16.468	2025-08-20 04:06:16.468	\N	\N	2025-08-20 04:06:16.461
+1257	new	correct	2025-08-20 04:06:19.064	2025-08-20 04:06:19.064	\N	\N	2025-08-20 04:06:19.057
+1258	new	correct	2025-08-20 04:06:21.588	2025-08-20 04:06:21.588	\N	\N	2025-08-20 04:06:21.581
+1259	new	correct	2025-08-20 04:06:24.227	2025-08-20 04:06:24.227	\N	\N	2025-08-20 04:06:24.219
+1260	new	correct	2025-08-20 04:06:28.632	2025-08-20 04:06:28.632	\N	\N	2025-08-20 04:06:28.626
+1261	new	correct	2025-08-20 04:06:31.784	2025-08-20 04:06:31.784	\N	\N	2025-08-20 04:06:31.778
+1262	new	correct	2025-08-20 04:06:34.364	2025-08-20 04:06:34.364	\N	\N	2025-08-20 04:06:34.359
+1263	new	correct	2025-08-20 04:06:38.869	2025-08-20 04:06:38.869	\N	\N	2025-08-20 04:06:38.863
+1264	new	correct	2025-08-20 04:06:41.472	2025-08-20 04:06:41.472	\N	\N	2025-08-20 04:06:41.466
+1265	new	correct	2025-08-20 04:06:43.674	2025-08-20 04:06:43.674	\N	\N	2025-08-20 04:06:43.668
+1266	new	correct	2025-08-20 04:06:46.245	2025-08-20 04:06:46.245	\N	\N	2025-08-20 04:06:46.239
+1267	new	wrong	2025-08-20 04:06:56.583	2025-08-20 04:06:56.583	\N	\N	2025-08-20 04:06:56.568
+1268	new	wrong	2025-08-20 04:07:07.401	2025-08-20 04:07:07.401	\N	\N	2025-08-20 04:07:07.394
+1269	new	correct	2025-08-20 04:07:17.099	2025-08-20 04:07:17.099	\N	\N	2025-08-20 04:07:17.091
+1270	new	wrong	2025-08-20 04:07:19.715	2025-08-20 04:07:19.715	\N	\N	2025-08-20 04:07:19.708
+1271	new	correct	2025-08-20 04:07:26.969	2025-08-20 04:07:26.969	\N	\N	2025-08-20 04:07:26.963
+1272	new	correct	2025-08-20 04:07:29.094	2025-08-20 04:07:29.094	\N	\N	2025-08-20 04:07:29.087
+1273	new	correct	2025-08-20 04:07:32.089	2025-08-20 04:07:32.089	\N	\N	2025-08-20 04:07:32.083
+1274	new	correct	2025-08-20 04:07:34.855	2025-08-20 04:07:34.855	\N	\N	2025-08-20 04:07:34.85
+1275	warmup	correct	2025-08-20 04:07:37.24	2025-08-20 04:07:37.24	\N	\N	2025-08-20 04:07:37.234
+1276	warmup	correct	2025-08-20 04:07:39.769	2025-08-20 04:07:39.769	\N	\N	2025-08-20 04:07:39.763
+1277	new	wrong	2025-08-20 04:07:45.638	2025-08-20 04:07:45.638	\N	\N	2025-08-20 04:07:45.631
+1278	warmup	correct	2025-08-20 04:07:50.396	2025-08-20 04:07:50.396	\N	\N	2025-08-20 04:07:50.389
+1279	warmup	correct	2025-08-20 04:07:57.195	2025-08-20 04:07:57.195	\N	\N	2025-08-20 04:07:57.181
+1280	new	wrong	2025-08-20 04:07:59.63	2025-08-20 04:07:59.63	\N	\N	2025-08-20 04:07:59.622
+1281	new	correct	2025-08-20 04:08:09.152	2025-08-20 04:08:09.152	\N	\N	2025-08-20 04:08:09.142
+1282	new	correct	2025-08-20 04:08:12.458	2025-08-20 04:08:12.458	\N	\N	2025-08-20 04:08:12.451
+1283	warmup	correct	2025-08-20 04:08:15.825	2025-08-20 04:08:15.825	\N	\N	2025-08-20 04:08:15.818
+1284	new	wrong	2025-08-20 04:08:18.463	2025-08-20 04:08:18.463	\N	\N	2025-08-20 04:08:18.457
+1285	new	correct	2025-08-20 04:08:28.567	2025-08-20 04:08:28.567	\N	\N	2025-08-20 04:08:28.557
+1286	new	correct	2025-08-20 04:08:36.779	2025-08-20 04:08:36.779	\N	\N	2025-08-20 04:08:36.757
+1287	warmup	correct	2025-08-20 04:08:40.28	2025-08-20 04:08:40.28	\N	\N	2025-08-20 04:08:40.272
+1288	warmup	correct	2025-08-20 04:08:42.335	2025-08-20 04:08:42.335	\N	\N	2025-08-20 04:08:42.328
+1289	new	correct	2025-08-20 04:08:45.11	2025-08-20 04:08:45.11	\N	\N	2025-08-20 04:08:45.104
+1290	new	correct	2025-08-20 04:08:50.014	2025-08-20 04:08:50.014	\N	\N	2025-08-20 04:08:50.007
+1291	warmup	correct	2025-08-20 04:08:52.912	2025-08-20 04:08:52.912	\N	\N	2025-08-20 04:08:52.905
+1292	new	wrong	2025-08-20 04:08:55.307	2025-08-20 04:08:55.307	\N	\N	2025-08-20 04:08:55.302
+1293	warmup	correct	2025-08-20 04:09:00.716	2025-08-20 04:09:00.716	\N	\N	2025-08-20 04:09:00.71
+1294	new	wrong	2025-08-20 04:09:04.669	2025-08-20 04:09:04.669	\N	\N	2025-08-20 04:09:04.662
+1295	warmup	correct	2025-08-20 04:09:11.665	2025-08-20 04:09:11.665	\N	\N	2025-08-20 04:09:11.657
+1296	warmup	correct	2025-08-20 04:09:14.22	2025-08-20 04:09:14.22	\N	\N	2025-08-20 04:09:14.212
+1297	warmup	correct	2025-08-20 04:09:18.086	2025-08-20 04:09:18.086	\N	\N	2025-08-20 04:09:18.079
+1298	warmup	correct	2025-08-20 04:09:21.827	2025-08-20 04:09:21.827	\N	\N	2025-08-20 04:09:21.82
+1299	new	wrong	2025-08-20 04:09:26.255	2025-08-20 04:09:26.255	\N	\N	2025-08-20 04:09:26.248
+1394	new	correct	2025-08-21 02:30:08.762	2025-08-21 02:30:08.762	\N	\N	2025-08-21 02:30:08.755
+1395	new	correct	2025-08-21 02:30:14.054	2025-08-21 02:30:14.054	\N	\N	2025-08-21 02:30:14.043
+1396	new	correct	2025-08-21 02:30:16.813	2025-08-21 02:30:16.813	\N	\N	2025-08-21 02:30:16.792
+1397	new	correct	2025-08-21 02:30:19.91	2025-08-21 02:30:19.91	\N	\N	2025-08-21 02:30:19.9
+1398	new	correct	2025-08-21 02:30:23.867	2025-08-21 02:30:23.867	\N	\N	2025-08-21 02:30:23.86
+1399	new	correct	2025-08-21 02:30:29.952	2025-08-21 02:30:29.952	\N	\N	2025-08-21 02:30:29.943
+1400	new	correct	2025-08-21 02:30:32.954	2025-08-21 02:30:32.954	\N	\N	2025-08-21 02:30:32.94
+1401	new	correct	2025-08-21 02:30:36.08	2025-08-21 02:30:36.08	\N	\N	2025-08-21 02:30:36.07
+1402	new	correct	2025-08-21 02:30:38.601	2025-08-21 02:30:38.601	\N	\N	2025-08-21 02:30:38.592
+1403	new	correct	2025-08-21 02:30:42.454	2025-08-21 02:30:42.454	\N	\N	2025-08-21 02:30:42.448
+1404	new	correct	2025-08-21 02:30:45.825	2025-08-21 02:30:45.825	\N	\N	2025-08-21 02:30:45.818
+1405	new	correct	2025-08-21 02:31:06.453	2025-08-21 02:31:06.453	\N	\N	2025-08-21 02:31:06.443
+1406	new	correct	2025-08-21 02:31:08.853	2025-08-21 02:31:08.853	\N	\N	2025-08-21 02:31:08.844
+1407	new	correct	2025-08-21 02:31:10.982	2025-08-21 02:31:10.982	\N	\N	2025-08-21 02:31:10.973
+1408	new	correct	2025-08-21 02:31:14.049	2025-08-21 02:31:14.049	\N	\N	2025-08-21 02:31:14.042
 591	warmup	correct	2025-08-14 01:53:07.374	2025-08-14 01:53:07.374	\N	\N	2025-08-14 01:53:06.911
 595	warmup	correct	2025-08-14 01:53:08.656	2025-08-14 01:53:08.656	\N	\N	2025-08-14 01:53:08.574
 601	warmup	correct	2025-08-14 01:54:07.603	2025-08-14 01:54:07.603	\N	\N	2025-08-14 01:54:07.536
@@ -8978,6 +9156,769 @@ COPY public.reviewlogs (id, level, result, created_at, updated_at, created_by_id
 1089	new	correct	2025-08-19 01:36:30.141	2025-08-19 01:36:30.141	\N	\N	2025-08-19 01:36:30.136
 1090	new	wrong	2025-08-19 01:36:34.598	2025-08-19 01:36:34.598	\N	\N	2025-08-19 01:36:34.59
 1091	new	wrong	2025-08-18 20:03:06.239	2025-08-18 20:03:06.239	\N	\N	2025-08-18 20:03:06.171
+1092	warmup	correct	2025-08-20 03:52:26.814	2025-08-20 03:52:26.814	\N	\N	2025-08-20 03:52:26.801
+1093	new	correct	2025-08-20 03:52:30.465	2025-08-20 03:52:30.465	\N	\N	2025-08-20 03:52:30.456
+1094	warmup	correct	2025-08-20 03:52:33.423	2025-08-20 03:52:33.423	\N	\N	2025-08-20 03:52:33.413
+1095	warmup	correct	2025-08-20 03:52:36.817	2025-08-20 03:52:36.817	\N	\N	2025-08-20 03:52:36.81
+1096	warmup	correct	2025-08-20 03:52:39.572	2025-08-20 03:52:39.572	\N	\N	2025-08-20 03:52:39.561
+1097	new	wrong	2025-08-20 03:52:47.956	2025-08-20 03:52:47.956	\N	\N	2025-08-20 03:52:47.947
+1098	warmup	correct	2025-08-20 03:54:16.205	2025-08-20 03:54:16.205	\N	\N	2025-08-20 03:54:16.196
+1099	new	correct	2025-08-20 03:54:19.751	2025-08-20 03:54:19.751	\N	\N	2025-08-20 03:54:19.744
+1100	warmup	correct	2025-08-20 03:54:22.869	2025-08-20 03:54:22.869	\N	\N	2025-08-20 03:54:22.861
+1101	warmup	correct	2025-08-20 03:54:26.185	2025-08-20 03:54:26.185	\N	\N	2025-08-20 03:54:26.179
+1102	warmup	correct	2025-08-20 03:54:29.228	2025-08-20 03:54:29.228	\N	\N	2025-08-20 03:54:29.219
+1103	new	correct	2025-08-20 03:54:32.98	2025-08-20 03:54:32.98	\N	\N	2025-08-20 03:54:32.962
+1104	new	correct	2025-08-20 03:54:35.884	2025-08-20 03:54:35.884	\N	\N	2025-08-20 03:54:35.87
+1105	new	correct	2025-08-20 03:54:38.461	2025-08-20 03:54:38.461	\N	\N	2025-08-20 03:54:38.455
+1106	new	correct	2025-08-20 03:54:41.117	2025-08-20 03:54:41.117	\N	\N	2025-08-20 03:54:41.112
+1107	new	correct	2025-08-20 03:54:43.954	2025-08-20 03:54:43.954	\N	\N	2025-08-20 03:54:43.948
+1108	new	correct	2025-08-20 03:54:48.662	2025-08-20 03:54:48.662	\N	\N	2025-08-20 03:54:48.648
+1109	new	correct	2025-08-20 03:55:01.129	2025-08-20 03:55:01.129	\N	\N	2025-08-20 03:55:01.12
+1110	new	correct	2025-08-20 03:55:04.158	2025-08-20 03:55:04.158	\N	\N	2025-08-20 03:55:04.151
+1111	new	correct	2025-08-20 03:55:06.908	2025-08-20 03:55:06.908	\N	\N	2025-08-20 03:55:06.901
+1112	new	wrong	2025-08-20 03:55:09.831	2025-08-20 03:55:09.831	\N	\N	2025-08-20 03:55:09.824
+1113	new	correct	2025-08-20 03:55:16.833	2025-08-20 03:55:16.833	\N	\N	2025-08-20 03:55:16.825
+1114	new	correct	2025-08-20 03:55:20.085	2025-08-20 03:55:20.085	\N	\N	2025-08-20 03:55:20.078
+1115	new	correct	2025-08-20 03:55:22.288	2025-08-20 03:55:22.288	\N	\N	2025-08-20 03:55:22.278
+1116	new	correct	2025-08-20 03:55:26.112	2025-08-20 03:55:26.112	\N	\N	2025-08-20 03:55:26.103
+1117	new	correct	2025-08-20 03:55:30.195	2025-08-20 03:55:30.195	\N	\N	2025-08-20 03:55:30.188
+1118	new	correct	2025-08-20 03:55:32.909	2025-08-20 03:55:32.909	\N	\N	2025-08-20 03:55:32.902
+1119	new	correct	2025-08-20 03:55:36.666	2025-08-20 03:55:36.666	\N	\N	2025-08-20 03:55:36.659
+1120	new	correct	2025-08-20 03:55:40.549	2025-08-20 03:55:40.549	\N	\N	2025-08-20 03:55:40.543
+1121	new	correct	2025-08-20 03:55:45.58	2025-08-20 03:55:45.58	\N	\N	2025-08-20 03:55:45.573
+1122	new	correct	2025-08-20 03:55:48.457	2025-08-20 03:55:48.457	\N	\N	2025-08-20 03:55:48.446
+1123	new	correct	2025-08-20 03:55:53.098	2025-08-20 03:55:53.098	\N	\N	2025-08-20 03:55:53.092
+1124	new	correct	2025-08-20 03:55:56.35	2025-08-20 03:55:56.35	\N	\N	2025-08-20 03:55:56.344
+1125	new	correct	2025-08-20 03:56:00.808	2025-08-20 03:56:00.808	\N	\N	2025-08-20 03:56:00.802
+1126	new	wrong	2025-08-20 03:56:07.683	2025-08-20 03:56:07.683	\N	\N	2025-08-20 03:56:07.674
+1127	new	correct	2025-08-20 03:56:30.484	2025-08-20 03:56:30.484	\N	\N	2025-08-20 03:56:30.474
+1128	new	wrong	2025-08-20 03:56:33.845	2025-08-20 03:56:33.845	\N	\N	2025-08-20 03:56:33.839
+1129	new	correct	2025-08-20 03:56:41.764	2025-08-20 03:56:41.764	\N	\N	2025-08-20 03:56:41.754
+1130	new	correct	2025-08-20 03:56:47.984	2025-08-20 03:56:47.984	\N	\N	2025-08-20 03:56:47.973
+1131	new	correct	2025-08-20 03:56:50.663	2025-08-20 03:56:50.663	\N	\N	2025-08-20 03:56:50.654
+1132	new	correct	2025-08-20 03:56:53.757	2025-08-20 03:56:53.757	\N	\N	2025-08-20 03:56:53.738
+1133	new	correct	2025-08-20 03:56:57.298	2025-08-20 03:56:57.298	\N	\N	2025-08-20 03:56:57.291
+1134	new	correct	2025-08-20 03:57:04.3	2025-08-20 03:57:04.3	\N	\N	2025-08-20 03:57:04.293
+1135	new	correct	2025-08-20 03:57:07.291	2025-08-20 03:57:07.291	\N	\N	2025-08-20 03:57:07.283
+1136	new	correct	2025-08-20 03:57:10.566	2025-08-20 03:57:10.566	\N	\N	2025-08-20 03:57:10.559
+1137	new	correct	2025-08-20 03:57:14.578	2025-08-20 03:57:14.578	\N	\N	2025-08-20 03:57:14.572
+1138	new	correct	2025-08-20 03:57:18.273	2025-08-20 03:57:18.273	\N	\N	2025-08-20 03:57:18.266
+1139	new	correct	2025-08-20 03:57:20.909	2025-08-20 03:57:20.909	\N	\N	2025-08-20 03:57:20.903
+1140	new	correct	2025-08-20 03:57:28.474	2025-08-20 03:57:28.474	\N	\N	2025-08-20 03:57:28.467
+1141	new	correct	2025-08-20 03:57:33.303	2025-08-20 03:57:33.303	\N	\N	2025-08-20 03:57:33.296
+1142	new	correct	2025-08-20 03:57:37.289	2025-08-20 03:57:37.289	\N	\N	2025-08-20 03:57:37.282
+1143	new	correct	2025-08-20 03:57:40.483	2025-08-20 03:57:40.483	\N	\N	2025-08-20 03:57:40.476
+1144	new	correct	2025-08-20 03:57:43.285	2025-08-20 03:57:43.285	\N	\N	2025-08-20 03:57:43.279
+1145	new	correct	2025-08-20 03:57:47.564	2025-08-20 03:57:47.564	\N	\N	2025-08-20 03:57:47.558
+1146	new	correct	2025-08-20 03:57:51.557	2025-08-20 03:57:51.557	\N	\N	2025-08-20 03:57:51.55
+1147	new	correct	2025-08-20 03:57:56.252	2025-08-20 03:57:56.252	\N	\N	2025-08-20 03:57:56.189
+1148	new	correct	2025-08-20 03:58:00.608	2025-08-20 03:58:00.608	\N	\N	2025-08-20 03:58:00.601
+1149	new	correct	2025-08-20 03:58:03.18	2025-08-20 03:58:03.18	\N	\N	2025-08-20 03:58:03.174
+1150	new	correct	2025-08-20 03:58:08.089	2025-08-20 03:58:08.089	\N	\N	2025-08-20 03:58:08.083
+1151	new	correct	2025-08-20 03:58:10.712	2025-08-20 03:58:10.712	\N	\N	2025-08-20 03:58:10.705
+1152	new	correct	2025-08-20 03:58:13.7	2025-08-20 03:58:13.7	\N	\N	2025-08-20 03:58:13.694
+1153	new	correct	2025-08-20 03:58:16.937	2025-08-20 03:58:16.937	\N	\N	2025-08-20 03:58:16.931
+1154	new	correct	2025-08-20 03:58:24.914	2025-08-20 03:58:24.914	\N	\N	2025-08-20 03:58:24.906
+1155	new	correct	2025-08-20 03:58:27.52	2025-08-20 03:58:27.52	\N	\N	2025-08-20 03:58:27.512
+1156	new	correct	2025-08-20 03:58:31.192	2025-08-20 03:58:31.192	\N	\N	2025-08-20 03:58:31.186
+1157	new	correct	2025-08-20 03:58:36.378	2025-08-20 03:58:36.378	\N	\N	2025-08-20 03:58:36.37
+1158	new	correct	2025-08-20 03:58:39.936	2025-08-20 03:58:39.936	\N	\N	2025-08-20 03:58:39.93
+1159	new	correct	2025-08-20 03:58:43.905	2025-08-20 03:58:43.905	\N	\N	2025-08-20 03:58:43.898
+1160	new	correct	2025-08-20 03:58:46.607	2025-08-20 03:58:46.607	\N	\N	2025-08-20 03:58:46.6
+1161	new	correct	2025-08-20 03:58:49.294	2025-08-20 03:58:49.294	\N	\N	2025-08-20 03:58:49.287
+1162	new	correct	2025-08-20 03:58:53.396	2025-08-20 03:58:53.396	\N	\N	2025-08-20 03:58:53.387
+1163	new	correct	2025-08-20 03:59:03.745	2025-08-20 03:59:03.745	\N	\N	2025-08-20 03:59:03.734
+1164	new	correct	2025-08-20 03:59:09.036	2025-08-20 03:59:09.036	\N	\N	2025-08-20 03:59:09.031
+1165	new	correct	2025-08-20 03:59:12.058	2025-08-20 03:59:12.058	\N	\N	2025-08-20 03:59:12.05
+1166	new	correct	2025-08-20 03:59:14.727	2025-08-20 03:59:14.727	\N	\N	2025-08-20 03:59:14.717
+1167	new	correct	2025-08-20 03:59:17.582	2025-08-20 03:59:17.582	\N	\N	2025-08-20 03:59:17.551
+1168	new	correct	2025-08-20 03:59:20.389	2025-08-20 03:59:20.389	\N	\N	2025-08-20 03:59:20.383
+1169	new	correct	2025-08-20 03:59:23.423	2025-08-20 03:59:23.423	\N	\N	2025-08-20 03:59:23.413
+1170	new	correct	2025-08-20 03:59:26.986	2025-08-20 03:59:26.986	\N	\N	2025-08-20 03:59:26.979
+1171	new	correct	2025-08-20 03:59:31.58	2025-08-20 03:59:31.58	\N	\N	2025-08-20 03:59:31.571
+1172	new	wrong	2025-08-20 03:59:43.033	2025-08-20 03:59:43.033	\N	\N	2025-08-20 03:59:43.023
+1173	new	correct	2025-08-20 03:59:56.869	2025-08-20 03:59:56.869	\N	\N	2025-08-20 03:59:56.86
+1174	new	correct	2025-08-20 03:59:59.442	2025-08-20 03:59:59.442	\N	\N	2025-08-20 03:59:59.435
+1175	new	correct	2025-08-20 04:00:02.154	2025-08-20 04:00:02.154	\N	\N	2025-08-20 04:00:02.101
+1176	new	correct	2025-08-20 04:00:06.158	2025-08-20 04:00:06.158	\N	\N	2025-08-20 04:00:06.119
+1177	new	correct	2025-08-20 04:00:09.593	2025-08-20 04:00:09.593	\N	\N	2025-08-20 04:00:09.587
+1178	new	correct	2025-08-20 04:00:21	2025-08-20 04:00:21	\N	\N	2025-08-20 04:00:20.993
+1179	new	correct	2025-08-20 04:00:24.343	2025-08-20 04:00:24.343	\N	\N	2025-08-20 04:00:24.334
+1180	new	correct	2025-08-20 04:00:31.614	2025-08-20 04:00:31.614	\N	\N	2025-08-20 04:00:31.607
+1181	new	correct	2025-08-20 04:00:44.573	2025-08-20 04:00:44.573	\N	\N	2025-08-20 04:00:44.566
+1182	new	correct	2025-08-20 04:00:55.878	2025-08-20 04:00:55.878	\N	\N	2025-08-20 04:00:55.87
+1183	new	correct	2025-08-20 04:00:58.514	2025-08-20 04:00:58.514	\N	\N	2025-08-20 04:00:58.503
+1184	new	correct	2025-08-20 04:01:00.921	2025-08-20 04:01:00.921	\N	\N	2025-08-20 04:01:00.914
+1185	new	correct	2025-08-20 04:01:03.637	2025-08-20 04:01:03.637	\N	\N	2025-08-20 04:01:03.63
+1186	new	correct	2025-08-20 04:01:06.96	2025-08-20 04:01:06.96	\N	\N	2025-08-20 04:01:06.91
+1187	new	correct	2025-08-20 04:01:13.487	2025-08-20 04:01:13.487	\N	\N	2025-08-20 04:01:13.481
+1188	new	wrong	2025-08-20 04:01:23.914	2025-08-20 04:01:23.914	\N	\N	2025-08-20 04:01:23.904
+1189	new	correct	2025-08-20 04:01:34.972	2025-08-20 04:01:34.972	\N	\N	2025-08-20 04:01:34.962
+1190	new	correct	2025-08-20 04:01:38.802	2025-08-20 04:01:38.802	\N	\N	2025-08-20 04:01:38.793
+1191	new	correct	2025-08-20 04:01:42.431	2025-08-20 04:01:42.431	\N	\N	2025-08-20 04:01:42.425
+1192	new	correct	2025-08-20 04:01:47.496	2025-08-20 04:01:47.496	\N	\N	2025-08-20 04:01:47.487
+1193	new	wrong	2025-08-20 04:02:04.482	2025-08-20 04:02:04.482	\N	\N	2025-08-20 04:02:04.474
+1194	new	correct	2025-08-20 04:02:13.844	2025-08-20 04:02:13.844	\N	\N	2025-08-20 04:02:13.837
+1195	new	correct	2025-08-20 04:02:15.915	2025-08-20 04:02:15.915	\N	\N	2025-08-20 04:02:15.908
+1196	new	correct	2025-08-20 04:02:20.394	2025-08-20 04:02:20.394	\N	\N	2025-08-20 04:02:20.388
+1197	new	correct	2025-08-20 04:02:23.366	2025-08-20 04:02:23.366	\N	\N	2025-08-20 04:02:23.358
+1198	new	correct	2025-08-20 04:02:26.018	2025-08-20 04:02:26.018	\N	\N	2025-08-20 04:02:26.012
+1199	new	correct	2025-08-20 04:02:28.801	2025-08-20 04:02:28.801	\N	\N	2025-08-20 04:02:28.793
+1200	new	correct	2025-08-20 04:02:35.472	2025-08-20 04:02:35.472	\N	\N	2025-08-20 04:02:35.465
+1201	new	correct	2025-08-20 04:02:37.968	2025-08-20 04:02:37.968	\N	\N	2025-08-20 04:02:37.956
+1202	new	correct	2025-08-20 04:02:40.598	2025-08-20 04:02:40.598	\N	\N	2025-08-20 04:02:40.59
+1203	new	correct	2025-08-20 04:02:44.463	2025-08-20 04:02:44.463	\N	\N	2025-08-20 04:02:44.452
+1204	new	correct	2025-08-20 04:02:47.586	2025-08-20 04:02:47.586	\N	\N	2025-08-20 04:02:47.579
+1205	new	correct	2025-08-20 04:02:53.349	2025-08-20 04:02:53.349	\N	\N	2025-08-20 04:02:53.343
+1206	new	correct	2025-08-20 04:03:00.912	2025-08-20 04:03:00.912	\N	\N	2025-08-20 04:03:00.905
+1207	new	correct	2025-08-20 04:03:05.876	2025-08-20 04:03:05.876	\N	\N	2025-08-20 04:03:05.868
+1208	new	correct	2025-08-20 04:03:08.893	2025-08-20 04:03:08.893	\N	\N	2025-08-20 04:03:08.881
+1209	new	correct	2025-08-20 04:03:12.596	2025-08-20 04:03:12.596	\N	\N	2025-08-20 04:03:12.59
+1210	new	correct	2025-08-20 04:03:15.705	2025-08-20 04:03:15.705	\N	\N	2025-08-20 04:03:15.699
+1211	new	correct	2025-08-20 04:03:19.915	2025-08-20 04:03:19.915	\N	\N	2025-08-20 04:03:19.908
+1212	new	correct	2025-08-20 04:03:23.394	2025-08-20 04:03:23.394	\N	\N	2025-08-20 04:03:23.387
+1213	new	wrong	2025-08-20 04:03:25.765	2025-08-20 04:03:25.765	\N	\N	2025-08-20 04:03:25.759
+1214	new	correct	2025-08-20 04:03:32.868	2025-08-20 04:03:32.868	\N	\N	2025-08-20 04:03:32.862
+1215	new	correct	2025-08-20 04:03:35.107	2025-08-20 04:03:35.107	\N	\N	2025-08-20 04:03:35.099
+1300	new	correct	2025-08-21 02:23:44.601	2025-08-21 02:23:44.601	\N	\N	2025-08-21 02:23:44.559
+1301	new	correct	2025-08-21 02:23:48.592	2025-08-21 02:23:48.592	\N	\N	2025-08-21 02:23:48.575
+1302	new	correct	2025-08-21 02:23:51.432	2025-08-21 02:23:51.432	\N	\N	2025-08-21 02:23:51.425
+1303	new	correct	2025-08-21 02:23:54.327	2025-08-21 02:23:54.327	\N	\N	2025-08-21 02:23:54.321
+1304	new	correct	2025-08-21 02:23:57.044	2025-08-21 02:23:57.044	\N	\N	2025-08-21 02:23:57.022
+1305	new	correct	2025-08-21 02:24:00.442	2025-08-21 02:24:00.442	\N	\N	2025-08-21 02:24:00.435
+1306	new	correct	2025-08-21 02:24:03.449	2025-08-21 02:24:03.449	\N	\N	2025-08-21 02:24:03.443
+1307	new	correct	2025-08-21 02:24:07.627	2025-08-21 02:24:07.627	\N	\N	2025-08-21 02:24:07.618
+1308	new	correct	2025-08-21 02:24:10.269	2025-08-21 02:24:10.269	\N	\N	2025-08-21 02:24:10.263
+1309	new	correct	2025-08-21 02:24:14.269	2025-08-21 02:24:14.269	\N	\N	2025-08-21 02:24:14.261
+1310	new	correct	2025-08-21 02:24:17.54	2025-08-21 02:24:17.54	\N	\N	2025-08-21 02:24:17.534
+1311	new	correct	2025-08-21 02:24:22.846	2025-08-21 02:24:22.846	\N	\N	2025-08-21 02:24:22.835
+1312	new	correct	2025-08-21 02:24:25.505	2025-08-21 02:24:25.505	\N	\N	2025-08-21 02:24:25.498
+1313	new	correct	2025-08-21 02:24:28.713	2025-08-21 02:24:28.713	\N	\N	2025-08-21 02:24:28.703
+1314	new	correct	2025-08-21 02:24:31.176	2025-08-21 02:24:31.176	\N	\N	2025-08-21 02:24:31.169
+1315	new	correct	2025-08-21 02:24:36.334	2025-08-21 02:24:36.334	\N	\N	2025-08-21 02:24:36.322
+1316	new	correct	2025-08-21 02:24:40.333	2025-08-21 02:24:40.333	\N	\N	2025-08-21 02:24:40.326
+1317	new	correct	2025-08-21 02:24:43.19	2025-08-21 02:24:43.19	\N	\N	2025-08-21 02:24:43.181
+1318	new	correct	2025-08-21 02:24:46.685	2025-08-21 02:24:46.685	\N	\N	2025-08-21 02:24:46.68
+1319	new	correct	2025-08-21 02:24:51.583	2025-08-21 02:24:51.583	\N	\N	2025-08-21 02:24:51.575
+1320	new	correct	2025-08-21 02:24:54.915	2025-08-21 02:24:54.915	\N	\N	2025-08-21 02:24:54.904
+1321	new	correct	2025-08-21 02:24:58.084	2025-08-21 02:24:58.084	\N	\N	2025-08-21 02:24:58.075
+1322	new	correct	2025-08-21 02:25:02.424	2025-08-21 02:25:02.424	\N	\N	2025-08-21 02:25:02.411
+1323	new	wrong	2025-08-21 02:25:09.617	2025-08-21 02:25:09.617	\N	\N	2025-08-21 02:25:09.609
+1324	new	correct	2025-08-21 02:25:33.779	2025-08-21 02:25:33.779	\N	\N	2025-08-21 02:25:33.77
+1325	new	correct	2025-08-21 02:25:36.54	2025-08-21 02:25:36.54	\N	\N	2025-08-21 02:25:36.53
+1326	new	correct	2025-08-21 02:25:39.334	2025-08-21 02:25:39.334	\N	\N	2025-08-21 02:25:39.325
+1327	new	correct	2025-08-21 02:25:46.656	2025-08-21 02:25:46.656	\N	\N	2025-08-21 02:25:46.649
+1328	new	correct	2025-08-21 02:25:50.84	2025-08-21 02:25:50.84	\N	\N	2025-08-21 02:25:50.828
+1329	new	correct	2025-08-21 02:25:53.431	2025-08-21 02:25:53.431	\N	\N	2025-08-21 02:25:53.422
+1330	new	correct	2025-08-21 02:25:58.071	2025-08-21 02:25:58.071	\N	\N	2025-08-21 02:25:58.066
+1331	new	correct	2025-08-21 02:26:02.175	2025-08-21 02:26:02.175	\N	\N	2025-08-21 02:26:02.162
+1332	new	correct	2025-08-21 02:26:04.916	2025-08-21 02:26:04.916	\N	\N	2025-08-21 02:26:04.907
+1333	new	correct	2025-08-21 02:26:09.272	2025-08-21 02:26:09.272	\N	\N	2025-08-21 02:26:09.265
+1334	new	correct	2025-08-21 02:26:33.105	2025-08-21 02:26:33.105	\N	\N	2025-08-21 02:26:33.092
+1335	new	correct	2025-08-21 02:26:36.941	2025-08-21 02:26:36.941	\N	\N	2025-08-21 02:26:36.931
+1336	new	correct	2025-08-21 02:26:39.614	2025-08-21 02:26:39.614	\N	\N	2025-08-21 02:26:39.607
+1337	new	correct	2025-08-21 02:26:42.236	2025-08-21 02:26:42.236	\N	\N	2025-08-21 02:26:42.23
+1338	new	correct	2025-08-21 02:26:45.465	2025-08-21 02:26:45.465	\N	\N	2025-08-21 02:26:45.456
+1339	new	correct	2025-08-21 02:26:48.694	2025-08-21 02:26:48.694	\N	\N	2025-08-21 02:26:48.687
+1340	new	correct	2025-08-21 02:26:52.775	2025-08-21 02:26:52.775	\N	\N	2025-08-21 02:26:52.769
+1341	new	correct	2025-08-21 02:26:57.341	2025-08-21 02:26:57.341	\N	\N	2025-08-21 02:26:57.334
+1342	new	correct	2025-08-21 02:26:59.566	2025-08-21 02:26:59.566	\N	\N	2025-08-21 02:26:59.558
+1343	new	correct	2025-08-21 02:27:02.65	2025-08-21 02:27:02.65	\N	\N	2025-08-21 02:27:02.641
+1344	new	correct	2025-08-21 02:27:04.8	2025-08-21 02:27:04.8	\N	\N	2025-08-21 02:27:04.793
+1345	new	correct	2025-08-21 02:27:08.393	2025-08-21 02:27:08.393	\N	\N	2025-08-21 02:27:08.388
+1346	new	correct	2025-08-21 02:27:10.969	2025-08-21 02:27:10.969	\N	\N	2025-08-21 02:27:10.958
+1347	new	wrong	2025-08-21 02:27:14.032	2025-08-21 02:27:14.032	\N	\N	2025-08-21 02:27:14.025
+1348	new	correct	2025-08-21 02:27:19.726	2025-08-21 02:27:19.726	\N	\N	2025-08-21 02:27:19.717
+1349	new	correct	2025-08-21 02:27:22.58	2025-08-21 02:27:22.58	\N	\N	2025-08-21 02:27:22.571
+1350	new	correct	2025-08-21 02:27:25.424	2025-08-21 02:27:25.424	\N	\N	2025-08-21 02:27:25.418
+1351	new	correct	2025-08-21 02:27:28.443	2025-08-21 02:27:28.443	\N	\N	2025-08-21 02:27:28.436
+1352	new	correct	2025-08-21 02:27:31.782	2025-08-21 02:27:31.782	\N	\N	2025-08-21 02:27:31.774
+1353	new	correct	2025-08-21 02:27:34.957	2025-08-21 02:27:34.957	\N	\N	2025-08-21 02:27:34.95
+1354	new	correct	2025-08-21 02:27:38.029	2025-08-21 02:27:38.029	\N	\N	2025-08-21 02:27:38.02
+1355	new	wrong	2025-08-21 02:27:41.831	2025-08-21 02:27:41.831	\N	\N	2025-08-21 02:27:41.826
+1356	new	correct	2025-08-21 02:27:54.341	2025-08-21 02:27:54.341	\N	\N	2025-08-21 02:27:54.334
+1357	new	correct	2025-08-21 02:27:58.145	2025-08-21 02:27:58.145	\N	\N	2025-08-21 02:27:58.137
+1358	new	correct	2025-08-21 02:28:01.362	2025-08-21 02:28:01.362	\N	\N	2025-08-21 02:28:01.356
+1359	new	correct	2025-08-21 02:28:04.037	2025-08-21 02:28:04.037	\N	\N	2025-08-21 02:28:04.031
+1360	new	correct	2025-08-21 02:28:07.182	2025-08-21 02:28:07.182	\N	\N	2025-08-21 02:28:07.169
+1361	new	correct	2025-08-21 02:28:09.289	2025-08-21 02:28:09.289	\N	\N	2025-08-21 02:28:09.284
+1362	new	correct	2025-08-21 02:28:12.097	2025-08-21 02:28:12.097	\N	\N	2025-08-21 02:28:12.071
+1363	new	correct	2025-08-21 02:28:15.389	2025-08-21 02:28:15.389	\N	\N	2025-08-21 02:28:15.382
+1364	new	correct	2025-08-21 02:28:19.217	2025-08-21 02:28:19.217	\N	\N	2025-08-21 02:28:19.208
+1365	new	correct	2025-08-21 02:28:22.005	2025-08-21 02:28:22.005	\N	\N	2025-08-21 02:28:21.994
+1366	new	correct	2025-08-21 02:28:26.347	2025-08-21 02:28:26.347	\N	\N	2025-08-21 02:28:26.342
+1367	new	correct	2025-08-21 02:28:29.334	2025-08-21 02:28:29.334	\N	\N	2025-08-21 02:28:29.329
+1368	new	correct	2025-08-21 02:28:32.159	2025-08-21 02:28:32.159	\N	\N	2025-08-21 02:28:32.152
+1369	new	correct	2025-08-21 02:28:38.217	2025-08-21 02:28:38.217	\N	\N	2025-08-21 02:28:38.211
+1370	new	correct	2025-08-21 02:28:41.273	2025-08-21 02:28:41.273	\N	\N	2025-08-21 02:28:41.262
+1371	new	correct	2025-08-21 02:28:45.856	2025-08-21 02:28:45.856	\N	\N	2025-08-21 02:28:45.848
+1372	new	correct	2025-08-21 02:28:48.963	2025-08-21 02:28:48.963	\N	\N	2025-08-21 02:28:48.956
+1373	new	correct	2025-08-21 02:28:52.469	2025-08-21 02:28:52.469	\N	\N	2025-08-21 02:28:52.462
+1374	new	correct	2025-08-21 02:28:56.658	2025-08-21 02:28:56.658	\N	\N	2025-08-21 02:28:56.652
+1375	new	correct	2025-08-21 02:28:59.832	2025-08-21 02:28:59.832	\N	\N	2025-08-21 02:28:59.826
+1376	new	correct	2025-08-21 02:29:02.375	2025-08-21 02:29:02.375	\N	\N	2025-08-21 02:29:02.37
+1377	new	correct	2025-08-21 02:29:04.851	2025-08-21 02:29:04.851	\N	\N	2025-08-21 02:29:04.846
+1378	new	correct	2025-08-21 02:29:07.808	2025-08-21 02:29:07.808	\N	\N	2025-08-21 02:29:07.801
+1379	new	correct	2025-08-21 02:29:10.943	2025-08-21 02:29:10.943	\N	\N	2025-08-21 02:29:10.935
+1380	new	correct	2025-08-21 02:29:15.642	2025-08-21 02:29:15.642	\N	\N	2025-08-21 02:29:15.636
+1381	new	correct	2025-08-21 02:29:20.077	2025-08-21 02:29:20.077	\N	\N	2025-08-21 02:29:20.07
+1382	new	correct	2025-08-21 02:29:24.521	2025-08-21 02:29:24.521	\N	\N	2025-08-21 02:29:24.513
+1383	new	correct	2025-08-21 02:29:27.859	2025-08-21 02:29:27.859	\N	\N	2025-08-21 02:29:27.853
+1384	new	correct	2025-08-21 02:29:30.762	2025-08-21 02:29:30.762	\N	\N	2025-08-21 02:29:30.757
+1385	new	correct	2025-08-21 02:29:34.315	2025-08-21 02:29:34.315	\N	\N	2025-08-21 02:29:34.298
+1386	new	correct	2025-08-21 02:29:37.169	2025-08-21 02:29:37.169	\N	\N	2025-08-21 02:29:37.155
+1387	new	correct	2025-08-21 02:29:39.661	2025-08-21 02:29:39.661	\N	\N	2025-08-21 02:29:39.654
+1388	new	correct	2025-08-21 02:29:47.996	2025-08-21 02:29:47.996	\N	\N	2025-08-21 02:29:47.988
+1389	new	correct	2025-08-21 02:29:50.788	2025-08-21 02:29:50.788	\N	\N	2025-08-21 02:29:50.774
+1390	new	correct	2025-08-21 02:29:56.598	2025-08-21 02:29:56.598	\N	\N	2025-08-21 02:29:56.588
+1391	new	correct	2025-08-21 02:29:58.597	2025-08-21 02:29:58.597	\N	\N	2025-08-21 02:29:58.59
+1392	new	correct	2025-08-21 02:30:02.244	2025-08-21 02:30:02.244	\N	\N	2025-08-21 02:30:02.233
+1393	new	correct	2025-08-21 02:30:04.852	2025-08-21 02:30:04.852	\N	\N	2025-08-21 02:30:04.842
+1409	new	correct	2025-08-21 02:31:16.988	2025-08-21 02:31:16.988	\N	\N	2025-08-21 02:31:16.979
+1410	new	correct	2025-08-21 02:31:20.673	2025-08-21 02:31:20.673	\N	\N	2025-08-21 02:31:20.665
+1411	new	correct	2025-08-21 02:31:23.76	2025-08-21 02:31:23.76	\N	\N	2025-08-21 02:31:23.752
+1412	new	correct	2025-08-21 02:31:26.586	2025-08-21 02:31:26.586	\N	\N	2025-08-21 02:31:26.57
+1413	new	correct	2025-08-21 02:31:29.618	2025-08-21 02:31:29.618	\N	\N	2025-08-21 02:31:29.608
+1414	new	correct	2025-08-21 02:31:32.605	2025-08-21 02:31:32.605	\N	\N	2025-08-21 02:31:32.593
+1415	new	correct	2025-08-21 02:31:41.126	2025-08-21 02:31:41.126	\N	\N	2025-08-21 02:31:41.107
+1416	new	correct	2025-08-21 02:31:45.573	2025-08-21 02:31:45.573	\N	\N	2025-08-21 02:31:45.565
+1417	new	wrong	2025-08-21 02:31:50.781	2025-08-21 02:31:50.781	\N	\N	2025-08-21 02:31:50.771
+1418	new	correct	2025-08-21 02:32:01.39	2025-08-21 02:32:01.39	\N	\N	2025-08-21 02:32:01.382
+1419	new	correct	2025-08-21 02:32:05.938	2025-08-21 02:32:05.938	\N	\N	2025-08-21 02:32:05.927
+1420	new	correct	2025-08-21 02:32:08.465	2025-08-21 02:32:08.465	\N	\N	2025-08-21 02:32:08.459
+1421	new	correct	2025-08-21 02:32:11.388	2025-08-21 02:32:11.388	\N	\N	2025-08-21 02:32:11.377
+1422	new	correct	2025-08-21 02:32:14.944	2025-08-21 02:32:14.944	\N	\N	2025-08-21 02:32:14.935
+1423	new	correct	2025-08-21 02:32:21.772	2025-08-21 02:32:21.772	\N	\N	2025-08-21 02:32:21.764
+1424	new	correct	2025-08-21 02:32:24.053	2025-08-21 02:32:24.053	\N	\N	2025-08-21 02:32:24.042
+1425	new	correct	2025-08-21 02:32:26.829	2025-08-21 02:32:26.829	\N	\N	2025-08-21 02:32:26.818
+1426	new	correct	2025-08-21 02:32:34.607	2025-08-21 02:32:34.607	\N	\N	2025-08-21 02:32:34.597
+1427	new	correct	2025-08-21 02:32:42.666	2025-08-21 02:32:42.666	\N	\N	2025-08-21 02:32:42.653
+1428	new	correct	2025-08-21 02:32:45.685	2025-08-21 02:32:45.685	\N	\N	2025-08-21 02:32:45.673
+1429	new	correct	2025-08-21 02:32:48.694	2025-08-21 02:32:48.694	\N	\N	2025-08-21 02:32:48.681
+1430	new	correct	2025-08-21 02:32:50.932	2025-08-21 02:32:50.932	\N	\N	2025-08-21 02:32:50.923
+1431	new	wrong	2025-08-21 02:32:54.324	2025-08-21 02:32:54.324	\N	\N	2025-08-21 02:32:54.318
+1432	new	correct	2025-08-21 02:33:02.808	2025-08-21 02:33:02.808	\N	\N	2025-08-21 02:33:02.798
+1433	new	wrong	2025-08-21 02:33:05.565	2025-08-21 02:33:05.565	\N	\N	2025-08-21 02:33:05.556
+1434	new	correct	2025-08-21 02:33:10.38	2025-08-21 02:33:10.38	\N	\N	2025-08-21 02:33:10.371
+1435	new	correct	2025-08-21 02:33:13.214	2025-08-21 02:33:13.214	\N	\N	2025-08-21 02:33:13.207
+1436	new	correct	2025-08-21 02:33:16.084	2025-08-21 02:33:16.084	\N	\N	2025-08-21 02:33:16.077
+1437	new	correct	2025-08-21 02:33:20.166	2025-08-21 02:33:20.166	\N	\N	2025-08-21 02:33:20.154
+1438	new	correct	2025-08-21 02:33:22.783	2025-08-21 02:33:22.783	\N	\N	2025-08-21 02:33:22.776
+1439	new	correct	2025-08-21 02:33:26.336	2025-08-21 02:33:26.336	\N	\N	2025-08-21 02:33:26.33
+1440	new	correct	2025-08-21 02:33:29.563	2025-08-21 02:33:29.563	\N	\N	2025-08-21 02:33:29.554
+1441	new	correct	2025-08-21 02:33:34.059	2025-08-21 02:33:34.059	\N	\N	2025-08-21 02:33:34.045
+1442	new	correct	2025-08-21 02:33:36.393	2025-08-21 02:33:36.393	\N	\N	2025-08-21 02:33:36.384
+1443	new	correct	2025-08-21 02:33:39.231	2025-08-21 02:33:39.231	\N	\N	2025-08-21 02:33:39.224
+1444	new	correct	2025-08-21 02:33:42.642	2025-08-21 02:33:42.642	\N	\N	2025-08-21 02:33:42.636
+1445	new	correct	2025-08-21 02:33:46.561	2025-08-21 02:33:46.561	\N	\N	2025-08-21 02:33:46.552
+1446	new	correct	2025-08-21 02:33:49.749	2025-08-21 02:33:49.749	\N	\N	2025-08-21 02:33:49.73
+1447	new	correct	2025-08-21 02:33:52.192	2025-08-21 02:33:52.192	\N	\N	2025-08-21 02:33:52.179
+1448	new	correct	2025-08-21 02:33:54.715	2025-08-21 02:33:54.715	\N	\N	2025-08-21 02:33:54.708
+1449	new	correct	2025-08-21 02:33:57.508	2025-08-21 02:33:57.508	\N	\N	2025-08-21 02:33:57.502
+1450	new	correct	2025-08-21 02:34:00.941	2025-08-21 02:34:00.941	\N	\N	2025-08-21 02:34:00.936
+1451	new	correct	2025-08-21 02:34:04.636	2025-08-21 02:34:04.636	\N	\N	2025-08-21 02:34:04.629
+1452	new	correct	2025-08-21 02:34:07.483	2025-08-21 02:34:07.483	\N	\N	2025-08-21 02:34:07.476
+1453	new	correct	2025-08-21 02:34:10.522	2025-08-21 02:34:10.522	\N	\N	2025-08-21 02:34:10.511
+1454	new	correct	2025-08-21 02:34:12.928	2025-08-21 02:34:12.928	\N	\N	2025-08-21 02:34:12.921
+1455	new	correct	2025-08-21 02:34:15.402	2025-08-21 02:34:15.402	\N	\N	2025-08-21 02:34:15.392
+1456	new	correct	2025-08-21 02:34:18.573	2025-08-21 02:34:18.573	\N	\N	2025-08-21 02:34:18.564
+1457	new	correct	2025-08-21 02:34:21.941	2025-08-21 02:34:21.941	\N	\N	2025-08-21 02:34:21.921
+1458	new	wrong	2025-08-21 02:34:26.88	2025-08-21 02:34:26.88	\N	\N	2025-08-21 02:34:26.87
+1459	new	correct	2025-08-21 02:34:35.831	2025-08-21 02:34:35.831	\N	\N	2025-08-21 02:34:35.822
+1460	new	correct	2025-08-21 02:34:38.356	2025-08-21 02:34:38.356	\N	\N	2025-08-21 02:34:38.347
+1461	new	correct	2025-08-21 02:34:40.82	2025-08-21 02:34:40.82	\N	\N	2025-08-21 02:34:40.812
+1462	new	correct	2025-08-21 02:34:44.961	2025-08-21 02:34:44.961	\N	\N	2025-08-21 02:34:44.953
+1463	new	wrong	2025-08-21 02:34:49.034	2025-08-21 02:34:49.034	\N	\N	2025-08-21 02:34:49.024
+1464	new	wrong	2025-08-21 02:34:56.381	2025-08-21 02:34:56.381	\N	\N	2025-08-21 02:34:56.372
+1465	new	correct	2025-08-21 02:35:02.587	2025-08-21 02:35:02.587	\N	\N	2025-08-21 02:35:02.574
+1466	new	correct	2025-08-21 02:35:05.864	2025-08-21 02:35:05.864	\N	\N	2025-08-21 02:35:05.85
+1467	new	wrong	2025-08-21 02:35:08.767	2025-08-21 02:35:08.767	\N	\N	2025-08-21 02:35:08.75
+1468	new	correct	2025-08-21 02:35:15.078	2025-08-21 02:35:15.078	\N	\N	2025-08-21 02:35:15.068
+1469	new	correct	2025-08-21 02:35:25.218	2025-08-21 02:35:25.218	\N	\N	2025-08-21 02:35:25.2
+1470	new	correct	2025-08-21 02:35:29.683	2025-08-21 02:35:29.683	\N	\N	2025-08-21 02:35:29.674
+1471	new	correct	2025-08-21 02:35:33.957	2025-08-21 02:35:33.957	\N	\N	2025-08-21 02:35:33.945
+1472	warmup	correct	2025-08-22 04:50:48.388	2025-08-22 04:50:48.388	\N	\N	2025-08-22 04:50:48.38
+1473	warmup	correct	2025-08-22 04:50:50.906	2025-08-22 04:50:50.906	\N	\N	2025-08-22 04:50:50.897
+1474	warmup	correct	2025-08-22 04:50:54.611	2025-08-22 04:50:54.611	\N	\N	2025-08-22 04:50:54.604
+1475	warmup	correct	2025-08-22 04:50:57.285	2025-08-22 04:50:57.285	\N	\N	2025-08-22 04:50:57.271
+1476	warmup	correct	2025-08-22 04:51:00.95	2025-08-22 04:51:00.95	\N	\N	2025-08-22 04:51:00.944
+1477	warmup	correct	2025-08-22 04:51:04.23	2025-08-22 04:51:04.23	\N	\N	2025-08-22 04:51:04.223
+1478	warmup	correct	2025-08-22 04:51:07.313	2025-08-22 04:51:07.313	\N	\N	2025-08-22 04:51:07.305
+1479	warmup	correct	2025-08-22 04:51:10.444	2025-08-22 04:51:10.444	\N	\N	2025-08-22 04:51:10.439
+1480	warmup	correct	2025-08-22 04:51:14.698	2025-08-22 04:51:14.698	\N	\N	2025-08-22 04:51:14.689
+1481	warmup	wrong	2025-08-22 04:51:21.082	2025-08-22 04:51:21.082	\N	\N	2025-08-22 04:51:21.073
+1482	warmup	correct	2025-08-22 04:51:29.708	2025-08-22 04:51:29.708	\N	\N	2025-08-22 04:51:29.701
+1483	warmup	correct	2025-08-22 04:51:32.646	2025-08-22 04:51:32.646	\N	\N	2025-08-22 04:51:32.636
+1484	warmup	correct	2025-08-22 04:51:35.643	2025-08-22 04:51:35.643	\N	\N	2025-08-22 04:51:35.637
+1485	warmup	correct	2025-08-22 04:51:38.223	2025-08-22 04:51:38.223	\N	\N	2025-08-22 04:51:38.214
+1486	warmup	correct	2025-08-22 04:51:43.643	2025-08-22 04:51:43.643	\N	\N	2025-08-22 04:51:43.634
+1487	warmup	correct	2025-08-22 04:51:46.944	2025-08-22 04:51:46.944	\N	\N	2025-08-22 04:51:46.936
+1488	warmup	correct	2025-08-22 04:51:49.422	2025-08-22 04:51:49.422	\N	\N	2025-08-22 04:51:49.412
+1489	warmup	correct	2025-08-22 04:51:52.972	2025-08-22 04:51:52.972	\N	\N	2025-08-22 04:51:52.965
+1490	warmup	correct	2025-08-22 04:51:55.384	2025-08-22 04:51:55.384	\N	\N	2025-08-22 04:51:55.375
+1491	new	correct	2025-08-22 04:51:58.305	2025-08-22 04:51:58.305	\N	\N	2025-08-22 04:51:58.297
+1492	new	correct	2025-08-22 04:52:03.109	2025-08-22 04:52:03.109	\N	\N	2025-08-22 04:52:03.103
+1493	warmup	correct	2025-08-22 04:52:05.796	2025-08-22 04:52:05.796	\N	\N	2025-08-22 04:52:05.785
+1494	warmup	correct	2025-08-22 04:52:08.167	2025-08-22 04:52:08.167	\N	\N	2025-08-22 04:52:08.161
+1495	warmup	correct	2025-08-22 04:52:10.453	2025-08-22 04:52:10.453	\N	\N	2025-08-22 04:52:10.444
+1496	warmup	correct	2025-08-22 04:52:13.29	2025-08-22 04:52:13.29	\N	\N	2025-08-22 04:52:13.282
+1497	warmup	correct	2025-08-22 04:52:15.715	2025-08-22 04:52:15.715	\N	\N	2025-08-22 04:52:15.709
+1498	warmup	correct	2025-08-22 04:52:18.86	2025-08-22 04:52:18.86	\N	\N	2025-08-22 04:52:18.852
+1499	warmup	correct	2025-08-22 04:52:21.9	2025-08-22 04:52:21.9	\N	\N	2025-08-22 04:52:21.894
+1500	new	correct	2025-08-22 04:52:24.64	2025-08-22 04:52:24.64	\N	\N	2025-08-22 04:52:24.634
+1501	warmup	correct	2025-08-22 04:52:27.507	2025-08-22 04:52:27.507	\N	\N	2025-08-22 04:52:27.502
+1502	new	wrong	2025-08-22 04:52:34.788	2025-08-22 04:52:34.788	\N	\N	2025-08-22 04:52:34.776
+1503	new	correct	2025-08-22 04:53:05.739	2025-08-22 04:53:05.739	\N	\N	2025-08-22 04:53:05.732
+1504	warmup	correct	2025-08-22 04:53:08.878	2025-08-22 04:53:08.878	\N	\N	2025-08-22 04:53:08.838
+1505	warmup	correct	2025-08-22 04:53:11.079	2025-08-22 04:53:11.079	\N	\N	2025-08-22 04:53:11.072
+1506	warmup	correct	2025-08-22 04:53:13.597	2025-08-22 04:53:13.597	\N	\N	2025-08-22 04:53:13.59
+1507	warmup	correct	2025-08-22 04:53:16.567	2025-08-22 04:53:16.567	\N	\N	2025-08-22 04:53:16.561
+1508	warmup	correct	2025-08-22 04:53:19.072	2025-08-22 04:53:19.072	\N	\N	2025-08-22 04:53:19.066
+1509	warmup	correct	2025-08-22 04:53:21.809	2025-08-22 04:53:21.809	\N	\N	2025-08-22 04:53:21.801
+1510	warmup	correct	2025-08-22 04:53:24.804	2025-08-22 04:53:24.804	\N	\N	2025-08-22 04:53:24.798
+1511	warmup	correct	2025-08-22 04:53:27.068	2025-08-22 04:53:27.068	\N	\N	2025-08-22 04:53:27.063
+1512	warmup	correct	2025-08-22 04:53:29.384	2025-08-22 04:53:29.384	\N	\N	2025-08-22 04:53:29.378
+1513	warmup	correct	2025-08-22 04:53:33.533	2025-08-22 04:53:33.533	\N	\N	2025-08-22 04:53:33.527
+1514	new	correct	2025-08-22 04:53:39.257	2025-08-22 04:53:39.257	\N	\N	2025-08-22 04:53:39.249
+1515	warmup	correct	2025-08-22 04:53:42.654	2025-08-22 04:53:42.654	\N	\N	2025-08-22 04:53:42.645
+1516	warmup	correct	2025-08-22 04:53:45.131	2025-08-22 04:53:45.131	\N	\N	2025-08-22 04:53:45.123
+1517	warmup	correct	2025-08-22 04:53:47.629	2025-08-22 04:53:47.629	\N	\N	2025-08-22 04:53:47.623
+1518	warmup	correct	2025-08-22 04:53:51.269	2025-08-22 04:53:51.269	\N	\N	2025-08-22 04:53:51.262
+1519	warmup	correct	2025-08-22 04:53:53.483	2025-08-22 04:53:53.483	\N	\N	2025-08-22 04:53:53.474
+1520	warmup	correct	2025-08-22 04:53:56.805	2025-08-22 04:53:56.805	\N	\N	2025-08-22 04:53:56.788
+1521	new	correct	2025-08-22 04:54:01.071	2025-08-22 04:54:01.071	\N	\N	2025-08-22 04:54:01.062
+1522	warmup	correct	2025-08-22 04:54:04.317	2025-08-22 04:54:04.317	\N	\N	2025-08-22 04:54:04.308
+1523	warmup	correct	2025-08-22 04:54:07.076	2025-08-22 04:54:07.076	\N	\N	2025-08-22 04:54:07.069
+1524	new	correct	2025-08-22 04:54:10.559	2025-08-22 04:54:10.559	\N	\N	2025-08-22 04:54:10.553
+1525	warmup	correct	2025-08-22 04:54:14.169	2025-08-22 04:54:14.169	\N	\N	2025-08-22 04:54:14.162
+1526	new	correct	2025-08-22 04:54:17.271	2025-08-22 04:54:17.271	\N	\N	2025-08-22 04:54:17.265
+1527	warmup	correct	2025-08-22 04:54:20.33	2025-08-22 04:54:20.33	\N	\N	2025-08-22 04:54:20.324
+1528	warmup	correct	2025-08-22 04:54:23.081	2025-08-22 04:54:23.081	\N	\N	2025-08-22 04:54:23.068
+1529	warmup	correct	2025-08-22 04:54:25.821	2025-08-22 04:54:25.821	\N	\N	2025-08-22 04:54:25.812
+1530	warmup	correct	2025-08-22 04:54:28.876	2025-08-22 04:54:28.876	\N	\N	2025-08-22 04:54:28.871
+1531	warmup	correct	2025-08-22 04:54:32.055	2025-08-22 04:54:32.055	\N	\N	2025-08-22 04:54:32.048
+1532	new	correct	2025-08-22 04:54:35.467	2025-08-22 04:54:35.467	\N	\N	2025-08-22 04:54:35.461
+1533	warmup	correct	2025-08-22 04:54:37.765	2025-08-22 04:54:37.765	\N	\N	2025-08-22 04:54:37.754
+1534	warmup	correct	2025-08-22 04:54:40.095	2025-08-22 04:54:40.095	\N	\N	2025-08-22 04:54:40.088
+1535	warmup	correct	2025-08-22 04:54:42.627	2025-08-22 04:54:42.627	\N	\N	2025-08-22 04:54:42.622
+1536	warmup	correct	2025-08-22 04:54:46.677	2025-08-22 04:54:46.677	\N	\N	2025-08-22 04:54:46.671
+1537	warmup	correct	2025-08-22 04:54:49.425	2025-08-22 04:54:49.425	\N	\N	2025-08-22 04:54:49.419
+1538	new	wrong	2025-08-22 04:54:55.912	2025-08-22 04:54:55.912	\N	\N	2025-08-22 04:54:55.905
+1539	warmup	correct	2025-08-22 04:55:12.097	2025-08-22 04:55:12.097	\N	\N	2025-08-22 04:55:12.086
+1540	new	correct	2025-08-22 04:55:15.388	2025-08-22 04:55:15.388	\N	\N	2025-08-22 04:55:15.329
+1541	new	wrong	2025-08-22 04:55:18.384	2025-08-22 04:55:18.384	\N	\N	2025-08-22 04:55:18.379
+1542	warmup	correct	2025-08-22 04:55:23.769	2025-08-22 04:55:23.769	\N	\N	2025-08-22 04:55:23.761
+1543	warmup	correct	2025-08-22 04:55:27.871	2025-08-22 04:55:27.871	\N	\N	2025-08-22 04:55:27.862
+1544	warmup	correct	2025-08-22 04:55:30.408	2025-08-22 04:55:30.408	\N	\N	2025-08-22 04:55:30.402
+1545	warmup	correct	2025-08-22 04:55:32.804	2025-08-22 04:55:32.804	\N	\N	2025-08-22 04:55:32.797
+1546	new	correct	2025-08-22 04:55:35.961	2025-08-22 04:55:35.961	\N	\N	2025-08-22 04:55:35.956
+1547	new	correct	2025-08-22 04:55:40.249	2025-08-22 04:55:40.249	\N	\N	2025-08-22 04:55:40.241
+1548	warmup	wrong	2025-08-22 04:55:48.062	2025-08-22 04:55:48.062	\N	\N	2025-08-22 04:55:48.051
+1549	warmup	correct	2025-08-22 04:55:58.163	2025-08-22 04:55:58.163	\N	\N	2025-08-22 04:55:58.155
+1550	warmup	correct	2025-08-22 04:56:01.992	2025-08-22 04:56:01.992	\N	\N	2025-08-22 04:56:01.984
+1551	warmup	correct	2025-08-22 04:56:05.472	2025-08-22 04:56:05.472	\N	\N	2025-08-22 04:56:05.465
+1552	warmup	correct	2025-08-22 04:56:07.792	2025-08-22 04:56:07.792	\N	\N	2025-08-22 04:56:07.785
+1553	warmup	correct	2025-08-22 04:56:10.784	2025-08-22 04:56:10.784	\N	\N	2025-08-22 04:56:10.776
+1554	new	correct	2025-08-22 04:56:14.31	2025-08-22 04:56:14.31	\N	\N	2025-08-22 04:56:14.294
+1555	warmup	correct	2025-08-22 04:56:17.57	2025-08-22 04:56:17.57	\N	\N	2025-08-22 04:56:17.561
+1556	new	wrong	2025-08-22 04:56:20.53	2025-08-22 04:56:20.53	\N	\N	2025-08-22 04:56:20.524
+1557	warmup	correct	2025-08-22 04:56:31.006	2025-08-22 04:56:31.006	\N	\N	2025-08-22 04:56:30.996
+1558	warmup	correct	2025-08-22 04:56:33.599	2025-08-22 04:56:33.599	\N	\N	2025-08-22 04:56:33.591
+1559	warmup	correct	2025-08-22 04:56:36.808	2025-08-22 04:56:36.808	\N	\N	2025-08-22 04:56:36.801
+1560	warmup	correct	2025-08-22 04:56:40.238	2025-08-22 04:56:40.238	\N	\N	2025-08-22 04:56:40.23
+1561	warmup	correct	2025-08-22 04:56:44.63	2025-08-22 04:56:44.63	\N	\N	2025-08-22 04:56:44.624
+1562	warmup	correct	2025-08-22 04:56:47.113	2025-08-22 04:56:47.113	\N	\N	2025-08-22 04:56:47.097
+1563	warmup	correct	2025-08-22 04:56:50.396	2025-08-22 04:56:50.396	\N	\N	2025-08-22 04:56:50.387
+1564	warmup	correct	2025-08-22 04:56:54.031	2025-08-22 04:56:54.031	\N	\N	2025-08-22 04:56:54.026
+1565	warmup	correct	2025-08-22 04:57:00.321	2025-08-22 04:57:00.321	\N	\N	2025-08-22 04:57:00.307
+1566	warmup	correct	2025-08-22 04:57:04.22	2025-08-22 04:57:04.22	\N	\N	2025-08-22 04:57:04.209
+1567	warmup	correct	2025-08-22 04:57:06.655	2025-08-22 04:57:06.655	\N	\N	2025-08-22 04:57:06.647
+1568	warmup	correct	2025-08-22 04:57:08.647	2025-08-22 04:57:08.647	\N	\N	2025-08-22 04:57:08.642
+1569	warmup	correct	2025-08-22 04:57:12.153	2025-08-22 04:57:12.153	\N	\N	2025-08-22 04:57:12.147
+1570	warmup	correct	2025-08-22 04:57:16.763	2025-08-22 04:57:16.763	\N	\N	2025-08-22 04:57:16.756
+1571	new	correct	2025-08-22 04:57:20.43	2025-08-22 04:57:20.43	\N	\N	2025-08-22 04:57:20.424
+1572	warmup	correct	2025-08-22 04:57:23.682	2025-08-22 04:57:23.682	\N	\N	2025-08-22 04:57:23.676
+1573	warmup	correct	2025-08-22 04:57:28.524	2025-08-22 04:57:28.524	\N	\N	2025-08-22 04:57:28.518
+1574	warmup	correct	2025-08-22 04:57:31.348	2025-08-22 04:57:31.348	\N	\N	2025-08-22 04:57:31.342
+1575	warmup	correct	2025-08-22 04:57:33.964	2025-08-22 04:57:33.964	\N	\N	2025-08-22 04:57:33.959
+1576	new	correct	2025-08-22 04:57:37.529	2025-08-22 04:57:37.529	\N	\N	2025-08-22 04:57:37.523
+1577	warmup	correct	2025-08-22 04:57:40.588	2025-08-22 04:57:40.588	\N	\N	2025-08-22 04:57:40.582
+1578	warmup	correct	2025-08-22 04:57:42.66	2025-08-22 04:57:42.66	\N	\N	2025-08-22 04:57:42.652
+1579	warmup	correct	2025-08-22 04:57:47.111	2025-08-22 04:57:47.111	\N	\N	2025-08-22 04:57:47.106
+1580	warmup	correct	2025-08-22 04:57:49.589	2025-08-22 04:57:49.589	\N	\N	2025-08-22 04:57:49.583
+1581	warmup	correct	2025-08-22 04:58:00.448	2025-08-22 04:58:00.448	\N	\N	2025-08-22 04:58:00.44
+1582	warmup	correct	2025-08-22 04:58:02.603	2025-08-22 04:58:02.603	\N	\N	2025-08-22 04:58:02.594
+1583	warmup	correct	2025-08-22 04:58:05.987	2025-08-22 04:58:05.987	\N	\N	2025-08-22 04:58:05.977
+1584	warmup	correct	2025-08-22 04:58:08.307	2025-08-22 04:58:08.307	\N	\N	2025-08-22 04:58:08.284
+1585	warmup	correct	2025-08-22 04:58:12.36	2025-08-22 04:58:12.36	\N	\N	2025-08-22 04:58:12.352
+1586	warmup	correct	2025-08-22 04:58:14.975	2025-08-22 04:58:14.975	\N	\N	2025-08-22 04:58:14.966
+1587	warmup	correct	2025-08-22 04:58:17.758	2025-08-22 04:58:17.758	\N	\N	2025-08-22 04:58:17.754
+1588	new	correct	2025-08-22 04:58:20.318	2025-08-22 04:58:20.318	\N	\N	2025-08-22 04:58:20.312
+1589	new	correct	2025-08-22 04:58:26.287	2025-08-22 04:58:26.287	\N	\N	2025-08-22 04:58:26.279
+1590	new	correct	2025-08-22 04:58:30.308	2025-08-22 04:58:30.308	\N	\N	2025-08-22 04:58:30.302
+1591	warmup	correct	2025-08-22 04:58:33.02	2025-08-22 04:58:33.02	\N	\N	2025-08-22 04:58:33.012
+1592	new	correct	2025-08-22 04:58:35.552	2025-08-22 04:58:35.552	\N	\N	2025-08-22 04:58:35.545
+1593	warmup	correct	2025-08-22 04:58:40.752	2025-08-22 04:58:40.752	\N	\N	2025-08-22 04:58:40.744
+1594	warmup	correct	2025-08-22 04:58:56.069	2025-08-22 04:58:56.069	\N	\N	2025-08-22 04:58:56.059
+1595	new	correct	2025-08-22 04:59:09.497	2025-08-22 04:59:09.497	\N	\N	2025-08-22 04:59:09.487
+1596	warmup	correct	2025-08-22 04:59:12.116	2025-08-22 04:59:12.116	\N	\N	2025-08-22 04:59:12.107
+1597	new	correct	2025-08-22 04:59:15.482	2025-08-22 04:59:15.482	\N	\N	2025-08-22 04:59:15.475
+1598	warmup	correct	2025-08-22 04:59:18.051	2025-08-22 04:59:18.051	\N	\N	2025-08-22 04:59:18.037
+1599	warmup	correct	2025-08-22 04:59:20.389	2025-08-22 04:59:20.389	\N	\N	2025-08-22 04:59:20.383
+1600	new	correct	2025-08-22 04:59:23.554	2025-08-22 04:59:23.554	\N	\N	2025-08-22 04:59:23.548
+1601	warmup	correct	2025-08-22 04:59:25.875	2025-08-22 04:59:25.875	\N	\N	2025-08-22 04:59:25.869
+1602	warmup	correct	2025-08-22 04:59:28.611	2025-08-22 04:59:28.611	\N	\N	2025-08-22 04:59:28.605
+1603	warmup	correct	2025-08-22 04:59:31.931	2025-08-22 04:59:31.931	\N	\N	2025-08-22 04:59:31.925
+1604	warmup	correct	2025-08-22 04:59:34.522	2025-08-22 04:59:34.522	\N	\N	2025-08-22 04:59:34.516
+1605	warmup	correct	2025-08-22 04:59:37.604	2025-08-22 04:59:37.604	\N	\N	2025-08-22 04:59:37.597
+1606	warmup	wrong	2025-08-22 04:59:41.091	2025-08-22 04:59:41.091	\N	\N	2025-08-22 04:59:41.086
+1607	warmup	correct	2025-08-22 04:59:50.114	2025-08-22 04:59:50.114	\N	\N	2025-08-22 04:59:50.105
+1608	warmup	correct	2025-08-22 04:59:55.059	2025-08-22 04:59:55.059	\N	\N	2025-08-22 04:59:55.048
+1609	new	wrong	2025-08-22 04:59:57.541	2025-08-22 04:59:57.541	\N	\N	2025-08-22 04:59:57.531
+1610	warmup	correct	2025-08-22 05:00:05.44	2025-08-22 05:00:05.44	\N	\N	2025-08-22 05:00:05.426
+1611	warmup	correct	2025-08-22 05:00:07.971	2025-08-22 05:00:07.971	\N	\N	2025-08-22 05:00:07.964
+1612	warmup	correct	2025-08-22 05:00:13.055	2025-08-22 05:00:13.055	\N	\N	2025-08-22 05:00:13.045
+1613	new	correct	2025-08-22 05:00:15.817	2025-08-22 05:00:15.817	\N	\N	2025-08-22 05:00:15.811
+1614	warmup	correct	2025-08-22 05:00:19.394	2025-08-22 05:00:19.394	\N	\N	2025-08-22 05:00:19.379
+1615	new	correct	2025-08-22 05:00:24.771	2025-08-22 05:00:24.771	\N	\N	2025-08-22 05:00:24.762
+1616	warmup	correct	2025-08-22 05:00:27.276	2025-08-22 05:00:27.276	\N	\N	2025-08-22 05:00:27.271
+1617	new	correct	2025-08-22 05:00:30.339	2025-08-22 05:00:30.339	\N	\N	2025-08-22 05:00:30.308
+1618	new	correct	2025-08-22 05:00:33.529	2025-08-22 05:00:33.529	\N	\N	2025-08-22 05:00:33.52
+1619	warmup	correct	2025-08-22 05:00:36.479	2025-08-22 05:00:36.479	\N	\N	2025-08-22 05:00:36.473
+1620	warmup	correct	2025-08-22 05:00:39.035	2025-08-22 05:00:39.035	\N	\N	2025-08-22 05:00:39.016
+1621	warmup	correct	2025-08-22 05:00:41.768	2025-08-22 05:00:41.768	\N	\N	2025-08-22 05:00:41.758
+1622	warmup	correct	2025-08-22 05:00:43.966	2025-08-22 05:00:43.966	\N	\N	2025-08-22 05:00:43.96
+1623	new	wrong	2025-08-22 05:00:47.915	2025-08-22 05:00:47.915	\N	\N	2025-08-22 05:00:47.909
+1624	warmup	correct	2025-08-22 05:00:55.952	2025-08-22 05:00:55.952	\N	\N	2025-08-22 05:00:55.943
+1625	new	wrong	2025-08-22 05:00:58.662	2025-08-22 05:00:58.662	\N	\N	2025-08-22 05:00:58.653
+1626	new	correct	2025-08-22 05:01:02.412	2025-08-22 05:01:02.412	\N	\N	2025-08-22 05:01:02.397
+1627	warmup	correct	2025-08-22 05:01:04.866	2025-08-22 05:01:04.866	\N	\N	2025-08-22 05:01:04.86
+1628	warmup	correct	2025-08-22 05:01:07.336	2025-08-22 05:01:07.336	\N	\N	2025-08-22 05:01:07.33
+1629	warmup	correct	2025-08-22 05:01:10.276	2025-08-22 05:01:10.276	\N	\N	2025-08-22 05:01:10.269
+1630	warmup	correct	2025-08-22 05:01:14.142	2025-08-22 05:01:14.142	\N	\N	2025-08-22 05:01:14.137
+1631	warmup	correct	2025-08-22 05:01:17.386	2025-08-22 05:01:17.386	\N	\N	2025-08-22 05:01:17.38
+1632	warmup	correct	2025-08-22 05:01:20.829	2025-08-22 05:01:20.829	\N	\N	2025-08-22 05:01:20.824
+1633	warmup	correct	2025-08-22 05:01:25.483	2025-08-22 05:01:25.483	\N	\N	2025-08-22 05:01:25.475
+1634	warmup	correct	2025-08-22 05:01:27.631	2025-08-22 05:01:27.631	\N	\N	2025-08-22 05:01:27.625
+1635	new	correct	2025-08-22 05:01:31.048	2025-08-22 05:01:31.048	\N	\N	2025-08-22 05:01:31.043
+1636	new	correct	2025-08-22 05:01:47.1	2025-08-22 05:01:47.1	\N	\N	2025-08-22 05:01:47.092
+1637	warmup	correct	2025-08-22 05:01:50.74	2025-08-22 05:01:50.74	\N	\N	2025-08-22 05:01:50.73
+1638	warmup	correct	2025-08-22 05:01:53.901	2025-08-22 05:01:53.901	\N	\N	2025-08-22 05:01:53.895
+1639	warmup	correct	2025-08-22 05:01:56.075	2025-08-22 05:01:56.075	\N	\N	2025-08-22 05:01:56.07
+1640	warmup	correct	2025-08-22 05:01:58.511	2025-08-22 05:01:58.511	\N	\N	2025-08-22 05:01:58.501
+1641	warmup	correct	2025-08-22 05:02:01.09	2025-08-22 05:02:01.09	\N	\N	2025-08-22 05:02:01.077
+1642	warmup	correct	2025-08-22 05:02:04.147	2025-08-22 05:02:04.147	\N	\N	2025-08-22 05:02:04.138
+1643	warmup	correct	2025-08-22 05:02:06.558	2025-08-22 05:02:06.558	\N	\N	2025-08-22 05:02:06.553
+1644	warmup	correct	2025-08-22 05:02:09.566	2025-08-22 05:02:09.566	\N	\N	2025-08-22 05:02:09.558
+1645	warmup	correct	2025-08-22 05:02:15.198	2025-08-22 05:02:15.198	\N	\N	2025-08-22 05:02:15.185
+1646	warmup	correct	2025-08-22 05:02:17.541	2025-08-22 05:02:17.541	\N	\N	2025-08-22 05:02:17.519
+1647	warmup	correct	2025-08-22 05:02:20.652	2025-08-22 05:02:20.652	\N	\N	2025-08-22 05:02:20.632
+1648	warmup	correct	2025-08-22 05:02:27.636	2025-08-22 05:02:27.636	\N	\N	2025-08-22 05:02:27.625
+1649	new	wrong	2025-08-22 05:02:36.504	2025-08-22 05:02:36.504	\N	\N	2025-08-22 05:02:36.494
+1650	new	wrong	2025-08-22 05:03:03.901	2025-08-22 05:03:03.901	\N	\N	2025-08-22 05:03:03.892
+1651	warmup	correct	2025-08-22 05:03:08.914	2025-08-22 05:03:08.914	\N	\N	2025-08-22 05:03:08.908
+1652	new	correct	2025-08-22 05:03:11.034	2025-08-22 05:03:11.034	\N	\N	2025-08-22 05:03:11.027
+1653	new	correct	2025-08-22 05:03:13.386	2025-08-22 05:03:13.386	\N	\N	2025-08-22 05:03:13.379
+1654	warmup	correct	2025-08-22 05:03:15.77	2025-08-22 05:03:15.77	\N	\N	2025-08-22 05:03:15.755
+1655	new	wrong	2025-08-22 05:03:20.462	2025-08-22 05:03:20.462	\N	\N	2025-08-22 05:03:20.454
+1656	new	correct	2025-08-22 05:03:27.576	2025-08-22 05:03:27.576	\N	\N	2025-08-22 05:03:27.562
+1657	new	correct	2025-08-22 05:03:31.199	2025-08-22 05:03:31.199	\N	\N	2025-08-22 05:03:31.185
+1658	new	correct	2025-08-22 05:03:34.557	2025-08-22 05:03:34.557	\N	\N	2025-08-22 05:03:34.551
+1659	new	correct	2025-08-22 05:03:41.55	2025-08-22 05:03:41.55	\N	\N	2025-08-22 05:03:41.54
+1660	new	correct	2025-08-22 05:03:46.178	2025-08-22 05:03:46.178	\N	\N	2025-08-22 05:03:46.157
+1661	new	wrong	2025-08-22 05:03:50.535	2025-08-22 05:03:50.535	\N	\N	2025-08-22 05:03:50.527
+1662	new	correct	2025-08-22 05:03:56.972	2025-08-22 05:03:56.972	\N	\N	2025-08-22 05:03:56.963
+1663	new	correct	2025-08-22 05:03:59.984	2025-08-22 05:03:59.984	\N	\N	2025-08-22 05:03:59.971
+1664	new	wrong	2025-08-22 14:53:23.905	2025-08-22 14:53:23.905	\N	\N	2025-08-22 14:53:23.833
+1665	new	wrong	2025-08-22 14:53:30.074	2025-08-22 14:53:30.074	\N	\N	2025-08-22 14:53:30.011
+1666	new	wrong	2025-08-22 14:53:34.433	2025-08-22 14:53:34.433	\N	\N	2025-08-22 14:53:34.368
+1667	new	wrong	2025-08-22 14:53:39.071	2025-08-22 14:53:39.071	\N	\N	2025-08-22 14:53:39.009
+1668	new	wrong	2025-08-22 14:53:46.496	2025-08-22 14:53:46.496	\N	\N	2025-08-22 14:53:46.435
+1669	new	wrong	2025-08-22 14:53:51.219	2025-08-22 14:53:51.219	\N	\N	2025-08-22 14:53:51.158
+1670	new	wrong	2025-08-22 14:53:56.71	2025-08-22 14:53:56.71	\N	\N	2025-08-22 14:53:56.647
+1671	new	wrong	2025-08-22 14:54:02.453	2025-08-22 14:54:02.453	\N	\N	2025-08-22 14:54:02.389
+1672	new	correct	2025-08-22 14:54:07.286	2025-08-22 14:54:07.286	\N	\N	2025-08-22 14:54:07.226
+1673	new	wrong	2025-08-22 14:54:14.919	2025-08-22 14:54:14.919	\N	\N	2025-08-22 14:54:14.857
+1674	new	wrong	2025-08-22 14:54:21.643	2025-08-22 14:54:21.643	\N	\N	2025-08-22 14:54:21.575
+1675	new	correct	2025-08-22 14:54:28.212	2025-08-22 14:54:28.212	\N	\N	2025-08-22 14:54:28.149
+1676	warmup	correct	2025-08-22 14:54:32.47	2025-08-22 14:54:32.47	\N	\N	2025-08-22 14:54:32.41
+1677	new	wrong	2025-08-22 14:54:38.197	2025-08-22 14:54:38.197	\N	\N	2025-08-22 14:54:38.138
+1678	new	wrong	2025-08-22 14:54:41.804	2025-08-22 14:54:41.804	\N	\N	2025-08-22 14:54:41.741
+1679	new	wrong	2025-08-22 14:54:45.476	2025-08-22 14:54:45.476	\N	\N	2025-08-22 14:54:45.416
+1680	new	wrong	2025-08-22 14:54:52.396	2025-08-22 14:54:52.396	\N	\N	2025-08-22 14:54:52.334
+1681	new	correct	2025-08-22 14:55:19.183	2025-08-22 14:55:19.183	\N	\N	2025-08-22 14:55:19.124
+1682	new	correct	2025-08-22 14:55:21.938	2025-08-22 14:55:21.938	\N	\N	2025-08-22 14:55:21.879
+1683	new	correct	2025-08-22 14:55:27.58	2025-08-22 14:55:27.58	\N	\N	2025-08-22 14:55:27.52
+1684	new	correct	2025-08-22 16:01:51.212	2025-08-22 16:01:51.212	\N	\N	2025-08-22 16:01:51.147
+1685	new	correct	2025-08-22 16:03:07.294	2025-08-22 16:03:07.294	\N	\N	2025-08-22 16:03:07.234
+1686	new	correct	2025-08-22 16:26:46.149	2025-08-22 16:26:46.149	\N	\N	2025-08-22 16:26:46.086
+1687	new	correct	2025-08-22 16:40:10.943	2025-08-22 16:40:10.943	\N	\N	2025-08-22 16:40:10.892
+1688	new	correct	2025-08-22 16:50:18.333	2025-08-22 16:50:18.333	\N	\N	2025-08-22 16:50:18.267
+1689	new	correct	2025-08-22 18:01:35.642	2025-08-22 18:01:35.642	\N	\N	2025-08-22 18:01:35.581
+1690	new	correct	2025-08-22 19:45:43.461	2025-08-22 19:45:43.461	\N	\N	2025-08-22 19:45:43.403
+1691	new	correct	2025-08-22 19:59:49.289	2025-08-22 19:59:49.289	\N	\N	2025-08-22 19:59:49.232
+1692	new	wrong	2025-08-22 20:05:03.289	2025-08-22 20:05:03.289	\N	\N	2025-08-22 20:05:03.219
+1693	new	correct	2025-08-22 20:07:51.896	2025-08-22 20:07:51.896	\N	\N	2025-08-22 20:07:51.831
+1694	new	wrong	2025-08-22 22:51:51.184	2025-08-22 22:51:51.184	\N	\N	2025-08-22 22:51:51.114
+1695	new	correct	2025-08-22 22:51:57.744	2025-08-22 22:51:57.744	\N	\N	2025-08-22 22:51:57.684
+1696	new	wrong	2025-08-22 22:52:08.102	2025-08-22 22:52:08.102	\N	\N	2025-08-22 22:52:08.039
+1697	new	correct	2025-08-22 22:52:12.819	2025-08-22 22:52:12.819	\N	\N	2025-08-22 22:52:12.758
+1698	new	wrong	2025-08-22 22:52:23.355	2025-08-22 22:52:23.355	\N	\N	2025-08-22 22:52:23.294
+1699	new	correct	2025-08-22 22:52:40.75	2025-08-22 22:52:40.75	\N	\N	2025-08-22 22:52:40.686
+1700	new	correct	2025-08-22 22:53:01.558	2025-08-22 22:53:01.558	\N	\N	2025-08-22 22:53:01.496
+1701	new	wrong	2025-08-22 22:53:13.462	2025-08-22 22:53:13.462	\N	\N	2025-08-22 22:53:13.397
+1702	new	wrong	2025-08-22 22:53:28.352	2025-08-22 22:53:28.352	\N	\N	2025-08-22 22:53:28.289
+1703	new	wrong	2025-08-22 22:53:38.527	2025-08-22 22:53:38.527	\N	\N	2025-08-22 22:53:38.464
+1704	new	wrong	2025-08-22 22:53:44.984	2025-08-22 22:53:44.984	\N	\N	2025-08-22 22:53:44.922
+1705	new	correct	2025-08-22 22:53:49.145	2025-08-22 22:53:49.145	\N	\N	2025-08-22 22:53:49.085
+1706	new	wrong	2025-08-22 22:53:56.095	2025-08-22 22:53:56.095	\N	\N	2025-08-22 22:53:56.034
+1707	new	wrong	2025-08-22 22:54:21.609	2025-08-22 22:54:21.609	\N	\N	2025-08-22 22:54:21.548
+1708	new	correct	2025-08-22 22:54:25.129	2025-08-22 22:54:25.129	\N	\N	2025-08-22 22:54:25.067
+1709	new	correct	2025-08-22 22:54:29.987	2025-08-22 22:54:29.987	\N	\N	2025-08-22 22:54:29.924
+1710	new	correct	2025-08-22 22:54:43.072	2025-08-22 22:54:43.072	\N	\N	2025-08-22 22:54:43.012
+1711	new	correct	2025-08-22 22:55:19.393	2025-08-22 22:55:19.393	\N	\N	2025-08-22 22:55:19.33
+1712	new	correct	2025-08-22 22:55:24.305	2025-08-22 22:55:24.305	\N	\N	2025-08-22 22:55:24.242
+1713	new	correct	2025-08-22 22:55:26.949	2025-08-22 22:55:26.949	\N	\N	2025-08-22 22:55:26.885
+1714	new	correct	2025-08-22 22:55:28.457	2025-08-22 22:55:28.457	\N	\N	2025-08-22 22:55:28.393
+1715	new	correct	2025-08-22 22:55:31.727	2025-08-22 22:55:31.727	\N	\N	2025-08-22 22:55:31.663
+1716	new	wrong	2025-08-22 22:56:38.688	2025-08-22 22:56:38.688	\N	\N	2025-08-22 22:56:38.623
+1717	new	correct	2025-08-22 22:56:51.888	2025-08-22 22:56:51.888	\N	\N	2025-08-22 22:56:51.831
+1718	new	wrong	2025-08-23 00:07:39.446	2025-08-23 00:07:39.446	\N	\N	2025-08-23 00:07:39.37
+1719	new	correct	2025-08-23 00:07:44.191	2025-08-23 00:07:44.191	\N	\N	2025-08-23 00:07:44.127
+1720	new	wrong	2025-08-23 00:07:50.648	2025-08-23 00:07:50.648	\N	\N	2025-08-23 00:07:50.585
+1721	new	correct	2025-08-23 00:07:55.875	2025-08-23 00:07:55.875	\N	\N	2025-08-23 00:07:55.812
+1722	new	correct	2025-08-23 00:08:05.632	2025-08-23 00:08:05.632	\N	\N	2025-08-23 00:08:05.569
+1723	new	correct	2025-08-23 00:08:08.611	2025-08-23 00:08:08.611	\N	\N	2025-08-23 00:08:08.547
+1724	new	correct	2025-08-23 00:08:08.671	2025-08-23 00:08:08.671	\N	\N	2025-08-23 00:08:08.611
+1725	new	correct	2025-08-23 00:08:13.446	2025-08-23 00:08:13.446	\N	\N	2025-08-23 00:08:13.387
+1726	new	wrong	2025-08-23 00:08:22.283	2025-08-23 00:08:22.283	\N	\N	2025-08-23 00:08:22.223
+1727	new	wrong	2025-08-23 00:08:31.322	2025-08-23 00:08:31.322	\N	\N	2025-08-23 00:08:31.263
+1728	new	correct	2025-08-23 00:19:20.145	2025-08-23 00:19:20.145	\N	\N	2025-08-23 00:19:20.086
+1729	new	wrong	2025-08-23 00:24:38.922	2025-08-23 00:24:38.922	\N	\N	2025-08-23 00:24:38.86
+1730	new	correct	2025-08-23 09:29:10.763	2025-08-23 09:29:10.763	\N	\N	2025-08-23 09:29:10.748
+1731	new	wrong	2025-08-23 09:47:50.022	2025-08-23 09:47:50.022	\N	\N	2025-08-23 09:47:50.013
+1732	warmup	correct	2025-08-23 18:13:56.457	2025-08-23 18:13:56.457	\N	\N	2025-08-23 18:13:56.437
+1733	new	wrong	2025-08-23 12:10:22.851	2025-08-23 12:10:22.851	\N	\N	2025-08-23 12:10:22.784
+1734	warmup	correct	2025-08-23 21:52:26.08	2025-08-23 21:52:26.08	\N	\N	2025-08-23 21:52:26.072
+1735	warmup	correct	2025-08-23 21:52:35.034	2025-08-23 21:52:35.034	\N	\N	2025-08-23 21:52:35.026
+1736	warmup	correct	2025-08-23 21:52:37.743	2025-08-23 21:52:37.743	\N	\N	2025-08-23 21:52:37.704
+1737	warmup	wrong	2025-08-23 21:52:41.92	2025-08-23 21:52:41.92	\N	\N	2025-08-23 21:52:41.914
+1738	warmup	correct	2025-08-23 21:52:48.478	2025-08-23 21:52:48.478	\N	\N	2025-08-23 21:52:48.463
+1739	warmup	correct	2025-08-23 21:52:50.228	2025-08-23 21:52:50.228	\N	\N	2025-08-23 21:52:50.218
+1740	warmup	correct	2025-08-23 21:52:54.068	2025-08-23 21:52:54.068	\N	\N	2025-08-23 21:52:54.062
+1741	warmup	correct	2025-08-23 21:52:57.01	2025-08-23 21:52:57.01	\N	\N	2025-08-23 21:52:57.002
+1742	warmup	correct	2025-08-23 21:52:59.688	2025-08-23 21:52:59.688	\N	\N	2025-08-23 21:52:59.682
+1743	warmup	correct	2025-08-23 21:53:03.738	2025-08-23 21:53:03.738	\N	\N	2025-08-23 21:53:03.732
+1744	warmup	wrong	2025-08-23 21:53:13.692	2025-08-23 21:53:13.692	\N	\N	2025-08-23 21:53:13.684
+1745	warmup	correct	2025-08-23 21:53:24.015	2025-08-23 21:53:24.015	\N	\N	2025-08-23 21:53:24.005
+1746	warmup	correct	2025-08-23 21:53:26.542	2025-08-23 21:53:26.542	\N	\N	2025-08-23 21:53:26.533
+1747	warmup	wrong	2025-08-23 21:53:30.981	2025-08-23 21:53:30.981	\N	\N	2025-08-23 21:53:30.976
+1748	weekly	correct	2025-08-23 21:53:36.624	2025-08-23 21:53:36.624	\N	\N	2025-08-23 21:53:36.615
+1749	warmup	correct	2025-08-23 21:53:38.254	2025-08-23 21:53:38.254	\N	\N	2025-08-23 21:53:38.247
+1750	warmup	correct	2025-08-23 21:53:41.931	2025-08-23 21:53:41.931	\N	\N	2025-08-23 21:53:41.886
+1751	new	correct	2025-08-23 21:53:45.106	2025-08-23 21:53:45.106	\N	\N	2025-08-23 21:53:45.1
+1752	new	wrong	2025-08-23 21:53:53.12	2025-08-23 21:53:53.12	\N	\N	2025-08-23 21:53:53.114
+1753	new	correct	2025-08-23 21:53:57.72	2025-08-23 21:53:57.72	\N	\N	2025-08-23 21:53:57.712
+1754	warmup	correct	2025-08-23 21:54:08.034	2025-08-23 21:54:08.034	\N	\N	2025-08-23 21:54:07.983
+1755	warmup	correct	2025-08-23 21:54:10.269	2025-08-23 21:54:10.269	\N	\N	2025-08-23 21:54:10.256
+1756	warmup	correct	2025-08-23 21:54:12.623	2025-08-23 21:54:12.623	\N	\N	2025-08-23 21:54:12.616
+1757	warmup	correct	2025-08-23 21:54:15.234	2025-08-23 21:54:15.234	\N	\N	2025-08-23 21:54:15.228
+1758	warmup	correct	2025-08-23 21:54:17.614	2025-08-23 21:54:17.614	\N	\N	2025-08-23 21:54:17.609
+1759	warmup	correct	2025-08-23 21:54:19.837	2025-08-23 21:54:19.837	\N	\N	2025-08-23 21:54:19.83
+1760	warmup	correct	2025-08-23 21:54:22.188	2025-08-23 21:54:22.188	\N	\N	2025-08-23 21:54:22.18
+1761	warmup	correct	2025-08-23 21:54:25.184	2025-08-23 21:54:25.184	\N	\N	2025-08-23 21:54:25.178
+1762	warmup	correct	2025-08-23 21:54:27.93	2025-08-23 21:54:27.93	\N	\N	2025-08-23 21:54:27.92
+1763	new	correct	2025-08-23 21:54:43.153	2025-08-23 21:54:43.153	\N	\N	2025-08-23 21:54:43.145
+1764	warmup	wrong	2025-08-23 21:54:57.288	2025-08-23 21:54:57.288	\N	\N	2025-08-23 21:54:57.279
+1765	warmup	correct	2025-08-23 21:55:04.202	2025-08-23 21:55:04.202	\N	\N	2025-08-23 21:55:04.194
+1766	warmup	correct	2025-08-23 21:55:06.946	2025-08-23 21:55:06.946	\N	\N	2025-08-23 21:55:06.938
+1767	warmup	correct	2025-08-23 21:55:09.315	2025-08-23 21:55:09.315	\N	\N	2025-08-23 21:55:09.303
+1768	warmup	correct	2025-08-23 21:55:15.219	2025-08-23 21:55:15.219	\N	\N	2025-08-23 21:55:15.212
+1769	warmup	correct	2025-08-23 21:55:17.958	2025-08-23 21:55:17.958	\N	\N	2025-08-23 21:55:17.953
+1770	warmup	correct	2025-08-23 21:55:21.111	2025-08-23 21:55:21.111	\N	\N	2025-08-23 21:55:21.105
+1771	warmup	correct	2025-08-23 21:55:23.623	2025-08-23 21:55:23.623	\N	\N	2025-08-23 21:55:23.618
+1772	warmup	correct	2025-08-23 21:55:27.03	2025-08-23 21:55:27.03	\N	\N	2025-08-23 21:55:27.023
+1773	warmup	correct	2025-08-23 21:55:29.607	2025-08-23 21:55:29.607	\N	\N	2025-08-23 21:55:29.599
+1774	warmup	correct	2025-08-23 21:56:10.695	2025-08-23 21:56:10.695	\N	\N	2025-08-23 21:56:10.687
+1775	warmup	correct	2025-08-23 21:56:13.591	2025-08-23 21:56:13.591	\N	\N	2025-08-23 21:56:13.581
+1776	new	correct	2025-08-23 21:56:17.408	2025-08-23 21:56:17.408	\N	\N	2025-08-23 21:56:17.401
+1777	warmup	correct	2025-08-23 21:56:22.73	2025-08-23 21:56:22.73	\N	\N	2025-08-23 21:56:22.722
+1778	warmup	correct	2025-08-23 21:56:26.334	2025-08-23 21:56:26.334	\N	\N	2025-08-23 21:56:26.325
+1779	warmup	correct	2025-08-23 21:56:29.834	2025-08-23 21:56:29.834	\N	\N	2025-08-23 21:56:29.828
+1780	warmup	correct	2025-08-23 21:56:32.781	2025-08-23 21:56:32.781	\N	\N	2025-08-23 21:56:32.777
+1781	warmup	correct	2025-08-23 21:56:35.763	2025-08-23 21:56:35.763	\N	\N	2025-08-23 21:56:35.758
+1782	warmup	correct	2025-08-23 21:56:38.165	2025-08-23 21:56:38.165	\N	\N	2025-08-23 21:56:38.158
+1783	warmup	correct	2025-08-23 21:56:40.738	2025-08-23 21:56:40.738	\N	\N	2025-08-23 21:56:40.732
+1784	warmup	correct	2025-08-23 21:56:45.217	2025-08-23 21:56:45.217	\N	\N	2025-08-23 21:56:45.211
+1785	warmup	correct	2025-08-23 21:56:48.057	2025-08-23 21:56:48.057	\N	\N	2025-08-23 21:56:48.046
+1786	warmup	correct	2025-08-23 21:56:51.373	2025-08-23 21:56:51.373	\N	\N	2025-08-23 21:56:51.367
+1787	warmup	correct	2025-08-23 21:56:57.502	2025-08-23 21:56:57.502	\N	\N	2025-08-23 21:56:57.493
+1788	warmup	correct	2025-08-23 21:57:03.47	2025-08-23 21:57:03.47	\N	\N	2025-08-23 21:57:03.464
+1789	warmup	correct	2025-08-23 21:57:06.282	2025-08-23 21:57:06.282	\N	\N	2025-08-23 21:57:06.275
+1790	warmup	correct	2025-08-23 21:57:08.547	2025-08-23 21:57:08.547	\N	\N	2025-08-23 21:57:08.54
+1791	warmup	correct	2025-08-23 21:57:12.983	2025-08-23 21:57:12.983	\N	\N	2025-08-23 21:57:12.97
+1792	warmup	correct	2025-08-23 21:57:15.839	2025-08-23 21:57:15.839	\N	\N	2025-08-23 21:57:15.833
+1793	warmup	correct	2025-08-23 21:57:18.997	2025-08-23 21:57:18.997	\N	\N	2025-08-23 21:57:18.989
+1794	warmup	correct	2025-08-23 21:57:22.327	2025-08-23 21:57:22.327	\N	\N	2025-08-23 21:57:22.32
+1795	warmup	correct	2025-08-23 21:57:24.58	2025-08-23 21:57:24.58	\N	\N	2025-08-23 21:57:24.573
+1796	warmup	correct	2025-08-23 21:57:27.005	2025-08-23 21:57:27.005	\N	\N	2025-08-23 21:57:27
+1797	warmup	correct	2025-08-23 21:57:29.904	2025-08-23 21:57:29.904	\N	\N	2025-08-23 21:57:29.892
+1798	warmup	correct	2025-08-23 21:57:34.151	2025-08-23 21:57:34.151	\N	\N	2025-08-23 21:57:34.145
+1799	warmup	correct	2025-08-23 21:57:37.208	2025-08-23 21:57:37.208	\N	\N	2025-08-23 21:57:37.202
+1800	new	wrong	2025-08-23 21:57:39.994	2025-08-23 21:57:39.994	\N	\N	2025-08-23 21:57:39.989
+1801	new	correct	2025-08-23 21:57:49.956	2025-08-23 21:57:49.956	\N	\N	2025-08-23 21:57:49.947
+1802	warmup	correct	2025-08-23 21:57:52.107	2025-08-23 21:57:52.107	\N	\N	2025-08-23 21:57:52.099
+1803	new	correct	2025-08-23 21:57:56.225	2025-08-23 21:57:56.225	\N	\N	2025-08-23 21:57:56.213
+1804	new	correct	2025-08-23 21:57:59.786	2025-08-23 21:57:59.786	\N	\N	2025-08-23 21:57:59.775
+1805	warmup	correct	2025-08-23 21:58:03.265	2025-08-23 21:58:03.265	\N	\N	2025-08-23 21:58:03.243
+1806	warmup	correct	2025-08-23 21:58:06.817	2025-08-23 21:58:06.817	\N	\N	2025-08-23 21:58:06.813
+1807	warmup	correct	2025-08-23 21:58:10.162	2025-08-23 21:58:10.162	\N	\N	2025-08-23 21:58:10.144
+1808	warmup	correct	2025-08-23 21:58:13.089	2025-08-23 21:58:13.089	\N	\N	2025-08-23 21:58:13.073
+1809	new	correct	2025-08-23 21:58:17.123	2025-08-23 21:58:17.123	\N	\N	2025-08-23 21:58:17.11
+1810	warmup	wrong	2025-08-23 21:58:25.93	2025-08-23 21:58:25.93	\N	\N	2025-08-23 21:58:25.922
+1811	warmup	correct	2025-08-23 21:58:38.092	2025-08-23 21:58:38.092	\N	\N	2025-08-23 21:58:38.085
+1812	warmup	correct	2025-08-23 21:58:40.795	2025-08-23 21:58:40.795	\N	\N	2025-08-23 21:58:40.786
+1813	warmup	correct	2025-08-23 21:58:48.312	2025-08-23 21:58:48.312	\N	\N	2025-08-23 21:58:48.282
+1814	warmup	correct	2025-08-23 21:58:51.047	2025-08-23 21:58:51.047	\N	\N	2025-08-23 21:58:51.039
+1815	warmup	correct	2025-08-23 21:58:56.452	2025-08-23 21:58:56.452	\N	\N	2025-08-23 21:58:56.444
+1816	warmup	correct	2025-08-23 21:58:58.734	2025-08-23 21:58:58.734	\N	\N	2025-08-23 21:58:58.728
+1817	warmup	correct	2025-08-23 21:59:02.492	2025-08-23 21:59:02.492	\N	\N	2025-08-23 21:59:02.47
+1818	warmup	correct	2025-08-23 21:59:05.354	2025-08-23 21:59:05.354	\N	\N	2025-08-23 21:59:05.349
+1819	new	correct	2025-08-23 21:59:08.496	2025-08-23 21:59:08.496	\N	\N	2025-08-23 21:59:08.492
+1820	warmup	correct	2025-08-23 21:59:13.006	2025-08-23 21:59:13.006	\N	\N	2025-08-23 21:59:13
+1821	warmup	correct	2025-08-23 21:59:17.863	2025-08-23 21:59:17.863	\N	\N	2025-08-23 21:59:17.852
+1822	warmup	correct	2025-08-23 21:59:20.228	2025-08-23 21:59:20.228	\N	\N	2025-08-23 21:59:20.222
+1823	warmup	correct	2025-08-23 21:59:23.941	2025-08-23 21:59:23.941	\N	\N	2025-08-23 21:59:23.936
+1824	warmup	correct	2025-08-23 21:59:27.48	2025-08-23 21:59:27.48	\N	\N	2025-08-23 21:59:27.474
+1825	warmup	correct	2025-08-23 21:59:31.213	2025-08-23 21:59:31.213	\N	\N	2025-08-23 21:59:31.205
+1826	warmup	correct	2025-08-23 21:59:34.733	2025-08-23 21:59:34.733	\N	\N	2025-08-23 21:59:34.712
+1827	warmup	correct	2025-08-23 21:59:38.929	2025-08-23 21:59:38.929	\N	\N	2025-08-23 21:59:38.923
+1828	warmup	correct	2025-08-23 21:59:42.52	2025-08-23 21:59:42.52	\N	\N	2025-08-23 21:59:42.515
+1829	warmup	correct	2025-08-23 21:59:45.112	2025-08-23 21:59:45.112	\N	\N	2025-08-23 21:59:45.099
+1830	warmup	correct	2025-08-23 21:59:48.098	2025-08-23 21:59:48.098	\N	\N	2025-08-23 21:59:48.091
+1831	warmup	correct	2025-08-23 21:59:50.845	2025-08-23 21:59:50.845	\N	\N	2025-08-23 21:59:50.838
+1832	warmup	correct	2025-08-23 21:59:54.399	2025-08-23 21:59:54.399	\N	\N	2025-08-23 21:59:54.394
+1833	warmup	correct	2025-08-23 21:59:57.554	2025-08-23 21:59:57.554	\N	\N	2025-08-23 21:59:57.548
+1834	new	correct	2025-08-23 22:00:01.06	2025-08-23 22:00:01.06	\N	\N	2025-08-23 22:00:01.055
+1835	warmup	correct	2025-08-23 22:00:04.372	2025-08-23 22:00:04.372	\N	\N	2025-08-23 22:00:04.34
+1836	warmup	correct	2025-08-23 22:00:07.456	2025-08-23 22:00:07.456	\N	\N	2025-08-23 22:00:07.433
+1837	warmup	correct	2025-08-23 22:00:10.517	2025-08-23 22:00:10.517	\N	\N	2025-08-23 22:00:10.512
+1838	warmup	correct	2025-08-23 22:00:12.962	2025-08-23 22:00:12.962	\N	\N	2025-08-23 22:00:12.956
+1839	new	correct	2025-08-23 22:00:17.233	2025-08-23 22:00:17.233	\N	\N	2025-08-23 22:00:17.222
+1840	warmup	correct	2025-08-23 22:00:20.523	2025-08-23 22:00:20.523	\N	\N	2025-08-23 22:00:20.516
+1841	warmup	correct	2025-08-23 22:00:22.799	2025-08-23 22:00:22.799	\N	\N	2025-08-23 22:00:22.789
+1842	warmup	correct	2025-08-23 22:00:27.837	2025-08-23 22:00:27.837	\N	\N	2025-08-23 22:00:27.828
+1843	warmup	correct	2025-08-23 22:00:31.024	2025-08-23 22:00:31.024	\N	\N	2025-08-23 22:00:31.013
+1844	warmup	correct	2025-08-23 22:00:34.027	2025-08-23 22:00:34.027	\N	\N	2025-08-23 22:00:34.021
+1845	warmup	correct	2025-08-23 22:00:36.717	2025-08-23 22:00:36.717	\N	\N	2025-08-23 22:00:36.71
+1846	warmup	correct	2025-08-23 22:00:39.962	2025-08-23 22:00:39.962	\N	\N	2025-08-23 22:00:39.956
+1847	warmup	correct	2025-08-23 22:00:43.005	2025-08-23 22:00:43.005	\N	\N	2025-08-23 22:00:42.999
+1848	warmup	correct	2025-08-23 22:00:46.363	2025-08-23 22:00:46.363	\N	\N	2025-08-23 22:00:46.352
+1849	warmup	correct	2025-08-23 22:00:49.29	2025-08-23 22:00:49.29	\N	\N	2025-08-23 22:00:49.285
+1850	warmup	correct	2025-08-23 22:00:52.513	2025-08-23 22:00:52.513	\N	\N	2025-08-23 22:00:52.509
+1851	new	correct	2025-08-23 22:00:55.082	2025-08-23 22:00:55.082	\N	\N	2025-08-23 22:00:55.077
+1852	warmup	correct	2025-08-23 22:00:59.11	2025-08-23 22:00:59.11	\N	\N	2025-08-23 22:00:59.104
+1853	new	correct	2025-08-23 22:01:03.253	2025-08-23 22:01:03.253	\N	\N	2025-08-23 22:01:03.226
+1854	warmup	correct	2025-08-23 22:01:05.889	2025-08-23 22:01:05.889	\N	\N	2025-08-23 22:01:05.884
+1855	warmup	correct	2025-08-23 22:01:09.222	2025-08-23 22:01:09.222	\N	\N	2025-08-23 22:01:09.215
+1856	warmup	correct	2025-08-23 22:01:11.935	2025-08-23 22:01:11.935	\N	\N	2025-08-23 22:01:11.93
+1857	warmup	correct	2025-08-23 22:01:16.453	2025-08-23 22:01:16.453	\N	\N	2025-08-23 22:01:16.443
+1858	warmup	correct	2025-08-23 22:01:20.388	2025-08-23 22:01:20.388	\N	\N	2025-08-23 22:01:20.383
+1859	warmup	correct	2025-08-23 22:01:23.291	2025-08-23 22:01:23.291	\N	\N	2025-08-23 22:01:23.27
+1860	warmup	correct	2025-08-23 22:01:25.931	2025-08-23 22:01:25.931	\N	\N	2025-08-23 22:01:25.927
+1861	warmup	correct	2025-08-23 22:01:28.21	2025-08-23 22:01:28.21	\N	\N	2025-08-23 22:01:28.204
+1862	warmup	correct	2025-08-23 22:01:31.184	2025-08-23 22:01:31.184	\N	\N	2025-08-23 22:01:31.179
+1863	warmup	correct	2025-08-23 22:01:34.987	2025-08-23 22:01:34.987	\N	\N	2025-08-23 22:01:34.983
+1864	warmup	correct	2025-08-23 22:01:38.023	2025-08-23 22:01:38.023	\N	\N	2025-08-23 22:01:38.018
+1865	warmup	correct	2025-08-23 22:01:42.089	2025-08-23 22:01:42.089	\N	\N	2025-08-23 22:01:42.084
+1866	warmup	correct	2025-08-23 22:01:45.337	2025-08-23 22:01:45.337	\N	\N	2025-08-23 22:01:45.328
+1867	warmup	correct	2025-08-23 22:01:48.95	2025-08-23 22:01:48.95	\N	\N	2025-08-23 22:01:48.922
+1868	warmup	correct	2025-08-23 22:01:51.43	2025-08-23 22:01:51.43	\N	\N	2025-08-23 22:01:51.343
+1869	warmup	correct	2025-08-23 22:01:59.565	2025-08-23 22:01:59.565	\N	\N	2025-08-23 22:01:59.558
+1870	warmup	correct	2025-08-23 22:02:02.524	2025-08-23 22:02:02.524	\N	\N	2025-08-23 22:02:02.517
+1871	new	correct	2025-08-23 22:02:06.171	2025-08-23 22:02:06.171	\N	\N	2025-08-23 22:02:06.16
+1872	warmup	correct	2025-08-23 22:02:11.38	2025-08-23 22:02:11.38	\N	\N	2025-08-23 22:02:11.372
+1873	warmup	correct	2025-08-23 22:02:16.251	2025-08-23 22:02:16.251	\N	\N	2025-08-23 22:02:16.241
+1874	warmup	correct	2025-08-23 22:02:18.77	2025-08-23 22:02:18.77	\N	\N	2025-08-23 22:02:18.748
+1875	warmup	correct	2025-08-23 22:02:21.86	2025-08-23 22:02:21.86	\N	\N	2025-08-23 22:02:21.842
+1876	warmup	correct	2025-08-23 22:02:26.244	2025-08-23 22:02:26.244	\N	\N	2025-08-23 22:02:26.236
+1877	new	correct	2025-08-23 22:02:29.225	2025-08-23 22:02:29.225	\N	\N	2025-08-23 22:02:29.22
+1878	warmup	correct	2025-08-23 22:02:31.77	2025-08-23 22:02:31.77	\N	\N	2025-08-23 22:02:31.765
+1879	warmup	correct	2025-08-23 22:02:36.733	2025-08-23 22:02:36.733	\N	\N	2025-08-23 22:02:36.728
+1880	warmup	correct	2025-08-23 22:02:47.791	2025-08-23 22:02:47.791	\N	\N	2025-08-23 22:02:47.784
+1881	warmup	correct	2025-08-23 22:02:50.946	2025-08-23 22:02:50.946	\N	\N	2025-08-23 22:02:50.924
+1882	warmup	correct	2025-08-23 22:02:53.62	2025-08-23 22:02:53.62	\N	\N	2025-08-23 22:02:53.616
+1883	warmup	correct	2025-08-23 22:02:56.292	2025-08-23 22:02:56.292	\N	\N	2025-08-23 22:02:56.272
+1884	warmup	correct	2025-08-23 22:02:58.68	2025-08-23 22:02:58.68	\N	\N	2025-08-23 22:02:58.673
+1885	new	wrong	2025-08-23 22:03:01.554	2025-08-23 22:03:01.554	\N	\N	2025-08-23 22:03:01.547
+1886	warmup	correct	2025-08-23 22:03:06.997	2025-08-23 22:03:06.997	\N	\N	2025-08-23 22:03:06.982
+1887	new	correct	2025-08-23 22:03:10.753	2025-08-23 22:03:10.753	\N	\N	2025-08-23 22:03:10.732
+1888	warmup	correct	2025-08-23 22:03:14.305	2025-08-23 22:03:14.305	\N	\N	2025-08-23 22:03:14.293
+1889	warmup	correct	2025-08-23 22:03:16.776	2025-08-23 22:03:16.776	\N	\N	2025-08-23 22:03:16.77
+1890	warmup	correct	2025-08-23 22:03:19.621	2025-08-23 22:03:19.621	\N	\N	2025-08-23 22:03:19.599
+1891	warmup	correct	2025-08-23 22:03:21.97	2025-08-23 22:03:21.97	\N	\N	2025-08-23 22:03:21.965
+1892	warmup	correct	2025-08-23 22:03:25.999	2025-08-23 22:03:25.999	\N	\N	2025-08-23 22:03:25.992
+1893	warmup	correct	2025-08-23 22:03:29.077	2025-08-23 22:03:29.077	\N	\N	2025-08-23 22:03:29.071
+1894	warmup	correct	2025-08-23 22:03:31.75	2025-08-23 22:03:31.75	\N	\N	2025-08-23 22:03:31.743
+1895	warmup	correct	2025-08-23 22:03:34.423	2025-08-23 22:03:34.423	\N	\N	2025-08-23 22:03:34.402
+1896	warmup	correct	2025-08-23 22:03:36.874	2025-08-23 22:03:36.874	\N	\N	2025-08-23 22:03:36.869
+1897	warmup	correct	2025-08-23 22:03:39.178	2025-08-23 22:03:39.178	\N	\N	2025-08-23 22:03:39.173
+1898	warmup	correct	2025-08-23 22:03:42.332	2025-08-23 22:03:42.332	\N	\N	2025-08-23 22:03:42.309
+1899	warmup	correct	2025-08-23 22:03:45.304	2025-08-23 22:03:45.304	\N	\N	2025-08-23 22:03:45.299
+1900	warmup	correct	2025-08-23 22:03:47.644	2025-08-23 22:03:47.644	\N	\N	2025-08-23 22:03:47.64
+1901	warmup	correct	2025-08-23 22:03:50.099	2025-08-23 22:03:50.099	\N	\N	2025-08-23 22:03:50.094
+1902	warmup	correct	2025-08-23 22:03:52.731	2025-08-23 22:03:52.731	\N	\N	2025-08-23 22:03:52.726
+1903	warmup	correct	2025-08-23 22:03:56.607	2025-08-23 22:03:56.607	\N	\N	2025-08-23 22:03:56.602
+1904	warmup	correct	2025-08-23 22:03:59.171	2025-08-23 22:03:59.171	\N	\N	2025-08-23 22:03:59.166
+1905	warmup	wrong	2025-08-23 22:04:01.558	2025-08-23 22:04:01.558	\N	\N	2025-08-23 22:04:01.553
+1906	warmup	correct	2025-08-23 22:04:06.104	2025-08-23 22:04:06.104	\N	\N	2025-08-23 22:04:06.099
+1907	warmup	correct	2025-08-23 22:04:09.664	2025-08-23 22:04:09.664	\N	\N	2025-08-23 22:04:09.657
+1908	warmup	correct	2025-08-23 22:04:12.131	2025-08-23 22:04:12.131	\N	\N	2025-08-23 22:04:12.126
+1909	warmup	correct	2025-08-23 22:04:14.189	2025-08-23 22:04:14.189	\N	\N	2025-08-23 22:04:14.184
+1910	warmup	correct	2025-08-23 22:04:17.785	2025-08-23 22:04:17.785	\N	\N	2025-08-23 22:04:17.78
+1911	new	correct	2025-08-23 22:04:32.012	2025-08-23 22:04:32.012	\N	\N	2025-08-23 22:04:32.003
+1912	new	correct	2025-08-23 22:04:37.981	2025-08-23 22:04:37.981	\N	\N	2025-08-23 22:04:37.974
+1913	warmup	correct	2025-08-23 22:04:46.703	2025-08-23 22:04:46.703	\N	\N	2025-08-23 22:04:46.689
+1914	new	correct	2025-08-23 22:04:49.171	2025-08-23 22:04:49.171	\N	\N	2025-08-23 22:04:49.164
+1915	warmup	correct	2025-08-23 22:04:52.284	2025-08-23 22:04:52.284	\N	\N	2025-08-23 22:04:52.271
+1916	warmup	correct	2025-08-23 22:04:55.186	2025-08-23 22:04:55.186	\N	\N	2025-08-23 22:04:55.182
+1917	new	correct	2025-08-23 22:04:57.948	2025-08-23 22:04:57.948	\N	\N	2025-08-23 22:04:57.944
+1918	new	correct	2025-08-23 22:05:01.008	2025-08-23 22:05:01.008	\N	\N	2025-08-23 22:05:01.004
+1919	new	correct	2025-08-23 22:05:03.617	2025-08-23 22:05:03.617	\N	\N	2025-08-23 22:05:03.608
+1920	new	correct	2025-08-23 22:05:07.188	2025-08-23 22:05:07.188	\N	\N	2025-08-23 22:05:07.183
+1921	new	correct	2025-08-23 22:05:10.149	2025-08-23 22:05:10.149	\N	\N	2025-08-23 22:05:10.143
+1922	new	correct	2025-08-23 22:05:13.266	2025-08-23 22:05:13.266	\N	\N	2025-08-23 22:05:13.259
+1923	new	correct	2025-08-23 22:05:18.423	2025-08-23 22:05:18.423	\N	\N	2025-08-23 22:05:18.385
+1924	new	correct	2025-08-23 22:05:21.453	2025-08-23 22:05:21.453	\N	\N	2025-08-23 22:05:21.449
+1925	new	correct	2025-08-23 22:05:24.341	2025-08-23 22:05:24.341	\N	\N	2025-08-23 22:05:24.335
+1926	new	correct	2025-08-23 18:06:51.03	2025-08-23 18:06:51.03	\N	\N	2025-08-23 18:06:50.966
+1927	new	correct	2025-08-23 18:06:55.597	2025-08-23 18:06:55.597	\N	\N	2025-08-23 18:06:55.521
+1928	new	correct	2025-08-23 18:07:00.358	2025-08-23 18:07:00.358	\N	\N	2025-08-23 18:07:00.294
+1929	new	correct	2025-08-23 18:07:38.208	2025-08-23 18:07:38.208	\N	\N	2025-08-23 18:07:38.146
+1930	new	correct	2025-08-23 18:07:48.232	2025-08-23 18:07:48.232	\N	\N	2025-08-23 18:07:48.17
+1931	new	correct	2025-08-23 18:07:51.278	2025-08-23 18:07:51.278	\N	\N	2025-08-23 18:07:51.214
+1932	new	correct	2025-08-23 18:07:53.047	2025-08-23 18:07:53.047	\N	\N	2025-08-23 18:07:52.985
+1933	new	correct	2025-08-23 18:07:53.108	2025-08-23 18:07:53.108	\N	\N	2025-08-23 18:07:53.048
+1934	new	wrong	2025-08-23 18:08:11.06	2025-08-23 18:08:11.06	\N	\N	2025-08-23 18:08:11
+1935	new	correct	2025-08-23 18:08:16.443	2025-08-23 18:08:16.443	\N	\N	2025-08-23 18:08:16.379
+1936	new	wrong	2025-08-23 18:08:50.466	2025-08-23 18:08:50.466	\N	\N	2025-08-23 18:08:50.405
+1937	new	correct	2025-08-23 18:47:56.585	2025-08-23 18:47:56.585	\N	\N	2025-08-23 18:47:56.518
+1938	new	wrong	2025-08-23 18:48:04.274	2025-08-23 18:48:04.274	\N	\N	2025-08-23 18:48:04.203
+1939	new	correct	2025-08-23 18:48:12.106	2025-08-23 18:48:12.106	\N	\N	2025-08-23 18:48:12.048
+1940	new	wrong	2025-08-23 18:48:19.792	2025-08-23 18:48:19.792	\N	\N	2025-08-23 18:48:19.736
+1941	new	wrong	2025-08-23 18:48:36.575	2025-08-23 18:48:36.575	\N	\N	2025-08-23 18:48:36.515
+1942	new	correct	2025-08-24 00:19:33.276	2025-08-24 00:19:33.276	\N	\N	2025-08-24 00:19:33.213
+1943	new	correct	2025-08-24 00:19:37.054	2025-08-24 00:19:37.054	\N	\N	2025-08-24 00:19:36.993
+1944	new	correct	2025-08-24 00:52:09.278	2025-08-24 00:52:09.278	\N	\N	2025-08-24 00:52:09.223
+1945	new	correct	2025-08-24 00:52:13.233	2025-08-24 00:52:13.233	\N	\N	2025-08-24 00:52:13.167
+1946	new	correct	2025-08-24 00:52:17.028	2025-08-24 00:52:17.028	\N	\N	2025-08-24 00:52:16.965
+1947	new	correct	2025-08-24 00:52:31.019	2025-08-24 00:52:31.019	\N	\N	2025-08-24 00:52:30.953
+1948	new	correct	2025-08-24 00:52:32.796	2025-08-24 00:52:32.796	\N	\N	2025-08-24 00:52:32.734
+1949	new	correct	2025-08-24 00:52:39.85	2025-08-24 00:52:39.85	\N	\N	2025-08-24 00:52:39.787
+1950	new	correct	2025-08-24 00:52:45.658	2025-08-24 00:52:45.658	\N	\N	2025-08-24 00:52:45.585
+1951	new	correct	2025-08-24 00:52:50.246	2025-08-24 00:52:50.246	\N	\N	2025-08-24 00:52:50.181
+1952	new	wrong	2025-08-24 00:52:59.648	2025-08-24 00:52:59.648	\N	\N	2025-08-24 00:52:59.585
+1953	new	wrong	2025-08-24 00:53:05.069	2025-08-24 00:53:05.069	\N	\N	2025-08-24 00:53:05.004
 \.
 
 
@@ -9178,6 +10119,127 @@ COPY public.reviewlogs_flashcard_links (id, reviewlog_id, flashcard_id, reviewlo
 538	565	707	9
 539	566	711	9
 540	567	712	9
+1545	1572	500	5
+1546	1573	510	5
+1547	1574	513	5
+1548	1575	515	5
+1549	1576	526	5
+1550	1577	539	5
+1551	1578	503	5
+1552	1579	498	5
+1553	1580	505	5
+1554	1581	508	5
+1555	1582	516	5
+1556	1583	517	5
+1557	1584	533	5
+1558	1585	529	5
+1559	1586	527	5
+1560	1587	537	5
+1561	1588	545	5
+1562	1589	534	6
+1563	1590	550	5
+1564	1591	575	5
+1565	1592	588	5
+1566	1593	540	5
+1567	1594	540	6
+1568	1595	548	5
+1569	1596	569	5
+1570	1597	577	5
+1571	1598	544	5
+1572	1599	559	5
+1573	1600	568	5
+1574	1601	591	5
+1575	1602	595	5
+1576	1603	554	5
+1577	1604	599	5
+1578	1605	573	5
+1579	1606	590	5
+1580	1607	602	5
+1581	1608	558	5
+1582	1609	570	5
+1583	1610	603	5
+1584	1611	563	5
+1585	1612	587	5
+1586	1613	672	5
+1587	1614	735	5
+1588	1615	738	5
+1589	1616	604	5
+1590	1617	674	5
+1591	1618	675	5
+1592	1619	739	5
+1593	1620	605	5
+1594	1621	621	5
+1595	1622	606	5
+1596	1623	624	5
+1597	1624	607	5
+1598	1625	614	5
+1599	1626	633	5
+1600	1627	634	5
+1601	1628	678	5
+1602	1629	679	5
+1603	1630	609	5
+1604	1631	623	5
+1605	1632	632	5
+1606	1633	610	5
+1607	1634	620	6
+1608	1635	631	6
+1609	1636	611	5
+1610	1637	615	5
+1611	1638	630	5
+1612	1639	612	5
+1613	1640	613	5
+1614	1641	626	5
+1615	1642	637	5
+1616	1643	640	5
+1617	1644	641	5
+1618	1645	547	5
+1619	1646	571	5
+1620	1647	581	5
+1637	1664	742	1
+1638	1665	687	5
+1639	1666	688	5
+1640	1667	689	5
+1641	1668	690	5
+1642	1669	691	5
+1643	1670	692	5
+1644	1671	693	5
+1645	1672	695	3
+1646	1673	696	3
+1647	1674	697	3
+1648	1675	698	3
+1649	1676	670	6
+1650	1677	680	6
+1651	1678	681	6
+1652	1679	682	6
+1653	1680	683	6
+1657	1684	743	1
+1659	1686	745	1
+1661	1688	747	1
+1663	1690	749	1
+1665	1692	751	1
+1667	1694	742	2
+1668	1695	687	6
+1669	1696	688	6
+1670	1697	689	6
+1671	1698	690	6
+1672	1699	691	6
+1673	1700	692	6
+1674	1701	693	6
+1675	1702	695	4
+1676	1703	696	4
+1677	1704	697	4
+1678	1705	698	4
+1679	1706	680	7
+1680	1707	681	7
+1681	1708	682	7
+1682	1709	683	7
+1683	1710	684	7
+1684	1711	685	7
+1685	1712	686	7
+1686	1713	743	2
+1687	1714	744	2
+1688	1715	745	2
+1689	1716	746	2
 482	509	707	5
 490	517	701	6
 491	518	702	6
@@ -9729,6 +10791,747 @@ COPY public.reviewlogs_flashcard_links (id, reviewlog_id, flashcard_id, reviewlo
 1062	1089	646	5
 1063	1090	671	3
 1064	1091	724	1
+1065	1092	361	3
+1066	1093	552	2
+1067	1094	368	5
+1068	1095	362	4
+1069	1096	436	3
+1070	1097	367	5
+1071	1098	436	4
+1072	1099	367	6
+1073	1100	378	4
+1074	1101	376	4
+1075	1102	377	3
+1076	1103	482	3
+1077	1104	499	3
+1078	1105	497	3
+1079	1106	509	3
+1080	1107	511	3
+1081	1108	506	3
+1082	1109	523	3
+1083	1110	519	3
+1084	1111	518	3
+1085	1112	532	3
+1086	1113	518	4
+1087	1114	532	4
+1088	1115	528	3
+1089	1116	525	3
+1090	1117	530	3
+1091	1118	538	3
+1092	1119	536	3
+1093	1120	535	3
+1094	1121	541	3
+1095	1122	495	3
+1096	1123	504	3
+1097	1124	520	3
+1098	1125	522	3
+1099	1126	531	3
+1100	1127	522	4
+1101	1128	531	4
+1102	1129	522	5
+1103	1130	531	5
+1104	1131	524	3
+1105	1132	543	3
+1106	1133	542	3
+1107	1134	551	3
+1108	1135	557	3
+1109	1136	555	3
+1110	1137	565	4
+1111	1138	596	3
+1112	1139	561	3
+1113	1140	584	3
+1114	1141	598	3
+1115	1142	582	3
+1116	1143	546	3
+1117	1144	564	3
+1118	1145	578	3
+1119	1146	585	3
+1120	1147	594	3
+1121	1148	549	3
+1122	1149	556	3
+1123	1150	567	3
+1124	1151	574	3
+1125	1152	589	3
+1126	1153	642	3
+1127	1154	562	3
+1128	1155	580	3
+1129	1156	643	3
+1130	1157	553	3
+1131	1158	583	3
+1132	1159	593	3
+1133	1160	572	3
+1134	1161	579	3
+1135	1162	600	3
+1136	1163	566	3
+1137	1164	576	3
+1138	1165	586	3
+1139	1166	601	3
+1140	1167	673	3
+1141	1168	736	3
+1142	1169	737	3
+1143	1170	740	3
+1144	1171	619	3
+1145	1172	625	3
+1146	1173	629	3
+1147	1174	635	3
+1148	1175	676	3
+1149	1176	741	3
+1150	1177	618	3
+1151	1178	677	3
+1152	1179	608	3
+1153	1180	617	3
+1154	1181	617	4
+1155	1182	627	3
+1156	1183	616	3
+1157	1184	628	3
+1158	1185	622	3
+1159	1186	639	3
+1160	1187	560	3
+1161	1188	492	3
+1162	1189	500	3
+1163	1190	510	3
+1164	1191	513	3
+1165	1192	515	3
+1166	1193	526	3
+1167	1194	539	3
+1168	1195	503	3
+1169	1196	498	3
+1170	1197	505	3
+1171	1198	508	3
+1172	1199	516	3
+1173	1200	517	3
+1174	1201	533	3
+1175	1202	529	3
+1176	1203	527	3
+1177	1204	537	3
+1178	1205	545	3
+1179	1206	534	4
+1180	1207	550	3
+1181	1208	575	3
+1182	1209	588	3
+1183	1210	540	3
+1184	1211	548	3
+1185	1212	569	3
+1186	1213	577	3
+1187	1214	544	3
+1188	1215	559	3
+1189	1216	568	3
+1190	1217	591	3
+1191	1218	595	3
+1192	1219	554	3
+1193	1220	599	3
+1194	1221	573	3
+1195	1222	590	3
+1196	1223	602	3
+1197	1224	558	3
+1198	1225	570	3
+1199	1226	603	3
+1200	1227	563	3
+1201	1228	587	3
+1202	1229	672	3
+1203	1230	735	3
+1204	1231	738	3
+1205	1232	604	3
+1206	1233	674	3
+1207	1234	675	3
+1208	1235	739	3
+1209	1236	605	3
+1210	1237	621	3
+1211	1238	606	3
+1212	1239	624	3
+1213	1240	607	3
+1214	1241	614	3
+1215	1242	633	3
+1216	1243	634	3
+1217	1244	678	3
+1218	1245	679	3
+1219	1246	609	3
+1220	1247	623	3
+1221	1248	632	3
+1222	1249	610	3
+1223	1250	620	3
+1224	1251	631	3
+1225	1252	620	4
+1226	1253	631	4
+1227	1254	611	3
+1228	1255	615	3
+1229	1256	630	3
+1230	1257	612	3
+1231	1258	613	3
+1232	1259	626	3
+1233	1260	637	3
+1234	1261	640	3
+1235	1262	641	3
+1236	1263	547	3
+1237	1264	571	3
+1238	1265	581	3
+1239	1266	592	3
+1240	1267	597	3
+1241	1268	363	3
+1242	1269	364	3
+1243	1270	360	3
+1244	1271	359	3
+1245	1272	365	3
+1246	1273	371	3
+1247	1274	373	3
+1248	1275	435	3
+1249	1276	432	3
+1250	1277	433	3
+1251	1278	488	3
+1252	1279	434	3
+1253	1280	507	3
+1254	1281	512	3
+1255	1282	514	3
+1256	1283	490	3
+1257	1284	487	3
+1258	1285	501	3
+1259	1286	440	3
+1260	1287	442	3
+1261	1288	453	3
+1262	1289	455	3
+1263	1290	443	4
+1264	1291	444	3
+1265	1292	445	3
+1266	1293	441	3
+1267	1294	636	5
+1268	1295	454	4
+1269	1296	644	6
+1270	1297	645	6
+1271	1298	646	6
+1272	1299	671	4
+1273	1300	552	3
+1274	1301	367	7
+1275	1302	482	4
+1276	1303	499	4
+1277	1304	497	4
+1278	1305	509	4
+1279	1306	511	4
+1280	1307	506	4
+1281	1308	523	4
+1282	1309	519	4
+1283	1310	518	5
+1284	1311	532	5
+1285	1312	528	4
+1286	1313	525	4
+1287	1314	530	4
+1288	1315	538	4
+1289	1316	536	4
+1290	1317	535	4
+1291	1318	541	4
+1292	1319	495	4
+1293	1320	504	4
+1294	1321	520	4
+1295	1322	522	6
+1296	1323	531	6
+1297	1324	524	4
+1298	1325	543	4
+1299	1326	542	4
+1300	1327	551	4
+1301	1328	557	4
+1302	1329	555	4
+1303	1330	565	5
+1304	1331	596	4
+1305	1332	561	4
+1306	1333	584	4
+1307	1334	598	4
+1308	1335	582	4
+1309	1336	546	4
+1310	1337	564	4
+1311	1338	578	4
+1312	1339	585	4
+1313	1340	594	4
+1314	1341	549	4
+1315	1342	556	4
+1316	1343	567	4
+1317	1344	574	4
+1318	1345	589	4
+1319	1346	642	4
+1320	1347	562	4
+1321	1348	580	4
+1322	1349	643	4
+1323	1350	553	4
+1324	1351	583	4
+1325	1352	593	4
+1326	1353	572	4
+1327	1354	579	4
+1328	1355	600	4
+1329	1356	566	4
+1330	1357	576	4
+1331	1358	586	4
+1332	1359	601	4
+1333	1360	673	4
+1334	1361	736	4
+1335	1362	737	4
+1336	1363	740	4
+1337	1364	619	4
+1338	1365	625	4
+1339	1366	629	4
+1340	1367	635	4
+1341	1368	676	4
+1342	1369	741	4
+1343	1370	618	4
+1344	1371	677	4
+1345	1372	608	4
+1346	1373	617	5
+1347	1374	627	4
+1348	1375	616	4
+1349	1376	628	4
+1350	1377	622	4
+1351	1378	639	4
+1352	1379	560	4
+1353	1380	492	4
+1354	1381	500	4
+1355	1382	510	4
+1356	1383	513	4
+1357	1384	515	4
+1358	1385	526	4
+1359	1386	539	4
+1360	1387	503	4
+1361	1388	498	4
+1362	1389	505	4
+1363	1390	508	4
+1364	1391	516	4
+1365	1392	517	4
+1366	1393	533	4
+1367	1394	529	4
+1368	1395	527	4
+1369	1396	537	4
+1370	1397	545	4
+1371	1398	534	5
+1372	1399	550	4
+1373	1400	575	4
+1374	1401	588	4
+1375	1402	540	4
+1376	1403	548	4
+1377	1404	569	4
+1378	1405	577	4
+1379	1406	544	4
+1380	1407	559	4
+1381	1408	568	4
+1382	1409	591	4
+1383	1410	595	4
+1384	1411	554	4
+1385	1412	599	4
+1386	1413	573	4
+1387	1414	590	4
+1388	1415	602	4
+1389	1416	558	4
+1390	1417	570	4
+1391	1418	603	4
+1392	1419	563	4
+1393	1420	587	4
+1394	1421	672	4
+1395	1422	735	4
+1396	1423	738	4
+1397	1424	604	4
+1398	1425	674	4
+1399	1426	675	4
+1400	1427	739	4
+1401	1428	605	4
+1402	1429	621	4
+1403	1430	606	4
+1404	1431	624	4
+1405	1432	607	4
+1406	1433	614	4
+1407	1434	633	4
+1408	1435	634	4
+1409	1436	678	4
+1410	1437	679	4
+1411	1438	609	4
+1412	1439	623	4
+1413	1440	632	4
+1414	1441	610	4
+1415	1442	620	5
+1416	1443	631	5
+1417	1444	611	4
+1418	1445	615	4
+1419	1446	630	4
+1420	1447	612	4
+1421	1448	613	4
+1422	1449	626	4
+1423	1450	637	4
+1424	1451	640	4
+1425	1452	641	4
+1426	1453	547	4
+1427	1454	571	4
+1428	1455	581	4
+1429	1456	592	4
+1430	1457	597	4
+1431	1458	363	4
+1432	1459	360	4
+1433	1460	359	4
+1434	1461	365	4
+1435	1462	373	4
+1436	1463	433	4
+1437	1464	507	4
+1438	1465	512	4
+1439	1466	514	4
+1440	1467	487	4
+1441	1468	443	5
+1442	1469	445	4
+1443	1470	636	6
+1444	1471	671	5
+1445	1472	361	4
+1446	1473	436	5
+1447	1474	378	5
+1448	1475	376	5
+1449	1476	377	4
+1450	1477	364	4
+1451	1478	371	4
+1452	1479	432	4
+1453	1480	434	4
+1454	1481	490	4
+1455	1482	501	4
+1456	1483	440	4
+1457	1484	442	4
+1458	1485	453	4
+1459	1486	455	4
+1460	1487	444	4
+1461	1488	644	7
+1462	1489	645	7
+1463	1490	646	7
+1464	1491	552	4
+1465	1492	367	8
+1466	1493	482	5
+1467	1494	499	5
+1468	1495	497	5
+1469	1496	509	5
+1470	1497	511	5
+1471	1498	506	5
+1472	1499	523	5
+1473	1500	519	5
+1474	1501	518	6
+1475	1502	532	6
+1476	1503	528	5
+1477	1504	525	5
+1478	1505	530	5
+1479	1506	538	5
+1480	1507	536	5
+1481	1508	535	5
+1482	1509	541	5
+1483	1510	495	5
+1484	1511	504	5
+1485	1512	520	5
+1486	1513	522	7
+1487	1514	531	7
+1488	1515	524	5
+1489	1516	543	5
+1490	1517	542	5
+1491	1518	551	5
+1492	1519	557	5
+1493	1520	555	5
+1494	1521	565	6
+1495	1522	596	5
+1496	1523	561	5
+1497	1524	584	5
+1498	1525	598	5
+1499	1526	582	5
+1500	1527	546	5
+1501	1528	564	5
+1502	1529	578	5
+1503	1530	585	5
+1504	1531	594	5
+1505	1532	549	5
+1506	1533	556	5
+1507	1534	567	5
+1508	1535	574	5
+1509	1536	589	5
+1510	1537	642	5
+1511	1538	562	5
+1512	1539	580	5
+1513	1540	643	5
+1514	1541	553	5
+1515	1542	583	5
+1516	1543	593	5
+1517	1544	572	5
+1518	1545	579	5
+1519	1546	600	5
+1520	1547	566	5
+1521	1548	576	5
+1522	1549	586	5
+1523	1550	601	5
+1524	1551	673	5
+1525	1552	736	5
+1526	1553	737	5
+1527	1554	740	5
+1528	1555	619	5
+1529	1556	625	5
+1530	1557	629	5
+1531	1558	635	5
+1532	1559	676	5
+1533	1560	741	5
+1534	1561	618	5
+1535	1562	677	5
+1536	1563	608	5
+1537	1564	617	6
+1538	1565	627	5
+1539	1566	616	5
+1540	1567	628	5
+1541	1568	622	5
+1542	1569	639	5
+1543	1570	560	5
+1544	1571	492	5
+1621	1648	592	5
+1622	1649	597	5
+1623	1650	363	5
+1624	1651	360	5
+1625	1652	359	5
+1626	1653	365	5
+1627	1654	373	5
+1628	1655	433	5
+1629	1656	507	5
+1630	1657	512	5
+1631	1658	514	5
+1632	1659	487	5
+1633	1660	443	6
+1634	1661	445	5
+1635	1662	636	7
+1636	1663	671	6
+1654	1681	684	6
+1655	1682	685	6
+1656	1683	686	6
+1658	1685	744	1
+1660	1687	746	1
+1662	1689	748	1
+1664	1691	750	1
+1666	1693	752	1
+1690	1717	747	2
+1691	1718	725	1
+1692	1719	716	2
+1693	1720	717	2
+1694	1721	718	2
+1695	1722	719	2
+1696	1723	720	2
+1697	1724	720	2
+1698	1725	722	2
+1699	1726	723	2
+1700	1727	724	2
+1701	1728	721	2
+1702	1729	753	1
+1703	1730	748	2
+1704	1731	749	2
+1705	1732	670	7
+1706	1733	754	1
+1707	1734	361	5
+1708	1735	377	5
+1709	1736	364	5
+1710	1737	371	5
+1711	1738	364	6
+1712	1739	371	6
+1713	1740	490	5
+1714	1741	501	5
+1715	1742	440	5
+1716	1743	453	5
+1717	1744	455	5
+1718	1745	444	5
+1719	1746	644	8
+1720	1747	645	8
+1721	1748	644	9
+1722	1749	645	9
+1723	1750	646	8
+1724	1751	552	5
+1725	1752	367	9
+1726	1753	367	10
+1727	1754	482	6
+1728	1755	499	6
+1729	1756	497	6
+1730	1757	509	6
+1731	1758	511	6
+1732	1759	506	6
+1733	1760	523	6
+1734	1761	519	6
+1735	1762	518	7
+1736	1763	532	7
+1737	1764	528	6
+1738	1765	528	7
+1739	1766	525	6
+1740	1767	530	6
+1741	1768	538	6
+1742	1769	536	6
+1743	1770	535	6
+1744	1771	541	6
+1745	1772	495	6
+1746	1773	504	6
+1747	1774	520	6
+1748	1775	522	8
+1749	1776	531	8
+1750	1777	524	6
+1751	1778	543	6
+1752	1779	542	6
+1753	1780	551	6
+1754	1781	557	6
+1755	1782	555	6
+1756	1783	565	7
+1757	1784	596	6
+1758	1785	561	6
+1759	1786	584	6
+1760	1787	598	6
+1761	1788	582	6
+1762	1789	546	6
+1763	1790	564	6
+1764	1791	578	6
+1765	1792	585	6
+1766	1793	594	6
+1767	1794	549	6
+1768	1795	556	6
+1769	1796	567	6
+1770	1797	574	6
+1771	1798	589	6
+1772	1799	642	6
+1773	1800	562	6
+1774	1801	562	7
+1775	1802	580	6
+1776	1803	643	6
+1777	1804	553	6
+1778	1805	583	6
+1779	1806	593	6
+1780	1807	572	6
+1781	1808	579	6
+1782	1809	600	6
+1783	1810	566	6
+1784	1811	576	6
+1785	1812	586	6
+1786	1813	601	6
+1787	1814	673	6
+1788	1815	736	6
+1789	1816	737	6
+1790	1817	740	6
+1791	1818	619	6
+1792	1819	625	6
+1793	1820	629	6
+1794	1821	635	6
+1795	1822	676	6
+1796	1823	741	6
+1797	1824	618	6
+1798	1825	677	6
+1799	1826	608	6
+1800	1827	617	7
+1801	1828	627	6
+1802	1829	616	6
+1803	1830	628	6
+1804	1831	622	6
+1805	1832	639	6
+1806	1833	560	6
+1807	1834	492	6
+1808	1835	500	6
+1809	1836	510	6
+1810	1837	513	6
+1811	1838	515	6
+1812	1839	526	6
+1813	1840	539	6
+1814	1841	503	6
+1815	1842	498	6
+1816	1843	505	6
+1817	1844	508	6
+1818	1845	516	6
+1819	1846	517	6
+1820	1847	533	6
+1821	1848	529	6
+1822	1849	527	6
+1823	1850	537	6
+1824	1851	545	6
+1825	1852	534	7
+1826	1853	550	6
+1827	1854	575	6
+1828	1855	588	6
+1829	1856	540	7
+1830	1857	548	6
+1831	1858	569	6
+1832	1859	577	6
+1833	1860	544	6
+1834	1861	559	6
+1835	1862	568	6
+1836	1863	591	6
+1837	1864	595	6
+1838	1865	554	6
+1839	1866	599	6
+1840	1867	573	6
+1841	1868	590	6
+1842	1869	602	6
+1843	1870	558	6
+1844	1871	570	6
+1845	1872	603	6
+1846	1873	563	6
+1847	1874	587	6
+1848	1875	672	6
+1849	1876	735	6
+1850	1877	738	6
+1851	1878	604	6
+1852	1879	674	6
+1853	1880	675	6
+1854	1881	739	6
+1855	1882	605	6
+1856	1883	621	6
+1857	1884	606	6
+1858	1885	624	6
+1859	1886	607	6
+1860	1887	614	6
+1861	1888	633	6
+1862	1889	634	6
+1863	1890	678	6
+1864	1891	679	6
+1865	1892	609	6
+1866	1893	623	6
+1867	1894	632	6
+1868	1895	610	6
+1869	1896	620	7
+1870	1897	631	7
+1871	1898	611	6
+1872	1899	615	6
+1873	1900	630	6
+1874	1901	612	6
+1875	1902	613	6
+1876	1903	626	6
+1877	1904	637	6
+1878	1905	640	6
+1879	1906	641	6
+1880	1907	547	6
+1881	1908	571	6
+1882	1909	581	6
+1883	1910	592	6
+1884	1911	597	6
+1885	1912	363	6
+1886	1913	360	6
+1887	1914	359	6
+1888	1915	365	6
+1889	1916	373	6
+1890	1917	433	6
+1891	1918	507	6
+1892	1919	512	6
+1893	1920	514	6
+1894	1921	487	6
+1895	1922	443	7
+1896	1923	445	6
+1897	1924	636	8
+1898	1925	671	7
+1899	1926	725	2
+1900	1927	716	3
+1901	1928	717	3
+1902	1929	718	3
+1903	1930	719	3
+1904	1931	720	3
+1905	1932	722	3
+1906	1933	722	3
+1907	1934	724	3
+1908	1935	721	3
+1909	1936	753	2
+1910	1937	755	1
+1911	1938	756	1
+1912	1939	757	1
+1913	1940	723	3
+1914	1941	754	2
+1915	1942	758	1
+1916	1943	725	3
+1917	1944	716	4
+1918	1945	717	4
+1919	1946	718	4
+1920	1947	719	4
+1921	1948	720	4
+1922	1949	722	4
+1923	1950	724	4
+1924	1951	721	4
+1925	1952	753	3
+1926	1953	755	2
 \.
 
 
@@ -10827,6 +12630,868 @@ COPY public.reviewlogs_user_links (id, reviewlog_id, user_id, reviewlog_order) F
 1089	1089	8	741
 1090	1090	8	742
 1091	1091	50	6
+1092	1092	8	743
+1093	1093	8	744
+1094	1094	8	745
+1095	1095	8	746
+1096	1096	8	747
+1097	1097	8	748
+1098	1098	8	749
+1099	1099	8	750
+1100	1100	8	751
+1101	1101	8	752
+1102	1102	8	753
+1103	1103	8	754
+1104	1104	8	755
+1105	1105	8	756
+1106	1106	8	757
+1107	1107	8	758
+1108	1108	8	759
+1109	1109	8	760
+1110	1110	8	761
+1111	1111	8	762
+1112	1112	8	763
+1113	1113	8	764
+1114	1114	8	765
+1115	1115	8	766
+1116	1116	8	767
+1117	1117	8	768
+1118	1118	8	769
+1119	1119	8	770
+1120	1120	8	771
+1121	1121	8	772
+1122	1122	8	773
+1123	1123	8	774
+1124	1124	8	775
+1125	1125	8	776
+1126	1126	8	777
+1127	1127	8	778
+1128	1128	8	779
+1129	1129	8	780
+1130	1130	8	781
+1131	1131	8	782
+1132	1132	8	783
+1133	1133	8	784
+1134	1134	8	785
+1135	1135	8	786
+1136	1136	8	787
+1137	1137	8	788
+1138	1138	8	789
+1139	1139	8	790
+1140	1140	8	791
+1141	1141	8	792
+1142	1142	8	793
+1143	1143	8	794
+1144	1144	8	795
+1145	1145	8	796
+1146	1146	8	797
+1147	1147	8	798
+1148	1148	8	799
+1149	1149	8	800
+1150	1150	8	801
+1151	1151	8	802
+1152	1152	8	803
+1153	1153	8	804
+1154	1154	8	805
+1155	1155	8	806
+1156	1156	8	807
+1157	1157	8	808
+1158	1158	8	809
+1159	1159	8	810
+1160	1160	8	811
+1161	1161	8	812
+1162	1162	8	813
+1163	1163	8	814
+1164	1164	8	815
+1165	1165	8	816
+1166	1166	8	817
+1167	1167	8	818
+1168	1168	8	819
+1169	1169	8	820
+1170	1170	8	821
+1171	1171	8	822
+1172	1172	8	823
+1173	1173	8	824
+1174	1174	8	825
+1175	1175	8	826
+1176	1176	8	827
+1177	1177	8	828
+1178	1178	8	829
+1179	1179	8	830
+1180	1180	8	831
+1181	1181	8	832
+1182	1182	8	833
+1183	1183	8	834
+1184	1184	8	835
+1185	1185	8	836
+1186	1186	8	837
+1187	1187	8	838
+1188	1188	8	839
+1189	1189	8	840
+1190	1190	8	841
+1191	1191	8	842
+1192	1192	8	843
+1193	1193	8	844
+1194	1194	8	845
+1195	1195	8	846
+1196	1196	8	847
+1197	1197	8	848
+1198	1198	8	849
+1199	1199	8	850
+1200	1200	8	851
+1201	1201	8	852
+1202	1202	8	853
+1203	1203	8	854
+1204	1204	8	855
+1205	1205	8	856
+1206	1206	8	857
+1207	1207	8	858
+1208	1208	8	859
+1209	1209	8	860
+1210	1210	8	861
+1211	1211	8	862
+1212	1212	8	863
+1213	1213	8	864
+1214	1214	8	865
+1215	1215	8	866
+1216	1216	8	867
+1217	1217	8	868
+1218	1218	8	869
+1219	1219	8	870
+1220	1220	8	871
+1221	1221	8	872
+1222	1222	8	873
+1223	1223	8	874
+1224	1224	8	875
+1225	1225	8	876
+1226	1226	8	877
+1227	1227	8	878
+1228	1228	8	879
+1229	1229	8	880
+1230	1230	8	881
+1231	1231	8	882
+1232	1232	8	883
+1233	1233	8	884
+1234	1234	8	885
+1235	1235	8	886
+1236	1236	8	887
+1237	1237	8	888
+1238	1238	8	889
+1239	1239	8	890
+1240	1240	8	891
+1241	1241	8	892
+1242	1242	8	893
+1243	1243	8	894
+1244	1244	8	895
+1245	1245	8	896
+1246	1246	8	897
+1247	1247	8	898
+1248	1248	8	899
+1249	1249	8	900
+1250	1250	8	901
+1251	1251	8	902
+1252	1252	8	903
+1253	1253	8	904
+1254	1254	8	905
+1255	1255	8	906
+1256	1256	8	907
+1257	1257	8	908
+1258	1258	8	909
+1259	1259	8	910
+1260	1260	8	911
+1261	1261	8	912
+1262	1262	8	913
+1263	1263	8	914
+1264	1264	8	915
+1265	1265	8	916
+1266	1266	8	917
+1267	1267	8	918
+1268	1268	8	919
+1269	1269	8	920
+1270	1270	8	921
+1271	1271	8	922
+1272	1272	8	923
+1273	1273	8	924
+1274	1274	8	925
+1275	1275	8	926
+1276	1276	8	927
+1277	1277	8	928
+1278	1278	8	929
+1279	1279	8	930
+1280	1280	8	931
+1281	1281	8	932
+1282	1282	8	933
+1283	1283	8	934
+1284	1284	8	935
+1285	1285	8	936
+1286	1286	8	937
+1287	1287	8	938
+1288	1288	8	939
+1289	1289	8	940
+1290	1290	8	941
+1291	1291	8	942
+1292	1292	8	943
+1293	1293	8	944
+1294	1294	8	945
+1295	1295	8	946
+1296	1296	8	947
+1297	1297	8	948
+1298	1298	8	949
+1299	1299	8	950
+1300	1300	8	951
+1301	1301	8	952
+1302	1302	8	953
+1303	1303	8	954
+1304	1304	8	955
+1305	1305	8	956
+1306	1306	8	957
+1307	1307	8	958
+1308	1308	8	959
+1309	1309	8	960
+1310	1310	8	961
+1311	1311	8	962
+1312	1312	8	963
+1313	1313	8	964
+1314	1314	8	965
+1315	1315	8	966
+1316	1316	8	967
+1317	1317	8	968
+1318	1318	8	969
+1319	1319	8	970
+1320	1320	8	971
+1321	1321	8	972
+1322	1322	8	973
+1323	1323	8	974
+1324	1324	8	975
+1325	1325	8	976
+1326	1326	8	977
+1327	1327	8	978
+1328	1328	8	979
+1329	1329	8	980
+1330	1330	8	981
+1331	1331	8	982
+1332	1332	8	983
+1333	1333	8	984
+1334	1334	8	985
+1335	1335	8	986
+1336	1336	8	987
+1337	1337	8	988
+1338	1338	8	989
+1339	1339	8	990
+1340	1340	8	991
+1341	1341	8	992
+1342	1342	8	993
+1343	1343	8	994
+1344	1344	8	995
+1345	1345	8	996
+1346	1346	8	997
+1347	1347	8	998
+1348	1348	8	999
+1349	1349	8	1000
+1350	1350	8	1001
+1351	1351	8	1002
+1352	1352	8	1003
+1353	1353	8	1004
+1354	1354	8	1005
+1355	1355	8	1006
+1356	1356	8	1007
+1357	1357	8	1008
+1358	1358	8	1009
+1359	1359	8	1010
+1360	1360	8	1011
+1361	1361	8	1012
+1362	1362	8	1013
+1363	1363	8	1014
+1364	1364	8	1015
+1365	1365	8	1016
+1366	1366	8	1017
+1367	1367	8	1018
+1368	1368	8	1019
+1369	1369	8	1020
+1370	1370	8	1021
+1371	1371	8	1022
+1372	1372	8	1023
+1373	1373	8	1024
+1374	1374	8	1025
+1375	1375	8	1026
+1376	1376	8	1027
+1377	1377	8	1028
+1378	1378	8	1029
+1379	1379	8	1030
+1380	1380	8	1031
+1381	1381	8	1032
+1382	1382	8	1033
+1383	1383	8	1034
+1384	1384	8	1035
+1385	1385	8	1036
+1386	1386	8	1037
+1387	1387	8	1038
+1388	1388	8	1039
+1389	1389	8	1040
+1390	1390	8	1041
+1391	1391	8	1042
+1392	1392	8	1043
+1393	1393	8	1044
+1394	1394	8	1045
+1395	1395	8	1046
+1396	1396	8	1047
+1397	1397	8	1048
+1398	1398	8	1049
+1399	1399	8	1050
+1400	1400	8	1051
+1401	1401	8	1052
+1402	1402	8	1053
+1403	1403	8	1054
+1404	1404	8	1055
+1405	1405	8	1056
+1406	1406	8	1057
+1407	1407	8	1058
+1408	1408	8	1059
+1409	1409	8	1060
+1410	1410	8	1061
+1411	1411	8	1062
+1412	1412	8	1063
+1413	1413	8	1064
+1414	1414	8	1065
+1415	1415	8	1066
+1416	1416	8	1067
+1417	1417	8	1068
+1418	1418	8	1069
+1419	1419	8	1070
+1420	1420	8	1071
+1421	1421	8	1072
+1422	1422	8	1073
+1423	1423	8	1074
+1424	1424	8	1075
+1425	1425	8	1076
+1426	1426	8	1077
+1427	1427	8	1078
+1428	1428	8	1079
+1429	1429	8	1080
+1430	1430	8	1081
+1431	1431	8	1082
+1432	1432	8	1083
+1433	1433	8	1084
+1434	1434	8	1085
+1435	1435	8	1086
+1436	1436	8	1087
+1437	1437	8	1088
+1438	1438	8	1089
+1439	1439	8	1090
+1440	1440	8	1091
+1441	1441	8	1092
+1442	1442	8	1093
+1443	1443	8	1094
+1444	1444	8	1095
+1445	1445	8	1096
+1446	1446	8	1097
+1447	1447	8	1098
+1448	1448	8	1099
+1449	1449	8	1100
+1450	1450	8	1101
+1451	1451	8	1102
+1452	1452	8	1103
+1453	1453	8	1104
+1454	1454	8	1105
+1455	1455	8	1106
+1456	1456	8	1107
+1457	1457	8	1108
+1458	1458	8	1109
+1459	1459	8	1110
+1460	1460	8	1111
+1461	1461	8	1112
+1462	1462	8	1113
+1463	1463	8	1114
+1464	1464	8	1115
+1465	1465	8	1116
+1466	1466	8	1117
+1467	1467	8	1118
+1468	1468	8	1119
+1469	1469	8	1120
+1470	1470	8	1121
+1471	1471	8	1122
+1472	1472	8	1123
+1473	1473	8	1124
+1474	1474	8	1125
+1475	1475	8	1126
+1476	1476	8	1127
+1477	1477	8	1128
+1478	1478	8	1129
+1479	1479	8	1130
+1480	1480	8	1131
+1481	1481	8	1132
+1482	1482	8	1133
+1483	1483	8	1134
+1484	1484	8	1135
+1485	1485	8	1136
+1486	1486	8	1137
+1487	1487	8	1138
+1488	1488	8	1139
+1489	1489	8	1140
+1490	1490	8	1141
+1491	1491	8	1142
+1492	1492	8	1143
+1493	1493	8	1144
+1494	1494	8	1145
+1495	1495	8	1146
+1496	1496	8	1147
+1497	1497	8	1148
+1498	1498	8	1149
+1499	1499	8	1150
+1500	1500	8	1151
+1501	1501	8	1152
+1502	1502	8	1153
+1503	1503	8	1154
+1504	1504	8	1155
+1505	1505	8	1156
+1506	1506	8	1157
+1507	1507	8	1158
+1508	1508	8	1159
+1509	1509	8	1160
+1510	1510	8	1161
+1511	1511	8	1162
+1512	1512	8	1163
+1513	1513	8	1164
+1514	1514	8	1165
+1515	1515	8	1166
+1516	1516	8	1167
+1517	1517	8	1168
+1518	1518	8	1169
+1519	1519	8	1170
+1520	1520	8	1171
+1521	1521	8	1172
+1522	1522	8	1173
+1523	1523	8	1174
+1524	1524	8	1175
+1525	1525	8	1176
+1526	1526	8	1177
+1527	1527	8	1178
+1528	1528	8	1179
+1529	1529	8	1180
+1530	1530	8	1181
+1531	1531	8	1182
+1532	1532	8	1183
+1533	1533	8	1184
+1534	1534	8	1185
+1535	1535	8	1186
+1536	1536	8	1187
+1537	1537	8	1188
+1538	1538	8	1189
+1539	1539	8	1190
+1540	1540	8	1191
+1541	1541	8	1192
+1542	1542	8	1193
+1543	1543	8	1194
+1544	1544	8	1195
+1545	1545	8	1196
+1546	1546	8	1197
+1547	1547	8	1198
+1548	1548	8	1199
+1549	1549	8	1200
+1550	1550	8	1201
+1551	1551	8	1202
+1552	1552	8	1203
+1553	1553	8	1204
+1554	1554	8	1205
+1555	1555	8	1206
+1556	1556	8	1207
+1557	1557	8	1208
+1558	1558	8	1209
+1559	1559	8	1210
+1560	1560	8	1211
+1561	1561	8	1212
+1562	1562	8	1213
+1563	1563	8	1214
+1564	1564	8	1215
+1565	1565	8	1216
+1566	1566	8	1217
+1567	1567	8	1218
+1568	1568	8	1219
+1569	1569	8	1220
+1570	1570	8	1221
+1571	1571	8	1222
+1572	1572	8	1223
+1573	1573	8	1224
+1574	1574	8	1225
+1575	1575	8	1226
+1576	1576	8	1227
+1577	1577	8	1228
+1578	1578	8	1229
+1579	1579	8	1230
+1580	1580	8	1231
+1581	1581	8	1232
+1582	1582	8	1233
+1583	1583	8	1234
+1584	1584	8	1235
+1585	1585	8	1236
+1586	1586	8	1237
+1587	1587	8	1238
+1588	1588	8	1239
+1589	1589	8	1240
+1590	1590	8	1241
+1591	1591	8	1242
+1592	1592	8	1243
+1593	1593	8	1244
+1594	1594	8	1245
+1595	1595	8	1246
+1596	1596	8	1247
+1597	1597	8	1248
+1598	1598	8	1249
+1599	1599	8	1250
+1600	1600	8	1251
+1601	1601	8	1252
+1602	1602	8	1253
+1603	1603	8	1254
+1604	1604	8	1255
+1605	1605	8	1256
+1606	1606	8	1257
+1607	1607	8	1258
+1608	1608	8	1259
+1609	1609	8	1260
+1610	1610	8	1261
+1611	1611	8	1262
+1612	1612	8	1263
+1613	1613	8	1264
+1614	1614	8	1265
+1615	1615	8	1266
+1616	1616	8	1267
+1617	1617	8	1268
+1618	1618	8	1269
+1619	1619	8	1270
+1620	1620	8	1271
+1621	1621	8	1272
+1622	1622	8	1273
+1623	1623	8	1274
+1624	1624	8	1275
+1625	1625	8	1276
+1626	1626	8	1277
+1627	1627	8	1278
+1628	1628	8	1279
+1629	1629	8	1280
+1630	1630	8	1281
+1631	1631	8	1282
+1632	1632	8	1283
+1633	1633	8	1284
+1634	1634	8	1285
+1635	1635	8	1286
+1636	1636	8	1287
+1637	1637	8	1288
+1638	1638	8	1289
+1639	1639	8	1290
+1640	1640	8	1291
+1641	1641	8	1292
+1642	1642	8	1293
+1643	1643	8	1294
+1644	1644	8	1295
+1645	1645	8	1296
+1646	1646	8	1297
+1647	1647	8	1298
+1648	1648	8	1299
+1649	1649	8	1300
+1650	1650	8	1301
+1651	1651	8	1302
+1652	1652	8	1303
+1653	1653	8	1304
+1654	1654	8	1305
+1655	1655	8	1306
+1656	1656	8	1307
+1657	1657	8	1308
+1658	1658	8	1309
+1659	1659	8	1310
+1660	1660	8	1311
+1661	1661	8	1312
+1662	1662	8	1313
+1663	1663	8	1314
+1664	1664	47	68
+1665	1665	47	69
+1666	1666	47	70
+1667	1667	47	71
+1668	1668	47	72
+1669	1669	47	73
+1670	1670	47	74
+1671	1671	47	75
+1672	1672	47	76
+1673	1673	47	77
+1674	1674	47	78
+1675	1675	47	79
+1676	1676	47	80
+1677	1677	47	81
+1678	1678	47	82
+1679	1679	47	83
+1680	1680	47	84
+1681	1681	47	85
+1682	1682	47	86
+1683	1683	47	87
+1684	1684	47	88
+1685	1685	47	89
+1686	1686	47	90
+1687	1687	47	91
+1688	1688	47	92
+1689	1689	47	93
+1690	1690	47	94
+1691	1691	47	95
+1692	1692	47	96
+1693	1693	47	97
+1694	1694	47	98
+1695	1695	47	99
+1696	1696	47	100
+1697	1697	47	101
+1698	1698	47	102
+1699	1699	47	103
+1700	1700	47	104
+1701	1701	47	105
+1702	1702	47	106
+1703	1703	47	107
+1704	1704	47	108
+1705	1705	47	109
+1706	1706	47	110
+1707	1707	47	111
+1708	1708	47	112
+1709	1709	47	113
+1710	1710	47	114
+1711	1711	47	115
+1712	1712	47	116
+1713	1713	47	117
+1714	1714	47	118
+1715	1715	47	119
+1716	1716	47	120
+1717	1717	47	121
+1718	1718	50	7
+1719	1719	50	8
+1720	1720	50	9
+1721	1721	50	10
+1722	1722	50	11
+1723	1723	50	12
+1724	1724	50	12
+1725	1725	50	13
+1726	1726	50	14
+1727	1727	50	15
+1728	1728	50	16
+1729	1729	50	17
+1730	1730	47	122
+1731	1731	47	123
+1732	1732	47	124
+1733	1733	50	18
+1734	1734	8	1315
+1735	1735	8	1316
+1736	1736	8	1317
+1737	1737	8	1318
+1738	1738	8	1319
+1739	1739	8	1320
+1740	1740	8	1321
+1741	1741	8	1322
+1742	1742	8	1323
+1743	1743	8	1324
+1744	1744	8	1325
+1745	1745	8	1326
+1746	1746	8	1327
+1747	1747	8	1328
+1748	1748	8	1329
+1749	1749	8	1330
+1750	1750	8	1331
+1751	1751	8	1332
+1752	1752	8	1333
+1753	1753	8	1334
+1754	1754	8	1335
+1755	1755	8	1336
+1756	1756	8	1337
+1757	1757	8	1338
+1758	1758	8	1339
+1759	1759	8	1340
+1760	1760	8	1341
+1761	1761	8	1342
+1762	1762	8	1343
+1763	1763	8	1344
+1764	1764	8	1345
+1765	1765	8	1346
+1766	1766	8	1347
+1767	1767	8	1348
+1768	1768	8	1349
+1769	1769	8	1350
+1770	1770	8	1351
+1771	1771	8	1352
+1772	1772	8	1353
+1773	1773	8	1354
+1774	1774	8	1355
+1775	1775	8	1356
+1776	1776	8	1357
+1777	1777	8	1358
+1778	1778	8	1359
+1779	1779	8	1360
+1780	1780	8	1361
+1781	1781	8	1362
+1782	1782	8	1363
+1783	1783	8	1364
+1784	1784	8	1365
+1785	1785	8	1366
+1786	1786	8	1367
+1787	1787	8	1368
+1788	1788	8	1369
+1789	1789	8	1370
+1790	1790	8	1371
+1791	1791	8	1372
+1792	1792	8	1373
+1793	1793	8	1374
+1794	1794	8	1375
+1795	1795	8	1376
+1796	1796	8	1377
+1797	1797	8	1378
+1798	1798	8	1379
+1799	1799	8	1380
+1800	1800	8	1381
+1801	1801	8	1382
+1802	1802	8	1383
+1803	1803	8	1384
+1804	1804	8	1385
+1805	1805	8	1386
+1806	1806	8	1387
+1807	1807	8	1388
+1808	1808	8	1389
+1809	1809	8	1390
+1810	1810	8	1391
+1811	1811	8	1392
+1812	1812	8	1393
+1813	1813	8	1394
+1814	1814	8	1395
+1815	1815	8	1396
+1816	1816	8	1397
+1817	1817	8	1398
+1818	1818	8	1399
+1819	1819	8	1400
+1820	1820	8	1401
+1821	1821	8	1402
+1822	1822	8	1403
+1823	1823	8	1404
+1824	1824	8	1405
+1825	1825	8	1406
+1826	1826	8	1407
+1827	1827	8	1408
+1828	1828	8	1409
+1829	1829	8	1410
+1830	1830	8	1411
+1831	1831	8	1412
+1832	1832	8	1413
+1833	1833	8	1414
+1834	1834	8	1415
+1835	1835	8	1416
+1836	1836	8	1417
+1837	1837	8	1418
+1838	1838	8	1419
+1839	1839	8	1420
+1840	1840	8	1421
+1841	1841	8	1422
+1842	1842	8	1423
+1843	1843	8	1424
+1844	1844	8	1425
+1845	1845	8	1426
+1846	1846	8	1427
+1847	1847	8	1428
+1848	1848	8	1429
+1849	1849	8	1430
+1850	1850	8	1431
+1851	1851	8	1432
+1852	1852	8	1433
+1853	1853	8	1434
+1854	1854	8	1435
+1855	1855	8	1436
+1856	1856	8	1437
+1857	1857	8	1438
+1858	1858	8	1439
+1859	1859	8	1440
+1860	1860	8	1441
+1861	1861	8	1442
+1862	1862	8	1443
+1863	1863	8	1444
+1864	1864	8	1445
+1865	1865	8	1446
+1866	1866	8	1447
+1867	1867	8	1448
+1868	1868	8	1449
+1869	1869	8	1450
+1870	1870	8	1451
+1871	1871	8	1452
+1872	1872	8	1453
+1873	1873	8	1454
+1874	1874	8	1455
+1875	1875	8	1456
+1876	1876	8	1457
+1877	1877	8	1458
+1878	1878	8	1459
+1879	1879	8	1460
+1880	1880	8	1461
+1881	1881	8	1462
+1882	1882	8	1463
+1883	1883	8	1464
+1884	1884	8	1465
+1885	1885	8	1466
+1886	1886	8	1467
+1887	1887	8	1468
+1888	1888	8	1469
+1889	1889	8	1470
+1890	1890	8	1471
+1891	1891	8	1472
+1892	1892	8	1473
+1893	1893	8	1474
+1894	1894	8	1475
+1895	1895	8	1476
+1896	1896	8	1477
+1897	1897	8	1478
+1898	1898	8	1479
+1899	1899	8	1480
+1900	1900	8	1481
+1901	1901	8	1482
+1902	1902	8	1483
+1903	1903	8	1484
+1904	1904	8	1485
+1905	1905	8	1486
+1906	1906	8	1487
+1907	1907	8	1488
+1908	1908	8	1489
+1909	1909	8	1490
+1910	1910	8	1491
+1911	1911	8	1492
+1912	1912	8	1493
+1913	1913	8	1494
+1914	1914	8	1495
+1915	1915	8	1496
+1916	1916	8	1497
+1917	1917	8	1498
+1918	1918	8	1499
+1919	1919	8	1500
+1920	1920	8	1501
+1921	1921	8	1502
+1922	1922	8	1503
+1923	1923	8	1504
+1924	1924	8	1505
+1925	1925	8	1506
+1926	1926	50	19
+1927	1927	50	20
+1928	1928	50	21
+1929	1929	50	22
+1930	1930	50	23
+1931	1931	50	24
+1932	1932	50	25
+1933	1933	50	25
+1934	1934	50	26
+1935	1935	50	27
+1936	1936	50	28
+1937	1937	50	29
+1938	1938	50	30
+1939	1939	50	31
+1940	1940	50	32
+1941	1941	50	33
+1942	1942	50	34
+1943	1943	50	35
+1944	1944	50	36
+1945	1945	50	37
+1946	1946	50	38
+1947	1947	50	39
+1948	1948	50	40
+1949	1949	50	41
+1950	1950	50	42
+1951	1951	50	43
+1952	1952	50	44
+1953	1953	50	45
 \.
 
 
@@ -10974,7 +13639,7 @@ COPY public.stories_localizations_links (id, story_id, inv_story_id, story_order
 -- Data for Name: story_audios; Type: TABLE DATA; Schema: public; Owner: strapi
 --
 
-COPY public.story_audios (id, key_hash, source_text, provider, engine_ver, voice_id, format, rate, duration_s, expires_at, paragraph_index, sentence_index, created_at, updated_at, created_by_id, updated_by_id, pitch, volume) FROM stdin;
+COPY public.story_audios (id, key_hash, source_text, provider, engine_ver, voice_id, format, rate, duration_s, expires_at, paragraph_index, sentence_index, pitch, volume, created_at, updated_at, created_by_id, updated_by_id) FROM stdin;
 \.
 
 
@@ -11072,7 +13737,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 27	plugin_content_manager_configuration_components::a.taglist	{"uid":"a.taglist","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"tag","defaultSortBy":"tag","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"tag":{"edit":{"label":"tag","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tag","searchable":true,"sortable":true}}},"layouts":{"list":["id","tag"],"edit":[[{"name":"tag","size":6}]]},"isComponent":true}	object	\N	\N
 15	plugin_upload_settings	{"sizeOptimization":true,"responsiveDimensions":true,"autoOrientation":true}	object	\N	\N
 10	plugin_content_manager_configuration_content_types::plugin::upload.file	{"uid":"plugin::upload.file","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"alternativeText":{"edit":{"label":"alternativeText","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"alternativeText","searchable":true,"sortable":true}},"caption":{"edit":{"label":"caption","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"caption","searchable":true,"sortable":true}},"width":{"edit":{"label":"width","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"width","searchable":true,"sortable":true}},"height":{"edit":{"label":"height","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"height","searchable":true,"sortable":true}},"formats":{"edit":{"label":"formats","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"formats","searchable":false,"sortable":false}},"hash":{"edit":{"label":"hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"hash","searchable":true,"sortable":true}},"ext":{"edit":{"label":"ext","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"ext","searchable":true,"sortable":true}},"mime":{"edit":{"label":"mime","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"mime","searchable":true,"sortable":true}},"size":{"edit":{"label":"size","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"size","searchable":true,"sortable":true}},"url":{"edit":{"label":"url","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"url","searchable":true,"sortable":true}},"previewUrl":{"edit":{"label":"previewUrl","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"previewUrl","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"provider_metadata":{"edit":{"label":"provider_metadata","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider_metadata","searchable":false,"sortable":false}},"folder":{"edit":{"label":"folder","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"folder","searchable":true,"sortable":true}},"folderPath":{"edit":{"label":"folderPath","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"folderPath","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","alternativeText","caption"],"edit":[[{"name":"name","size":6},{"name":"alternativeText","size":6}],[{"name":"caption","size":6},{"name":"width","size":4}],[{"name":"height","size":4}],[{"name":"formats","size":12}],[{"name":"hash","size":6},{"name":"ext","size":6}],[{"name":"mime","size":6},{"name":"size","size":4}],[{"name":"url","size":6},{"name":"previewUrl","size":6}],[{"name":"provider","size":6}],[{"name":"provider_metadata","size":12}],[{"name":"folder","size":6},{"name":"folderPath","size":6}]]}}	object	\N	\N
-17	plugin_upload_metrics	{"weeklySchedule":"31 39 9 * * 3","lastWeeklyUpdate":1755103171116}	object	\N	\N
+17	plugin_upload_metrics	{"weeklySchedule":"31 39 9 * * 3","lastWeeklyUpdate":1755682774852}	object	\N	\N
 14	plugin_content_manager_configuration_content_types::plugin::i18n.locale	{"uid":"plugin::i18n.locale","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"name":{"edit":{"label":"name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"name","searchable":true,"sortable":true}},"code":{"edit":{"label":"code","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"code","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","code","createdAt"],"edit":[[{"name":"name","size":6},{"name":"code","size":6}]]}}	object	\N	\N
 21	plugin_i18n_default_locale	"en"	string	\N	\N
 42	plugin_content_manager_configuration_components::a.user-sent-ref	{"uid":"a.user-sent-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"user_sentence":{"edit":{"label":"user_sentence","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_sentence","searchable":true,"sortable":true}}},"layouts":{"list":["id","user_sentence"],"edit":[[{"name":"user_sentence","size":6}]]},"isComponent":true}	object	\N	\N
@@ -11080,8 +13745,8 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 41	plugin_content_manager_configuration_components::a.user-word-ref	{"uid":"a.user-word-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"user_word":{"edit":{"label":"user_word","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"user_word","searchable":true,"sortable":true}}},"layouts":{"list":["id","user_word"],"edit":[[{"name":"user_word","size":6}]]},"isComponent":true}	object	\N	\N
 38	plugin_content_manager_configuration_content_types::api::section.section	{"uid":"api::section.section","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"lesson":{"edit":{"label":"lesson","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lesson","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"components":{"edit":{"label":"components","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"components","searchable":false,"sortable":false}},"word_definitions":{"edit":{"label":"word_definitions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definitions","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","lesson","order"],"edit":[[{"name":"title","size":6},{"name":"lesson","size":6}],[{"name":"order","size":4}],[{"name":"components","size":12}],[{"name":"word_definitions","size":6}]]}}	object	\N	\N
 23	plugin_content_manager_configuration_content_types::api::unit.unit	{"uid":"api::unit.unit","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"title","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"lessons":{"edit":{"label":"lessons","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"lessons","searchable":false,"sortable":false}},"precondition":{"edit":{"label":"precondition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"precondition","searchable":true,"sortable":true}},"unlocks":{"edit":{"label":"unlocks","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"unlocks","searchable":true,"sortable":true}},"module":{"edit":{"label":"module","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"module","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","slug","description"],"edit":[[{"name":"title","size":6},{"name":"slug","size":6}],[{"name":"description","size":6},{"name":"order","size":4}],[{"name":"lessons","size":6},{"name":"precondition","size":6}],[{"name":"unlocks","size":6},{"name":"module","size":6}]]}}	object	\N	\N
-45	plugin_content_manager_configuration_content_types::api::review-tire.review-tire	{"uid":"api::review-tire.review-tire","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"tier":{"edit":{"label":"tier","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tier","searchable":true,"sortable":true}},"min_streak":{"edit":{"label":"min_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"min_streak","searchable":true,"sortable":true}},"max_streak":{"edit":{"label":"max_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"max_streak","searchable":true,"sortable":true}},"cooldown_hours":{"edit":{"label":"cooldown_hours","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"cooldown_hours","searchable":true,"sortable":true}},"demote_bar":{"edit":{"label":"demote_bar","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"demote_bar","searchable":true,"sortable":true}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","tier","min_streak","max_streak","cooldown_hours","demote_bar"],"edit":[[{"name":"tier","size":6},{"name":"min_streak","size":4}],[{"name":"max_streak","size":4},{"name":"cooldown_hours","size":4},{"name":"demote_bar","size":4}],[{"name":"flashcards","size":6}]]}}	object	\N	\N
-1	strapi_content_types_schema	{"admin::permission":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"admin::permission","plugin":"admin","globalId":"AdminPermission"},"admin::user":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"registrationToken":{"hidden":true}}},"kind":"collectionType","__schema__":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"admin::user","plugin":"admin","globalId":"AdminUser"},"admin::role":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"admin::role","plugin":"admin","globalId":"AdminRole"},"admin::api-token":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token","connection":"default","uid":"admin::api-token","plugin":"admin","globalId":"AdminApiToken"},"admin::api-token-permission":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token-permission","connection":"default","uid":"admin::api-token-permission","plugin":"admin","globalId":"AdminApiTokenPermission"},"admin::transfer-token":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token","connection":"default","uid":"admin::transfer-token","plugin":"admin","globalId":"AdminTransferToken"},"admin::transfer-token-permission":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token-permission","connection":"default","uid":"admin::transfer-token-permission","plugin":"admin","globalId":"AdminTransferTokenPermission"},"plugin::upload.file":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null}],"kind":"collectionType","__schema__":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"file","connection":"default","uid":"plugin::upload.file","plugin":"upload","globalId":"UploadFile"},"plugin::upload.folder":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"}],"kind":"collectionType","__schema__":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"folder","connection":"default","uid":"plugin::upload.folder","plugin":"upload","globalId":"UploadFolder"},"plugin::users-permissions.permission":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"plugin::users-permissions.permission","plugin":"users-permissions","globalId":"UsersPermissionsPermission"},"plugin::users-permissions.role":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"plugin::users-permissions.role","plugin":"users-permissions","globalId":"UsersPermissionsRole"},"plugin::users-permissions.user":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"confirmationToken":{"hidden":true},"provider":{"hidden":true}}},"kind":"collectionType","__filename__":"schema.json","__schema__":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"plugin::users-permissions.user","plugin":"users-permissions","globalId":"UsersPermissionsUser"},"plugin::i18n.locale":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"locale","connection":"default","uid":"plugin::i18n.locale","plugin":"i18n","collectionName":"i18n_locale","globalId":"I18NLocale"},"api::conversation.conversation":{"kind":"collectionType","collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"conversation","connection":"default","uid":"api::conversation.conversation","apiName":"conversation","globalId":"Conversation","actions":{},"lifecycles":{}},"api::difficulty-level.difficulty-level":{"kind":"collectionType","collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::difficulty-level.difficulty-level"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"}},"kind":"collectionType"},"modelType":"contentType","modelName":"difficulty-level","connection":"default","uid":"api::difficulty-level.difficulty-level","apiName":"difficulty-level","globalId":"DifficultyLevel","actions":{},"lifecycles":{}},"api::flashcard.flashcard":{"kind":"collectionType","collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"flashcards"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"flashcards"}},"kind":"collectionType"},"modelType":"contentType","modelName":"flashcard","connection":"default","uid":"api::flashcard.flashcard","apiName":"flashcard","globalId":"Flashcard","actions":{},"lifecycles":{}},"api::lesson.lesson":{"kind":"collectionType","collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::lesson.lesson"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lesson","connection":"default","uid":"api::lesson.lesson","apiName":"lesson","globalId":"Lesson","actions":{},"lifecycles":{}},"api::lessonlevel.lessonlevel":{"kind":"collectionType","collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lessonlevel","connection":"default","uid":"api::lessonlevel.lessonlevel","apiName":"lessonlevel","globalId":"Lessonlevel","actions":{},"lifecycles":{}},"api::module.module":{"kind":"collectionType","collectionName":"modules","info":{"singularName":"module","pluralName":"modules","displayName":"module"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"goal":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"icon_media":{"allowedTypes":["images","videos"],"type":"media","multiple":false,"pluginOptions":{"i18n":{"localized":false}}},"units":{"type":"relation","relation":"oneToMany","target":"api::unit.unit","mappedBy":"module"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::module.module"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"modules","info":{"singularName":"module","pluralName":"modules","displayName":"module"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"goal":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"icon_media":{"allowedTypes":["images","videos"],"type":"media","multiple":false,"pluginOptions":{"i18n":{"localized":false}}},"units":{"type":"relation","relation":"oneToMany","target":"api::unit.unit","mappedBy":"module"}},"kind":"collectionType"},"modelType":"contentType","modelName":"module","connection":"default","uid":"api::module.module","apiName":"module","globalId":"Module","actions":{},"lifecycles":{}},"api::part-of-speech.part-of-speech":{"kind":"collectionType","collectionName":"part_of_speeches","info":{"singularName":"part-of-speech","pluralName":"part-of-speeches","displayName":"part of speech","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"name":{"type":"string","pluginOptions":{}},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"part_of_speech"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"part_of_speeches","info":{"singularName":"part-of-speech","pluralName":"part-of-speeches","displayName":"part of speech","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"name":{"type":"string","pluginOptions":{}},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"part_of_speech"}},"kind":"collectionType"},"modelType":"contentType","modelName":"part-of-speech","connection":"default","uid":"api::part-of-speech.part-of-speech","apiName":"part-of-speech","globalId":"PartOfSpeech","actions":{},"lifecycles":{}},"api::ping.ping":{"kind":"collectionType","collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"}},"kind":"collectionType"},"modelType":"contentType","modelName":"ping","connection":"default","uid":"api::ping.ping","apiName":"ping","globalId":"Ping","actions":{},"lifecycles":{}},"api::proficiency-level.proficiency-level":{"kind":"collectionType","collectionName":"proficiency_levels","info":{"singularName":"proficiency-level","pluralName":"proficiency-levels","displayName":"proficiency level"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"key":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"displayName":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"level":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::proficiency-level.proficiency-level"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"proficiency_levels","info":{"singularName":"proficiency-level","pluralName":"proficiency-levels","displayName":"proficiency level"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"key":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"displayName":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"level":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"}},"kind":"collectionType"},"modelType":"contentType","modelName":"proficiency-level","connection":"default","uid":"api::proficiency-level.proficiency-level","apiName":"proficiency-level","globalId":"ProficiencyLevel","actions":{},"lifecycles":{}},"api::review-tire.review-tire":{"kind":"collectionType","collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::review-tire.review-tire"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"}},"kind":"collectionType"},"modelType":"contentType","modelName":"review-tire","connection":"default","uid":"api::review-tire.review-tire","apiName":"review-tire","globalId":"ReviewTire","actions":{},"lifecycles":{}},"api::reviewlog.reviewlog":{"kind":"collectionType","collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"}},"kind":"collectionType"},"modelType":"contentType","modelName":"reviewlog","connection":"default","uid":"api::reviewlog.reviewlog","apiName":"reviewlog","globalId":"Reviewlog","actions":{},"lifecycles":{}},"api::section.section":{"kind":"collectionType","collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"section"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::section.section"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"section"}},"kind":"collectionType"},"modelType":"contentType","modelName":"section","connection":"default","uid":"api::section.section","apiName":"section","globalId":"Section","actions":{},"lifecycles":{}},"api::sentence.sentence":{"kind":"collectionType","collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::sentence.sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"sentence","connection":"default","uid":"api::sentence.sentence","apiName":"sentence","globalId":"Sentence","actions":{},"lifecycles":{}},"api::story.story":{"kind":"collectionType","collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"},"story_audios":{"type":"relation","relation":"oneToMany","target":"api::story-audio.story-audio","mappedBy":"story"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::story.story"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"},"story_audios":{"type":"relation","relation":"oneToMany","target":"api::story-audio.story-audio","mappedBy":"story"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story","connection":"default","uid":"api::story.story","apiName":"story","globalId":"Story","actions":{},"lifecycles":{}},"api::story-audio.story-audio":{"kind":"collectionType","collectionName":"story_audios","info":{"singularName":"story-audio","pluralName":"story-audios","displayName":"story audio","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"source_text":{"type":"string"},"provider":{"type":"enumeration","enum":["azure","google","polly","openapi"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"audio":{"type":"media","multiple":false,"required":true,"allowedTypes":["videos","audios"]},"expires_at":{"type":"datetime"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_audios"},"paragraph_index":{"type":"integer"},"sentence_index":{"type":"integer"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"story_audios","info":{"singularName":"story-audio","pluralName":"story-audios","displayName":"story audio","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"source_text":{"type":"string"},"provider":{"type":"enumeration","enum":["azure","google","polly","openapi"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"audio":{"type":"media","multiple":false,"required":true,"allowedTypes":["videos","audios"]},"expires_at":{"type":"datetime"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_audios"},"paragraph_index":{"type":"integer"},"sentence_index":{"type":"integer"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story-audio","connection":"default","uid":"api::story-audio.story-audio","apiName":"story-audio","globalId":"StoryAudio","actions":{},"lifecycles":{}},"api::story-like.story-like":{"kind":"collectionType","collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story-like","connection":"default","uid":"api::story-like.story-like","apiName":"story-like","globalId":"StoryLike","actions":{},"lifecycles":{}},"api::topic.topic":{"kind":"collectionType","collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"topic","connection":"default","uid":"api::topic.topic","apiName":"topic","globalId":"Topic","actions":{},"lifecycles":{}},"api::unit.unit":{"kind":"collectionType","collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"module":{"type":"relation","relation":"manyToOne","target":"api::module.module","inversedBy":"units"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::unit.unit"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"module":{"type":"relation","relation":"manyToOne","target":"api::module.module","inversedBy":"units"}},"kind":"collectionType"},"modelType":"contentType","modelName":"unit","connection":"default","uid":"api::unit.unit","apiName":"unit","globalId":"Unit","actions":{},"lifecycles":{}},"api::user-profile.user-profile":{"kind":"collectionType","collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true},"proficiency":{"type":"string"},"reminder_enabled":{"type":"boolean"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true},"proficiency":{"type":"string"},"reminder_enabled":{"type":"boolean"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-profile","connection":"default","uid":"api::user-profile.user-profile","apiName":"user-profile","globalId":"UserProfile","actions":{},"lifecycles":{}},"api::user-sentence.user-sentence":{"kind":"collectionType","collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-sentence","connection":"default","uid":"api::user-sentence.user-sentence","apiName":"user-sentence","globalId":"UserSentence","actions":{},"lifecycles":{}},"api::user-word.user-word":{"kind":"collectionType","collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-word.user-word"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-word","connection":"default","uid":"api::user-word.user-word","apiName":"user-word","globalId":"UserWord","actions":{},"lifecycles":{}},"api::vbsetting.vbsetting":{"kind":"collectionType","collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2}},"kind":"collectionType"},"modelType":"contentType","modelName":"vbsetting","connection":"default","uid":"api::vbsetting.vbsetting","apiName":"vbsetting","globalId":"Vbsetting","actions":{},"lifecycles":{}},"api::word.word":{"kind":"collectionType","collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"target_text":{"type":"string","unique":true,"required":true},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"word"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"target_text":{"type":"string","unique":true,"required":true},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"word"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word","connection":"default","uid":"api::word.word","apiName":"word","globalId":"Word","actions":{},"lifecycles":{}},"api::word-def-audio.word-def-audio":{"kind":"collectionType","collectionName":"word_def_audios","info":{"singularName":"word-def-audio","pluralName":"word-def-audios","displayName":"word def audio"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"provider":{"type":"enumeration","enum":["azure","google","polly","openai"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"},"audio":{"allowedTypes":["videos","audios"],"type":"media","multiple":false},"expires_at":{"type":"datetime"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"word_def_audios"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"word_def_audios","info":{"singularName":"word-def-audio","pluralName":"word-def-audios","displayName":"word def audio"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"provider":{"type":"enumeration","enum":["azure","google","polly","openai"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"},"audio":{"allowedTypes":["videos","audios"],"type":"media","multiple":false},"expires_at":{"type":"datetime"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"word_def_audios"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word-def-audio","connection":"default","uid":"api::word-def-audio.word-def-audio","apiName":"word-def-audio","globalId":"WordDefAudio","actions":{},"lifecycles":{}},"api::word-definition.word-definition":{"kind":"collectionType","collectionName":"word_definitions","info":{"singularName":"word-definition","pluralName":"word-definitions","displayName":"word definition","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"type":"relation","relation":"manyToOne","target":"api::word.word","inversedBy":"word_definitions"},"section":{"type":"relation","relation":"manyToOne","target":"api::section.section","inversedBy":"word_definitions"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"type":"relation","relation":"manyToOne","target":"api::part-of-speech.part-of-speech","inversedBy":"word_definitions"},"gender":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"tags":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentence":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"]},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"word_definition"},"word_def_audios":{"type":"relation","relation":"oneToMany","target":"api::word-def-audio.word-def-audio","mappedBy":"word_definition"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"word_definitions","info":{"singularName":"word-definition","pluralName":"word-definitions","displayName":"word definition","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"type":"relation","relation":"manyToOne","target":"api::word.word","inversedBy":"word_definitions"},"section":{"type":"relation","relation":"manyToOne","target":"api::section.section","inversedBy":"word_definitions"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"type":"relation","relation":"manyToOne","target":"api::part-of-speech.part-of-speech","inversedBy":"word_definitions"},"gender":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"tags":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentence":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"]},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"word_definition"},"word_def_audios":{"type":"relation","relation":"oneToMany","target":"api::word-def-audio.word-def-audio","mappedBy":"word_definition"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word-definition","connection":"default","uid":"api::word-definition.word-definition","apiName":"word-definition","globalId":"WordDefinition","actions":{},"lifecycles":{}}}	object	\N	\N
+1	strapi_content_types_schema	{"admin::permission":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_permissions","info":{"name":"Permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"actionParameters":{"type":"json","configurable":false,"required":false,"default":{}},"subject":{"type":"string","minLength":1,"configurable":false,"required":false},"properties":{"type":"json","configurable":false,"required":false,"default":{}},"conditions":{"type":"json","configurable":false,"required":false,"default":[]},"role":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::role"}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"admin::permission","plugin":"admin","globalId":"AdminPermission"},"admin::user":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"registrationToken":{"hidden":true}}},"kind":"collectionType","__schema__":{"collectionName":"admin_users","info":{"name":"User","description":"","singularName":"user","pluralName":"users","displayName":"User"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"firstname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"lastname":{"type":"string","unique":false,"minLength":1,"configurable":false,"required":false},"username":{"type":"string","unique":false,"configurable":false,"required":false},"email":{"type":"email","minLength":6,"configurable":false,"required":true,"unique":true,"private":true},"password":{"type":"password","minLength":6,"configurable":false,"required":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"registrationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"isActive":{"type":"boolean","default":false,"configurable":false,"private":true},"roles":{"configurable":false,"private":true,"type":"relation","relation":"manyToMany","inversedBy":"users","target":"admin::role","collectionName":"strapi_users_roles"},"blocked":{"type":"boolean","default":false,"configurable":false,"private":true},"preferedLanguage":{"type":"string","configurable":false,"required":false,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"admin::user","plugin":"admin","globalId":"AdminUser"},"admin::role":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"admin_roles","info":{"name":"Role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"code":{"type":"string","minLength":1,"unique":true,"configurable":false,"required":true},"description":{"type":"string","configurable":false},"users":{"configurable":false,"type":"relation","relation":"manyToMany","mappedBy":"roles","target":"admin::user"},"permissions":{"configurable":false,"type":"relation","relation":"oneToMany","mappedBy":"role","target":"admin::permission"}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"admin::role","plugin":"admin","globalId":"AdminRole"},"admin::api-token":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_tokens","info":{"name":"Api Token","singularName":"api-token","pluralName":"api-tokens","displayName":"Api Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"type":{"type":"enumeration","enum":["read-only","full-access","custom"],"configurable":false,"required":true,"default":"read-only"},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true,"searchable":false},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::api-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token","connection":"default","uid":"admin::api-token","plugin":"admin","globalId":"AdminApiToken"},"admin::api-token-permission":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_api_token_permissions","info":{"name":"API Token Permission","description":"","singularName":"api-token-permission","pluralName":"api-token-permissions","displayName":"API Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::api-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"api-token-permission","connection":"default","uid":"admin::api-token-permission","plugin":"admin","globalId":"AdminApiTokenPermission"},"admin::transfer-token":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_tokens","info":{"name":"Transfer Token","singularName":"transfer-token","pluralName":"transfer-tokens","displayName":"Transfer Token","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":1,"configurable":false,"required":true,"unique":true},"description":{"type":"string","minLength":1,"configurable":false,"required":false,"default":""},"accessKey":{"type":"string","minLength":1,"configurable":false,"required":true},"lastUsedAt":{"type":"datetime","configurable":false,"required":false},"permissions":{"type":"relation","target":"admin::transfer-token-permission","relation":"oneToMany","mappedBy":"token","configurable":false,"required":false},"expiresAt":{"type":"datetime","configurable":false,"required":false},"lifespan":{"type":"biginteger","configurable":false,"required":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token","connection":"default","uid":"admin::transfer-token","plugin":"admin","globalId":"AdminTransferToken"},"admin::transfer-token-permission":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"strapi_transfer_token_permissions","info":{"name":"Transfer Token Permission","description":"","singularName":"transfer-token-permission","pluralName":"transfer-token-permissions","displayName":"Transfer Token Permission"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","minLength":1,"configurable":false,"required":true},"token":{"configurable":false,"type":"relation","relation":"manyToOne","inversedBy":"permissions","target":"admin::transfer-token"}},"kind":"collectionType"},"modelType":"contentType","modelName":"transfer-token-permission","connection":"default","uid":"admin::transfer-token-permission","plugin":"admin","globalId":"AdminTransferTokenPermission"},"plugin::upload.file":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null}],"kind":"collectionType","__schema__":{"collectionName":"files","info":{"singularName":"file","pluralName":"files","displayName":"File","description":""},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","configurable":false,"required":true},"alternativeText":{"type":"string","configurable":false},"caption":{"type":"string","configurable":false},"width":{"type":"integer","configurable":false},"height":{"type":"integer","configurable":false},"formats":{"type":"json","configurable":false},"hash":{"type":"string","configurable":false,"required":true},"ext":{"type":"string","configurable":false},"mime":{"type":"string","configurable":false,"required":true},"size":{"type":"decimal","configurable":false,"required":true},"url":{"type":"string","configurable":false,"required":true},"previewUrl":{"type":"string","configurable":false},"provider":{"type":"string","configurable":false,"required":true},"provider_metadata":{"type":"json","configurable":false},"related":{"type":"relation","relation":"morphToMany","configurable":false},"folder":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"files","private":true},"folderPath":{"type":"string","min":1,"required":true,"private":true,"searchable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"file","connection":"default","uid":"plugin::upload.file","plugin":"upload","globalId":"UploadFile"},"plugin::upload.folder":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"}],"kind":"collectionType","__schema__":{"collectionName":"upload_folders","info":{"singularName":"folder","pluralName":"folders","displayName":"Folder"},"options":{},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"required":true},"pathId":{"type":"integer","unique":true,"required":true},"parent":{"type":"relation","relation":"manyToOne","target":"plugin::upload.folder","inversedBy":"children"},"children":{"type":"relation","relation":"oneToMany","target":"plugin::upload.folder","mappedBy":"parent"},"files":{"type":"relation","relation":"oneToMany","target":"plugin::upload.file","mappedBy":"folder"},"path":{"type":"string","min":1,"required":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"folder","connection":"default","uid":"plugin::upload.folder","plugin":"upload","globalId":"UploadFolder"},"plugin::users-permissions.permission":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_permissions","info":{"name":"permission","description":"","singularName":"permission","pluralName":"permissions","displayName":"Permission"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"action":{"type":"string","required":true,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"permissions","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"permission","connection":"default","uid":"plugin::users-permissions.permission","plugin":"users-permissions","globalId":"UsersPermissionsPermission"},"plugin::users-permissions.role":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"collectionName":"up_roles","info":{"name":"role","description":"","singularName":"role","pluralName":"roles","displayName":"Role"},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","minLength":3,"required":true,"configurable":false},"description":{"type":"string","configurable":false},"type":{"type":"string","unique":true,"configurable":false},"permissions":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.permission","mappedBy":"role","configurable":false},"users":{"type":"relation","relation":"oneToMany","target":"plugin::users-permissions.user","mappedBy":"role","configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"role","connection":"default","uid":"plugin::users-permissions.role","plugin":"users-permissions","globalId":"UsersPermissionsRole"},"plugin::users-permissions.user":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"config":{"attributes":{"resetPasswordToken":{"hidden":true},"confirmationToken":{"hidden":true},"provider":{"hidden":true}}},"kind":"collectionType","__filename__":"schema.json","__schema__":{"collectionName":"up_users","info":{"name":"user","description":"","singularName":"user","pluralName":"users","displayName":"User"},"options":{"draftAndPublish":false,"timestamps":true},"attributes":{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true,"searchable":false},"resetPasswordToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmationToken":{"type":"string","configurable":false,"private":true,"searchable":false},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"role":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.role","inversedBy":"users","configurable":false},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"user"},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"user"},"user_profile":{"type":"relation","relation":"oneToOne","target":"api::user-profile.user-profile","mappedBy":"user"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"user"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"user"},"vbsetting":{"type":"relation","relation":"oneToOne","target":"api::vbsetting.vbsetting","mappedBy":"user"},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"user"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user","connection":"default","uid":"plugin::users-permissions.user","plugin":"users-permissions","globalId":"UsersPermissionsUser"},"plugin::i18n.locale":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"kind":"collectionType","__schema__":{"info":{"singularName":"locale","pluralName":"locales","collectionName":"locales","displayName":"Locale","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"content-manager":{"visible":false},"content-type-builder":{"visible":false}},"attributes":{"name":{"type":"string","min":1,"max":50,"configurable":false},"code":{"type":"string","unique":true,"configurable":false}},"kind":"collectionType"},"modelType":"contentType","modelName":"locale","connection":"default","uid":"plugin::i18n.locale","plugin":"i18n","collectionName":"i18n_locale","globalId":"I18NLocale"},"api::conversation.conversation":{"kind":"collectionType","collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"conversations","info":{"singularName":"conversation","pluralName":"conversations","displayName":"Conversation","description":"Custom API for conversation endpoints"},"options":{"draftAndPublish":false},"attributes":{"sessionId":{"type":"string","required":true},"history":{"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"conversation","connection":"default","uid":"api::conversation.conversation","apiName":"conversation","globalId":"Conversation","actions":{},"lifecycles":{}},"api::difficulty-level.difficulty-level":{"kind":"collectionType","collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::difficulty-level.difficulty-level"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"difficulty_levels","info":{"singularName":"difficulty-level","pluralName":"difficulty-levels","displayName":"difficulty_level","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"type":"string","required":true,"pluginOptions":{"i18n":{"localized":true}}},"level":{"type":"integer","required":true,"default":0,"pluginOptions":{"i18n":{"localized":true}}},"topics":{"type":"relation","relation":"oneToMany","target":"api::topic.topic","mappedBy":"difficulty_level"},"code":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["A1","A2","B1","B2","C1","C2"],"required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"stories":{"type":"relation","relation":"oneToMany","target":"api::story.story","mappedBy":"difficulty_level"}},"kind":"collectionType"},"modelType":"contentType","modelName":"difficulty-level","connection":"default","uid":"api::difficulty-level.difficulty-level","apiName":"difficulty-level","globalId":"DifficultyLevel","actions":{},"lifecycles":{}},"api::flashcard.flashcard":{"kind":"collectionType","collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"flashcards"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"flashcards","info":{"singularName":"flashcard","pluralName":"flashcards","displayName":"flashcard","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"flashcards"},"last_reviewed_at":{"pluginOptions":{"i18n":{"localized":false}},"type":"datetime"},"correct_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"wrong_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0,"required":true},"is_remembered":{"pluginOptions":{"i18n":{"localized":false}},"type":"boolean","default":false,"required":true},"reviewlogs":{"type":"relation","relation":"oneToMany","target":"api::reviewlog.reviewlog","mappedBy":"flashcard"},"review_tire":{"type":"relation","relation":"manyToOne","target":"api::review-tire.review-tire","inversedBy":"flashcards"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"flashcards"}},"kind":"collectionType"},"modelType":"contentType","modelName":"flashcard","connection":"default","uid":"api::flashcard.flashcard","apiName":"flashcard","globalId":"Flashcard","actions":{},"lifecycles":{}},"api::lesson.lesson":{"kind":"collectionType","collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::lesson.lesson"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"lessons","info":{"singularName":"lesson","pluralName":"lessons","displayName":"lesson","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"lessonlevel":{"type":"relation","relation":"manyToOne","target":"api::lessonlevel.lessonlevel","inversedBy":"lessons"},"sections":{"type":"relation","relation":"oneToMany","target":"api::section.section","mappedBy":"lesson"},"user_words":{"type":"relation","relation":"oneToMany","target":"api::user-word.user-word","mappedBy":"lesson"},"user_sentences":{"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence","mappedBy":"lesson"},"unit":{"type":"relation","relation":"manyToOne","target":"api::unit.unit","inversedBy":"lessons"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lesson","connection":"default","uid":"api::lesson.lesson","apiName":"lesson","globalId":"Lesson","actions":{},"lifecycles":{}},"api::lessonlevel.lessonlevel":{"kind":"collectionType","collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"lessonlevels","info":{"singularName":"lessonlevel","pluralName":"lessonlevels","displayName":"lessonlevel","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"level":{"type":"string"},"description":{"type":"string"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"lessonlevel"}},"kind":"collectionType"},"modelType":"contentType","modelName":"lessonlevel","connection":"default","uid":"api::lessonlevel.lessonlevel","apiName":"lessonlevel","globalId":"Lessonlevel","actions":{},"lifecycles":{}},"api::module.module":{"kind":"collectionType","collectionName":"modules","info":{"singularName":"module","pluralName":"modules","displayName":"module"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"goal":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"icon_media":{"allowedTypes":["images","videos"],"type":"media","multiple":false,"pluginOptions":{"i18n":{"localized":false}}},"units":{"type":"relation","relation":"oneToMany","target":"api::unit.unit","mappedBy":"module"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::module.module"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"modules","info":{"singularName":"module","pluralName":"modules","displayName":"module"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"goal":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"icon_media":{"allowedTypes":["images","videos"],"type":"media","multiple":false,"pluginOptions":{"i18n":{"localized":false}}},"units":{"type":"relation","relation":"oneToMany","target":"api::unit.unit","mappedBy":"module"}},"kind":"collectionType"},"modelType":"contentType","modelName":"module","connection":"default","uid":"api::module.module","apiName":"module","globalId":"Module","actions":{},"lifecycles":{}},"api::part-of-speech.part-of-speech":{"kind":"collectionType","collectionName":"part_of_speeches","info":{"singularName":"part-of-speech","pluralName":"part-of-speeches","displayName":"part of speech","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"name":{"type":"string","pluginOptions":{}},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"part_of_speech"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"part_of_speeches","info":{"singularName":"part-of-speech","pluralName":"part-of-speeches","displayName":"part of speech","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"name":{"type":"string","pluginOptions":{}},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"part_of_speech"}},"kind":"collectionType"},"modelType":"contentType","modelName":"part-of-speech","connection":"default","uid":"api::part-of-speech.part-of-speech","apiName":"part-of-speech","globalId":"PartOfSpeech","actions":{},"lifecycles":{}},"api::ping.ping":{"kind":"collectionType","collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"pings","info":{"singularName":"ping","pluralName":"pings","displayName":"ping"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"status":{"type":"string"}},"kind":"collectionType"},"modelType":"contentType","modelName":"ping","connection":"default","uid":"api::ping.ping","apiName":"ping","globalId":"Ping","actions":{},"lifecycles":{}},"api::proficiency-level.proficiency-level":{"kind":"collectionType","collectionName":"proficiency_levels","info":{"singularName":"proficiency-level","pluralName":"proficiency-levels","displayName":"proficiency level"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"key":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"displayName":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"level":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::proficiency-level.proficiency-level"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"proficiency_levels","info":{"singularName":"proficiency-level","pluralName":"proficiency-levels","displayName":"proficiency level"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"key":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"displayName":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"level":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"}},"kind":"collectionType"},"modelType":"contentType","modelName":"proficiency-level","connection":"default","uid":"api::proficiency-level.proficiency-level","apiName":"proficiency-level","globalId":"ProficiencyLevel","actions":{},"lifecycles":{}},"api::review-tire.review-tire":{"kind":"collectionType","collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"},"display_name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::review-tire.review-tire"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"review_tires","info":{"singularName":"review-tire","pluralName":"review-tires","displayName":"reviewTire","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"tier":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["new","warmup","weekly","monthly","remembered"],"required":true},"min_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"max_streak":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"cooldown_hours":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true},"demote_bar":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","required":true,"default":2},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"review_tire"},"display_name":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"}},"kind":"collectionType"},"modelType":"contentType","modelName":"review-tire","connection":"default","uid":"api::review-tire.review-tire","apiName":"review-tire","globalId":"ReviewTire","actions":{},"lifecycles":{}},"api::reviewlog.reviewlog":{"kind":"collectionType","collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"reviewlogs","info":{"singularName":"reviewlog","pluralName":"reviewlogs","displayName":"reviewlog","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"reviewlogs"},"reviewed_at":{"type":"datetime"},"level":{"type":"enumeration","enum":["new","warmup","daily","weekly","monthly","remembered"]},"result":{"type":"enumeration","enum":["correct","wrong"],"required":true},"flashcard":{"type":"relation","relation":"manyToOne","target":"api::flashcard.flashcard","inversedBy":"reviewlogs"}},"kind":"collectionType"},"modelType":"contentType","modelName":"reviewlog","connection":"default","uid":"api::reviewlog.reviewlog","apiName":"reviewlog","globalId":"Reviewlog","actions":{},"lifecycles":{}},"api::section.section":{"kind":"collectionType","collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"section"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::section.section"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sections","info":{"singularName":"section","pluralName":"sections","displayName":"section"},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"sections"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"components":{"pluginOptions":{"i18n":{"localized":true}},"type":"dynamiczone","components":["a.word-ref","a.video","a.sent-ref","a.quiz","a.pagebreaker","a.external-video"]},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"section"}},"kind":"collectionType"},"modelType":"contentType","modelName":"section","connection":"default","uid":"api::section.section","apiName":"section","globalId":"Section","actions":{},"lifecycles":{}},"api::sentence.sentence":{"kind":"collectionType","collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::sentence.sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"sentences","info":{"singularName":"sentence","pluralName":"sentences","displayName":"sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"target_audio":{"type":"media","multiple":false,"required":false,"allowedTypes":["audios"],"pluginOptions":{"i18n":{"localized":false}}},"tags":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"],"default":"Neutral"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"sentence","connection":"default","uid":"api::sentence.sentence","apiName":"sentence","globalId":"Sentence","actions":{},"lifecycles":{}},"api::story.story":{"kind":"collectionType","collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"},"story_audios":{"type":"relation","relation":"oneToMany","target":"api::story-audio.story-audio","mappedBy":"story"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::story.story"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"stories","info":{"singularName":"story","pluralName":"stories","displayName":"story","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"author":{"pluginOptions":{"i18n":{"localized":true}},"type":"string","required":true},"brief":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"text":{"pluginOptions":{"i18n":{"localized":true}},"type":"text"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"order":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"word_count":{"pluginOptions":{"i18n":{"localized":true}},"type":"integer"},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"stories"},"illustrations":{"type":"component","repeatable":true,"pluginOptions":{"i18n":{"localized":false}},"component":"a.illustrations"},"generation_prompts":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.generation-prompts"},"like_count":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer","default":0},"story_likes":{"type":"relation","relation":"oneToMany","target":"api::story-like.story-like","mappedBy":"story"},"story_audios":{"type":"relation","relation":"oneToMany","target":"api::story-audio.story-audio","mappedBy":"story"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story","connection":"default","uid":"api::story.story","apiName":"story","globalId":"Story","actions":{},"lifecycles":{}},"api::story-audio.story-audio":{"kind":"collectionType","collectionName":"story_audios","info":{"singularName":"story-audio","pluralName":"story-audios","displayName":"story audio","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"source_text":{"type":"string"},"provider":{"type":"enumeration","enum":["azure","google","polly","openapi"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"audio":{"type":"media","multiple":false,"required":true,"allowedTypes":["videos","audios"]},"expires_at":{"type":"datetime"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_audios"},"paragraph_index":{"type":"integer"},"sentence_index":{"type":"integer"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"story_audios","info":{"singularName":"story-audio","pluralName":"story-audios","displayName":"story audio","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"source_text":{"type":"string"},"provider":{"type":"enumeration","enum":["azure","google","polly","openapi"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"audio":{"type":"media","multiple":false,"required":true,"allowedTypes":["videos","audios"]},"expires_at":{"type":"datetime"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_audios"},"paragraph_index":{"type":"integer"},"sentence_index":{"type":"integer"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story-audio","connection":"default","uid":"api::story-audio.story-audio","apiName":"story-audio","globalId":"StoryAudio","actions":{},"lifecycles":{}},"api::story-like.story-like":{"kind":"collectionType","collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"story_likes","info":{"singularName":"story-like","pluralName":"story-likes","displayName":"story like"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"story_likes"},"story":{"type":"relation","relation":"manyToOne","target":"api::story.story","inversedBy":"story_likes"}},"kind":"collectionType"},"modelType":"contentType","modelName":"story-like","connection":"default","uid":"api::story-like.story-like","apiName":"story-like","globalId":"StoryLike","actions":{},"lifecycles":{}},"api::topic.topic":{"kind":"collectionType","collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"topics","info":{"singularName":"topic","pluralName":"topics","displayName":"topic"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"title":{"type":"string","required":true},"difficulty_level":{"type":"relation","relation":"manyToOne","target":"api::difficulty-level.difficulty-level","inversedBy":"topics"},"description":{"type":"string"},"questions":{"type":"component","repeatable":true,"component":"a.question"},"tags":{"type":"string"},"is_active":{"type":"boolean","default":true}},"kind":"collectionType"},"modelType":"contentType","modelName":"topic","connection":"default","uid":"api::topic.topic","apiName":"topic","globalId":"Topic","actions":{},"lifecycles":{}},"api::unit.unit":{"kind":"collectionType","collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"module":{"type":"relation","relation":"manyToOne","target":"api::module.module","inversedBy":"units"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::unit.unit"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"units","info":{"singularName":"unit","pluralName":"units","displayName":"unit","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"title":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"slug":{"pluginOptions":{"i18n":{"localized":true}},"type":"uid","targetField":"title"},"description":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"order":{"pluginOptions":{"i18n":{"localized":false}},"type":"integer"},"lessons":{"type":"relation","relation":"oneToMany","target":"api::lesson.lesson","mappedBy":"unit"},"precondition":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","inversedBy":"unlocks"},"unlocks":{"type":"relation","relation":"oneToOne","target":"api::unit.unit","mappedBy":"precondition"},"module":{"type":"relation","relation":"manyToOne","target":"api::module.module","inversedBy":"units"}},"kind":"collectionType"},"modelType":"contentType","modelName":"unit","connection":"default","uid":"api::unit.unit","apiName":"unit","globalId":"Unit","actions":{},"lifecycles":{}},"api::user-profile.user-profile":{"kind":"collectionType","collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true},"proficiency":{"type":"string"},"reminder_enabled":{"type":"boolean"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"user_profiles","info":{"singularName":"user-profile","pluralName":"user-profiles","displayName":"userProfile","description":""},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"user_profile"},"telephone":{"type":"string"},"baseLanguage":{"type":"string","required":true},"proficiency":{"type":"string"},"reminder_enabled":{"type":"boolean"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-profile","connection":"default","uid":"api::user-profile.user-profile","apiName":"user-profile","globalId":"UserProfile","actions":{},"lifecycles":{}},"api::user-sentence.user-sentence":{"kind":"collectionType","collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-sentence.user-sentence"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_sentences","info":{"singularName":"user-sentence","pluralName":"user-sentences","displayName":"user_sentence","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_sentences"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_sentences"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-sentence","connection":"default","uid":"api::user-sentence.user-sentence","apiName":"user-sentence","globalId":"UserSentence","actions":{},"lifecycles":{}},"api::user-word.user-word":{"kind":"collectionType","collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::user-word.user-word"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"user_words","info":{"singularName":"user-word","pluralName":"user-words","displayName":"user_word","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"user":{"type":"relation","relation":"manyToOne","target":"plugin::users-permissions.user","inversedBy":"user_words"},"target_text":{"pluginOptions":{"i18n":{"localized":false}},"type":"string","required":true},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["noun","verb","adjective","adverb","conjunction","preposition","interjection","determiner","pronoun"]},"lesson":{"type":"relation","relation":"manyToOne","target":"api::lesson.lesson","inversedBy":"user_words"},"exam_base":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":false}},"type":"json"}},"kind":"collectionType"},"modelType":"contentType","modelName":"user-word","connection":"default","uid":"api::user-word.user-word","apiName":"user-word","globalId":"UserWord","actions":{},"lifecycles":{}},"api::vbsetting.vbsetting":{"kind":"collectionType","collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"vbsettings","info":{"singularName":"vbsetting","pluralName":"vbsettings","displayName":"vbsetting"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"user":{"type":"relation","relation":"oneToOne","target":"plugin::users-permissions.user","inversedBy":"vbsetting"},"wordsPerPage":{"type":"integer","default":12,"required":true},"interval1":{"type":"decimal","default":1.5},"interval2":{"type":"decimal","default":2},"interval3":{"type":"decimal","default":2}},"kind":"collectionType"},"modelType":"contentType","modelName":"vbsetting","connection":"default","uid":"api::vbsetting.vbsetting","apiName":"vbsetting","globalId":"Vbsetting","actions":{},"lifecycles":{}},"api::word.word":{"kind":"collectionType","collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"target_text":{"type":"string","unique":true,"required":true},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"word"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"words","info":{"singularName":"word","pluralName":"words","displayName":"word"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"target_text":{"type":"string","unique":true,"required":true},"word_definitions":{"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition","mappedBy":"word"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word","connection":"default","uid":"api::word.word","apiName":"word","globalId":"Word","actions":{},"lifecycles":{}},"api::word-def-audio.word-def-audio":{"kind":"collectionType","collectionName":"word_def_audios","info":{"singularName":"word-def-audio","pluralName":"word-def-audios","displayName":"word def audio"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"provider":{"type":"enumeration","enum":["azure","google","polly","openai"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"},"audio":{"allowedTypes":["videos","audios"],"type":"media","multiple":false},"expires_at":{"type":"datetime"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"word_def_audios"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true}},"__schema__":{"collectionName":"word_def_audios","info":{"singularName":"word-def-audio","pluralName":"word-def-audios","displayName":"word def audio"},"options":{"draftAndPublish":false},"pluginOptions":{},"attributes":{"key_hash":{"type":"uid","required":true},"provider":{"type":"enumeration","enum":["azure","google","polly","openai"]},"engine_ver":{"type":"string"},"voice_id":{"type":"string"},"format":{"type":"enumeration","enum":["mp3","m4a","wav","opus"]},"rate":{"type":"decimal"},"duration_s":{"type":"decimal"},"pitch":{"type":"decimal"},"volume":{"type":"decimal"},"audio":{"allowedTypes":["videos","audios"],"type":"media","multiple":false},"expires_at":{"type":"datetime"},"word_definition":{"type":"relation","relation":"manyToOne","target":"api::word-definition.word-definition","inversedBy":"word_def_audios"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word-def-audio","connection":"default","uid":"api::word-def-audio.word-def-audio","apiName":"word-def-audio","globalId":"WordDefAudio","actions":{},"lifecycles":{}},"api::word-definition.word-definition":{"kind":"collectionType","collectionName":"word_definitions","info":{"singularName":"word-definition","pluralName":"word-definitions","displayName":"word definition","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"type":"relation","relation":"manyToOne","target":"api::word.word","inversedBy":"word_definitions"},"section":{"type":"relation","relation":"manyToOne","target":"api::section.section","inversedBy":"word_definitions"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"type":"relation","relation":"manyToOne","target":"api::part-of-speech.part-of-speech","inversedBy":"word_definitions"},"gender":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"tags":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentence":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"]},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"word_definition"},"word_def_audios":{"type":"relation","relation":"oneToMany","target":"api::word-def-audio.word-def-audio","mappedBy":"word_definition"},"createdAt":{"type":"datetime"},"updatedAt":{"type":"datetime"},"createdBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"updatedBy":{"type":"relation","relation":"oneToOne","target":"admin::user","configurable":false,"writable":false,"visible":false,"useJoinTable":false,"private":true},"localizations":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"relation","relation":"oneToMany","target":"api::word-definition.word-definition"},"locale":{"writable":true,"private":false,"configurable":false,"visible":false,"type":"string"}},"__schema__":{"collectionName":"word_definitions","info":{"singularName":"word-definition","pluralName":"word-definitions","displayName":"word definition","description":""},"options":{"draftAndPublish":false},"pluginOptions":{"i18n":{"localized":true}},"attributes":{"word":{"type":"relation","relation":"manyToOne","target":"api::word.word","inversedBy":"word_definitions"},"section":{"type":"relation","relation":"manyToOne","target":"api::section.section","inversedBy":"word_definitions"},"base_text":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"instruction":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"part_of_speech":{"type":"relation","relation":"manyToOne","target":"api::part-of-speech.part-of-speech","inversedBy":"word_definitions"},"gender":{"pluginOptions":{"i18n":{"localized":false}},"type":"enumeration","enum":["masculine","feminine","neuter"]},"article":{"pluginOptions":{"i18n":{"localized":false}},"type":"string"},"tags":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.taglist"},"example_sentence":{"pluginOptions":{"i18n":{"localized":true}},"type":"string"},"verb_meta":{"type":"component","repeatable":false,"pluginOptions":{"i18n":{"localized":true}},"component":"a.verb-meta"},"exam_base":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"exam_target":{"pluginOptions":{"i18n":{"localized":true}},"type":"json"},"register":{"pluginOptions":{"i18n":{"localized":true}},"type":"enumeration","enum":["Formal","Informal","Neutral"]},"flashcards":{"type":"relation","relation":"oneToMany","target":"api::flashcard.flashcard","mappedBy":"word_definition"},"word_def_audios":{"type":"relation","relation":"oneToMany","target":"api::word-def-audio.word-def-audio","mappedBy":"word_definition"}},"kind":"collectionType"},"modelType":"contentType","modelName":"word-definition","connection":"default","uid":"api::word-definition.word-definition","apiName":"word-definition","globalId":"WordDefinition","actions":{},"lifecycles":{}}}	object	\N	\N
+45	plugin_content_manager_configuration_content_types::api::review-tire.review-tire	{"uid":"api::review-tire.review-tire","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"tier":{"edit":{"label":"tier","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tier","searchable":true,"sortable":true}},"min_streak":{"edit":{"label":"min_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"min_streak","searchable":true,"sortable":true}},"max_streak":{"edit":{"label":"max_streak","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"max_streak","searchable":true,"sortable":true}},"cooldown_hours":{"edit":{"label":"cooldown_hours","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"cooldown_hours","searchable":true,"sortable":true}},"demote_bar":{"edit":{"label":"demote_bar","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"demote_bar","searchable":true,"sortable":true}},"flashcards":{"edit":{"label":"flashcards","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"flashcards","searchable":false,"sortable":false}},"display_name":{"edit":{"label":"display_name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"display_name","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","tier","min_streak","max_streak","cooldown_hours","demote_bar"],"edit":[[{"name":"tier","size":6},{"name":"min_streak","size":4}],[{"name":"max_streak","size":4},{"name":"cooldown_hours","size":4},{"name":"demote_bar","size":4}],[{"name":"flashcards","size":6},{"name":"display_name","size":6}]]}}	object	\N	\N
 28	plugin_content_manager_configuration_components::a.verb-meta	{"uid":"a.verb-meta","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"simple_past","defaultSortBy":"simple_past","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"simple_past":{"edit":{"label":"simple_past","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"simple_past","searchable":true,"sortable":true}},"past_participle":{"edit":{"label":"past_participle","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"past_participle","searchable":true,"sortable":true}},"present_participle":{"edit":{"label":"present_participle","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"present_participle","searchable":true,"sortable":true}},"thirdperson_singular":{"edit":{"label":"thirdperson_singular","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"thirdperson_singular","searchable":true,"sortable":true}},"auxiliary_verb":{"edit":{"label":"auxiliary_verb","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"auxiliary_verb","searchable":true,"sortable":true}},"conjugations":{"edit":{"label":"conjugations","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"conjugations","searchable":false,"sortable":false}}},"layouts":{"list":["id","simple_past","past_participle","present_participle"],"edit":[[{"name":"simple_past","size":6},{"name":"past_participle","size":6}],[{"name":"present_participle","size":6},{"name":"thirdperson_singular","size":6}],[{"name":"auxiliary_verb","size":6}],[{"name":"conjugations","size":12}]]},"isComponent":true}	object	\N	\N
 30	plugin_content_manager_configuration_components::a.sent-ref	{"uid":"a.sent-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"sentence":{"edit":{"label":"sentence","description":"","placeholder":"","visible":true,"editable":true,"mainField":"target_text"},"list":{"label":"sentence","searchable":true,"sortable":true}}},"layouts":{"list":["id","sentence"],"edit":[[{"name":"sentence","size":6}]]},"isComponent":true}	object	\N	\N
 32	plugin_content_manager_configuration_components::a.quiz	{"uid":"a.quiz","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"question","defaultSortBy":"question","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"question":{"edit":{"label":"question","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"question","searchable":true,"sortable":true}},"options":{"edit":{"label":"options","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"options","searchable":false,"sortable":false}},"answer":{"edit":{"label":"answer","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"answer","searchable":true,"sortable":true}},"explanation":{"edit":{"label":"explanation","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"explanation","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}}},"layouts":{"list":["id","question","answer","explanation"],"edit":[[{"name":"question","size":6}],[{"name":"options","size":12}],[{"name":"answer","size":6},{"name":"explanation","size":6}],[{"name":"audio","size":6}]]},"isComponent":true}	object	\N	\N
@@ -11099,7 +13764,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 59	plugin_content_manager_configuration_components::a.generation-prompts	{"uid":"a.generation-prompts","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"cover_image_prompt":{"edit":{"label":"cover_image_prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"cover_image_prompt","searchable":true,"sortable":true}},"brief_video_prompt":{"edit":{"label":"brief_video_prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"brief_video_prompt","searchable":true,"sortable":true}},"illustration_prompts":{"edit":{"label":"illustration_prompts","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"illustration_prompts","searchable":false,"sortable":false}}},"layouts":{"list":["id","cover_image_prompt","brief_video_prompt","illustration_prompts"],"edit":[[{"name":"cover_image_prompt","size":6},{"name":"brief_video_prompt","size":6}],[{"name":"illustration_prompts","size":12}]]},"isComponent":true}	object	\N	\N
 58	plugin_content_manager_configuration_components::a.illustration-prompt	{"uid":"a.illustration-prompt","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}},"prompt":{"edit":{"label":"prompt","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"prompt","searchable":true,"sortable":true}}},"layouts":{"list":["id","prompt"],"edit":[[{"name":"prompt","size":6}]]},"isComponent":true}	object	\N	\N
 60	plugin_content_manager_configuration_content_types::api::story-like.story-like	{"uid":"api::story-like.story-like","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"story":{"edit":{"label":"story","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"story","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","story","createdAt"],"edit":[[{"name":"user","size":6},{"name":"story","size":6}]]}}	object	\N	\N
-56	plugin_content_manager_configuration_content_types::api::story.story	{"uid":"api::story.story","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":50,"mainField":"title","defaultSortBy":"createdAt","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"author":{"edit":{"label":"author","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"author","searchable":true,"sortable":true}},"brief":{"edit":{"label":"brief","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"brief","searchable":true,"sortable":true}},"text":{"edit":{"label":"text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"text","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"word_count":{"edit":{"label":"word_count","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"word_count","searchable":true,"sortable":true}},"difficulty_level":{"edit":{"label":"difficulty_level","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"difficulty_level","searchable":true,"sortable":true}},"illustrations":{"edit":{"label":"illustrations","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"illustrations","searchable":false,"sortable":false}},"generation_prompts":{"edit":{"label":"generation_prompts","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"generation_prompts","searchable":false,"sortable":false}},"like_count":{"edit":{"label":"like_count","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"like_count","searchable":true,"sortable":true}},"story_likes":{"edit":{"label":"story_likes","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"story_likes","searchable":false,"sortable":false}},"story_audios":{"edit":{"label":"story_audios","description":"","placeholder":"","visible":true,"editable":true,"mainField":"source_text"},"list":{"label":"story_audios","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","author","brief"],"edit":[[{"name":"title","size":6},{"name":"author","size":6}],[{"name":"brief","size":6},{"name":"text","size":6}],[{"name":"slug","size":6},{"name":"order","size":4}],[{"name":"word_count","size":4},{"name":"difficulty_level","size":6}],[{"name":"illustrations","size":12}],[{"name":"generation_prompts","size":12}],[{"name":"like_count","size":4},{"name":"story_likes","size":6}],[{"name":"story_audios","size":6}]]}}	object	\N	\N
+74	plugin_content_manager_configuration_content_types::api::story-audio.story-audio	{"uid":"api::story-audio.story-audio","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"source_text","defaultSortBy":"source_text","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"key_hash":{"edit":{"label":"key_hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"key_hash","searchable":true,"sortable":true}},"source_text":{"edit":{"label":"source_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"source_text","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"engine_ver":{"edit":{"label":"engine_ver","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"engine_ver","searchable":true,"sortable":true}},"voice_id":{"edit":{"label":"voice_id","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"voice_id","searchable":true,"sortable":true}},"format":{"edit":{"label":"format","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"format","searchable":true,"sortable":true}},"rate":{"edit":{"label":"rate","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"rate","searchable":true,"sortable":true}},"duration_s":{"edit":{"label":"duration_s","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"duration_s","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}},"expires_at":{"edit":{"label":"expires_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expires_at","searchable":true,"sortable":true}},"story":{"edit":{"label":"story","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"story","searchable":true,"sortable":true}},"paragraph_index":{"edit":{"label":"paragraph_index","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"paragraph_index","searchable":true,"sortable":true}},"sentence_index":{"edit":{"label":"sentence_index","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"sentence_index","searchable":true,"sortable":true}},"pitch":{"edit":{"label":"pitch","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"pitch","searchable":true,"sortable":true}},"volume":{"edit":{"label":"volume","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"volume","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","key_hash","source_text","provider"],"edit":[[{"name":"key_hash","size":6},{"name":"source_text","size":6}],[{"name":"provider","size":6},{"name":"engine_ver","size":6}],[{"name":"voice_id","size":6},{"name":"format","size":6}],[{"name":"rate","size":4},{"name":"duration_s","size":4}],[{"name":"audio","size":6},{"name":"expires_at","size":6}],[{"name":"story","size":6},{"name":"paragraph_index","size":4}],[{"name":"sentence_index","size":4},{"name":"pitch","size":4},{"name":"volume","size":4}]]}}	object	\N	\N
 62	plugin_content_manager_configuration_content_types::api::ping.ping	{"uid":"api::ping.ping","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"status","defaultSortBy":"status","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"status":{"edit":{"label":"status","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"status","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","status","createdAt","updatedAt"],"edit":[[{"name":"status","size":6}]]}}	object	\N	\N
 31	plugin_content_manager_configuration_components::a.word-ref	{"uid":"a.word-ref","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":false,"sortable":false}}},"layouts":{"list":["id"],"edit":[]},"isComponent":true}	object	\N	\N
 26	plugin_content_manager_configuration_content_types::api::sentence.sentence	{"uid":"api::sentence.sentence","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"target_text","defaultSortBy":"title","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"instruction":{"edit":{"label":"instruction","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"instruction","searchable":true,"sortable":true}},"base_text":{"edit":{"label":"base_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"base_text","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"target_audio":{"edit":{"label":"target_audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_audio","searchable":false,"sortable":false}},"tags":{"edit":{"label":"tags","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"tags","searchable":false,"sortable":false}},"register":{"edit":{"label":"register","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"register","searchable":true,"sortable":true}},"exam_base":{"edit":{"label":"exam_base","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_base","searchable":false,"sortable":false}},"exam_target":{"edit":{"label":"exam_target","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"exam_target","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","instruction","base_text"],"edit":[[{"name":"title","size":6},{"name":"instruction","size":6}],[{"name":"base_text","size":6},{"name":"target_text","size":6}],[{"name":"target_audio","size":6}],[{"name":"tags","size":12}],[{"name":"register","size":6}],[{"name":"exam_base","size":12}],[{"name":"exam_target","size":12}]]}}	object	\N	\N
@@ -11113,8 +13778,8 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 63	plugin_content_manager_configuration_content_types::api::word.word	{"uid":"api::word.word","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":100,"mainField":"target_text","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"target_text":{"edit":{"label":"target_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"target_text","searchable":true,"sortable":true}},"word_definitions":{"edit":{"label":"word_definitions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definitions","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"edit":[[{"name":"target_text","size":6},{"name":"word_definitions","size":6}]],"list":["id","target_text","createdAt","updatedAt"]}}	object	\N	\N
 46	plugin_content_manager_configuration_content_types::api::user-profile.user-profile	{"uid":"api::user-profile.user-profile","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":50,"mainField":"telephone","defaultSortBy":"id","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"user":{"edit":{"label":"user","description":"","placeholder":"","visible":true,"editable":true,"mainField":"username"},"list":{"label":"user","searchable":true,"sortable":true}},"telephone":{"edit":{"label":"telephone","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"telephone","searchable":true,"sortable":true}},"baseLanguage":{"edit":{"label":"baseLanguage","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"baseLanguage","searchable":true,"sortable":true}},"proficiency":{"edit":{"label":"proficiency","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"proficiency","searchable":true,"sortable":true}},"reminder_enabled":{"edit":{"label":"reminder_enabled","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"reminder_enabled","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","user","telephone","baseLanguage"],"edit":[[{"name":"user","size":6},{"name":"telephone","size":6}],[{"name":"baseLanguage","size":6},{"name":"proficiency","size":6}],[{"name":"reminder_enabled","size":4}]]}}	object	\N	\N
 70	plugin_content_manager_configuration_content_types::api::proficiency-level.proficiency-level	{"uid":"api::proficiency-level.proficiency-level","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"key","defaultSortBy":"key","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"key":{"edit":{"label":"key","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"key","searchable":true,"sortable":true}},"displayName":{"edit":{"label":"displayName","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"displayName","searchable":true,"sortable":true}},"description":{"edit":{"label":"description","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"description","searchable":true,"sortable":true}},"level":{"edit":{"label":"level","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"level","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","key","displayName","description"],"edit":[[{"name":"key","size":6},{"name":"displayName","size":6}],[{"name":"description","size":6},{"name":"level","size":4}]]}}	object	\N	\N
-72	plugin_content_manager_configuration_content_types::api::word-def-audio.word-def-audio	{"uid":"api::word-def-audio.word-def-audio","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"engine_ver","defaultSortBy":"engine_ver","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"key_hash":{"edit":{"label":"key_hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"key_hash","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"engine_ver":{"edit":{"label":"engine_ver","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"engine_ver","searchable":true,"sortable":true}},"voice_id":{"edit":{"label":"voice_id","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"voice_id","searchable":true,"sortable":true}},"format":{"edit":{"label":"format","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"format","searchable":true,"sortable":true}},"rate":{"edit":{"label":"rate","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"rate","searchable":true,"sortable":true}},"duration_s":{"edit":{"label":"duration_s","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"duration_s","searchable":true,"sortable":true}},"pitch":{"edit":{"label":"pitch","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"pitch","searchable":true,"sortable":true}},"volume":{"edit":{"label":"volume","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"volume","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}},"expires_at":{"edit":{"label":"expires_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expires_at","searchable":true,"sortable":true}},"word_definition":{"edit":{"label":"word_definition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definition","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","key_hash","provider","engine_ver"],"edit":[[{"name":"key_hash","size":6},{"name":"provider","size":6}],[{"name":"engine_ver","size":6},{"name":"voice_id","size":6}],[{"name":"format","size":6},{"name":"rate","size":4}],[{"name":"duration_s","size":4},{"name":"pitch","size":4},{"name":"volume","size":4}],[{"name":"audio","size":6},{"name":"expires_at","size":6}],[{"name":"word_definition","size":6}]]}}	object	\N	\N
-71	plugin_content_manager_configuration_content_types::api::story-audio.story-audio	{"uid":"api::story-audio.story-audio","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"source_text","defaultSortBy":"source_text","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"key_hash":{"edit":{"label":"key_hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"key_hash","searchable":true,"sortable":true}},"source_text":{"edit":{"label":"source_text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"source_text","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"engine_ver":{"edit":{"label":"engine_ver","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"engine_ver","searchable":true,"sortable":true}},"voice_id":{"edit":{"label":"voice_id","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"voice_id","searchable":true,"sortable":true}},"format":{"edit":{"label":"format","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"format","searchable":true,"sortable":true}},"rate":{"edit":{"label":"rate","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"rate","searchable":true,"sortable":true}},"duration_s":{"edit":{"label":"duration_s","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"duration_s","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}},"expires_at":{"edit":{"label":"expires_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expires_at","searchable":true,"sortable":true}},"story":{"edit":{"label":"story","description":"","placeholder":"","visible":true,"editable":true,"mainField":"title"},"list":{"label":"story","searchable":true,"sortable":true}},"paragraph_index":{"edit":{"label":"paragraph_index","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"paragraph_index","searchable":true,"sortable":true}},"sentence_index":{"edit":{"label":"sentence_index","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"sentence_index","searchable":true,"sortable":true}},"pitch":{"edit":{"label":"pitch","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"pitch","searchable":true,"sortable":true}},"volume":{"edit":{"label":"volume","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"volume","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","key_hash","source_text","provider"],"edit":[[{"name":"key_hash","size":6},{"name":"source_text","size":6}],[{"name":"provider","size":6},{"name":"engine_ver","size":6}],[{"name":"voice_id","size":6},{"name":"format","size":6}],[{"name":"rate","size":4},{"name":"duration_s","size":4}],[{"name":"audio","size":6},{"name":"expires_at","size":6}],[{"name":"story","size":6},{"name":"paragraph_index","size":4}],[{"name":"sentence_index","size":4},{"name":"pitch","size":4},{"name":"volume","size":4}]]}}	object	\N	\N
+56	plugin_content_manager_configuration_content_types::api::story.story	{"uid":"api::story.story","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":50,"mainField":"title","defaultSortBy":"createdAt","defaultSortOrder":"DESC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"title":{"edit":{"label":"title","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"title","searchable":true,"sortable":true}},"author":{"edit":{"label":"author","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"author","searchable":true,"sortable":true}},"brief":{"edit":{"label":"brief","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"brief","searchable":true,"sortable":true}},"text":{"edit":{"label":"text","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"text","searchable":true,"sortable":true}},"slug":{"edit":{"label":"slug","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"slug","searchable":true,"sortable":true}},"order":{"edit":{"label":"order","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"order","searchable":true,"sortable":true}},"word_count":{"edit":{"label":"word_count","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"word_count","searchable":true,"sortable":true}},"difficulty_level":{"edit":{"label":"difficulty_level","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"difficulty_level","searchable":true,"sortable":true}},"illustrations":{"edit":{"label":"illustrations","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"illustrations","searchable":false,"sortable":false}},"generation_prompts":{"edit":{"label":"generation_prompts","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"generation_prompts","searchable":false,"sortable":false}},"like_count":{"edit":{"label":"like_count","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"like_count","searchable":true,"sortable":true}},"story_likes":{"edit":{"label":"story_likes","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"story_likes","searchable":false,"sortable":false}},"story_audios":{"edit":{"label":"story_audios","description":"","placeholder":"","visible":true,"editable":true,"mainField":"source_text"},"list":{"label":"story_audios","searchable":false,"sortable":false}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","title","author","brief"],"edit":[[{"name":"title","size":6},{"name":"author","size":6}],[{"name":"brief","size":6},{"name":"text","size":6}],[{"name":"slug","size":6},{"name":"order","size":4}],[{"name":"word_count","size":4},{"name":"difficulty_level","size":6}],[{"name":"illustrations","size":12}],[{"name":"generation_prompts","size":12}],[{"name":"like_count","size":4},{"name":"story_likes","size":6}],[{"name":"story_audios","size":6}]]}}	object	\N	\N
+73	plugin_content_manager_configuration_content_types::api::word-def-audio.word-def-audio	{"uid":"api::word-def-audio.word-def-audio","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"engine_ver","defaultSortBy":"engine_ver","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"id","searchable":true,"sortable":true}},"key_hash":{"edit":{"label":"key_hash","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"key_hash","searchable":true,"sortable":true}},"provider":{"edit":{"label":"provider","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"provider","searchable":true,"sortable":true}},"engine_ver":{"edit":{"label":"engine_ver","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"engine_ver","searchable":true,"sortable":true}},"voice_id":{"edit":{"label":"voice_id","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"voice_id","searchable":true,"sortable":true}},"format":{"edit":{"label":"format","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"format","searchable":true,"sortable":true}},"rate":{"edit":{"label":"rate","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"rate","searchable":true,"sortable":true}},"duration_s":{"edit":{"label":"duration_s","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"duration_s","searchable":true,"sortable":true}},"pitch":{"edit":{"label":"pitch","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"pitch","searchable":true,"sortable":true}},"volume":{"edit":{"label":"volume","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"volume","searchable":true,"sortable":true}},"audio":{"edit":{"label":"audio","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"audio","searchable":false,"sortable":false}},"expires_at":{"edit":{"label":"expires_at","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"expires_at","searchable":true,"sortable":true}},"word_definition":{"edit":{"label":"word_definition","description":"","placeholder":"","visible":true,"editable":true,"mainField":"base_text"},"list":{"label":"word_definition","searchable":true,"sortable":true}},"createdAt":{"edit":{"label":"createdAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"createdAt","searchable":true,"sortable":true}},"updatedAt":{"edit":{"label":"updatedAt","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"updatedAt","searchable":true,"sortable":true}},"createdBy":{"edit":{"label":"createdBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"createdBy","searchable":true,"sortable":true}},"updatedBy":{"edit":{"label":"updatedBy","description":"","placeholder":"","visible":false,"editable":true,"mainField":"firstname"},"list":{"label":"updatedBy","searchable":true,"sortable":true}}},"layouts":{"list":["id","key_hash","provider","engine_ver"],"edit":[[{"name":"key_hash","size":6},{"name":"provider","size":6}],[{"name":"engine_ver","size":6},{"name":"voice_id","size":6}],[{"name":"format","size":6},{"name":"rate","size":4}],[{"name":"duration_s","size":4},{"name":"pitch","size":4},{"name":"volume","size":4}],[{"name":"audio","size":6},{"name":"expires_at","size":6}],[{"name":"word_definition","size":6}]]}}	object	\N	\N
 \.
 
 
@@ -11123,7 +13788,7 @@ COPY public.strapi_core_store_settings (id, key, value, type, environment, tag) 
 --
 
 COPY public.strapi_database_schema (id, schema, "time", hash) FROM stdin;
-121	{"tables":[{"name":"strapi_core_store_settings","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"value","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"environment","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"strapi_webhooks","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"headers","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"events","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"enabled","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"admin_permissions","indexes":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"action_parameters","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"subject","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"properties","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conditions","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users","indexes":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"firstname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lastname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"registration_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"prefered_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_roles","indexes":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_tokens","indexes":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions","indexes":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_tokens","indexes":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions","indexes":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files","indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null},{"name":"files_created_by_id_fk","columns":["created_by_id"]},{"name":"files_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"files_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"files_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alternative_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"width","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"height","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"formats","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"ext","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"mime","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"size","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"preview_url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider_metadata","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"folder_path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders","indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"},{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"]},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions","indexes":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_roles","indexes":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users","indexes":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"]},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmation_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmed","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"i18n_locale","indexes":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"]},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"conversations","indexes":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"]},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"session_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"history","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels","indexes":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"]},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"flashcards","indexes":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"]},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"last_reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"correct_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"wrong_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_remembered","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessons","indexes":[{"type":"unique","name":"lessons_slug_unique","columns":["slug"]},{"name":"lessons_created_by_id_fk","columns":["created_by_id"]},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessons_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessonlevels","indexes":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"]},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"modules","indexes":[{"name":"modules_created_by_id_fk","columns":["created_by_id"]},{"name":"modules_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"modules_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"modules_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"goal","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"part_of_speeches","indexes":[{"name":"part_of_speeches_created_by_id_fk","columns":["created_by_id"]},{"name":"part_of_speeches_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"part_of_speeches_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"part_of_speeches_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"pings","indexes":[{"name":"pings_created_by_id_fk","columns":["created_by_id"]},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"pings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"status","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"proficiency_levels","indexes":[{"name":"proficiency_levels_created_by_id_fk","columns":["created_by_id"]},{"name":"proficiency_levels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"proficiency_levels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"proficiency_levels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"display_name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"review_tires","indexes":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"]},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tier","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"min_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"max_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"cooldown_hours","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"demote_bar","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"reviewlogs","indexes":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"]},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"result","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections","indexes":[{"name":"sections_created_by_id_fk","columns":["created_by_id"]},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sections_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"sentences","indexes":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"stories","indexes":[{"type":"unique","name":"stories_slug_unique","columns":["slug"]},{"name":"stories_created_by_id_fk","columns":["created_by_id"]},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"stories_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"author","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"text","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"word_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"like_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"story_audios","indexes":[{"type":"unique","name":"story_audios_key_hash_unique","columns":["key_hash"]},{"name":"story_audios_created_by_id_fk","columns":["created_by_id"]},{"name":"story_audios_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"story_audios_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"story_audios_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key_hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"source_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"engine_ver","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"voice_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"format","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"rate","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"duration_s","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"paragraph_index","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"sentence_index","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"pitch","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"volume","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes","indexes":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"]},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics","indexes":[{"name":"topics_created_by_id_fk","columns":["created_by_id"]},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"topics_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tags","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units","indexes":[{"type":"unique","name":"units_slug_unique","columns":["slug"]},{"name":"units_created_by_id_fk","columns":["created_by_id"]},{"name":"units_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"units_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"units_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_profiles","indexes":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"]},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"telephone","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"proficiency","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reminder_enabled","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences","indexes":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_words","indexes":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"]},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"part_of_speech","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"vbsettings","indexes":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"]},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"words_per_page","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_1","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_2","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_3","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words","indexes":[{"name":"words_created_by_id_fk","columns":["created_by_id"]},{"name":"words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_def_audios","indexes":[{"type":"unique","name":"word_def_audios_key_hash_unique","columns":["key_hash"]},{"name":"word_def_audios_created_by_id_fk","columns":["created_by_id"]},{"name":"word_def_audios_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"word_def_audios_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"word_def_audios_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key_hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"engine_ver","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"voice_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"format","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"rate","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"duration_s","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"pitch","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"volume","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions","indexes":[{"name":"word_definitions_created_by_id_fk","columns":["created_by_id"]},{"name":"word_definitions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"word_definitions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"word_definitions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"gender","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"article","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"example_sentence","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_external_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_generation_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"cover_image_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief_video_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustration_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustrations","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alt_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"paragraph","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_pagebreakers","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"backbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"nextbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_questions","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expected_answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_quizzes","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"question","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"options","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"explanation","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_taglists","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_user_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_user_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_verb_metas","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"simple_past","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"past_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"present_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"thirdperson_singular","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"auxiliary_verb","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conjugations","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"admin_permissions_role_links","indexes":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"]},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"admin_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"admin_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"admin_permissions","onDelete":"CASCADE"},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users_roles_links","indexes":[{"name":"admin_users_roles_links_fk","columns":["user_id"]},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"]},{"name":"admin_users_roles_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"admin_users_roles_links_order_fk","columns":["role_order"]},{"name":"admin_users_roles_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"admin_users_roles_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"admin_users","onDelete":"CASCADE"},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions_token_links","indexes":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"]},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"]},{"name":"strapi_api_token_permissions_token_links_unique","columns":["api_token_permission_id","api_token_id"],"type":"unique"},{"name":"strapi_api_token_permissions_token_links_order_inv_fk","columns":["api_token_permission_order"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_token_permissions","onDelete":"CASCADE"},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"api_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions_token_links","indexes":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"]},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"]},{"name":"strapi_transfer_token_permissions_token_links_unique","columns":["transfer_token_permission_id","transfer_token_id"],"type":"unique"},{"name":"strapi_transfer_token_permissions_token_links_order_inv_fk","columns":["transfer_token_permission_order"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_token_permissions","onDelete":"CASCADE"},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"transfer_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_related_morphs","indexes":[{"name":"files_related_morphs_fk","columns":["file_id"]},{"name":"files_related_morphs_order_index","columns":["order"]},{"name":"files_related_morphs_id_column_index","columns":["related_id"]}],"foreignKeys":[{"name":"files_related_morphs_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_folder_links","indexes":[{"name":"files_folder_links_fk","columns":["file_id"]},{"name":"files_folder_links_inv_fk","columns":["folder_id"]},{"name":"files_folder_links_unique","columns":["file_id","folder_id"],"type":"unique"},{"name":"files_folder_links_order_inv_fk","columns":["file_order"]}],"foreignKeys":[{"name":"files_folder_links_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"},{"name":"files_folder_links_inv_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"file_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders_parent_links","indexes":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"]},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"]},{"name":"upload_folders_parent_links_unique","columns":["folder_id","inv_folder_id"],"type":"unique"},{"name":"upload_folders_parent_links_order_inv_fk","columns":["folder_order"]}],"foreignKeys":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions_role_links","indexes":[{"name":"up_permissions_role_links_fk","columns":["permission_id"]},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"up_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"up_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"up_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"up_permissions","onDelete":"CASCADE"},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users_role_links","indexes":[{"name":"up_users_role_links_fk","columns":["user_id"]},{"name":"up_users_role_links_inv_fk","columns":["role_id"]},{"name":"up_users_role_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"up_users_role_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"up_users_role_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"},{"name":"up_users_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels_localizations_links","indexes":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_unique","columns":["difficulty_level_id","inv_difficulty_level_id"],"type":"unique"},{"name":"difficulty_levels_localizations_links_order_fk","columns":["difficulty_level_order"]}],"foreignKeys":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_user_links","indexes":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"]},{"name":"flashcards_user_links_inv_fk","columns":["user_id"]},{"name":"flashcards_user_links_unique","columns":["flashcard_id","user_id"],"type":"unique"},{"name":"flashcards_user_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_review_tire_links","indexes":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"]},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"]},{"name":"flashcards_review_tire_links_unique","columns":["flashcard_id","review_tire_id"],"type":"unique"},{"name":"flashcards_review_tire_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_word_definition_links","indexes":[{"name":"flashcards_word_definition_links_fk","columns":["flashcard_id"]},{"name":"flashcards_word_definition_links_inv_fk","columns":["word_definition_id"]},{"name":"flashcards_word_definition_links_unique","columns":["flashcard_id","word_definition_id"],"type":"unique"},{"name":"flashcards_word_definition_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_word_definition_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_word_definition_links_inv_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_localizations_links","indexes":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"]},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"]},{"name":"flashcards_localizations_links_unique","columns":["flashcard_id","inv_flashcard_id"],"type":"unique"},{"name":"flashcards_localizations_links_order_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_components","indexes":[{"name":"lessons_field_index","columns":["field"]},{"name":"lessons_component_type_index","columns":["component_type"]},{"name":"lessons_entity_fk","columns":["entity_id"]},{"name":"lessons_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"lessons_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_lessonlevel_links","indexes":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"]},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"]},{"name":"lessons_lessonlevel_links_unique","columns":["lesson_id","lessonlevel_id"],"type":"unique"},{"name":"lessons_lessonlevel_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"],"referencedColumns":["id"],"referencedTable":"lessonlevels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lessonlevel_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_unit_links","indexes":[{"name":"lessons_unit_links_fk","columns":["lesson_id"]},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"]},{"name":"lessons_unit_links_unique","columns":["lesson_id","unit_id"],"type":"unique"},{"name":"lessons_unit_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_unit_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_localizations_links","indexes":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"]},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"]},{"name":"lessons_localizations_links_unique","columns":["lesson_id","inv_lesson_id"],"type":"unique"},{"name":"lessons_localizations_links_order_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"modules_localizations_links","indexes":[{"name":"modules_localizations_links_fk","columns":["module_id"]},{"name":"modules_localizations_links_inv_fk","columns":["inv_module_id"]},{"name":"modules_localizations_links_unique","columns":["module_id","inv_module_id"],"type":"unique"},{"name":"modules_localizations_links_order_fk","columns":["module_order"]}],"foreignKeys":[{"name":"modules_localizations_links_fk","columns":["module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"},{"name":"modules_localizations_links_inv_fk","columns":["inv_module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"module_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"proficiency_levels_localizations_links","indexes":[{"name":"proficiency_levels_localizations_links_fk","columns":["proficiency_level_id"]},{"name":"proficiency_levels_localizations_links_inv_fk","columns":["inv_proficiency_level_id"]},{"name":"proficiency_levels_localizations_links_unique","columns":["proficiency_level_id","inv_proficiency_level_id"],"type":"unique"},{"name":"proficiency_levels_localizations_links_order_fk","columns":["proficiency_level_order"]}],"foreignKeys":[{"name":"proficiency_levels_localizations_links_fk","columns":["proficiency_level_id"],"referencedColumns":["id"],"referencedTable":"proficiency_levels","onDelete":"CASCADE"},{"name":"proficiency_levels_localizations_links_inv_fk","columns":["inv_proficiency_level_id"],"referencedColumns":["id"],"referencedTable":"proficiency_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"proficiency_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_proficiency_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"proficiency_level_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"review_tires_localizations_links","indexes":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"]},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"]},{"name":"review_tires_localizations_links_unique","columns":["review_tire_id","inv_review_tire_id"],"type":"unique"},{"name":"review_tires_localizations_links_order_fk","columns":["review_tire_order"]}],"foreignKeys":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_user_links","indexes":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"]},{"name":"reviewlogs_user_links_unique","columns":["reviewlog_id","user_id"],"type":"unique"},{"name":"reviewlogs_user_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_flashcard_links","indexes":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"]},{"name":"reviewlogs_flashcard_links_unique","columns":["reviewlog_id","flashcard_id"],"type":"unique"},{"name":"reviewlogs_flashcard_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_components","indexes":[{"name":"sections_field_index","columns":["field"]},{"name":"sections_component_type_index","columns":["component_type"]},{"name":"sections_entity_fk","columns":["entity_id"]},{"name":"sections_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sections_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_lesson_links","indexes":[{"name":"sections_lesson_links_fk","columns":["section_id"]},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"sections_lesson_links_unique","columns":["section_id","lesson_id"],"type":"unique"},{"name":"sections_lesson_links_order_inv_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_lesson_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_localizations_links","indexes":[{"name":"sections_localizations_links_fk","columns":["section_id"]},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"]},{"name":"sections_localizations_links_unique","columns":["section_id","inv_section_id"],"type":"unique"},{"name":"sections_localizations_links_order_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_localizations_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_components","indexes":[{"name":"sentences_field_index","columns":["field"]},{"name":"sentences_component_type_index","columns":["component_type"]},{"name":"sentences_entity_fk","columns":["entity_id"]},{"name":"sentences_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sentences_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_localizations_links","indexes":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"]},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"]},{"name":"sentences_localizations_links_unique","columns":["sentence_id","inv_sentence_id"],"type":"unique"},{"name":"sentences_localizations_links_order_fk","columns":["sentence_order"]}],"foreignKeys":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_components","indexes":[{"name":"stories_field_index","columns":["field"]},{"name":"stories_component_type_index","columns":["component_type"]},{"name":"stories_entity_fk","columns":["entity_id"]},{"name":"stories_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"stories_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_difficulty_level_links","indexes":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"]},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"stories_difficulty_level_links_unique","columns":["story_id","difficulty_level_id"],"type":"unique"},{"name":"stories_difficulty_level_links_order_inv_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_localizations_links","indexes":[{"name":"stories_localizations_links_fk","columns":["story_id"]},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"]},{"name":"stories_localizations_links_unique","columns":["story_id","inv_story_id"],"type":"unique"},{"name":"stories_localizations_links_order_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_localizations_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_audios_story_links","indexes":[{"name":"story_audios_story_links_fk","columns":["story_audio_id"]},{"name":"story_audios_story_links_inv_fk","columns":["story_id"]},{"name":"story_audios_story_links_unique","columns":["story_audio_id","story_id"],"type":"unique"},{"name":"story_audios_story_links_order_inv_fk","columns":["story_audio_order"]}],"foreignKeys":[{"name":"story_audios_story_links_fk","columns":["story_audio_id"],"referencedColumns":["id"],"referencedTable":"story_audios","onDelete":"CASCADE"},{"name":"story_audios_story_links_inv_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_audio_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_audio_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_user_links","indexes":[{"name":"story_likes_user_links_fk","columns":["story_like_id"]},{"name":"story_likes_user_links_inv_fk","columns":["user_id"]},{"name":"story_likes_user_links_unique","columns":["story_like_id","user_id"],"type":"unique"},{"name":"story_likes_user_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_user_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_story_links","indexes":[{"name":"story_likes_story_links_fk","columns":["story_like_id"]},{"name":"story_likes_story_links_inv_fk","columns":["story_id"]},{"name":"story_likes_story_links_unique","columns":["story_like_id","story_id"],"type":"unique"},{"name":"story_likes_story_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_story_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_story_links_inv_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_components","indexes":[{"name":"topics_field_index","columns":["field"]},{"name":"topics_component_type_index","columns":["component_type"]},{"name":"topics_entity_fk","columns":["entity_id"]},{"name":"topics_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"topics_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_difficulty_level_links","indexes":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"]},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"topics_difficulty_level_links_unique","columns":["topic_id","difficulty_level_id"],"type":"unique"},{"name":"topics_difficulty_level_links_order_inv_fk","columns":["topic_order"]}],"foreignKeys":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"topic_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"topic_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_precondition_links","indexes":[{"name":"units_precondition_links_fk","columns":["unit_id"]},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_precondition_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"}],"foreignKeys":[{"name":"units_precondition_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_module_links","indexes":[{"name":"units_module_links_fk","columns":["unit_id"]},{"name":"units_module_links_inv_fk","columns":["module_id"]},{"name":"units_module_links_unique","columns":["unit_id","module_id"],"type":"unique"},{"name":"units_module_links_order_inv_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_module_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_module_links_inv_fk","columns":["module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_localizations_links","indexes":[{"name":"units_localizations_links_fk","columns":["unit_id"]},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_localizations_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"},{"name":"units_localizations_links_order_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_localizations_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_profiles_user_links","indexes":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"]},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"]},{"name":"user_profiles_user_links_unique","columns":["user_profile_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"],"referencedColumns":["id"],"referencedTable":"user_profiles","onDelete":"CASCADE"},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_profile_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_user_links","indexes":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"]},{"name":"user_sentences_user_links_unique","columns":["user_sentence_id","user_id"],"type":"unique"},{"name":"user_sentences_user_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_lesson_links","indexes":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_sentences_lesson_links_unique","columns":["user_sentence_id","lesson_id"],"type":"unique"},{"name":"user_sentences_lesson_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_localizations_links","indexes":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"]},{"name":"user_sentences_localizations_links_unique","columns":["user_sentence_id","inv_user_sentence_id"],"type":"unique"},{"name":"user_sentences_localizations_links_order_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_user_links","indexes":[{"name":"user_words_user_links_fk","columns":["user_word_id"]},{"name":"user_words_user_links_inv_fk","columns":["user_id"]},{"name":"user_words_user_links_unique","columns":["user_word_id","user_id"],"type":"unique"},{"name":"user_words_user_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_user_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_lesson_links","indexes":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"]},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_words_lesson_links_unique","columns":["user_word_id","lesson_id"],"type":"unique"},{"name":"user_words_lesson_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_localizations_links","indexes":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"]},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"]},{"name":"user_words_localizations_links_unique","columns":["user_word_id","inv_user_word_id"],"type":"unique"},{"name":"user_words_localizations_links_order_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"vbsettings_user_links","indexes":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"]},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"]},{"name":"vbsettings_user_links_unique","columns":["vbsetting_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"],"referencedColumns":["id"],"referencedTable":"vbsettings","onDelete":"CASCADE"},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"vbsetting_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_def_audios_word_definition_links","indexes":[{"name":"word_def_audios_word_definition_links_fk","columns":["word_def_audio_id"]},{"name":"word_def_audios_word_definition_links_inv_fk","columns":["word_definition_id"]},{"name":"word_def_audios_word_definition_links_unique","columns":["word_def_audio_id","word_definition_id"],"type":"unique"},{"name":"word_def_audios_word_definition_links_order_inv_fk","columns":["word_def_audio_order"]}],"foreignKeys":[{"name":"word_def_audios_word_definition_links_fk","columns":["word_def_audio_id"],"referencedColumns":["id"],"referencedTable":"word_def_audios","onDelete":"CASCADE"},{"name":"word_def_audios_word_definition_links_inv_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_def_audio_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_def_audio_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_components","indexes":[{"name":"word_definitions_field_index","columns":["field"]},{"name":"word_definitions_component_type_index","columns":["component_type"]},{"name":"word_definitions_entity_fk","columns":["entity_id"]},{"name":"word_definitions_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"word_definitions_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_word_links","indexes":[{"name":"word_definitions_word_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_word_links_inv_fk","columns":["word_id"]},{"name":"word_definitions_word_links_unique","columns":["word_definition_id","word_id"],"type":"unique"},{"name":"word_definitions_word_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_word_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_word_links_inv_fk","columns":["word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_section_links","indexes":[{"name":"word_definitions_section_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_section_links_inv_fk","columns":["section_id"]},{"name":"word_definitions_section_links_unique","columns":["word_definition_id","section_id"],"type":"unique"},{"name":"word_definitions_section_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_section_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_section_links_inv_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_part_of_speech_links","indexes":[{"name":"word_definitions_part_of_speech_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_part_of_speech_links_inv_fk","columns":["part_of_speech_id"]},{"name":"word_definitions_part_of_speech_links_unique","columns":["word_definition_id","part_of_speech_id"],"type":"unique"},{"name":"word_definitions_part_of_speech_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_part_of_speech_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_part_of_speech_links_inv_fk","columns":["part_of_speech_id"],"referencedColumns":["id"],"referencedTable":"part_of_speeches","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"part_of_speech_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_localizations_links","indexes":[{"name":"word_definitions_localizations_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_localizations_links_inv_fk","columns":["inv_word_definition_id"]},{"name":"word_definitions_localizations_links_unique","columns":["word_definition_id","inv_word_definition_id"],"type":"unique"},{"name":"word_definitions_localizations_links_order_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_localizations_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_localizations_links_inv_fk","columns":["inv_word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_generation_prompts_components","indexes":[{"name":"components_a_generation_prompts_field_index","columns":["field"]},{"name":"components_a_generation_prompts_component_type_index","columns":["component_type"]},{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"]},{"name":"components_a_generation_prompts_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"components_a_generation_prompts","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_sent_refs_sentence_links","indexes":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"]},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"]},{"name":"components_a_sent_refs_sentence_links_unique","columns":["sent_ref_id","sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_sent_refs","onDelete":"CASCADE"},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_sent_refs_user_sentence_links","indexes":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_unique","columns":["user_sent_ref_id","user_sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_sent_refs","onDelete":"CASCADE"},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_word_refs_user_word_links","indexes":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"]},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"]},{"name":"components_a_user_word_refs_user_word_links_unique","columns":["user_word_ref_id","user_word_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_word_refs","onDelete":"CASCADE"},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]}]}	2025-08-19 11:58:31.894	d6cba50b83998e002fd3442ae4bba481
+126	{"tables":[{"name":"strapi_core_store_settings","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"value","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"environment","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"strapi_webhooks","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"headers","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"events","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"enabled","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"admin_permissions","indexes":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"action_parameters","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"subject","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"properties","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conditions","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users","indexes":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"firstname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lastname","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"registration_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"prefered_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_roles","indexes":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"admin_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"admin_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_tokens","indexes":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions","indexes":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_api_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_tokens","indexes":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_tokens_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_tokens_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"access_key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"last_used_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"lifespan","type":"bigInteger","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions","indexes":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"strapi_transfer_token_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files","indexes":[{"name":"upload_files_folder_path_index","columns":["folder_path"],"type":null},{"name":"upload_files_created_at_index","columns":["created_at"],"type":null},{"name":"upload_files_updated_at_index","columns":["updated_at"],"type":null},{"name":"upload_files_name_index","columns":["name"],"type":null},{"name":"upload_files_size_index","columns":["size"],"type":null},{"name":"upload_files_ext_index","columns":["ext"],"type":null},{"name":"files_created_by_id_fk","columns":["created_by_id"]},{"name":"files_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"files_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"files_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alternative_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"width","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"height","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"formats","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"ext","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"mime","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"size","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"preview_url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider_metadata","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"folder_path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders","indexes":[{"name":"upload_folders_path_id_index","columns":["path_id"],"type":"unique"},{"name":"upload_folders_path_index","columns":["path"],"type":"unique"},{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"]},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"upload_folders_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"upload_folders_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"path","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions","indexes":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"]},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_permissions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_permissions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"action","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_roles","indexes":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"]},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_roles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_roles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users","indexes":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"]},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"up_users_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"up_users_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"username","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"email","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"password","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reset_password_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmation_token","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"confirmed","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"blocked","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"i18n_locale","indexes":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"]},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"i18n_locale_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"i18n_locale_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"conversations","indexes":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"]},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"conversations_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"conversations_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"session_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"history","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels","indexes":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"]},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"difficulty_levels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"difficulty_levels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"code","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"flashcards","indexes":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"]},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"flashcards_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"flashcards_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"last_reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"correct_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"wrong_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_remembered","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessons","indexes":[{"type":"unique","name":"lessons_slug_unique","columns":["slug"]},{"name":"lessons_created_by_id_fk","columns":["created_by_id"]},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessons_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessons_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"lessonlevels","indexes":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"]},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"lessonlevels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"lessonlevels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"modules","indexes":[{"name":"modules_created_by_id_fk","columns":["created_by_id"]},{"name":"modules_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"modules_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"modules_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"goal","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"part_of_speeches","indexes":[{"name":"part_of_speeches_created_by_id_fk","columns":["created_by_id"]},{"name":"part_of_speeches_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"part_of_speeches_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"part_of_speeches_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"pings","indexes":[{"name":"pings_created_by_id_fk","columns":["created_by_id"]},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"pings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"pings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"status","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"proficiency_levels","indexes":[{"name":"proficiency_levels_created_by_id_fk","columns":["created_by_id"]},{"name":"proficiency_levels_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"proficiency_levels_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"proficiency_levels_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"display_name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"review_tires","indexes":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"]},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"review_tires_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"review_tires_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tier","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"min_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"max_streak","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"cooldown_hours","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"demote_bar","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"display_name","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"reviewlogs","indexes":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"]},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"reviewlogs_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"reviewlogs_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewed_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"level","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"result","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections","indexes":[{"name":"sections_created_by_id_fk","columns":["created_by_id"]},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sections_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sections_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"sentences","indexes":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"stories","indexes":[{"type":"unique","name":"stories_slug_unique","columns":["slug"]},{"name":"stories_created_by_id_fk","columns":["created_by_id"]},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"stories_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"stories_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"author","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"text","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"word_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"like_count","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"story_audios","indexes":[{"type":"unique","name":"story_audios_key_hash_unique","columns":["key_hash"]},{"name":"story_audios_created_by_id_fk","columns":["created_by_id"]},{"name":"story_audios_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"story_audios_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"story_audios_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key_hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"source_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"engine_ver","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"voice_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"format","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"rate","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"duration_s","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"paragraph_index","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"sentence_index","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"pitch","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"volume","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes","indexes":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"]},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"story_likes_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"story_likes_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics","indexes":[{"name":"topics_created_by_id_fk","columns":["created_by_id"]},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"topics_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"topics_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"tags","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"is_active","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units","indexes":[{"type":"unique","name":"units_slug_unique","columns":["slug"]},{"name":"units_created_by_id_fk","columns":["created_by_id"]},{"name":"units_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"units_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"units_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"title","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"slug","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"description","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_profiles","indexes":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"]},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_profiles_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_profiles_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"telephone","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_language","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"proficiency","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"reminder_enabled","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences","indexes":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"]},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_sentences_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_sentences_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"user_words","indexes":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"]},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"user_words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"user_words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"part_of_speech","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"vbsettings","indexes":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"]},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"vbsettings_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"vbsettings_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"words_per_page","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_1","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_2","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"interval_3","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"words","indexes":[{"name":"words_created_by_id_fk","columns":["created_by_id"]},{"name":"words_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"words_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"words_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"target_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_def_audios","indexes":[{"type":"unique","name":"word_def_audios_key_hash_unique","columns":["key_hash"]},{"name":"word_def_audios_created_by_id_fk","columns":["created_by_id"]},{"name":"word_def_audios_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"word_def_audios_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"word_def_audios_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"key_hash","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false,"unique":true},{"name":"provider","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"engine_ver","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"voice_id","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"format","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"rate","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"duration_s","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"pitch","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"volume","type":"decimal","args":[10,2],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expires_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions","indexes":[{"name":"word_definitions_created_by_id_fk","columns":["created_by_id"]},{"name":"word_definitions_updated_by_id_fk","columns":["updated_by_id"]}],"foreignKeys":[{"name":"word_definitions_created_by_id_fk","columns":["created_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"},{"name":"word_definitions_updated_by_id_fk","columns":["updated_by_id"],"referencedTable":"admin_users","referencedColumns":["id"],"onDelete":"SET NULL"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"base_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"instruction","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"gender","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"article","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"example_sentence","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_base","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"exam_target","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"register","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"updated_at","type":"datetime","args":[{"useTz":false,"precision":6}],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"created_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"updated_by_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"locale","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_external_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"url","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_generation_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"cover_image_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"brief_video_prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustration_prompts","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"text","args":["longtext"],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_illustrations","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"caption","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"alt_text","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"paragraph","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_pagebreakers","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"backbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"nextbutton","type":"boolean","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_questions","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"prompt","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"expected_answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_quizzes","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"question","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"options","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"answer","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"explanation","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_taglists","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"tag","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_user_sent_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_user_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_verb_metas","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"simple_past","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"past_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"present_participle","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"thirdperson_singular","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"auxiliary_verb","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"conjugations","type":"jsonb","args":[],"defaultTo":null,"notNullable":false,"unsigned":false}]},{"name":"components_a_videos","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"components_a_word_refs","indexes":[],"foreignKeys":[],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false}]},{"name":"admin_permissions_role_links","indexes":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"]},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"admin_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"admin_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"admin_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"admin_permissions","onDelete":"CASCADE"},{"name":"admin_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"admin_users_roles_links","indexes":[{"name":"admin_users_roles_links_fk","columns":["user_id"]},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"]},{"name":"admin_users_roles_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"admin_users_roles_links_order_fk","columns":["role_order"]},{"name":"admin_users_roles_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"admin_users_roles_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"admin_users","onDelete":"CASCADE"},{"name":"admin_users_roles_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"admin_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_api_token_permissions_token_links","indexes":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"]},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"]},{"name":"strapi_api_token_permissions_token_links_unique","columns":["api_token_permission_id","api_token_id"],"type":"unique"},{"name":"strapi_api_token_permissions_token_links_order_inv_fk","columns":["api_token_permission_order"]}],"foreignKeys":[{"name":"strapi_api_token_permissions_token_links_fk","columns":["api_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_token_permissions","onDelete":"CASCADE"},{"name":"strapi_api_token_permissions_token_links_inv_fk","columns":["api_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_api_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"api_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"api_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"strapi_transfer_token_permissions_token_links","indexes":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"]},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"]},{"name":"strapi_transfer_token_permissions_token_links_unique","columns":["transfer_token_permission_id","transfer_token_id"],"type":"unique"},{"name":"strapi_transfer_token_permissions_token_links_order_inv_fk","columns":["transfer_token_permission_order"]}],"foreignKeys":[{"name":"strapi_transfer_token_permissions_token_links_fk","columns":["transfer_token_permission_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_token_permissions","onDelete":"CASCADE"},{"name":"strapi_transfer_token_permissions_token_links_inv_fk","columns":["transfer_token_id"],"referencedColumns":["id"],"referencedTable":"strapi_transfer_tokens","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"transfer_token_permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"transfer_token_permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_related_morphs","indexes":[{"name":"files_related_morphs_fk","columns":["file_id"]},{"name":"files_related_morphs_order_index","columns":["order"]},{"name":"files_related_morphs_id_column_index","columns":["related_id"]}],"foreignKeys":[{"name":"files_related_morphs_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"related_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"files_folder_links","indexes":[{"name":"files_folder_links_fk","columns":["file_id"]},{"name":"files_folder_links_inv_fk","columns":["folder_id"]},{"name":"files_folder_links_unique","columns":["file_id","folder_id"],"type":"unique"},{"name":"files_folder_links_order_inv_fk","columns":["file_order"]}],"foreignKeys":[{"name":"files_folder_links_fk","columns":["file_id"],"referencedColumns":["id"],"referencedTable":"files","onDelete":"CASCADE"},{"name":"files_folder_links_inv_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"file_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"file_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"upload_folders_parent_links","indexes":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"]},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"]},{"name":"upload_folders_parent_links_unique","columns":["folder_id","inv_folder_id"],"type":"unique"},{"name":"upload_folders_parent_links_order_inv_fk","columns":["folder_order"]}],"foreignKeys":[{"name":"upload_folders_parent_links_fk","columns":["folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"},{"name":"upload_folders_parent_links_inv_fk","columns":["inv_folder_id"],"referencedColumns":["id"],"referencedTable":"upload_folders","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_folder_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"folder_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_permissions_role_links","indexes":[{"name":"up_permissions_role_links_fk","columns":["permission_id"]},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"]},{"name":"up_permissions_role_links_unique","columns":["permission_id","role_id"],"type":"unique"},{"name":"up_permissions_role_links_order_inv_fk","columns":["permission_order"]}],"foreignKeys":[{"name":"up_permissions_role_links_fk","columns":["permission_id"],"referencedColumns":["id"],"referencedTable":"up_permissions","onDelete":"CASCADE"},{"name":"up_permissions_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"permission_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"permission_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"up_users_role_links","indexes":[{"name":"up_users_role_links_fk","columns":["user_id"]},{"name":"up_users_role_links_inv_fk","columns":["role_id"]},{"name":"up_users_role_links_unique","columns":["user_id","role_id"],"type":"unique"},{"name":"up_users_role_links_order_inv_fk","columns":["user_order"]}],"foreignKeys":[{"name":"up_users_role_links_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"},{"name":"up_users_role_links_inv_fk","columns":["role_id"],"referencedColumns":["id"],"referencedTable":"up_roles","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"role_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"difficulty_levels_localizations_links","indexes":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"]},{"name":"difficulty_levels_localizations_links_unique","columns":["difficulty_level_id","inv_difficulty_level_id"],"type":"unique"},{"name":"difficulty_levels_localizations_links_order_fk","columns":["difficulty_level_order"]}],"foreignKeys":[{"name":"difficulty_levels_localizations_links_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"},{"name":"difficulty_levels_localizations_links_inv_fk","columns":["inv_difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_user_links","indexes":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"]},{"name":"flashcards_user_links_inv_fk","columns":["user_id"]},{"name":"flashcards_user_links_unique","columns":["flashcard_id","user_id"],"type":"unique"},{"name":"flashcards_user_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_user_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_review_tire_links","indexes":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"]},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"]},{"name":"flashcards_review_tire_links_unique","columns":["flashcard_id","review_tire_id"],"type":"unique"},{"name":"flashcards_review_tire_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_review_tire_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_review_tire_links_inv_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_word_definition_links","indexes":[{"name":"flashcards_word_definition_links_fk","columns":["flashcard_id"]},{"name":"flashcards_word_definition_links_inv_fk","columns":["word_definition_id"]},{"name":"flashcards_word_definition_links_unique","columns":["flashcard_id","word_definition_id"],"type":"unique"},{"name":"flashcards_word_definition_links_order_inv_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_word_definition_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_word_definition_links_inv_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"flashcards_localizations_links","indexes":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"]},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"]},{"name":"flashcards_localizations_links_unique","columns":["flashcard_id","inv_flashcard_id"],"type":"unique"},{"name":"flashcards_localizations_links_order_fk","columns":["flashcard_order"]}],"foreignKeys":[{"name":"flashcards_localizations_links_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"},{"name":"flashcards_localizations_links_inv_fk","columns":["inv_flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_components","indexes":[{"name":"lessons_field_index","columns":["field"]},{"name":"lessons_component_type_index","columns":["component_type"]},{"name":"lessons_entity_fk","columns":["entity_id"]},{"name":"lessons_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"lessons_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_lessonlevel_links","indexes":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"]},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"]},{"name":"lessons_lessonlevel_links_unique","columns":["lesson_id","lessonlevel_id"],"type":"unique"},{"name":"lessons_lessonlevel_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_lessonlevel_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_lessonlevel_links_inv_fk","columns":["lessonlevel_id"],"referencedColumns":["id"],"referencedTable":"lessonlevels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lessonlevel_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_unit_links","indexes":[{"name":"lessons_unit_links_fk","columns":["lesson_id"]},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"]},{"name":"lessons_unit_links_unique","columns":["lesson_id","unit_id"],"type":"unique"},{"name":"lessons_unit_links_order_inv_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_unit_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_unit_links_inv_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"lessons_localizations_links","indexes":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"]},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"]},{"name":"lessons_localizations_links_unique","columns":["lesson_id","inv_lesson_id"],"type":"unique"},{"name":"lessons_localizations_links_order_fk","columns":["lesson_order"]}],"foreignKeys":[{"name":"lessons_localizations_links_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"},{"name":"lessons_localizations_links_inv_fk","columns":["inv_lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"modules_localizations_links","indexes":[{"name":"modules_localizations_links_fk","columns":["module_id"]},{"name":"modules_localizations_links_inv_fk","columns":["inv_module_id"]},{"name":"modules_localizations_links_unique","columns":["module_id","inv_module_id"],"type":"unique"},{"name":"modules_localizations_links_order_fk","columns":["module_order"]}],"foreignKeys":[{"name":"modules_localizations_links_fk","columns":["module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"},{"name":"modules_localizations_links_inv_fk","columns":["inv_module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"module_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"proficiency_levels_localizations_links","indexes":[{"name":"proficiency_levels_localizations_links_fk","columns":["proficiency_level_id"]},{"name":"proficiency_levels_localizations_links_inv_fk","columns":["inv_proficiency_level_id"]},{"name":"proficiency_levels_localizations_links_unique","columns":["proficiency_level_id","inv_proficiency_level_id"],"type":"unique"},{"name":"proficiency_levels_localizations_links_order_fk","columns":["proficiency_level_order"]}],"foreignKeys":[{"name":"proficiency_levels_localizations_links_fk","columns":["proficiency_level_id"],"referencedColumns":["id"],"referencedTable":"proficiency_levels","onDelete":"CASCADE"},{"name":"proficiency_levels_localizations_links_inv_fk","columns":["inv_proficiency_level_id"],"referencedColumns":["id"],"referencedTable":"proficiency_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"proficiency_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_proficiency_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"proficiency_level_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"review_tires_localizations_links","indexes":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"]},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"]},{"name":"review_tires_localizations_links_unique","columns":["review_tire_id","inv_review_tire_id"],"type":"unique"},{"name":"review_tires_localizations_links_order_fk","columns":["review_tire_order"]}],"foreignKeys":[{"name":"review_tires_localizations_links_fk","columns":["review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"},{"name":"review_tires_localizations_links_inv_fk","columns":["inv_review_tire_id"],"referencedColumns":["id"],"referencedTable":"review_tires","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_review_tire_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"review_tire_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_user_links","indexes":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"]},{"name":"reviewlogs_user_links_unique","columns":["reviewlog_id","user_id"],"type":"unique"},{"name":"reviewlogs_user_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_user_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"reviewlogs_flashcard_links","indexes":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"]},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"]},{"name":"reviewlogs_flashcard_links_unique","columns":["reviewlog_id","flashcard_id"],"type":"unique"},{"name":"reviewlogs_flashcard_links_order_inv_fk","columns":["reviewlog_order"]}],"foreignKeys":[{"name":"reviewlogs_flashcard_links_fk","columns":["reviewlog_id"],"referencedColumns":["id"],"referencedTable":"reviewlogs","onDelete":"CASCADE"},{"name":"reviewlogs_flashcard_links_inv_fk","columns":["flashcard_id"],"referencedColumns":["id"],"referencedTable":"flashcards","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"reviewlog_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"flashcard_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"reviewlog_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_components","indexes":[{"name":"sections_field_index","columns":["field"]},{"name":"sections_component_type_index","columns":["component_type"]},{"name":"sections_entity_fk","columns":["entity_id"]},{"name":"sections_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sections_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_lesson_links","indexes":[{"name":"sections_lesson_links_fk","columns":["section_id"]},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"sections_lesson_links_unique","columns":["section_id","lesson_id"],"type":"unique"},{"name":"sections_lesson_links_order_inv_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_lesson_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sections_localizations_links","indexes":[{"name":"sections_localizations_links_fk","columns":["section_id"]},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"]},{"name":"sections_localizations_links_unique","columns":["section_id","inv_section_id"],"type":"unique"},{"name":"sections_localizations_links_order_fk","columns":["section_order"]}],"foreignKeys":[{"name":"sections_localizations_links_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"},{"name":"sections_localizations_links_inv_fk","columns":["inv_section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_components","indexes":[{"name":"sentences_field_index","columns":["field"]},{"name":"sentences_component_type_index","columns":["component_type"]},{"name":"sentences_entity_fk","columns":["entity_id"]},{"name":"sentences_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"sentences_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"sentences_localizations_links","indexes":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"]},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"]},{"name":"sentences_localizations_links_unique","columns":["sentence_id","inv_sentence_id"],"type":"unique"},{"name":"sentences_localizations_links_order_fk","columns":["sentence_order"]}],"foreignKeys":[{"name":"sentences_localizations_links_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"},{"name":"sentences_localizations_links_inv_fk","columns":["inv_sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_components","indexes":[{"name":"stories_field_index","columns":["field"]},{"name":"stories_component_type_index","columns":["component_type"]},{"name":"stories_entity_fk","columns":["entity_id"]},{"name":"stories_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"stories_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_difficulty_level_links","indexes":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"]},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"stories_difficulty_level_links_unique","columns":["story_id","difficulty_level_id"],"type":"unique"},{"name":"stories_difficulty_level_links_order_inv_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_difficulty_level_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"stories_localizations_links","indexes":[{"name":"stories_localizations_links_fk","columns":["story_id"]},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"]},{"name":"stories_localizations_links_unique","columns":["story_id","inv_story_id"],"type":"unique"},{"name":"stories_localizations_links_order_fk","columns":["story_order"]}],"foreignKeys":[{"name":"stories_localizations_links_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"},{"name":"stories_localizations_links_inv_fk","columns":["inv_story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_audios_story_links","indexes":[{"name":"story_audios_story_links_fk","columns":["story_audio_id"]},{"name":"story_audios_story_links_inv_fk","columns":["story_id"]},{"name":"story_audios_story_links_unique","columns":["story_audio_id","story_id"],"type":"unique"},{"name":"story_audios_story_links_order_inv_fk","columns":["story_audio_order"]}],"foreignKeys":[{"name":"story_audios_story_links_fk","columns":["story_audio_id"],"referencedColumns":["id"],"referencedTable":"story_audios","onDelete":"CASCADE"},{"name":"story_audios_story_links_inv_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_audio_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_audio_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_user_links","indexes":[{"name":"story_likes_user_links_fk","columns":["story_like_id"]},{"name":"story_likes_user_links_inv_fk","columns":["user_id"]},{"name":"story_likes_user_links_unique","columns":["story_like_id","user_id"],"type":"unique"},{"name":"story_likes_user_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_user_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"story_likes_story_links","indexes":[{"name":"story_likes_story_links_fk","columns":["story_like_id"]},{"name":"story_likes_story_links_inv_fk","columns":["story_id"]},{"name":"story_likes_story_links_unique","columns":["story_like_id","story_id"],"type":"unique"},{"name":"story_likes_story_links_order_inv_fk","columns":["story_like_order"]}],"foreignKeys":[{"name":"story_likes_story_links_fk","columns":["story_like_id"],"referencedColumns":["id"],"referencedTable":"story_likes","onDelete":"CASCADE"},{"name":"story_likes_story_links_inv_fk","columns":["story_id"],"referencedColumns":["id"],"referencedTable":"stories","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"story_like_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"story_like_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_components","indexes":[{"name":"topics_field_index","columns":["field"]},{"name":"topics_component_type_index","columns":["component_type"]},{"name":"topics_entity_fk","columns":["entity_id"]},{"name":"topics_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"topics_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"topics_difficulty_level_links","indexes":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"]},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"]},{"name":"topics_difficulty_level_links_unique","columns":["topic_id","difficulty_level_id"],"type":"unique"},{"name":"topics_difficulty_level_links_order_inv_fk","columns":["topic_order"]}],"foreignKeys":[{"name":"topics_difficulty_level_links_fk","columns":["topic_id"],"referencedColumns":["id"],"referencedTable":"topics","onDelete":"CASCADE"},{"name":"topics_difficulty_level_links_inv_fk","columns":["difficulty_level_id"],"referencedColumns":["id"],"referencedTable":"difficulty_levels","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"topic_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"difficulty_level_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"topic_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_precondition_links","indexes":[{"name":"units_precondition_links_fk","columns":["unit_id"]},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_precondition_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"}],"foreignKeys":[{"name":"units_precondition_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_precondition_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_module_links","indexes":[{"name":"units_module_links_fk","columns":["unit_id"]},{"name":"units_module_links_inv_fk","columns":["module_id"]},{"name":"units_module_links_unique","columns":["unit_id","module_id"],"type":"unique"},{"name":"units_module_links_order_inv_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_module_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_module_links_inv_fk","columns":["module_id"],"referencedColumns":["id"],"referencedTable":"modules","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"module_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"units_localizations_links","indexes":[{"name":"units_localizations_links_fk","columns":["unit_id"]},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"]},{"name":"units_localizations_links_unique","columns":["unit_id","inv_unit_id"],"type":"unique"},{"name":"units_localizations_links_order_fk","columns":["unit_order"]}],"foreignKeys":[{"name":"units_localizations_links_fk","columns":["unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"},{"name":"units_localizations_links_inv_fk","columns":["inv_unit_id"],"referencedColumns":["id"],"referencedTable":"units","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_unit_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"unit_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_profiles_user_links","indexes":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"]},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"]},{"name":"user_profiles_user_links_unique","columns":["user_profile_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"user_profiles_user_links_fk","columns":["user_profile_id"],"referencedColumns":["id"],"referencedTable":"user_profiles","onDelete":"CASCADE"},{"name":"user_profiles_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_profile_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_user_links","indexes":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"]},{"name":"user_sentences_user_links_unique","columns":["user_sentence_id","user_id"],"type":"unique"},{"name":"user_sentences_user_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_user_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_lesson_links","indexes":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_sentences_lesson_links_unique","columns":["user_sentence_id","lesson_id"],"type":"unique"},{"name":"user_sentences_lesson_links_order_inv_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_lesson_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_sentences_localizations_links","indexes":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"]},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"]},{"name":"user_sentences_localizations_links_unique","columns":["user_sentence_id","inv_user_sentence_id"],"type":"unique"},{"name":"user_sentences_localizations_links_order_fk","columns":["user_sentence_order"]}],"foreignKeys":[{"name":"user_sentences_localizations_links_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"},{"name":"user_sentences_localizations_links_inv_fk","columns":["inv_user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_user_links","indexes":[{"name":"user_words_user_links_fk","columns":["user_word_id"]},{"name":"user_words_user_links_inv_fk","columns":["user_id"]},{"name":"user_words_user_links_unique","columns":["user_word_id","user_id"],"type":"unique"},{"name":"user_words_user_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_user_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_lesson_links","indexes":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"]},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"]},{"name":"user_words_lesson_links_unique","columns":["user_word_id","lesson_id"],"type":"unique"},{"name":"user_words_lesson_links_order_inv_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_lesson_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_lesson_links_inv_fk","columns":["lesson_id"],"referencedColumns":["id"],"referencedTable":"lessons","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"lesson_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"user_words_localizations_links","indexes":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"]},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"]},{"name":"user_words_localizations_links_unique","columns":["user_word_id","inv_user_word_id"],"type":"unique"},{"name":"user_words_localizations_links_order_fk","columns":["user_word_order"]}],"foreignKeys":[{"name":"user_words_localizations_links_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"},{"name":"user_words_localizations_links_inv_fk","columns":["inv_user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"vbsettings_user_links","indexes":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"]},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"]},{"name":"vbsettings_user_links_unique","columns":["vbsetting_id","user_id"],"type":"unique"}],"foreignKeys":[{"name":"vbsettings_user_links_fk","columns":["vbsetting_id"],"referencedColumns":["id"],"referencedTable":"vbsettings","onDelete":"CASCADE"},{"name":"vbsettings_user_links_inv_fk","columns":["user_id"],"referencedColumns":["id"],"referencedTable":"up_users","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"vbsetting_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_def_audios_word_definition_links","indexes":[{"name":"word_def_audios_word_definition_links_fk","columns":["word_def_audio_id"]},{"name":"word_def_audios_word_definition_links_inv_fk","columns":["word_definition_id"]},{"name":"word_def_audios_word_definition_links_unique","columns":["word_def_audio_id","word_definition_id"],"type":"unique"},{"name":"word_def_audios_word_definition_links_order_inv_fk","columns":["word_def_audio_order"]}],"foreignKeys":[{"name":"word_def_audios_word_definition_links_fk","columns":["word_def_audio_id"],"referencedColumns":["id"],"referencedTable":"word_def_audios","onDelete":"CASCADE"},{"name":"word_def_audios_word_definition_links_inv_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_def_audio_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_def_audio_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_components","indexes":[{"name":"word_definitions_field_index","columns":["field"]},{"name":"word_definitions_component_type_index","columns":["component_type"]},{"name":"word_definitions_entity_fk","columns":["entity_id"]},{"name":"word_definitions_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"word_definitions_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_word_links","indexes":[{"name":"word_definitions_word_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_word_links_inv_fk","columns":["word_id"]},{"name":"word_definitions_word_links_unique","columns":["word_definition_id","word_id"],"type":"unique"},{"name":"word_definitions_word_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_word_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_word_links_inv_fk","columns":["word_id"],"referencedColumns":["id"],"referencedTable":"words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_section_links","indexes":[{"name":"word_definitions_section_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_section_links_inv_fk","columns":["section_id"]},{"name":"word_definitions_section_links_unique","columns":["word_definition_id","section_id"],"type":"unique"},{"name":"word_definitions_section_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_section_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_section_links_inv_fk","columns":["section_id"],"referencedColumns":["id"],"referencedTable":"sections","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"section_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_part_of_speech_links","indexes":[{"name":"word_definitions_part_of_speech_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_part_of_speech_links_inv_fk","columns":["part_of_speech_id"]},{"name":"word_definitions_part_of_speech_links_unique","columns":["word_definition_id","part_of_speech_id"],"type":"unique"},{"name":"word_definitions_part_of_speech_links_order_inv_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_part_of_speech_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_part_of_speech_links_inv_fk","columns":["part_of_speech_id"],"referencedColumns":["id"],"referencedTable":"part_of_speeches","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"part_of_speech_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"word_definitions_localizations_links","indexes":[{"name":"word_definitions_localizations_links_fk","columns":["word_definition_id"]},{"name":"word_definitions_localizations_links_inv_fk","columns":["inv_word_definition_id"]},{"name":"word_definitions_localizations_links_unique","columns":["word_definition_id","inv_word_definition_id"],"type":"unique"},{"name":"word_definitions_localizations_links_order_fk","columns":["word_definition_order"]}],"foreignKeys":[{"name":"word_definitions_localizations_links_fk","columns":["word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"},{"name":"word_definitions_localizations_links_inv_fk","columns":["inv_word_definition_id"],"referencedColumns":["id"],"referencedTable":"word_definitions","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"inv_word_definition_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"word_definition_order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_generation_prompts_components","indexes":[{"name":"components_a_generation_prompts_field_index","columns":["field"]},{"name":"components_a_generation_prompts_component_type_index","columns":["component_type"]},{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"]},{"name":"components_a_generation_prompts_unique","columns":["entity_id","component_id","field","component_type"],"type":"unique"}],"foreignKeys":[{"name":"components_a_generation_prompts_entity_fk","columns":["entity_id"],"referencedColumns":["id"],"referencedTable":"components_a_generation_prompts","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"entity_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"component_type","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"field","type":"string","args":[],"defaultTo":null,"notNullable":false,"unsigned":false},{"name":"order","type":"double","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_sent_refs_sentence_links","indexes":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"]},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"]},{"name":"components_a_sent_refs_sentence_links_unique","columns":["sent_ref_id","sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_sent_refs_sentence_links_fk","columns":["sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_sent_refs","onDelete":"CASCADE"},{"name":"components_a_sent_refs_sentence_links_inv_fk","columns":["sentence_id"],"referencedColumns":["id"],"referencedTable":"sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_sent_refs_user_sentence_links","indexes":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"]},{"name":"components_a_user_sent_refs_user_sentence_links_unique","columns":["user_sent_ref_id","user_sentence_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_sent_refs_user_sentence_links_fk","columns":["user_sent_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_sent_refs","onDelete":"CASCADE"},{"name":"components_a_user_sent_refs_user_sentence_links_inv_fk","columns":["user_sentence_id"],"referencedColumns":["id"],"referencedTable":"user_sentences","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_sent_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_sentence_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]},{"name":"components_a_user_word_refs_user_word_links","indexes":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"]},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"]},{"name":"components_a_user_word_refs_user_word_links_unique","columns":["user_word_ref_id","user_word_id"],"type":"unique"}],"foreignKeys":[{"name":"components_a_user_word_refs_user_word_links_fk","columns":["user_word_ref_id"],"referencedColumns":["id"],"referencedTable":"components_a_user_word_refs","onDelete":"CASCADE"},{"name":"components_a_user_word_refs_user_word_links_inv_fk","columns":["user_word_id"],"referencedColumns":["id"],"referencedTable":"user_words","onDelete":"CASCADE"}],"columns":[{"name":"id","type":"increments","args":[{"primary":true,"primaryKey":true}],"defaultTo":null,"notNullable":true,"unsigned":false},{"name":"user_word_ref_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true},{"name":"user_word_id","type":"integer","args":[],"defaultTo":null,"notNullable":false,"unsigned":true}]}]}	2025-08-23 22:39:22.373	4547f0fea33350050862eec132c46984
 \.
 
 
@@ -11485,7 +14150,6 @@ COPY public.up_permissions (id, action, created_at, updated_at, created_by_id, u
 272	api::vbsetting.vbsetting.findMine	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
 282	plugin::users-permissions.user.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
 292	plugin::users-permissions.role.updateRole	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
-183	api::flashcard.flashcard.createLocalization	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
 188	api::lesson.lesson.delete	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
 198	api::module.module.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
 218	api::reviewlog.reviewlog.create	2025-08-06 08:08:03.672	2025-08-06 08:08:03.672	\N	\N
@@ -11747,7 +14411,6 @@ COPY public.up_permissions_role_links (id, permission_id, role_id, permission_or
 176	175	3	15
 177	178	3	15
 175	176	3	15
-178	183	3	15
 179	181	3	15
 180	177	3	15
 181	179	3	15
@@ -12448,7 +15111,6 @@ COPY public.vbsettings (id, words_per_page, interval_1, interval_2, interval_3, 
 17	12	1.50	2.00	2.00	2025-08-11 23:45:16.525	2025-08-11 23:45:16.525	\N	\N
 20	12	1.50	2.00	2.00	2025-08-13 14:23:47.862	2025-08-13 14:23:47.862	\N	\N
 21	12	1.50	2.00	2.00	2025-08-13 23:07:06.319	2025-08-13 23:07:06.319	\N	\N
-16	10	1.50	2.00	2.00	2025-08-06 04:18:57.231	2025-08-14 19:44:10.59	\N	\N
 18	9	1.50	2.00	2.00	2025-08-12 00:28:02.068	2025-08-15 00:08:28.464	\N	\N
 22	12	1.50	2.00	2.00	2025-08-16 11:30:29.507	2025-08-16 11:30:29.507	\N	\N
 23	12	1.50	2.00	2.00	2025-08-16 11:30:54.437	2025-08-16 11:30:54.437	\N	\N
@@ -12456,7 +15118,8 @@ COPY public.vbsettings (id, words_per_page, interval_1, interval_2, interval_3, 
 25	12	1.50	2.00	2.00	2025-08-16 11:49:06.722	2025-08-16 11:49:06.722	\N	\N
 26	12	1.50	2.00	2.00	2025-08-16 21:23:59.903	2025-08-16 21:23:59.903	\N	\N
 27	12	1.50	2.00	2.00	2025-08-16 21:38:35.342	2025-08-16 21:38:35.342	\N	\N
-19	5	1.50	2.00	2.00	2025-08-13 14:05:49.557	2025-08-16 23:26:00.829	\N	\N
+16	5	1.50	2.00	2.00	2025-08-06 04:18:57.231	2025-08-22 14:21:54.988	\N	\N
+19	10	0.50	0.50	0.50	2025-08-13 14:05:49.557	2025-08-23 11:22:27.733	\N	\N
 \.
 
 
@@ -12690,6 +15353,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1038	轮匝肌	\N	2025-08-03 21:34:49.184	2025-08-03 21:34:52.459	\N	\N	en	\N	\N	The prbicularis flower blooms in the spring.	[{"text": "轮匝肌", "isCorrect": true}, {"text": "泌尿系", "isCorrect": false}, {"text": "前臂肌", "isCorrect": false}, {"text": "骨骼肌", "isCorrect": false}]	[{"text": "particular", "isCorrect": false}, {"text": "prbicularis", "isCorrect": true}, {"text": "precipitate", "isCorrect": false}, {"text": "precarious", "isCorrect": false}]	\N
 1062	赐予	\N	2025-08-07 03:04:25.502	2025-08-07 03:04:29.352	\N	\N	en	\N	\N	The king bestowed a medal upon the brave soldier.	[{"text": "赋予", "isCorrect": false}, {"text": "授予", "isCorrect": false}, {"text": "赐赠", "isCorrect": false}, {"text": "赐予", "isCorrect": true}]	[{"text": "bequeathed", "isCorrect": false}, {"text": "imparted", "isCorrect": false}, {"text": "bestowed", "isCorrect": true}, {"text": "concealed", "isCorrect": false}]	\N
 1063	喃喃说道	\N	2025-08-07 03:04:53.02	2025-08-07 03:04:56.927	\N	\N	en	\N	\N	She muttered something under her breath during the meeting.	[{"text": "嘀咕呢喃", "isCorrect": false}, {"text": "喃喃低语", "isCorrect": false}, {"text": "喋喋不休", "isCorrect": false}, {"text": "喃喃说道", "isCorrect": true}]	[{"text": "muttered", "isCorrect": true}, {"text": "whispered", "isCorrect": false}, {"text": "grumbled", "isCorrect": false}, {"text": "stammered", "isCorrect": false}]	\N
+1133	教授	\N	2025-08-22 16:01:31.847	2025-08-22 16:01:36.061	\N	\N	zh-Hans	\N	\N	The professor teaches biology at the university.	[{"text": "学者", "isCorrect": false}, {"text": "教授", "isCorrect": true}, {"text": "老板", "isCorrect": false}, {"text": "讲师", "isCorrect": false}]	[{"text": "educator", "isCorrect": false}, {"text": "scholar", "isCorrect": false}, {"text": "instructor", "isCorrect": false}, {"text": "professor", "isCorrect": true}]	\N
 913	颊	\N	2025-08-03 21:33:12.534	2025-08-03 21:33:17.34	\N	\N	en	\N	\N	The dentist applied a buccal sealant to protect the molars from cavities.	[{"text": "颊", "isCorrect": true}, {"text": "Error opt 1", "isCorrect": false}, {"text": "Error opt 2", "isCorrect": false}, {"text": "Error opt 3", "isCorrect": false}]	[{"text": "buccal", "isCorrect": true}, {"text": "labial", "isCorrect": false}, {"text": "lingual", "isCorrect": false}, {"text": "palatal", "isCorrect": false}]	\N
 917	模型观测仪	\N	2025-08-03 21:33:18.339	2025-08-03 21:33:21.498	\N	\N	en	\N	\N	The surveyor measured the land to create a map.	[{"text": "测试", "isCorrect": false}, {"text": "实验", "isCorrect": false}, {"text": "模型观测仪", "isCorrect": true}, {"text": "观察", "isCorrect": false}]	[{"text": "surveyor", "isCorrect": true}, {"text": "architect", "isCorrect": false}, {"text": "navigator", "isCorrect": false}, {"text": "inspector", "isCorrect": false}]	\N
 927	龈沟内	\N	2025-08-03 21:33:23.148	2025-08-03 21:33:27.727	\N	\N	en	\N	\N	The dentist carefully cleaned the intrasulcular area to remove any debris.	[{"text": "口腔", "isCorrect": false}, {"text": "龈沟内", "isCorrect": true}, {"text": "齿颈", "isCorrect": false}, {"text": "牙龈", "isCorrect": false}]	[{"text": "supragingival", "isCorrect": false}, {"text": "intrasulcular", "isCorrect": true}, {"text": "extracoronal", "isCorrect": false}, {"text": "interproximal", "isCorrect": false}]	\N
@@ -12698,6 +15362,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1042	青霉素	\N	2025-08-03 21:34:49.186	2025-08-03 21:34:52.949	\N	\N	en	\N	\N	I took penicillin to help me get better from my infection.	[{"text": "消炎药", "isCorrect": false}, {"text": "抗生素", "isCorrect": false}, {"text": "感冒药", "isCorrect": false}, {"text": "青霉素", "isCorrect": true}]	[{"text": "penicillin", "isCorrect": true}, {"text": "azithromycin", "isCorrect": false}, {"text": "cephalexin", "isCorrect": false}, {"text": "amoxicillin", "isCorrect": false}]	\N
 1064	费力地	\N	2025-08-07 03:14:34.36	2025-08-07 03:14:38.091	\N	\N	en	\N	\N	She laboriously climbed to the top of the mountain.	[{"text": "拼命地", "isCorrect": false}, {"text": "费力地", "isCorrect": true}, {"text": "吃力地", "isCorrect": false}, {"text": "费劲地", "isCorrect": false}]	[{"text": "arduously", "isCorrect": false}, {"text": "tediously", "isCorrect": false}, {"text": "gracefully", "isCorrect": false}, {"text": "laboriously", "isCorrect": true}]	\N
 1065	奇怪的	\N	2025-08-07 03:15:32.151	2025-08-07 03:15:36.355	\N	\N	en	\N	\N	The peculiar noise coming from the old house made me feel uneasy.	[{"text": "異常的", "isCorrect": false}, {"text": "怪誕的", "isCorrect": false}, {"text": "詭異的", "isCorrect": false}, {"text": "奇怪的", "isCorrect": true}]	[{"text": "peculiar", "isCorrect": true}, {"text": "unique", "isCorrect": false}, {"text": "bizarre", "isCorrect": false}, {"text": "eccentric", "isCorrect": false}]	\N
+1134	手表	\N	2025-08-22 16:02:53.361	2025-08-22 16:02:57.506	\N	\N	zh-Hans	\N	\N	I always wear a watch on my wrist to tell the time.	[{"text": "手绢", "isCorrect": false}, {"text": "手帕", "isCorrect": false}, {"text": "手套", "isCorrect": false}, {"text": "手表", "isCorrect": true}]	[{"text": "observe", "isCorrect": false}, {"text": "stare", "isCorrect": false}, {"text": "gaze", "isCorrect": false}, {"text": "watch", "isCorrect": true}]	\N
 915	队列	\N	2025-08-03 21:33:18.338	2025-08-03 21:33:21.5	\N	\N	en	\N	\N	I waited in the queue at the grocery store.	[{"text": "队列", "isCorrect": true}, {"text": "编队", "isCorrect": false}, {"text": "列表", "isCorrect": false}, {"text": "排列", "isCorrect": false}]	[{"text": "line", "isCorrect": false}, {"text": "array", "isCorrect": false}, {"text": "queue", "isCorrect": true}, {"text": "row", "isCorrect": false}]	\N
 929	退缩	\N	2025-08-03 21:33:23.148	2025-08-03 21:33:27.148	\N	\N	en	\N	\N	She showed her retration by apologizing to her friend for being late.	[{"text": "毅力", "isCorrect": false}, {"text": "畏缩", "isCorrect": false}, {"text": "觅食", "isCorrect": false}, {"text": "退缩", "isCorrect": true}]	[{"text": "reservation", "isCorrect": false}, {"text": "retration", "isCorrect": true}, {"text": "retortion", "isCorrect": false}, {"text": "reticent", "isCorrect": false}]	\N
 1015	模量	\N	2025-08-03 21:34:36.727	2025-08-03 21:34:40.689	\N	\N	en	\N	\N	The modulus of a complex number is its distance from the origin on the complex plane.	[{"text": "弹性", "isCorrect": false}, {"text": "尺寸", "isCorrect": false}, {"text": "模量", "isCorrect": true}, {"text": "密度", "isCorrect": false}]	[{"text": "multiplicand", "isCorrect": false}, {"text": "mantissa", "isCorrect": false}, {"text": "modulus", "isCorrect": true}, {"text": "quotient", "isCorrect": false}]	\N
@@ -12707,6 +15372,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1066	保留龈乳头切口	\N	2025-08-09 06:25:05.019	2025-08-09 06:25:11.704	\N	\N	en	\N	\N	The dentist made an incision for a papilla preservation during the gum surgery.	[{"text": "义齿", "isCorrect": false}, {"text": "拔牙", "isCorrect": false}, {"text": "保留龈乳头切口", "isCorrect": true}, {"text": "牙槽骨", "isCorrect": false}]	[{"text": "incision for a papilla preservation", "isCorrect": true}, {"text": "excavation", "isCorrect": false}, {"text": "ligation", "isCorrect": false}, {"text": "suturing", "isCorrect": false}]	\N
 1101	juin	\N	2025-08-13 13:16:42.54	2025-08-13 13:16:49.224	\N	\N	fr	\N	\N	My birthday is in June.	[{"text": "février", "isCorrect": false}, {"text": "april", "isCorrect": false}, {"text": "mai", "isCorrect": false}, {"text": "juin", "isCorrect": true}]	[{"text": "June", "isCorrect": true}, {"text": "July", "isCorrect": false}, {"text": "August", "isCorrect": false}, {"text": "May", "isCorrect": false}]	\N
 1102	base text1	\N	2025-08-13 13:33:26.643	2025-08-13 13:33:32.557	\N	\N	fr	\N	\N	I used the target text to write my essay.	[{"text": "texte fondamental", "isCorrect": false}, {"text": "base text1", "isCorrect": true}, {"text": "texte principal", "isCorrect": false}, {"text": "texte basique", "isCorrect": false}]	[{"text": "aim", "isCorrect": false}, {"text": "destination", "isCorrect": false}, {"text": "target text1", "isCorrect": true}, {"text": "goal", "isCorrect": false}]	\N
+1135	曲线	\N	2025-08-22 16:26:32.27	2025-08-22 16:26:35.926	\N	\N	zh-Hans	\N	\N	The road winds through the mountains, following the natural curves of the landscape.	[{"text": "罗圈", "isCorrect": false}, {"text": "曲线", "isCorrect": true}, {"text": "蜿蜒", "isCorrect": false}, {"text": "弯曲", "isCorrect": false}]	[{"text": "curves", "isCorrect": true}, {"text": "bends", "isCorrect": false}, {"text": "twists", "isCorrect": false}, {"text": "loops", "isCorrect": false}]	\N
 920	革兰氏阳性菌	\N	2025-08-03 21:33:18.341	2025-08-03 21:33:21.558	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the gram-positive infection.	[{"text": "链球菌", "isCorrect": false}, {"text": "流感病毒", "isCorrect": false}, {"text": "肺炎球菌", "isCorrect": false}, {"text": "革兰氏阳性菌", "isCorrect": true}]	[{"text": "gram-unknown", "isCorrect": false}, {"text": "gram-negative", "isCorrect": false}, {"text": "gram-stain", "isCorrect": false}, {"text": "gram-positive", "isCorrect": true}]	\N
 931	颅骨	\N	2025-08-03 21:33:23.149	2025-08-03 21:33:26.848	\N	\N	en	\N	\N	He fell off his bike and hit his head so hard that he fractured his skull.	[{"text": "颅骨", "isCorrect": true}, {"text": "腰骨", "isCorrect": false}, {"text": "排骨", "isCorrect": false}, {"text": "胸骨", "isCorrect": false}]	[{"text": "skull", "isCorrect": true}, {"text": "skeleton", "isCorrect": false}, {"text": "coffin", "isCorrect": false}, {"text": "peril", "isCorrect": false}]	\N
 1016	热的	\N	2025-08-03 21:34:36.728	2025-08-03 21:34:40.711	\N	\N	en	\N	\N	The thermal blanket kept me warm during the cold night.	[{"text": "冷的", "isCorrect": false}, {"text": "苦的", "isCorrect": false}, {"text": "甜的", "isCorrect": false}, {"text": "热的", "isCorrect": true}]	[{"text": "calorie", "isCorrect": false}, {"text": "thermal", "isCorrect": true}, {"text": "insulation", "isCorrect": false}, {"text": "hot", "isCorrect": false}]	\N
@@ -12715,6 +15381,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1067	伴放线放线杆菌	\N	2025-08-09 06:30:43.415	2025-08-09 06:30:52.009	\N	\N	en	\N	\N	Actinobacillus actinomycetemcomitans is a type of bacteria commonly found in the mouth.	[{"text": "光线菌", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}, {"text": "螺旋菌", "isCorrect": false}, {"text": "伴放线放线杆菌", "isCorrect": true}]	[{"text": "fusobacterium nucleatum", "isCorrect": false}, {"text": "actinobacillus actinomycetemcomitans", "isCorrect": true}, {"text": "bacteroides fragilis", "isCorrect": false}, {"text": "streptococcus pyogenes", "isCorrect": false}]	\N
 1103	francise	\N	2025-08-13 13:36:12.718	2025-08-13 13:36:17.677	\N	\N	fr	\N	\N	I am studying French at school.	[{"text": "francesse", "isCorrect": false}, {"text": "francise", "isCorrect": true}, {"text": "franckise", "isCorrect": false}, {"text": "francine", "isCorrect": false}]	[{"text": "Italian", "isCorrect": false}, {"text": "French", "isCorrect": true}, {"text": "Spanish", "isCorrect": false}, {"text": "German", "isCorrect": false}]	\N
 1105	juillet	\N	2025-08-13 14:02:44.976	2025-08-13 14:02:49.503	\N	\N	fr	\N	\N	My birthday is in July.	[{"text": "juillet", "isCorrect": true}, {"text": "décembre", "isCorrect": false}, {"text": "septembre", "isCorrect": false}, {"text": "janvier", "isCorrect": false}]	[{"text": "jine", "isCorrect": false}, {"text": "september", "isCorrect": false}, {"text": "juny", "isCorrect": false}, {"text": "july", "isCorrect": true}]	\N
+1136	和谐的	\N	2025-08-22 16:39:51.5	2025-08-22 16:39:54.862	\N	\N	zh-Hans	\N	\N	We had a congenial conversation over coffee.	[{"text": "温顺的", "isCorrect": false}, {"text": "混乱的", "isCorrect": false}, {"text": "融洽的", "isCorrect": false}, {"text": "和谐的", "isCorrect": true}]	[{"text": "congenial", "isCorrect": true}, {"text": "amiable", "isCorrect": false}, {"text": "agreeable", "isCorrect": false}, {"text": "deceptive", "isCorrect": false}]	\N
 919	螺旋体	\N	2025-08-03 21:33:18.341	2025-08-03 21:33:22.094	\N	\N	en	\N	\N	Some spirochetes can cause diseases like syphilis and Lyme disease.	[{"text": "螺旋体", "isCorrect": true}, {"text": "菌株", "isCorrect": false}, {"text": "链球菌", "isCorrect": false}, {"text": "细胞", "isCorrect": false}]	[{"text": "listeria", "isCorrect": false}, {"text": "cocci", "isCorrect": false}, {"text": "spirochetes", "isCorrect": true}, {"text": "bacilli", "isCorrect": false}]	\N
 926	简化	\N	2025-08-03 21:33:23.147	2025-08-03 21:33:26.417	\N	\N	en	\N	\N	Let's simplify the instructions so everyone can understand them.	[{"text": "抽象", "isCorrect": false}, {"text": "繁琐", "isCorrect": false}, {"text": "恰当", "isCorrect": false}, {"text": "简化", "isCorrect": true}]	[{"text": "complexify", "isCorrect": false}, {"text": "simplify", "isCorrect": true}, {"text": "complicate", "isCorrect": false}, {"text": "compensate", "isCorrect": false}]	\N
 1019	磨光面	\N	2025-08-03 21:34:36.745	2025-08-03 21:34:41.819	\N	\N	en	\N	\N	She used a cloth to polish the surface of the table.	[{"text": "磨光面", "isCorrect": true}, {"text": "研磨表面", "isCorrect": false}, {"text": "擦亮表面", "isCorrect": false}, {"text": "抛光面", "isCorrect": false}]	[{"text": "Buff", "isCorrect": false}, {"text": "Clean", "isCorrect": false}, {"text": "Polish surface", "isCorrect": true}, {"text": "Burnish", "isCorrect": false}]	\N
@@ -12723,6 +15390,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1068	伴发病变	\N	2025-08-09 06:32:24.885	2025-08-09 06:32:39.858	\N	\N	en	\N	\N	The doctor diagnosed the patient with a combined lesion in the brain.	[{"text": "伴发病变", "isCorrect": true}, {"text": "并发病变", "isCorrect": false}, {"text": "伙伴病变", "isCorrect": false}, {"text": "伴随病变", "isCorrect": false}]	[{"text": "united wound", "isCorrect": false}, {"text": "combined lesion", "isCorrect": true}, {"text": "blended sore", "isCorrect": false}, {"text": "merged injury", "isCorrect": false}]	\N
 1069	半切术	\N	2025-08-09 06:33:06.714	2025-08-09 06:33:11.346	\N	\N	en	\N	\N	The surgeon performed a hemisection on the patient's tooth to remove the infected pulp.	[{"text": "半草术", "isCorrect": false}, {"text": "切花艺术", "isCorrect": false}, {"text": "半低术", "isCorrect": false}, {"text": "半切术", "isCorrect": true}]	[{"text": "bifurcation", "isCorrect": false}, {"text": "subdivision", "isCorrect": false}, {"text": "divarication", "isCorrect": false}, {"text": "hemisection", "isCorrect": true}]	\N
 1104	on	\N	2025-08-13 13:56:15.933	2025-08-13 13:56:19.276	\N	\N	fr	\N	\N	We should go to the store.	[{"text": "à", "isCorrect": false}, {"text": "devant", "isCorrect": false}, {"text": "derrière", "isCorrect": false}, {"text": "on", "isCorrect": true}]	[{"text": "she", "isCorrect": false}, {"text": "us", "isCorrect": false}, {"text": "our", "isCorrect": false}, {"text": "we", "isCorrect": true}]	\N
+1137	传达	\N	2025-08-22 16:50:04.675	2025-08-22 16:50:11.208	\N	\N	zh-Hans	\N	\N	The message was conveyed to the team through a group email.	[{"text": "传达", "isCorrect": true}, {"text": "宣扬", "isCorrect": false}, {"text": "交流", "isCorrect": false}, {"text": "表达", "isCorrect": false}]	[{"text": "transmitted", "isCorrect": false}, {"text": "conveyed", "isCorrect": true}, {"text": "articulated", "isCorrect": false}, {"text": "imparted", "isCorrect": false}]	\N
 921	轮廓	\N	2025-08-03 21:33:18.352	2025-08-03 21:33:22.135	\N	\N	en	\N	\N	I updated my social media profile picture.	[{"text": "剪影", "isCorrect": false}, {"text": "躯干", "isCorrect": false}, {"text": "纤细", "isCorrect": false}, {"text": "轮廓", "isCorrect": true}]	[{"text": "profile", "isCorrect": true}, {"text": "biography", "isCorrect": false}, {"text": "persona", "isCorrect": false}, {"text": "identity", "isCorrect": false}]	\N
 925	外部的	\N	2025-08-03 21:33:23.118	2025-08-03 21:33:26.893	\N	\N	en	\N	\N	He connected the external hard drive to his computer to store extra files.	[{"text": "內在的", "isCorrect": false}, {"text": "外部的", "isCorrect": true}, {"text": "內部的", "isCorrect": false}, {"text": "外圍的", "isCorrect": false}]	[{"text": "internal", "isCorrect": false}, {"text": "outer", "isCorrect": false}, {"text": "exterior", "isCorrect": false}, {"text": "external", "isCorrect": true}]	\N
 1022	局部的	\N	2025-08-03 21:34:36.747	2025-08-03 21:34:41.956	\N	\N	en	\N	\N	The company's marketing efforts are focused on localized strategies to target specific regions.	[{"text": "整体的", "isCorrect": false}, {"text": "具体的", "isCorrect": false}, {"text": "表面的", "isCorrect": false}, {"text": "局部的", "isCorrect": true}]	[{"text": "localized", "isCorrect": true}, {"text": "dispersed", "isCorrect": false}, {"text": "scattered", "isCorrect": false}, {"text": "centralized", "isCorrect": false}]	\N
@@ -12735,6 +15403,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1074	缰绳	\N	2025-08-09 21:31:36.018	2025-08-09 21:31:39.169	\N	\N	en	\N	\N	The cowboy held the reins tightly as he guided the horse through the field.	[{"text": "镍绳", "isCorrect": false}, {"text": "鞭绳", "isCorrect": false}, {"text": "缰绳", "isCorrect": true}, {"text": "绳索", "isCorrect": false}]	[{"text": "saddle", "isCorrect": false}, {"text": "reins", "isCorrect": true}, {"text": "bridle", "isCorrect": false}, {"text": "harness", "isCorrect": false}]	\N
 1075	不习惯	\N	2025-08-09 21:32:11.924	2025-08-09 21:32:15.105	\N	\N	en	\N	\N	She felt awkward and unused to the new office environment.	[{"text": "新颖", "isCorrect": false}, {"text": "不习惯", "isCorrect": true}, {"text": "不熟悉", "isCorrect": false}, {"text": "陌生", "isCorrect": false}]	[{"text": "idle", "isCorrect": false}, {"text": "neglected", "isCorrect": false}, {"text": "unused", "isCorrect": true}, {"text": "fashionable", "isCorrect": false}]	\N
 1106	古怪的	\N	2025-08-13 14:39:23.464	2025-08-17 15:24:08.341	\N	1	zh-Hans	\N	\N	She has a weird sense of humor.	[{"text": "怪异的", "isCorrect": false}, {"text": "古怪的", "isCorrect": true}, {"text": "珍奇的", "isCorrect": false}, {"text": "奇特的", "isCorrect": false}]	[{"text": "Quirky", "isCorrect": false}, {"text": "Bizarre", "isCorrect": false}, {"text": "Weird", "isCorrect": true}, {"text": "Eccentric", "isCorrect": false}]	\N
+1138	犁过	\N	2025-08-22 18:01:21.669	2025-08-22 18:01:27.598	\N	\N	zh-Hans	\N	\N	The farmer ploughed the field to prepare it for planting.	[{"text": "磨坊", "isCorrect": false}, {"text": "拖拉机", "isCorrect": false}, {"text": "犁过", "isCorrect": true}, {"text": "监狱", "isCorrect": false}]	[{"text": "ploughed", "isCorrect": true}, {"text": "tilled", "isCorrect": false}, {"text": "cultivated", "isCorrect": false}, {"text": "sowed", "isCorrect": false}]	\N
 939	凹	\N	2025-08-03 21:33:30.064	2025-08-03 21:33:33.4	\N	\N	en	\N	\N	The inside of the bowl is concave.	[{"text": "凸", "isCorrect": false}, {"text": "弯", "isCorrect": false}, {"text": "凹", "isCorrect": true}, {"text": "扁", "isCorrect": false}]	[{"text": "flat", "isCorrect": false}, {"text": "curved", "isCorrect": false}, {"text": "convex", "isCorrect": false}, {"text": "concave", "isCorrect": true}]	\N
 945	止血	\N	2025-08-03 21:33:36.917	2025-08-03 21:33:41.329	\N	\N	en	\N	\N	The hemostatic bandage helped stop the bleeding quickly.	[{"text": "止血", "isCorrect": true}, {"text": "伤口", "isCorrect": false}, {"text": "救护", "isCorrect": false}, {"text": "创口", "isCorrect": false}]	[{"text": "hemostatic", "isCorrect": true}, {"text": "hypnotic", "isCorrect": false}, {"text": "homeopathic", "isCorrect": false}, {"text": "phlebotomy", "isCorrect": false}]	\N
 956	凝血病	\N	2025-08-03 21:33:45.749	2025-08-03 21:33:49.341	\N	\N	en	\N	\N	The patient's coagulopathy made it difficult for their blood to clot properly.	[{"text": "凝血病", "isCorrect": true}, {"text": "血小板减少症", "isCorrect": false}, {"text": "白血病", "isCorrect": false}, {"text": "白细胞增多症", "isCorrect": false}]	[{"text": "coagulopathy", "isCorrect": true}, {"text": "hepatomegaly", "isCorrect": false}, {"text": "thrombocytopenia", "isCorrect": false}, {"text": "hematochezia", "isCorrect": false}]	\N
@@ -12777,6 +15446,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1113	织物覆盖的	\N	2025-08-14 00:09:56.501	2025-08-14 00:10:00.888	\N	\N	zh-Hans	\N	\N	The sofa was upholstered in a soft, gray fabric.	[{"text": "织物覆盖的", "isCorrect": true}, {"text": "塞车", "isCorrect": false}, {"text": "陶瓷器", "isCorrect": false}, {"text": "花岗岩地板", "isCorrect": false}]	[{"text": "upholstered", "isCorrect": true}, {"text": "pillowed", "isCorrect": false}, {"text": "embrasured", "isCorrect": false}, {"text": "blanketed", "isCorrect": false}]	\N
 1114	精致	\N	2025-08-14 00:10:11.485	2025-08-14 00:10:15.127	\N	\N	zh-Hans	\N	\N	The restaurant served an exquisite dessert that was beautifully presented.	[{"text": "独特", "isCorrect": false}, {"text": "精致", "isCorrect": true}, {"text": "美丽", "isCorrect": false}, {"text": "细致", "isCorrect": false}]	[{"text": "exquisite", "isCorrect": true}, {"text": "lavish", "isCorrect": false}, {"text": "coarse", "isCorrect": false}, {"text": "delicate", "isCorrect": false}]	\N
 1115	室	\N	2025-08-14 00:10:27.043	2025-08-14 00:10:30.853	\N	\N	zh-Hans	\N	\N	The hotel room had two comfortable chambers for guests to relax in.	[{"text": "院", "isCorrect": false}, {"text": "厨房", "isCorrect": false}, {"text": "厅", "isCorrect": false}, {"text": "室", "isCorrect": true}]	[{"text": "passages", "isCorrect": false}, {"text": "vaults", "isCorrect": false}, {"text": "corridors", "isCorrect": false}, {"text": "chambers", "isCorrect": true}]	\N
+1139	退化	\N	2025-08-22 19:45:25.31	2025-08-22 19:45:28.888	\N	\N	zh-Hans	\N	\N	The polluted water denaturalized the once thriving ecosystem.	[{"text": "增强", "isCorrect": false}, {"text": "进步", "isCorrect": false}, {"text": "退化", "isCorrect": true}, {"text": "恶化", "isCorrect": false}]	[{"text": "dissimilated", "isCorrect": false}, {"text": "derealized", "isCorrect": false}, {"text": "unnatural", "isCorrect": false}, {"text": "denaturalized", "isCorrect": true}]	\N
 938	主要地	\N	2025-08-03 21:33:30.062	2025-08-03 21:33:33.622	\N	\N	en	\N	\N	The sky is predominantly blue during the day.	[{"text": "重要", "isCorrect": false}, {"text": "基本", "isCorrect": false}, {"text": "主要地", "isCorrect": true}, {"text": "大约", "isCorrect": false}]	[{"text": "majorly", "isCorrect": false}, {"text": "principally", "isCorrect": false}, {"text": "largely", "isCorrect": false}, {"text": "predominantly", "isCorrect": true}]	\N
 952	牙髓切断术	\N	2025-08-03 21:33:36.931	2025-08-03 21:33:40.381	\N	\N	en	\N	\N	The dentist performed a pulpotomy to remove the infected pulp from the tooth.	[{"text": "牙髓抽取术", "isCorrect": false}, {"text": "牙髓填充术", "isCorrect": false}, {"text": "牙髓治疗术", "isCorrect": false}, {"text": "牙髓切断术", "isCorrect": true}]	[{"text": "root canal", "isCorrect": false}, {"text": "pulpotomy", "isCorrect": true}, {"text": "extraction", "isCorrect": false}, {"text": "cavity", "isCorrect": false}]	\N
 962	尊重 方面	\N	2025-08-03 21:33:45.753	2025-08-03 21:33:49.668	\N	\N	en	\N	\N	She always treats her classmates with respect.	[{"text": "理解", "isCorrect": false}, {"text": "重视", "isCorrect": false}, {"text": "尊重 方面", "isCorrect": true}, {"text": "关注", "isCorrect": false}]	[{"text": "praise", "isCorrect": false}, {"text": "admiration", "isCorrect": false}, {"text": "respect", "isCorrect": true}, {"text": "esteem", "isCorrect": false}]	\N
@@ -12791,6 +15461,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1083	倒下	\N	2025-08-11 09:11:16.294	2025-08-11 09:11:19.935	\N	\N	en	\N	\N	The tired hiker flopped down on the grass to rest.	[{"text": "倒塌", "isCorrect": false}, {"text": "降低", "isCorrect": false}, {"text": "折叠", "isCorrect": false}, {"text": "倒下", "isCorrect": true}]	[{"text": "fizzle", "isCorrect": false}, {"text": "fizz", "isCorrect": false}, {"text": "fluke", "isCorrect": false}, {"text": "flop", "isCorrect": true}]	\N
 1116	agréable	\N	2025-08-14 02:28:12.144	2025-08-14 02:28:15.876	\N	\N	fr	\N	\N	I find her to be a congenial person to work with.	[{"text": "chaleureux", "isCorrect": false}, {"text": "agréable", "isCorrect": true}, {"text": "banal", "isCorrect": false}, {"text": "magnifique", "isCorrect": false}]	[{"text": "amicable", "isCorrect": false}, {"text": "affable", "isCorrect": false}, {"text": "congenial", "isCorrect": true}, {"text": "avuncular", "isCorrect": false}]	\N
 1118	pharmacopée	\N	2025-08-14 02:28:52.804	2025-08-14 02:28:56.507	\N	\N	fr	\N	\N	Pharmacopoeias provide guidelines for preparing medications.	[{"text": "pharmacologie", "isCorrect": false}, {"text": "pharmacie", "isCorrect": false}, {"text": "pharmacopée", "isCorrect": true}, {"text": "pharmacienne", "isCorrect": false}]	[{"text": "pharmacopoeia", "isCorrect": true}, {"text": "pharmacology", "isCorrect": false}, {"text": "pharmacokinetics", "isCorrect": false}, {"text": "pharmacotherapy", "isCorrect": false}]	\N
+1140	阵风	\N	2025-08-22 19:59:34.166	2025-08-22 19:59:37.453	\N	\N	zh-Hans	\N	\N	The wind picked up, bringing strong gusts of air to the beach.	[{"text": "狂风", "isCorrect": false}, {"text": "暴风", "isCorrect": false}, {"text": "阵风", "isCorrect": true}, {"text": "烈风", "isCorrect": false}]	[{"text": "breeze", "isCorrect": false}, {"text": "gusts", "isCorrect": true}, {"text": "whirlwind", "isCorrect": false}, {"text": "drafts", "isCorrect": false}]	\N
 937	革兰氏阴性	\N	2025-08-03 21:33:30.061	2025-08-03 21:33:33.697	\N	\N	en	\N	\N	The doctor prescribed antibiotics to treat the infection caused by the gram-negative bacteria.	[{"text": "红色阴性杆菌", "isCorrect": false}, {"text": "罗德卡特", "isCorrect": false}, {"text": "白色李斯特氏", "isCorrect": false}, {"text": "革兰氏阴性", "isCorrect": true}]	[{"text": "orthodox", "isCorrect": false}, {"text": "non-toxic", "isCorrect": false}, {"text": "gram- negative", "isCorrect": true}, {"text": "unbiased", "isCorrect": false}]	\N
 948	变色	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:40.647	\N	\N	en	\N	\N	The discolored leaves on the plant indicated that it needed more sunlight.	[{"text": "转变形态", "isCorrect": false}, {"text": "变色", "isCorrect": true}, {"text": "改变颜色", "isCorrect": false}, {"text": "变换外观", "isCorrect": false}]	[{"text": "blotchy", "isCorrect": false}, {"text": "blemished", "isCorrect": false}, {"text": "dingy", "isCorrect": false}, {"text": "discolored", "isCorrect": true}]	\N
 960	按时间顺序排列	\N	2025-08-03 21:33:45.75	2025-08-03 21:33:49.53	\N	\N	en	\N	\N	The chronogic order of events in the story helped me understand the plot better.	[{"text": "按大小顺序排列", "isCorrect": false}, {"text": "按时间顺序排列", "isCorrect": true}, {"text": "按颜色顺序排列", "isCorrect": false}, {"text": "按字母顺序排列", "isCorrect": false}]	[{"text": "chronological", "isCorrect": false}, {"text": "chronogic", "isCorrect": true}, {"text": "chronoscale", "isCorrect": false}, {"text": "chronology", "isCorrect": false}]	\N
@@ -12801,6 +15472,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1010	磨牙后垫	\N	2025-08-03 21:34:18.338	2025-08-03 21:34:23.023	\N	\N	en	\N	\N	The retromalar pad is located beneath the eye in some animals.	[{"text": "牙刷", "isCorrect": false}, {"text": "洗面奶", "isCorrect": false}, {"text": "磨牙后垫", "isCorrect": true}, {"text": "漱口水", "isCorrect": false}]	[{"text": "zygomatic bone", "isCorrect": false}, {"text": "inverse plane", "isCorrect": false}, {"text": "zygomalar arch", "isCorrect": false}, {"text": "retromalar pad", "isCorrect": true}]	\N
 1052	猎人	\N	2025-08-04 03:36:30.997	2025-08-04 11:06:55.13	\N	1	en	\N	\N	The hunter tracked the deer through the forest.	[{"text": "hunter", "isCorrect": true}, {"text": "掠夺者", "isCorrect": false}, {"text": "射手", "isCorrect": false}, {"text": "狩猎者", "isCorrect": false}]	[{"text": "猎人", "isCorrect": true}, {"text": "渔夫", "isCorrect": false}, {"text": "农民", "isCorrect": false}, {"text": "牧师", "isCorrect": false}]	\N
 1119	ajouter	\N	2025-08-14 02:54:21.843	2025-08-14 02:54:25.218	\N	\N	fr	\N	\N	I will add some sugar to my coffee.	[{"text": "incrémenter", "isCorrect": false}, {"text": "ajouter", "isCorrect": true}, {"text": "compléter", "isCorrect": false}, {"text": "rencontrer", "isCorrect": false}]	[{"text": "add", "isCorrect": true}, {"text": "subtract", "isCorrect": false}, {"text": "multiply", "isCorrect": false}, {"text": "divide", "isCorrect": false}]	\N
+1141	肺炎	\N	2025-08-22 20:04:49.508	2025-08-22 20:04:52.706	\N	\N	zh-Hans	\N	\N	She was hospitalized with pneumonia last winter.	[{"text": "肺结核", "isCorrect": false}, {"text": "脑炎", "isCorrect": false}, {"text": "肝炎", "isCorrect": false}, {"text": "肺炎", "isCorrect": true}]	[{"text": "Pneumonia", "isCorrect": true}, {"text": "Fever", "isCorrect": false}, {"text": "Bronchitis", "isCorrect": false}, {"text": "Astigmatism", "isCorrect": false}]	\N
 943	平坦的	\N	2025-08-03 21:33:30.076	2025-08-03 21:33:33.701	\N	\N	en	\N	\N	I live in a small flat in the city.	[{"text": "光滑的", "isCorrect": false}, {"text": "崎岖的", "isCorrect": false}, {"text": "坎坷的", "isCorrect": false}, {"text": "平坦的", "isCorrect": true}]	[{"text": "flat", "isCorrect": true}, {"text": "smooth", "isCorrect": false}, {"text": "dull", "isCorrect": false}, {"text": "plain", "isCorrect": false}]	\N
 949	无症状	\N	2025-08-03 21:33:36.92	2025-08-03 21:33:40.869	\N	\N	en	\N	\N	She tested positive for COVID-19 but remained asymptomatic.	[{"text": "无症状", "isCorrect": true}, {"text": "发烧", "isCorrect": false}, {"text": "忧虑", "isCorrect": false}, {"text": "悲哀", "isCorrect": false}]	[{"text": "reverberant", "isCorrect": false}, {"text": "precarious", "isCorrect": false}, {"text": "insignificant", "isCorrect": false}, {"text": "asymptomatic", "isCorrect": true}]	\N
 963	修改	\N	2025-08-03 21:33:45.762	2025-08-03 21:33:49.042	\N	\N	en	\N	\N	She made a modification to the design of the dress by adding pockets.	[{"text": "修改", "isCorrect": true}, {"text": "转化", "isCorrect": false}, {"text": "更改", "isCorrect": false}, {"text": "编辑", "isCorrect": false}]	[{"text": "reconstruction", "isCorrect": false}, {"text": "amendment", "isCorrect": false}, {"text": "adaptation", "isCorrect": false}, {"text": "modification", "isCorrect": true}]	\N
@@ -12812,6 +15484,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1053	层	\N	2025-08-04 04:05:24.161	2025-08-04 04:05:29.041	\N	\N	en	\N	\N	The cake had three tiers decorated with fresh flowers.	[{"text": "阶", "isCorrect": false}, {"text": "户", "isCorrect": false}, {"text": "层", "isCorrect": true}, {"text": "楼", "isCorrect": false}]	[{"text": "grade", "isCorrect": false}, {"text": "section", "isCorrect": false}, {"text": "tier", "isCorrect": true}, {"text": "level", "isCorrect": false}]	\N
 1085	唤起	\N	2025-08-11 16:18:29.465	2025-08-11 16:18:36.324	\N	\N	en	\N	\N	She invoked the spirits to help guide her through the forest.	[{"text": "唤起", "isCorrect": true}, {"text": "激发", "isCorrect": false}, {"text": "激发", "isCorrect": false}, {"text": "唤醒", "isCorrect": false}]	[{"text": "summon", "isCorrect": false}, {"text": "evoke", "isCorrect": false}, {"text": "invoke", "isCorrect": true}, {"text": "recite", "isCorrect": false}]	\N
 1120	apprendre	\N	2025-08-14 03:05:20.356	2025-08-14 03:05:23.514	\N	\N	fr	\N	\N	I learn French at school.	[{"text": "apprendre", "isCorrect": true}, {"text": "comprendre", "isCorrect": false}, {"text": "pratiquer", "isCorrect": false}, {"text": "enseigner", "isCorrect": false}]	[{"text": "grasp", "isCorrect": false}, {"text": "learn", "isCorrect": true}, {"text": "study", "isCorrect": false}, {"text": "acquire", "isCorrect": false}]	\N
+1142	潜行	\N	2025-08-22 20:07:37.977	2025-08-22 20:07:43.628	\N	\N	zh-Hans	\N	\N	The cat stealthily stalked the mouse.	[{"text": "悄悄", "isCorrect": false}, {"text": "偷袭", "isCorrect": false}, {"text": "隐藏", "isCorrect": false}, {"text": "潜行", "isCorrect": true}]	[{"text": "traced", "isCorrect": false}, {"text": "pursued", "isCorrect": false}, {"text": "stalked", "isCorrect": true}, {"text": "spied", "isCorrect": false}]	\N
 942	碎片	\N	2025-08-03 21:33:30.077	2025-08-03 21:33:33.755	\N	\N	en	\N	\N	After the tornado passed, there was debris scattered everywhere.	[{"text": "碎片", "isCorrect": true}, {"text": "残缺", "isCorrect": false}, {"text": "零星", "isCorrect": false}, {"text": "混凝土", "isCorrect": false}]	[{"text": "trash", "isCorrect": false}, {"text": "garbage", "isCorrect": false}, {"text": "rubble", "isCorrect": false}, {"text": "debris", "isCorrect": true}]	\N
 947	突眼	\N	2025-08-03 21:33:36.919	2025-08-03 21:33:41.02	\N	\N	en	\N	\N	The doctor noticed the patient's exophthalmous eyes during the examination.	[{"text": "对眠", "isCorrect": false}, {"text": "突眼", "isCorrect": true}, {"text": "溜刃", "isCorrect": false}, {"text": "食消", "isCorrect": false}]	[{"text": "mythopoeic", "isCorrect": false}, {"text": "prognathous", "isCorrect": false}, {"text": "exophthalmous", "isCorrect": true}, {"text": "chrysanthemum", "isCorrect": false}]	\N
 959	硬骨板	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.687	\N	\N	en	\N	\N	The laminia dura is a tough outer layer protecting the brain and spinal cord.	[{"text": "硬質板", "isCorrect": false}, {"text": "硬木板", "isCorrect": false}, {"text": "硬骨板", "isCorrect": true}, {"text": "堅固板", "isCorrect": false}]	[{"text": "dura mater", "isCorrect": false}, {"text": "pial sheath", "isCorrect": false}, {"text": "plesiomorphic", "isCorrect": false}, {"text": "laminia dura", "isCorrect": true}]	\N
@@ -12825,6 +15498,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1087	涌入	\N	2025-08-11 19:51:31.52	2025-08-11 19:51:36.164	\N	\N	en	\N	\N	There has been a recent influx of tourists to the city.	[{"text": "涌出", "isCorrect": false}, {"text": "涌动", "isCorrect": false}, {"text": "涌入", "isCorrect": true}, {"text": "涌缩", "isCorrect": false}]	[{"text": "stream", "isCorrect": false}, {"text": "torrent", "isCorrect": false}, {"text": "influx", "isCorrect": true}, {"text": "deluge", "isCorrect": false}]	\N
 1088	顾客	\N	2025-08-11 19:51:47.696	2025-08-11 19:51:52.446	\N	\N	en	\N	\N	The cafe is always full of patrons enjoying their coffee and pastries.	[{"text": "顾主", "isCorrect": false}, {"text": "顾问", "isCorrect": false}, {"text": "顾客", "isCorrect": true}, {"text": "客户", "isCorrect": false}]	[{"text": "customers", "isCorrect": false}, {"text": "patrons", "isCorrect": true}, {"text": "users", "isCorrect": false}, {"text": "supporters", "isCorrect": false}]	\N
 1121	nouveau	\N	2025-08-14 11:01:06.505	2025-08-14 11:01:11.226	\N	\N	fr	\N	\N	I bought a new dress for the party.	[{"text": "neuf", "isCorrect": false}, {"text": "récent", "isCorrect": false}, {"text": "nouveau", "isCorrect": true}, {"text": "fraîchement", "isCorrect": false}]	[{"text": "innovative", "isCorrect": false}, {"text": "novel", "isCorrect": false}, {"text": "modern", "isCorrect": false}, {"text": "new", "isCorrect": true}]	\N
+1143	破坏者	\N	2025-08-23 00:24:22.205	2025-08-23 00:24:25.468	\N	\N	zh-Hans	\N	\N	The ravager destroyed the village in a single night.	[{"text": "破坏", "isCorrect": false}, {"text": "破坏者", "isCorrect": true}, {"text": "损坏者", "isCorrect": false}, {"text": "毁坏者", "isCorrect": false}]	[{"text": "ravager", "isCorrect": true}, {"text": "devastator", "isCorrect": false}, {"text": "destroyer", "isCorrect": false}, {"text": "vandal", "isCorrect": false}]	\N
 936	倒凹区域	\N	2025-08-03 21:33:30.063	2025-08-03 21:33:33.953	\N	\N	en	\N	\N	The undercut area of the rock provided a cool and shady spot to relax.	[{"text": "方圆区域", "isCorrect": false}, {"text": "倾斜区域", "isCorrect": false}, {"text": "平坦区域", "isCorrect": false}, {"text": "倒凹区域", "isCorrect": true}]	[{"text": "undersell terrain", "isCorrect": false}, {"text": "subpar location", "isCorrect": false}, {"text": "below deck", "isCorrect": false}, {"text": "undercut area", "isCorrect": true}]	\N
 946	不耐受	\N	2025-08-03 21:33:36.918	2025-08-03 21:33:40.987	\N	\N	en	\N	\N	She has a severe intolerance to dairy products.	[{"text": "不可否认", "isCorrect": false}, {"text": "不屈服", "isCorrect": false}, {"text": "不耐受", "isCorrect": true}, {"text": "不容忍", "isCorrect": false}]	[{"text": "discrimination", "isCorrect": false}, {"text": "bigotry", "isCorrect": false}, {"text": "intolerance", "isCorrect": true}, {"text": "bias", "isCorrect": false}]	\N
 955	甲状旁腺	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:49.372	\N	\N	en	\N	\N	The doctor explained that the patient would need surgery to remove a parathyroid gland.	[{"text": "颅咽管", "isCorrect": false}, {"text": "甲状旁腺", "isCorrect": true}, {"text": "下丘脑", "isCorrect": false}, {"text": "腹膜后腔", "isCorrect": false}]	[{"text": "thymus", "isCorrect": false}, {"text": "pancreas", "isCorrect": false}, {"text": "hypothalamus", "isCorrect": false}, {"text": "parathyroid", "isCorrect": true}]	\N
@@ -12836,6 +15510,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1055	压缩	\N	2025-08-04 11:04:23.84	2025-08-04 11:04:31.928	\N	\N	en	\N	\N	I need to compress this file before sending it via email.	[{"text": "缩减", "isCorrect": false}, {"text": "压缩", "isCorrect": true}, {"text": "收缩", "isCorrect": false}, {"text": "紧缩", "isCorrect": false}]	[{"text": "condense", "isCorrect": false}, {"text": "compress", "isCorrect": true}, {"text": "deflate", "isCorrect": false}, {"text": "expand", "isCorrect": false}]	\N
 1089	pomme	\N	2025-08-12 12:22:34.908	2025-08-12 12:22:40.394	\N	\N	fr	\N	\N	I like to eat an apple every day.	[{"text": "pomme", "isCorrect": true}, {"text": "orange", "isCorrect": false}, {"text": "poire", "isCorrect": false}, {"text": "banane", "isCorrect": false}]	[{"text": "apple", "isCorrect": true}, {"text": "banana", "isCorrect": false}, {"text": "orange", "isCorrect": false}, {"text": "pear", "isCorrect": false}]	\N
 1122	août	\N	2025-08-14 11:01:50.107	2025-08-14 11:01:55.03	\N	\N	fr	\N	\N	My birthday is in August.	[{"text": "marcher", "isCorrect": false}, {"text": "novembre", "isCorrect": false}, {"text": "août", "isCorrect": true}, {"text": "janvier", "isCorrect": false}]	[{"text": "majestic", "isCorrect": false}, {"text": "noble", "isCorrect": false}, {"text": "grand", "isCorrect": false}, {"text": "august", "isCorrect": true}]	\N
+1144	药典	\N	2025-08-23 00:47:32.513	2025-08-23 00:47:36.23	\N	\N	zh-Hans	\N	\N	The pharmacist consulted the pharmacopoeia to find the correct dosage for the medication.	[{"text": "药册", "isCorrect": false}, {"text": "医书", "isCorrect": false}, {"text": "药方", "isCorrect": false}, {"text": "药典", "isCorrect": true}]	[{"text": "encyclopedia", "isCorrect": false}, {"text": "apothecary", "isCorrect": false}, {"text": "pharmaceutical", "isCorrect": false}, {"text": "pharmacopoeia", "isCorrect": true}]	\N
 941	溶液	\N	2025-08-03 21:33:30.075	2025-08-03 21:33:35.937	\N	\N	en	\N	\N	She found a solution to her math problem by asking her teacher for help.	[{"text": "浓缩液", "isCorrect": false}, {"text": "悬浮液", "isCorrect": false}, {"text": "凝固液", "isCorrect": false}, {"text": "溶液", "isCorrect": true}]	[{"text": "response", "isCorrect": false}, {"text": "conclusion", "isCorrect": false}, {"text": "solution", "isCorrect": true}, {"text": "answer", "isCorrect": false}]	\N
 954	固定的	\N	2025-08-03 21:33:36.951	2025-08-03 21:33:40.707	\N	\N	en	\N	\N	The mechanic fixed my car yesterday.	[{"text": "变化的", "isCorrect": false}, {"text": "固定的", "isCorrect": true}, {"text": "常规的", "isCorrect": false}, {"text": "特殊的", "isCorrect": false}]	[{"text": "stuck", "isCorrect": false}, {"text": "set", "isCorrect": false}, {"text": "fixed", "isCorrect": true}, {"text": "steady", "isCorrect": false}]	\N
 961	可靠的	\N	2025-08-03 21:33:45.752	2025-08-03 21:33:49.458	\N	\N	en	\N	\N	My new car is reliable and never breaks down.	[{"text": "可信任的", "isCorrect": false}, {"text": "可靠的", "isCorrect": true}, {"text": "不靠谱的", "isCorrect": false}, {"text": "靠不住的", "isCorrect": false}]	[{"text": "variable", "isCorrect": false}, {"text": "faithful", "isCorrect": false}, {"text": "unreliable", "isCorrect": false}, {"text": "reliable", "isCorrect": true}]	\N
@@ -12848,6 +15523,9 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1090	pomme de terre	\N	2025-08-12 23:04:03.688	2025-08-12 23:04:08.93	\N	\N	fr	\N	\N	I am going to make mashed potatoes for dinner tonight.	[{"text": "courgette", "isCorrect": false}, {"text": "oignon", "isCorrect": false}, {"text": "pomme de terre", "isCorrect": true}, {"text": "navet", "isCorrect": false}]	[{"text": "pattato", "isCorrect": false}, {"text": "poteto", "isCorrect": false}, {"text": "patootie", "isCorrect": false}, {"text": "patato", "isCorrect": true}]	\N
 1092	commencer	\N	2025-08-13 02:33:59.919	2025-08-13 02:34:05.403	\N	\N	fr	\N	\N	I will begin my homework as soon as I get home from school.	[{"text": "commencer", "isCorrect": true}, {"text": "développer", "isCorrect": false}, {"text": "entreprendre", "isCorrect": false}, {"text": "terminer", "isCorrect": false}]	[{"text": "initiate", "isCorrect": false}, {"text": "commence", "isCorrect": false}, {"text": "terminate", "isCorrect": false}, {"text": "begin", "isCorrect": true}]	\N
 1123	chat	\N	2025-08-14 13:15:28.731	2025-08-14 13:15:32.927	\N	\N	fr	\N	\N	I saw my friend at the park and we had a nice chat about our cats.	[{"text": "oiseau", "isCorrect": false}, {"text": "souris", "isCorrect": false}, {"text": "chien", "isCorrect": false}, {"text": "chat", "isCorrect": true}]	[{"text": "bird", "isCorrect": false}, {"text": "rat", "isCorrect": false}, {"text": "cat", "isCorrect": true}, {"text": "dog", "isCorrect": false}]	\N
+1145	大步走过	\N	2025-08-23 18:46:46.911	2025-08-23 18:46:55.297	\N	\N	zh-Hans	\N	\N	He strode confidently across the room.	[{"text": "疾步奔跑", "isCorrect": false}, {"text": "快速行走", "isCorrect": false}, {"text": "大步走过", "isCorrect": true}, {"text": "小步跑过", "isCorrect": false}]	[{"text": "shuffled", "isCorrect": false}, {"text": "strode", "isCorrect": true}, {"text": "strutted", "isCorrect": false}, {"text": "marched", "isCorrect": false}]	\N
+1146	踏过	\N	2025-08-23 18:47:03.744	2025-08-23 18:47:09.302	\N	\N	zh-Hans	\N	\N	She trod carefully across the icy path.	[{"text": "踏过", "isCorrect": true}, {"text": "踏伐", "isCorrect": false}, {"text": "踏越", "isCorrect": false}, {"text": "踩踏", "isCorrect": false}]	[{"text": "marched", "isCorrect": false}, {"text": "stumbled", "isCorrect": false}, {"text": "strutted", "isCorrect": false}, {"text": "trod", "isCorrect": true}]	\N
+1147	几乎没有	\N	2025-08-23 18:47:23.434	2025-08-23 18:47:26.118	\N	\N	zh-Hans	\N	\N	I had scarcely any time to finish my homework before the deadline.	[{"text": "绝无可能", "isCorrect": false}, {"text": "微不足道", "isCorrect": false}, {"text": "少之又少", "isCorrect": false}, {"text": "几乎没有", "isCorrect": true}]	[{"text": "barely", "isCorrect": false}, {"text": "meagerly", "isCorrect": false}, {"text": "scarcely", "isCorrect": true}, {"text": "sufficiently", "isCorrect": false}]	\N
 951	脓肿	\N	2025-08-03 21:33:36.932	2025-08-03 21:33:40.9	\N	\N	en	\N	\N	The infection caused painful abscesses on his skin.	[{"text": "疼痛", "isCorrect": false}, {"text": "脓肿", "isCorrect": true}, {"text": "感染", "isCorrect": false}, {"text": "溃疡", "isCorrect": false}]	[{"text": "ulcer", "isCorrect": false}, {"text": "gangrene", "isCorrect": false}, {"text": "abcesses", "isCorrect": true}, {"text": "canker", "isCorrect": false}]	\N
 957	腺瘤	\N	2025-08-03 21:33:45.751	2025-08-03 21:33:51.117	\N	\N	en	\N	\N	The doctor discovered an adenoma during the routine check-up.	[{"text": "痔疮", "isCorrect": false}, {"text": "神经炎", "isCorrect": false}, {"text": "腺瘤", "isCorrect": true}, {"text": "假体", "isCorrect": false}]	[{"text": "carcinoma", "isCorrect": false}, {"text": "sarcoma", "isCorrect": false}, {"text": "neoplasm", "isCorrect": false}, {"text": "adenoma", "isCorrect": true}]	\N
 970	下颌骨	\N	2025-08-03 21:33:52.127	2025-08-03 21:33:55.369	\N	\N	en	\N	\N	The dentist examined my mandibular joint to check for any issues.	[{"text": "颌骨", "isCorrect": false}, {"text": "下颚骨", "isCorrect": false}, {"text": "下巴骨", "isCorrect": false}, {"text": "下颌骨", "isCorrect": true}]	[{"text": "menisco", "isCorrect": false}, {"text": "mandibilar", "isCorrect": true}, {"text": "maxilar", "isCorrect": false}, {"text": "dental", "isCorrect": false}]	\N
@@ -12857,6 +15535,7 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 1012	下颌隆突	\N	2025-08-03 21:34:18.342	2025-08-03 21:34:22.119	\N	\N	en	\N	\N	I found a beautiful torus madinulars while exploring the coral reef.	[{"text": "上颌突起", "isCorrect": false}, {"text": "下巴", "isCorrect": false}, {"text": "下颌隆突", "isCorrect": true}, {"text": "颌骨", "isCorrect": false}]	[{"text": "torus madinulars", "isCorrect": true}, {"text": "mandible toruses", "isCorrect": false}, {"text": "lingual radoniums", "isCorrect": false}, {"text": "perineum bafflings", "isCorrect": false}]	\N
 1091	oie	\N	2025-08-13 01:15:27.004	2025-08-13 01:15:30.324	\N	\N	fr	\N	\N	I saw a goose by the lake.	[{"text": "oie", "isCorrect": true}, {"text": "vache", "isCorrect": false}, {"text": "canard", "isCorrect": false}, {"text": "cheval", "isCorrect": false}]	[{"text": "goose", "isCorrect": true}, {"text": "gull", "isCorrect": false}, {"text": "swan", "isCorrect": false}, {"text": "duck", "isCorrect": false}]	\N
 1124	aide	\N	2025-08-14 15:27:48.172	2025-08-14 15:28:10.655	\N	\N	fr	\N	\N	She asked her friend to help her carry the heavy boxes.	[{"text": "aide", "isCorrect": true}, {"text": "secours", "isCorrect": false}, {"text": "support", "isCorrect": false}, {"text": "aider", "isCorrect": false}]	[{"text": "aid", "isCorrect": false}, {"text": "assist", "isCorrect": false}, {"text": "help", "isCorrect": true}, {"text": "support", "isCorrect": false}]	\N
+1148	枕头	\N	2025-08-24 00:18:42.069	2025-08-24 00:18:45.128	\N	\N	zh-Hans	\N	\N	I like to hug my pillow when I sleep.	[{"text": "桌子", "isCorrect": false}, {"text": "枕头", "isCorrect": true}, {"text": "床单", "isCorrect": false}, {"text": "被褥", "isCorrect": false}]	[{"text": "mattress", "isCorrect": false}, {"text": "blanket", "isCorrect": false}, {"text": "lamp", "isCorrect": false}, {"text": "pillow", "isCorrect": true}]	\N
 \.
 
 
@@ -12867,6 +15546,11 @@ COPY public.word_definitions (id, base_text, instruction, created_at, updated_at
 COPY public.word_definitions_components (id, entity_id, component_id, component_type, field, "order") FROM stdin;
 1	1085	2	a.verb-meta	verb_meta	\N
 2	1124	3	a.verb-meta	verb_meta	\N
+3	1137	4	a.verb-meta	verb_meta	\N
+4	1138	5	a.verb-meta	verb_meta	\N
+5	1142	6	a.verb-meta	verb_meta	\N
+6	1145	7	a.verb-meta	verb_meta	\N
+7	1146	8	a.verb-meta	verb_meta	\N
 \.
 
 
@@ -13230,6 +15914,22 @@ COPY public.word_definitions_part_of_speech_links (id, word_definition_id, part_
 1114	1094	1	69
 1115	1106	3	24
 1116	1132	1	70
+1117	1133	1	71
+1118	1134	1	72
+1119	1135	1	73
+1120	1136	3	25
+1121	1137	2	12
+1122	1138	2	13
+1123	1139	3	26
+1124	1140	1	74
+1125	1141	1	75
+1126	1142	2	14
+1127	1143	1	76
+1128	1144	1	77
+1129	1145	2	15
+1130	1146	2	16
+1131	1147	4	5
+1132	1148	1	78
 \.
 
 
@@ -13600,6 +16300,22 @@ COPY public.word_definitions_word_links (id, word_definition_id, word_id, word_d
 1130	1130	1700	2
 1131	1131	1867	1
 1132	1132	1868	1
+1133	1133	1869	1
+1134	1134	1870	1
+1135	1135	1871	1
+1136	1136	1859	2
+1137	1137	1872	1
+1138	1138	1873	1
+1139	1139	1874	1
+1140	1140	1875	1
+1141	1141	1876	1
+1142	1142	1877	1
+1143	1143	1878	1
+1144	1144	1861	2
+1145	1145	1880	1
+1146	1146	1881	1
+1147	1147	1882	1
+1148	1148	1883	1
 \.
 
 
@@ -13914,6 +16630,21 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 1866	help	2025-08-14 15:27:47.786	2025-08-14 15:27:47.786	\N	\N
 1867	intercuspidation	2025-08-17 18:44:27.192	2025-08-17 18:44:27.192	\N	\N
 1868	pattern	2025-08-18 22:57:59.038	2025-08-18 22:57:59.038	\N	\N
+1869	professor	2025-08-22 16:01:31.459	2025-08-22 16:01:31.459	\N	\N
+1870	watch	2025-08-22 16:02:52.987	2025-08-22 16:02:52.987	\N	\N
+1871	curves	2025-08-22 16:26:31.918	2025-08-22 16:26:31.918	\N	\N
+1872	conveyed	2025-08-22 16:50:04.298	2025-08-22 16:50:04.298	\N	\N
+1873	ploughed	2025-08-22 18:01:21.291	2025-08-22 18:01:21.291	\N	\N
+1874	denaturalized	2025-08-22 19:45:24.941	2025-08-22 19:45:24.941	\N	\N
+1875	gusts	2025-08-22 19:59:33.781	2025-08-22 19:59:33.781	\N	\N
+1876	Pneumonia	2025-08-22 20:04:49.125	2025-08-22 20:04:49.125	\N	\N
+1877	stalked	2025-08-22 20:07:37.602	2025-08-22 20:07:37.602	\N	\N
+1878	ravager	2025-08-23 00:24:21.836	2025-08-23 00:24:21.836	\N	\N
+1879	He opened the bottle cap	2025-08-23 09:33:14.651	2025-08-23 09:33:14.651	\N	\N
+1880	strode	2025-08-23 18:46:46.526	2025-08-23 18:46:46.526	\N	\N
+1881	trod	2025-08-23 18:47:03.406	2025-08-23 18:47:03.406	\N	\N
+1882	scarcely	2025-08-23 18:47:23.071	2025-08-23 18:47:23.071	\N	\N
+1883	pillow	2025-08-24 00:18:41.676	2025-08-24 00:18:41.676	\N	\N
 \.
 
 
@@ -13921,14 +16652,14 @@ COPY public.words (id, target_text, created_at, updated_at, created_by_id, updat
 -- Name: admin_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.admin_permissions_id_seq', 564, true);
+SELECT pg_catalog.setval('public.admin_permissions_id_seq', 603, true);
 
 
 --
 -- Name: admin_permissions_role_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.admin_permissions_role_links_id_seq', 901, true);
+SELECT pg_catalog.setval('public.admin_permissions_role_links_id_seq', 940, true);
 
 
 --
@@ -14061,7 +16792,7 @@ SELECT pg_catalog.setval('public.components_a_user_word_refs_user_word_links_id_
 -- Name: components_a_verb_metas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.components_a_verb_metas_id_seq', 3, true);
+SELECT pg_catalog.setval('public.components_a_verb_metas_id_seq', 8, true);
 
 
 --
@@ -14082,7 +16813,7 @@ SELECT pg_catalog.setval('public.components_a_word_refs_id_seq', 4, true);
 -- Name: conversations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.conversations_id_seq', 82, true);
+SELECT pg_catalog.setval('public.conversations_id_seq', 88, true);
 
 
 --
@@ -14124,7 +16855,7 @@ SELECT pg_catalog.setval('public.files_related_morphs_id_seq', 18, true);
 -- Name: flashcards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_id_seq', 742, true);
+SELECT pg_catalog.setval('public.flashcards_id_seq', 758, true);
 
 
 --
@@ -14138,21 +16869,21 @@ SELECT pg_catalog.setval('public.flashcards_localizations_links_id_seq', 1, fals
 -- Name: flashcards_review_tire_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 1101, true);
+SELECT pg_catalog.setval('public.flashcards_review_tire_links_id_seq', 1876, true);
 
 
 --
 -- Name: flashcards_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 743, true);
+SELECT pg_catalog.setval('public.flashcards_user_links_id_seq', 759, true);
 
 
 --
 -- Name: flashcards_word_definition_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 1009, true);
+SELECT pg_catalog.setval('public.flashcards_word_definition_links_id_seq', 1025, true);
 
 
 --
@@ -14264,21 +16995,21 @@ SELECT pg_catalog.setval('public.review_tires_localizations_links_id_seq', 1, fa
 -- Name: reviewlogs_flashcard_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 1064, true);
+SELECT pg_catalog.setval('public.reviewlogs_flashcard_links_id_seq', 1926, true);
 
 
 --
 -- Name: reviewlogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_id_seq', 1091, true);
+SELECT pg_catalog.setval('public.reviewlogs_id_seq', 1953, true);
 
 
 --
 -- Name: reviewlogs_user_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 1091, true);
+SELECT pg_catalog.setval('public.reviewlogs_user_links_id_seq', 1953, true);
 
 
 --
@@ -14418,14 +17149,14 @@ SELECT pg_catalog.setval('public.strapi_api_tokens_id_seq', 1, false);
 -- Name: strapi_core_store_settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.strapi_core_store_settings_id_seq', 72, true);
+SELECT pg_catalog.setval('public.strapi_core_store_settings_id_seq', 74, true);
 
 
 --
 -- Name: strapi_database_schema_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.strapi_database_schema_id_seq', 121, true);
+SELECT pg_catalog.setval('public.strapi_database_schema_id_seq', 126, true);
 
 
 --
@@ -14663,14 +17394,14 @@ SELECT pg_catalog.setval('public.word_def_audios_word_definition_links_id_seq', 
 -- Name: word_definitions_components_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_components_id_seq', 2, true);
+SELECT pg_catalog.setval('public.word_definitions_components_id_seq', 7, true);
 
 
 --
 -- Name: word_definitions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_id_seq', 1132, true);
+SELECT pg_catalog.setval('public.word_definitions_id_seq', 1148, true);
 
 
 --
@@ -14684,7 +17415,7 @@ SELECT pg_catalog.setval('public.word_definitions_localizations_links_id_seq', 1
 -- Name: word_definitions_part_of_speech_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1116, true);
+SELECT pg_catalog.setval('public.word_definitions_part_of_speech_links_id_seq', 1132, true);
 
 
 --
@@ -14698,14 +17429,14 @@ SELECT pg_catalog.setval('public.word_definitions_section_links_id_seq', 1, fals
 -- Name: word_definitions_word_links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1132, true);
+SELECT pg_catalog.setval('public.word_definitions_word_links_id_seq', 1148, true);
 
 
 --
 -- Name: words_id_seq; Type: SEQUENCE SET; Schema: public; Owner: strapi
 --
 
-SELECT pg_catalog.setval('public.words_id_seq', 1868, true);
+SELECT pg_catalog.setval('public.words_id_seq', 1883, true);
 
 
 --
