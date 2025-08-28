@@ -62,8 +62,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
 
   /**
    * [Corrected Function]
-   * Searches for word definitions by the word's target_text, filtered by the user's locale.
-   * This version places the 'locale' parameter correctly for proper filtering.
+   * Searches for word definitions by the word's target_text, filtered by the user's baseLanguage (i18n locale).
    */
   async searchByTarget(ctx) {
     const { term } = ctx.query;
@@ -76,31 +75,44 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.badRequest('A "term" query parameter is required.');
     }
 
-    const userLocale = user.baseLanguage || 'en';
-    strapi.log.info(`Searching definitions by target text for term "${term}" in locale "${userLocale}"`);
+    // Load user profile to get locale (baseLanguage)
+    const userWithProfile = await strapi.entityService.findOne(
+      'plugin::users-permissions.user',
+      user.id,
+      { populate: { user_profile: true } }
+    );
+    const userLocale = userWithProfile?.user_profile?.baseLanguage;
+
+    if (!userLocale) {
+      return ctx.badRequest("User's base language is not set.");
+    }
+
+    strapi.log.info(
+      `searchByTarget: term="${term}", locale="${userLocale}", userId=${user.id}`
+    );
 
     try {
-      // The 'locale' parameter is now correctly placed at the top level.
-      const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
-        locale: userLocale, // Correct placement
-        filters: {
-          word: {
-            target_text: {
-              $containsi: term,
+      // IMPORTANT: put locale at the top level so Strapi i18n filters the entry itself
+      const definitions = await strapi.entityService.findMany(
+        'api::word-definition.word-definition',
+        {
+          locale: userLocale,
+          filters: {
+            word: {
+              target_text: { $containsi: term },
             },
           },
-        },
-        limit: 10,
-        populate: {
-          word: true,
-          part_of_speech: true,
-          flashcards: {
-            filters: {
-              user: user.id,
+          limit: 10,
+          populate: {
+            word: true,
+            part_of_speech: true,
+            flashcards: {
+              filters: { user: user.id },
+              populate: { user: true },
             },
           },
-        },
-      });
+        }
+      );
 
       return this.transformResponse(definitions);
     } catch (error) {
@@ -108,6 +120,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.internalServerError('An error occurred during the search.');
     }
   },
+
 
   async create(ctx) {
     const { user } = ctx.state;
