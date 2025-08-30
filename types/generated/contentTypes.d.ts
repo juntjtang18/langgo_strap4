@@ -651,6 +651,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::story-like.story-like'
     >;
+    word_definitions: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::word-definition.word-definition'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2224,6 +2229,11 @@ export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
       'api::word-definition.word-definition',
       'oneToMany',
       'api::word-def-audio.word-def-audio'
+    >;
+    owner: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'manyToOne',
+      'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

@@ -5,8 +5,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::word-definition.word-definition', ({ strapi }) => ({
   /**
-   * [Existing Function - Unchanged]
-   * Custom search action to find word definitions by base_text.
+   * Corrected Custom search action to find word definitions by base_text.
    */
   async search(ctx) {
     const { term } = ctx.query;
@@ -18,7 +17,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
     if (!term) {
       return ctx.badRequest('A "term" query parameter is required.');
     }
-    
+
     const userWithProfile = await strapi.entityService.findOne(
         'plugin::users-permissions.user',
         user.id,
@@ -34,9 +33,19 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       const definitions = await strapi.entityService.findMany('api::word-definition.word-definition', {
         locale: userLocale,
         filters: {
-          base_text: {
-            $containsi: term,
-          },
+          $and: [
+            {
+              base_text: {
+                $containsi: term,
+              },
+            },
+            {
+              $or: [
+                { owner: user.id },
+                { owner: { id: { $null: true } } } // Corrected syntax
+              ],
+            },
+          ],
         },
         limit: 10,
         populate: {
@@ -61,8 +70,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
   },
 
   /**
-   * [Corrected Function]
-   * Searches for word definitions by the word's target_text, filtered by the user's baseLanguage (i18n locale).
+   * Corrected function to search for word definitions by the word's target_text.
    */
   async searchByTarget(ctx) {
     const { term } = ctx.query;
@@ -75,7 +83,6 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.badRequest('A "term" query parameter is required.');
     }
 
-    // Load user profile to get locale (baseLanguage)
     const userWithProfile = await strapi.entityService.findOne(
       'plugin::users-permissions.user',
       user.id,
@@ -92,15 +99,24 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
     );
 
     try {
-      // IMPORTANT: put locale at the top level so Strapi i18n filters the entry itself
       const definitions = await strapi.entityService.findMany(
         'api::word-definition.word-definition',
         {
           locale: userLocale,
           filters: {
-            word: {
-              target_text: { $containsi: term },
-            },
+            $and: [
+              {
+                word: {
+                  target_text: { $containsi: term },
+                },
+              },
+              {
+                $or: [
+                  { owner: user.id },
+                  { owner: { id: { $null: true } } }, // Corrected syntax
+                ],
+              },
+            ],
           },
           limit: 10,
           populate: {
@@ -188,12 +204,17 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       };
       const posId = await getPosId(part_of_speech);
 
+      // This is the section with the fix
       let wordDefinition = (await strapi.entityService.findMany('api::word-definition.word-definition', {
         filters: {
           word: word.id,
           base_text: trimmedBase,
           part_of_speech: posId || null,
-          locale: finalLocale, // Use the corrected locale here
+          locale: finalLocale,
+          $or: [
+            { owner: user.id },
+            { owner: { id: { $null: true } } }, // Corrected syntax
+          ],
         },
         populate: { word: true, part_of_speech: true },
       }))[0];
@@ -209,6 +230,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
               part_of_speech: posId,
               example_sentence: example_sentence || null,
               locale: finalLocale, // Use the corrected locale here
+              owner: user.id, // Set the owner
               publishedAt: new Date(), // Publish immediately
             },
             db: trx,
@@ -253,5 +275,4 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.internalServerError('An error occurred while creating the word entry.');
     }
   },
-
 }));

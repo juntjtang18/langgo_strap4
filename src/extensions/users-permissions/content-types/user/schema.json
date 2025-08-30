@@ -107,6 +107,12 @@
       "relation": "oneToMany",
       "target": "api::story-like.story-like",
       "mappedBy": "user"
+    },
+    "word_definitions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::word-definition.word-definition",
+      "mappedBy": "owner"
     }
   }
 }

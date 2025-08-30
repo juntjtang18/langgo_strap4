@@ -139,6 +139,12 @@
       "relation": "oneToMany",
       "target": "api::word-def-audio.word-def-audio",
       "mappedBy": "word_definition"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "word_definitions"
     }
   }
 }
