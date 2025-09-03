@@ -534,19 +534,17 @@ module.exports = ({ strapi }) => ({
 
     // 4) Fresh with background (personalized kickoff) if last exists
     if (last && resume === 'fresh') {
-      // We’ll still call your existing kickoff path to choose a topic,
-      // but the kickoff prompt will be better because the model has
-      // recently seen the learner’s style (via summary) inside system.
-      // Easiest path: just reuse kickoffFromStrapiTopics (no code change).
-      const { selected_topic, first_turn, inferred_level } =
-        await this.kickoffFromStrapiTopics({ sampleSize, proficiency, includeHints });
+      const { selected_topic_id, selected_topic_title, first_turn, inferred_level } =
+        await this.kickoffFromStrapiTopics({
+          sampleSize, proficiency, includeHints, background: last.summary || null
+        });
 
       const sessionId = uuidv4();
       await strapi.entityService.create('api::conversation.conversation', {
         data: {
           sessionId,
           history: [{ role: 'assistant', content: first_turn }],
-          topic: null, // we only have title; you can resolve id if you want
+          topic: selected_topic_id || null,
           summary: null,
           compacted_upto: 0,
           turns_total: 1,
@@ -558,8 +556,8 @@ module.exports = ({ strapi }) => ({
 
       return {
         sessionId,
-        selected_topic_id: null,
-        selected_topic,
+        selected_topic_id,
+        selected_topic: selected_topic_title,
         next_prompt: first_turn,
         level_group: inferred_level || group,
       };
@@ -596,7 +594,7 @@ module.exports = ({ strapi }) => ({
 
   /** Kickoff: fetch topics, LLM picks one by level, return first turn (no persistence here) */
   async kickoffFromStrapiTopics(opts = {}) {
-    const { sampleSize = 4, proficiency = 'auto', includeHints = false } = opts;
+    const { sampleSize = 4, proficiency = 'auto', includeHints = false, background = null } = opts;
 
     const filters = { is_active: true };
     const allowedCEFR = allowedCEFRFromProficiency(proficiency);
@@ -639,7 +637,74 @@ module.exports = ({ strapi }) => ({
     });
 
     const group = groupFromProficiency(proficiency) || 'BEGINNER';
-    const { selected_topic_id, selected_topic_title, first_turn } = await kickoffFromTopicsList(topicLines, group);
+
+    const kickoffSystem = `
+  You are an English Conversation Guide.
+
+  You will receive a short list of topics formatted like: "[id:123] Title (CEFR) | ...".
+  Pick ONE topic that best fits. Return JSON ONLY:
+  {"selected_topic_id": 123, "selected_topic_title": "<exact title>", "first_turn": "<message to learner>"}
+
+  FIRST TURN RULES:
+  - Respect ${group} constraints (keep it short).
+  - BEGINNER (practice):
+    • Start with: "Let's practice <topic>."
+    • If ONE example, write: You can say: Hello, how are you?
+    • If TWO choices, write: You can say: Hello! or Hi!
+  - BEGINNER (scenario) or higher: start in character if a role is provided.
+  - EXACTLY ONE question, end with "?".
+  - Do NOT show lists, bullets, or internal hints. No quotes around example phrases.
+  `.trim();
+
+    // Build messages with optional background summary as an extra system message
+    const sysMsgs = [{ role: 'system', content: kickoffSystem }];
+
+    if (background) {
+      // normalize both v1 and legacy shapes
+      let bg;
+      if (background.kind === 'conv_summary_v1') {
+        bg = {
+          topic_title: background.topic_title || null,
+          facts: background.facts || [],
+          learned: background.learned || [],
+          open_threads: background.open_threads || [],
+        };
+      } else {
+        bg = {
+          topic_title: null,
+          synopsis: background.synopsis || '',
+          vocab: background.vocab || [],
+          patterns: background.patterns || [],
+          facts: background.facts || {},
+        };
+      }
+      sysMsgs.push({
+        role: 'system',
+        content:
+          'BACKGROUND SUMMARY (use only for personalization; do NOT quote it):\n' +
+          JSON.stringify(bg),
+      });
+    }
+
+    const msg = `Topics:\n${topicLines.join('\n')}`;
+
+    let selected_topic_id = null;
+    let selected_topic_title = null;
+    let first_turn = `Let's begin. What would you like to talk about?`;
+
+    try {
+      const resp = await openai.chat.completions.create({
+        model: 'gpt-4-turbo',
+        messages: [...sysMsgs, { role: 'user', content: msg }],
+        temperature: 0.35,
+        max_tokens: 220,
+        response_format: { type: 'json_object' },
+      });
+      const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
+      if (parsed.selected_topic_id != null) selected_topic_id = Number(parsed.selected_topic_id);
+      if (parsed.selected_topic_title) selected_topic_title = String(parsed.selected_topic_title);
+      if (parsed.first_turn) first_turn = String(parsed.first_turn);
+    } catch { /* fallback */ }
 
     return {
       selected_topic_id,
@@ -648,6 +713,7 @@ module.exports = ({ strapi }) => ({
       inferred_level: group,
     };
   },
+
 
   /**
    * Continue the conversation with adaptive level.
