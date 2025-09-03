@@ -113,6 +113,12 @@
       "relation": "oneToMany",
       "target": "api::word-definition.word-definition",
       "mappedBy": "owner"
+    },
+    "conversations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::conversation.conversation",
+      "mappedBy": "user"
     }
   }
 }
