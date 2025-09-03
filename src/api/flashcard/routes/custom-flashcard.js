@@ -54,5 +54,14 @@ module.exports = {
         policies: ['global::is-authenticated'],
       },
     },
+    {
+      method: 'POST', // Use POST method for custom action
+      path: '/flashcards/:id/remove', // Custom, descriptive path
+      handler: 'flashcard.remove', // New controller action name
+      config: {
+        policies: [], // Add your authentication policy here
+      },
+    },
+
   ],
 };

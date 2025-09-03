@@ -235,6 +235,65 @@ module.exports = createCoreController(
     },
 
     /**
+     * POST /flashcards/:id/remove
+     * Deletes a flashcard and its related word-definition if it's also owned by the user.
+     */
+    async remove(ctx) {
+      const { user } = ctx.state;
+      if (!user) return ctx.unauthorized('Authentication required.');
+
+      const { id } = ctx.params;
+
+      try {
+        const flashcard = await strapi.entityService.findOne('api::flashcard.flashcard', id, {
+          filters: { user: user.id },
+          populate: { word_definition: true },
+        });
+
+        // 1. Verify the flashcard exists and is owned by the current user
+        if (!flashcard) {
+          return ctx.notFound('Flashcard not found or you do not have permission to delete it.');
+        }
+
+        let deletedFlashcard = null;
+        let deletedWordDefinition = null;
+
+        // 2. Perform deletion within a database transaction to ensure atomicity
+        await strapi.db.transaction(async () => {
+          const wdId = flashcard.word_definition?.id;
+          if (wdId) {
+            // Check if the related word-definition is also owned by the user
+            const wordDefinition = await strapi.entityService.findOne('api::word-definition.word-definition', wdId, {
+              filters: { user: user.id },
+            });
+
+            if (wordDefinition) {
+              // Only delete the word-definition if it's owned by the user
+              deletedWordDefinition = await strapi.entityService.delete('api::word-definition.word-definition', wdId);
+            }
+          }
+
+          // 3. Delete the flashcard
+          deletedFlashcard = await strapi.entityService.delete('api::flashcard.flashcard', id);
+        });
+
+        strapi.log.info(`✅ Flashcard ${id} deleted by user ${user.id}.`);
+        if (deletedWordDefinition) {
+          strapi.log.info(`✅ Related word-definition ${deletedWordDefinition.id} also deleted.`);
+        }
+
+        return this.transformResponse({
+          flashcardId: deletedFlashcard?.id,
+          wordDefinitionId: deletedWordDefinition?.id,
+          message: 'Flashcard deleted successfully.',
+        });
+      } catch (err) {
+        strapi.log.error(`Flashcard deletion error: ${err.message}`, { stack: err.stack });
+        return ctx.internalServerError('An error occurred while deleting the flashcard.');
+      }
+    },
+
+    /**
      * GET /flashcards/statistics
      * Tier-driven stats (no hard-coded ranges; no per-card loop)
      */
