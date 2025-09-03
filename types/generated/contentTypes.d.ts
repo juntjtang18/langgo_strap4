@@ -886,6 +886,43 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
   };
 }
 
+export interface ApiGrammarPointGrammarPoint extends Schema.CollectionType {
+  collectionName: 'grammar_points';
+  info: {
+    singularName: 'grammar-point';
+    pluralName: 'grammar-points';
+    displayName: 'grammar point';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    key: Attribute.UID;
+    display_name: Attribute.String & Attribute.Required;
+    description: Attribute.String;
+    example: Attribute.JSON;
+    topics: Attribute.Relation<
+      'api::grammar-point.grammar-point',
+      'oneToMany',
+      'api::topic.topic'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::grammar-point.grammar-point',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::grammar-point.grammar-point',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiLessonLesson extends Schema.CollectionType {
   collectionName: 'lessons';
   info: {
@@ -1185,6 +1222,11 @@ export interface ApiProficiencyLevelProficiencyLevel
           localized: false;
         };
       }>;
+    topics: Attribute.Relation<
+      'api::proficiency-level.proficiency-level',
+      'oneToMany',
+      'api::topic.topic'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1722,6 +1764,7 @@ export interface ApiTopicTopic extends Schema.CollectionType {
     singularName: 'topic';
     pluralName: 'topics';
     displayName: 'topic';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1737,6 +1780,22 @@ export interface ApiTopicTopic extends Schema.CollectionType {
     questions: Attribute.Component<'a.question', true>;
     tags: Attribute.String;
     is_active: Attribute.Boolean & Attribute.DefaultTo<true>;
+    proficiency_level: Attribute.Relation<
+      'api::topic.topic',
+      'manyToOne',
+      'api::proficiency-level.proficiency-level'
+    >;
+    target_vocab: Attribute.JSON;
+    target_patterns: Attribute.JSON;
+    grammar_point: Attribute.Relation<
+      'api::topic.topic',
+      'manyToOne',
+      'api::grammar-point.grammar-point'
+    >;
+    mode_hint: Attribute.Enumeration<['auto', 'practice', 'scenario']> &
+      Attribute.DefaultTo<'auto'>;
+    role_name: Attribute.String;
+    role_context: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2277,6 +2336,7 @@ declare module '@strapi/types' {
       'api::conversation.conversation': ApiConversationConversation;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
+      'api::grammar-point.grammar-point': ApiGrammarPointGrammarPoint;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
       'api::module.module': ApiModuleModule;

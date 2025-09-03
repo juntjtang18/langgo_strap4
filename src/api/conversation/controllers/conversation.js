@@ -53,8 +53,7 @@ module.exports = {
     }
 
     try {
-      const svc = strapi.service('conversation-service');
-
+      const svc = strapi.service('api::conversation.conversation-service');
       // Pure service call (no persistence)
       const {
         reply,

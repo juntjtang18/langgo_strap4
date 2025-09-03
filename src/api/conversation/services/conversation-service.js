@@ -35,6 +35,42 @@ function allowedProficiencyKeys(pref) {
   return null;
 }
 
+function analyzeUserSignals(history) {
+  const lastUser = [...history].reverse().find(m => m.role === 'user')?.content || '';
+  const wc = (lastUser.trim().match(/\S+/g) || []).length;
+  const rich = wc >= 8 || /because|but|and|since|when|so|that/i.test(lastUser);
+  return { lastUser, wc, rich };
+}
+
+function decideMode({ hint, group, signals }) {
+  const h = String(hint || 'auto').toLowerCase();
+  if (h === 'practice' || h === 'scenario') return h;
+  // auto:
+  if (group === 'BEGINNER') return signals.rich ? 'scenario' : 'practice';
+  if (group === 'INTERMEDIATE') return 'scenario';
+  return 'scenario'; // ADVANCED/PROFICIENT
+}
+
+function modeInstructions(mode, roleName, roleCtx, maxWords) {
+  if (mode === 'scenario') {
+    return `
+MODE: SCENARIO (role-play)
+- Speak in character as ${roleName || 'a friendly person'}${roleCtx ? ` (${roleCtx})` : ''}.
+- Be natural, concise (≤${maxWords} words).
+- Ask EXACTLY ONE follow-up question, end with "?". No lists.
+- Light recast only if meaning is unclear.
+`.trim();
+  }
+  // practice default
+  return `
+MODE: PRACTICE (coach)
+- Be very clear and concise (≤${maxWords} words).
+- If the learner's last message was short, include ONE example they can copy OR TWO simple choices (not both).
+- Give tiny positive feedback; recast obvious errors briefly.
+- Ask EXACTLY ONE practice question, end with "?".
+`.trim();
+}
+
 /** Optional: a coarse CEFR range to include in prompts if helpful */
 function cefrRangeFromGroup(group) {
   switch (group) {
@@ -182,48 +218,60 @@ Return strict JSON: {"proficiency_key":"intermediate","cefr_code":"B1","confiden
   }
 }
 
-/** ---------- Kickoff: choose topic + first turn (no DB writes) ---------- */
-async function kickoffFromTopicsList(topicLines, group) {
-  const kickoffSystem = `
-You are an English Conversation Guide.
-You will receive a short list of topics (title + level + optional hints).
-Pick ONE topic that fits the target level group: ${group}.
-Then produce the FIRST teaching turn.
+  /** ---------- Kickoff: choose topic + first turn (no DB writes) ---------- */
+  async function kickoffFromTopicsList(topicLines, group) {
+    const kickoffSystem = `
+  You are an English Conversation Guide.
 
-Output JSON only:
-{"selected_topic":"<title>","first_turn":"<message to learner>"}
+  You will receive a short list of topics with optional hints like "mode:practice|scenario", "role", and "ctx".
+  - If a topic has "mode:scenario", role-play as the specified role/context.
+  - If "mode:practice", act as a coach.
+  - If no mode is specified, default to PRACTICE for BEGINNER; SCENARIO for others.
 
-First turn rules:
-- Keep within the ${group} constraints.
-- Optionally one-line plan (≤8 words).
-- For BEGINNER: include ONE short example OR TWO simple choices (not both).
-- For INTERMEDIATE/ADVANCED/PROFICIENT: no choices unless the learner clearly needs help.
-- Ask EXACTLY ONE question, end with "?".
-- Keep it concise (respect level word limits).
-`.trim();
+  Output strict JSON:
+  {"selected_topic":"<title>","first_turn":"<message to learner>"}
 
-  const msg = `Topics:\n${topicLines.join('\n')}`;
-  let selected_topic = null;
-  let first_turn = `Let's begin. What would you like to talk about?`;
+  FIRST TURN RULES:
+  - Respect the ${group} level constraints (keep it short).
+  - BEGINNER (practice):
+    • Start with: "Let's practice <topic>."
+    • If you give ONE example, write: "You can say: Hello, how are you?"  (NO quotation marks.)
+    • If you give TWO choices, write: "You can say: Hello! or Hi!"  (exactly two choices, NO “either”.)
+  - BEGINNER (scenario) or higher:
+    • Start in character if role is given (e.g., "Hi! I'm Alex, your new classmate.").
+  - In all cases:
+    • Ask EXACTLY ONE question and end with "?".
+    • Do NOT show lists, bullets, or the internal hints.
+    • Do NOT wrap example phrases in quotation marks.
+    • Avoid the word "either" unless there are exactly two choices separated by "or".
+    • No unfinished sentences; keep punctuation clean.
+  `.trim();
 
-  try {
-    const resp = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
-      messages: [
-        { role: 'system', content: kickoffSystem },
-        { role: 'user', content: msg }
-      ],
-      temperature: 0.4,
-      max_tokens: 160,
-      response_format: { type: 'json_object' },
-    });
-    const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
-    if (parsed.selected_topic) selected_topic = String(parsed.selected_topic);
-    if (parsed.first_turn) first_turn = String(parsed.first_turn);
-  } catch { /* fallback */ }
+    const msg = `Topics:\n${topicLines.join('\n')}`;
 
-  return { selected_topic, first_turn };
-}
+    let selected_topic = null;
+    let first_turn = `Let's begin. What would you like to talk about?`;
+
+    try {
+      const resp = await openai.chat.completions.create({
+        model: 'gpt-4-turbo',
+        messages: [
+          { role: 'system', content: kickoffSystem },
+          { role: 'user', content: msg }
+        ],
+        temperature: 0.35,
+        max_tokens: 200,
+        response_format: { type: 'json_object' },
+      });
+      const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
+      if (parsed.selected_topic) selected_topic = String(parsed.selected_topic);
+      if (parsed.first_turn) first_turn = String(parsed.first_turn);
+    } catch { /* fallback */ }
+
+    return { selected_topic, first_turn };
+  }
+
+
 
 /** ---------- Public service (pure) ---------- */
 module.exports = ({ strapi }) => ({
@@ -250,9 +298,8 @@ module.exports = ({ strapi }) => ({
       filters,
       populate: {
         proficiency_level: { fields: ['key'] },
-        difficulty_level: { fields: ['code'] }, // harmless if absent
       },
-      fields: ['title', 'tags', 'description', 'target_vocab', 'target_patterns', 'target_grammar'],
+      fields: ['title', 'tags', 'description', 'target_vocab', 'target_patterns', 'mode_hint', 'role_name', 'role_context'],
       limit: 30,
     });
 
@@ -271,6 +318,9 @@ module.exports = ({ strapi }) => ({
     const topicLines = pool.map((t, i) => {
       const key = extractProficiencyKeyFromTopic(t) || 'UNKNOWN';
       let line = `${i + 1}) ${t.title} (${key})`;
+      if (t.mode_hint) line += ` | mode:${t.mode_hint}`;
+      if (t.role_name) line += ` | role:${t.role_name}`;
+      if (t.role_context) line += ` | ctx:${String(t.role_context).slice(0, 60)}`;
       if (includeHints) {
         const tv = Array.isArray(t.target_vocab) ? t.target_vocab : [];
         const tp = Array.isArray(t.target_patterns) ? t.target_patterns : [];
@@ -302,70 +352,79 @@ module.exports = ({ strapi }) => ({
    * @param {string} [args.proficiency='auto']
    * @returns {Promise<{reply:string, inferred_proficiency_key:string|null, inferred_cefr_code:string|null, inferred_group:string}>}
    */
-  async generateNextPrompt({ history, topicTitle, proficiency = 'auto' }) {
-    if (!history || !Array.isArray(history) || history.length === 0) {
-      throw new Error('generateNextPrompt requires non-empty history.');
-    }
+    // ✅ method inside the exported object
+    async generateNextPrompt({ history, topicTitle, proficiency = 'auto' }) {
+      if (!history || !Array.isArray(history) || history.length === 0) {
+        throw new Error('generateNextPrompt requires non-empty history.');
+      }
 
-    // Load topic (for hints)
-    let topic = null;
-    if (topicTitle) {
-      const found = await strapi.entityService.findMany('api::topic.topic', {
-        filters: { title: topicTitle },
-        populate: {
-          proficiency_level: { fields: ['key'] },
-          difficulty_level: { fields: ['code'] },
-        },
-        fields: ['title', 'target_vocab', 'target_patterns', 'target_grammar'],
-        limit: 1,
-      });
-      if (found?.length) topic = found[0];
-    }
+      // 1) Load topic (for hints)
+      let topic = null;
+      if (topicTitle) {
+        const found = await strapi.entityService.findMany('api::topic.topic', {
+          filters: { title: topicTitle },
+          populate: { proficiency_level: { fields: ['key'] } },
+          fields: ['title', 'target_vocab', 'target_patterns', 'mode_hint', 'role_name', 'role_context'],
+          limit: 1,
+        });
+        if (found?.length) topic = found[0];
+      }
 
-    // Decide level/group
-    let group = groupFromProficiency(proficiency);
-    let inferred_proficiency_key = null;
-    let inferred_cefr_code = null;
+      // 2) Decide level/group
+      let group = groupFromProficiency(proficiency);
+      let inferred_proficiency_key = null;
+      let inferred_cefr_code = null;
 
-    if (!group || proficiency === 'auto') {
-      const est = await estimateProficiencyFromHistory(history);
-      inferred_proficiency_key = est.proficiency_key || null;
-      inferred_cefr_code = est.cefr_code || null;
+      if (!group || proficiency === 'auto') {
+        const est = await estimateProficiencyFromHistory(history);
+        inferred_proficiency_key = est.proficiency_key || null;
+        inferred_cefr_code = est.cefr_code || null;
+        group =
+          groupFromProficiency(inferred_proficiency_key) ||
+          groupFromProficiency(inferred_cefr_code) ||
+          (topic ? groupFromProficiency(extractProficiencyKeyFromTopic(topic)) : null) ||
+          'BEGINNER';
+      }
 
-      // pick group from inferred key first, then CEFR, fall back to topic key, else BEGINNER
-      group =
-        groupFromProficiency(inferred_proficiency_key) ||
-        groupFromProficiency(inferred_cefr_code) ||
-        (topic ? groupFromProficiency(extractProficiencyKeyFromTopic(topic)) : null) ||
-        'BEGINNER';
-    }
+      // 3) MODE decision
+      const signals  = analyzeUserSignals(history);
+      const t        = topic?.attributes || topic || {};
+      const hint     = t.mode_hint || 'auto';
+      const roleName = t.role_name || null;
+      const roleCtx  = t.role_context || null;
+      const mode     = decideMode({ hint, group, signals });
 
-    // Build system prompt
-    let systemMsg = buildBasePromptForGroup(group);
-    const hints = buildTopicHints(topic);
-    if (hints) systemMsg += `\n\n${hints}`;
+      // 4) Build system prompt (+ mode instructions)
+      let systemMsg = buildBasePromptForGroup(group);
 
-    const range = cefrRangeFromGroup(group);
-    if (range) systemMsg += `\n\n(Internal hint: Target CEFR ~ ${range.min}–${range.max}.)`;
+      const hints = buildTopicHints(topic);
+      if (hints) systemMsg += `\n\n${hints}`;
 
-    const messages = [{ role: 'system', content: systemMsg }, ...history];
+      const range = cefrRangeFromGroup(group);
+      if (range) systemMsg += `\n\n(Internal hint: Target CEFR ~ ${range.min}–${range.max}.)`;
 
-    try {
-      const resp = await openai.chat.completions.create({
-        model: 'gpt-4-turbo',
-        messages,
-        temperature: (group === 'ADVANCED' || group === 'PROFICIENT') ? 0.7 : 0.5,
-        max_tokens: 120,
-        frequency_penalty: 0.1,
-      });
-      const raw = resp.choices?.[0]?.message?.content || "Let's continue. What do you think?";
-      const reply = sanitizeModelReply(raw, { maxWords: maxWordsForGroup(group) });
-      return { reply, inferred_proficiency_key, inferred_cefr_code, inferred_group: group };
-    } catch (err) {
-      strapi.log.error('Error generating next prompt:', err);
-      return { reply: "Sorry, I had a hiccup. Could you say that again?", inferred_proficiency_key, inferred_cefr_code, inferred_group: group };
-    }
-  },
+      systemMsg += `\n\n${modeInstructions(mode, roleName, roleCtx, maxWordsForGroup(group))}`;
+
+      const messages = [{ role: 'system', content: systemMsg }, ...history];
+
+      try {
+        const resp = await openai.chat.completions.create({
+          model: 'gpt-4-turbo',
+          messages,
+          temperature: (group === 'ADVANCED' || group === 'PROFICIENT') ? 0.7 : 0.5,
+          max_tokens: 120,
+          frequency_penalty: 0.1,
+        });
+        const raw = resp.choices?.[0]?.message?.content || "Let's continue. What do you think?";
+        const reply = sanitizeModelReply(raw, { maxWords: maxWordsForGroup(group) });
+        return { reply, inferred_proficiency_key, inferred_cefr_code, inferred_group: group };
+      } catch (err) {
+        strapi.log.error('Error generating next prompt:', err);
+        return { reply: "Sorry, I had a hiccup. Could you say that again?", inferred_proficiency_key, inferred_cefr_code, inferred_group: group };
+      }
+    },
+
+
 
   // Expose utilities for unit tests if desired
   sanitizeModelReply,
