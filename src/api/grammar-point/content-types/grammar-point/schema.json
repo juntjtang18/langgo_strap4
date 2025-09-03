@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "grammar_points",
+  "info": {
+    "singularName": "grammar-point",
+    "pluralName": "grammar-points",
+    "displayName": "grammar point"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "key": {
+      "type": "uid"
+    },
+    "display_name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "example": {
+      "type": "json"
+    },
+    "topics": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::topic.topic",
+      "mappedBy": "grammar_point"
+    }
+  }
+}

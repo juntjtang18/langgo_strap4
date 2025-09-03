@@ -4,7 +4,8 @@
   "info": {
     "singularName": "topic",
     "pluralName": "topics",
-    "displayName": "topic"
+    "displayName": "topic",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -35,6 +36,39 @@
     "is_active": {
       "type": "boolean",
       "default": true
+    },
+    "proficiency_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::proficiency-level.proficiency-level",
+      "inversedBy": "topics"
+    },
+    "target_vocab": {
+      "type": "json"
+    },
+    "target_patterns": {
+      "type": "json"
+    },
+    "grammar_point": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::grammar-point.grammar-point",
+      "inversedBy": "topics"
+    },
+    "mode_hint": {
+      "type": "enumeration",
+      "enum": [
+        "auto",
+        "practice",
+        "scenario"
+      ],
+      "default": "auto"
+    },
+    "role_name": {
+      "type": "string"
+    },
+    "role_context": {
+      "type": "string"
     }
   }
 }

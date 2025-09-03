@@ -48,6 +48,12 @@
         }
       },
       "type": "integer"
+    },
+    "topics": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::topic.topic",
+      "mappedBy": "proficiency_level"
     }
   }
 }
