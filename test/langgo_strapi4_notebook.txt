@@ -652,3 +652,23 @@ curl -X GET "http://localhost:1338/api/word-definitions/search-by-target?term=th
 -H "Content-Type: application/json" | jq .
 
 
+curl -X GET 'http://localhost:1338/api/review-flashcards?pagination%5Bpage%5D=1&pagination%5BpageSize%5D=30' \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X POST http://localhost:1338/api/flashcards/771/remove \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ' \
+  --header 'Content-Type: application/json' \
+| jq .
+
+curl -X GET http://localhost:1338/api/topics \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET "http://localhost:1338/api/topics?populate=questions,difficulty_level&pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+-H "Content-Type: application/json" \
+| jq .

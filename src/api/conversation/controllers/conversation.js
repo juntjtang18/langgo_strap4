@@ -1,109 +1,96 @@
-// src/api/conversation/controllers/conversation.js
 'use strict';
 
 const { v4: uuidv4 } = require('uuid');
 
-/**
- * Conversation controller
- */
 module.exports = {
-  /**
-   * Starts a conversation, creates a log entry, and returns a session ID.
-   */
+  /** GET /v1/conversation/start?proficiency=auto|BEGINNER|...&sampleSize=4&includeHints=true */
   async start(ctx) {
     try {
-      const topics = await strapi.entityService.findMany('api::topic.topic', {
-        filters: { is_active: true },
-        fields: ['title'],
-      });
+      const svc = strapi.service('api::conversation.conversation-service');
 
-      if (!topics || topics.length === 0) {
-        return ctx.send({
-          next_prompt: "Hello! I'm ready to chat. What's on your mind today?"
-        });
-      }
+      const proficiency = (ctx.query?.proficiency || 'auto').toString();
+      const includeHints =
+        typeof ctx.query?.includeHints === 'string'
+          ? ['1','true','yes','y'].includes(ctx.query.includeHints.toLowerCase())
+          : false;
+      const n = Number.parseInt(ctx.query?.sampleSize, 10);
+      const sampleSize = Number.isFinite(n) && n > 0 ? n : 4;
 
-      const randomTopic = topics[Math.floor(Math.random() * topics.length)];
-      const welcomeMessage = `Hello! How about we talk about "${randomTopic.title}"? Or, you can suggest a topic.`;
+      // Pure service call (no persistence)
+      const { selected_topic, first_turn, inferred_level } =
+        await svc.kickoffFromStrapiTopics({ sampleSize, proficiency, includeHints });
 
+      // Controller creates the session row
       const sessionId = uuidv4();
-      const initialHistory = [{ role: 'assistant', content: welcomeMessage }];
-
       await strapi.entityService.create('api::conversation.conversation', {
         data: {
           sessionId,
-          history: initialHistory,
+          history: [{ role: 'assistant', content: first_turn }],
+          topicTitle: selected_topic || null,
         },
       });
 
-      strapi.log.info(`Anonymous conversation started. Session ID: ${sessionId}`);
-
       ctx.send({
-        sessionId: sessionId,
-        next_prompt: welcomeMessage,
-        suggested_topic: randomTopic.title,
+        sessionId,
+        next_prompt: first_turn,
+        selected_topic,
+        suggested_topic: selected_topic || null, // backward compat
+        level_group: inferred_level || null,
       });
-
     } catch (error) {
       strapi.log.error('Failed to start conversation:', error);
       ctx.internalServerError('Error starting conversation.');
     }
   },
 
-  /**
-   * Generates the next prompt and appends the turn to the conversation log.
-   */
+  /** POST /v1/conversation/nextprompt  { sessionId, history, topic_title?, proficiency? } */
   async nextPrompt(ctx) {
-    const { history, topic_title, sessionId } = ctx.request.body;
+    const { history, topic_title, sessionId, proficiency = 'auto' } = ctx.request.body || {};
 
-    if (!sessionId) {
-      return ctx.badRequest('A "sessionId" is required for the conversation.');
-    }
+    if (!sessionId) return ctx.badRequest('A "sessionId" is required for the conversation.');
     if (!history || !Array.isArray(history) || history.length === 0) {
       return ctx.badRequest('A non-empty "history" array is required.');
     }
 
-    const openAIService = strapi.service('openai');
-    let topicContext = null;
-
     try {
-      if (topic_title) {
-        const topics = await strapi.entityService.findMany('api::topic.topic', {
-          filters: { title: topic_title },
-          limit: 1,
-        });
-        if (topics.length > 0) {
-          topicContext = topics[0];
-        }
-      }
+      const svc = strapi.service('conversation-service');
 
-      const reply = await openAIService.generateConversationalReply(history, topicContext);
+      // Pure service call (no persistence)
+      const {
+        reply,
+        inferred_proficiency_key,
+        inferred_cefr_code,
+        inferred_group,
+      } = await svc.generateNextPrompt({
+        history,
+        topicTitle: topic_title || null,
+        proficiency,
+      });
 
+      // Append to conversation log
       const [logEntry] = await strapi.entityService.findMany('api::conversation.conversation', {
         filters: { sessionId },
+        limit: 1,
       });
 
       if (logEntry) {
         const updatedHistory = [...history, { role: 'assistant', content: reply }];
-
         await strapi.entityService.update('api::conversation.conversation', logEntry.id, {
-          data: {
-            history: updatedHistory,
-          },
+          data: { history: updatedHistory },
         });
         strapi.log.info(`Updated conversation log for session ID: ${sessionId}`);
       } else {
         strapi.log.warn(`Could not find conversation log for session ID: ${sessionId}`);
       }
 
-      // --- FINAL CHANGE ---
-      // Include the sessionId in the response for the client.
       ctx.send({
-        sessionId: sessionId,
+        sessionId,
         next_prompt: reply,
+        inferred_proficiency_key: inferred_proficiency_key || null,
+        inferred_cefr_code: inferred_cefr_code || null,
+        inferred_group: inferred_group || null,
+        topic_title: topic_title || null,
       });
-      // --- END ---
-
     } catch (error) {
       strapi.log.error('Failed to get next AI prompt:', error);
       ctx.internalServerError('Error generating the next prompt.');
