@@ -45,7 +45,7 @@ module.exports = {
 
   /** POST /v1/conversation/nextprompt  { sessionId, history, topic_title?, proficiency? } */
   async nextPrompt(ctx) {
-    const { history, topic_title, sessionId, proficiency = 'auto' } = ctx.request.body || {};
+    const { history, topic_title, sessionId, proficiency = 'auto', mode = null } = ctx.request.body || {};
 
     if (!sessionId) return ctx.badRequest('A "sessionId" is required for the conversation.');
     if (!history || !Array.isArray(history) || history.length === 0) {
@@ -60,10 +60,12 @@ module.exports = {
         inferred_proficiency_key,
         inferred_cefr_code,
         inferred_group,
+        decided_mode,
       } = await svc.generateNextPrompt({
         history,
         topicTitle: topic_title || null,
         proficiency,
+        mode, // optional override: 'practice' | 'scenario' | 'auto'
       });
 
       // Append to conversation log
@@ -89,6 +91,7 @@ module.exports = {
         inferred_cefr_code: inferred_cefr_code || null,
         inferred_group: inferred_group || null,
         topic_title: topic_title || null,
+        decided_mode,
       });
     } catch (error) {
       strapi.log.error('Failed to get next AI prompt:', error);

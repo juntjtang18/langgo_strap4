@@ -3,6 +3,70 @@
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+async function assessSupportNeed(history, group) {
+  // Look only at the latest user turn(s)
+  const last2User = history.filter(m => m.role === 'user').slice(-2).map(m => m.content).join('\n---\n').slice(0, 500);
+
+  const system = `
+You are a monitor for an English conversation. Decide if the learner now needs brief instruction.
+Consider level group: ${group}. Beginners may need help if answers are very short, off-topic, or show confusion.
+
+Return strict JSON:
+{"needs_instruction": true|false, "confidence": 0.0-1.0, "reason": "<short>"}
+`.trim();
+
+  try {
+    const resp = await openai.chat.completions.create({
+      model: 'gpt-4-turbo',
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: last2User || 'No user text.' }
+      ],
+      temperature: 0.0,
+      max_tokens: 100,
+      response_format: { type: 'json_object' },
+    });
+    const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
+    return {
+      needs_instruction: !!parsed.needs_instruction,
+      confidence: Number(parsed.confidence || 0),
+      reason: String(parsed.reason || '')
+    };
+  } catch {
+    return { needs_instruction: false, confidence: 0, reason: 'fallback' };
+  }
+}
+
+
+function lexicalRulesForGroup(group) {
+  if (group === 'BEGINNER') {
+    return `
+LEXICAL RULES (BEGINNER, A1–A2):
+- Use very simple words and short sentences (Present Simple).
+- Prefer: say, ask, name, from, like, want, live, work, friend.
+- Avoid these words/phrases: introduce, yourself, themselves, either, usually, prefer, perhaps.
+- If you need "introduce yourself", say: "say your name".
+- No adverbs ending with -ly unless very common (e.g., really/very).
+- 1 question only, end with "?".
+`.trim();
+  }
+  if (group === 'INTERMEDIATE') {
+    return `
+LEXICAL RULES (INTERMEDIATE, ~B1):
+- Keep it clear and concrete; simple clauses are okay.
+- Prefer common vocabulary; avoid rare/abstract words.
+- 1 question only, end with "?".
+`.trim();
+  }
+  // ADVANCED/PROFICIENT – light touch
+  return `
+LEXICAL RULES:
+- Natural, concise wording. Avoid jargon unless the learner uses it.
+- 1 question only, end with "?".
+`.trim();
+}
+
+
 /** ---------- Proficiency helpers (your 4 keys) ---------- */
 const PROF_KEYS = ['BEGINNER','INTERMEDIATE','ADVANCED','PROFICIENT'];
 
@@ -142,17 +206,36 @@ function extractProficiencyKeyFromTopic(topic) {
   return null;
 }
 
+// caller → CEFR filter for topics
+function allowedCEFRFromProficiency(pref) {
+  const p = String(pref || 'auto').toUpperCase();
+  if (['A1','A2','B1','B2','C1','C2'].includes(p)) return [p]; // direct CEFR request
+  if (p === 'BEGINNER')     return ['A1','A2'];
+  if (p === 'INTERMEDIATE') return ['B1'];
+  if (p === 'ADVANCED')     return ['B2','C1'];
+  if (p === 'PROFICIENT')   return ['C2'];
+  return null; // auto
+}
+
+// get CEFR from a topic entity
+function extractCEFRCodeFromTopic(topic) {
+  const t = topic?.attributes || topic;
+  const code = t?.difficulty_level?.data?.attributes?.code;
+  return code ? String(code).toUpperCase() : null;
+}
+
+
 function buildTopicHints(topic) {
   if (!topic) return '';
   const t = topic.attributes || topic;
-  const pk = extractProficiencyKeyFromTopic(topic) || 'UNKNOWN';
+  const cefr = extractCEFRCodeFromTopic(topic) || 'UNKNOWN';
   const title = t?.title || 'Unknown Topic';
 
   const tv = Array.isArray(t.target_vocab) ? t.target_vocab : [];
   const tp = Array.isArray(t.target_patterns) ? t.target_patterns : [];
   const tg = typeof t.target_grammar === 'string' ? t.target_grammar : '';
 
-  let hints = `Topic: ${title} (${pk}) — use naturally, not as a script.`;
+  let hints = `Topic: ${title} (CEFR ${cefr}) — use naturally, not as a script.`;
   if (tv.length) hints += `\nTarget vocabulary (hints): ${JSON.stringify(tv)}`;
   if (tp.length) hints += `\nTarget patterns (hints): ${JSON.stringify(tp)}`;
   if (tg) hints += `\nTarget grammar (hint): ${JSON.stringify(tg)}`;
@@ -245,6 +328,7 @@ Return strict JSON: {"proficiency_key":"intermediate","cefr_code":"B1","confiden
     • Do NOT wrap example phrases in quotation marks.
     • Avoid the word "either" unless there are exactly two choices separated by "or".
     • No unfinished sentences; keep punctuation clean.
+  ${lexicalRulesForGroup(group)}
   `.trim();
 
     const msg = `Topics:\n${topicLines.join('\n')}`;
@@ -287,19 +371,18 @@ module.exports = ({ strapi }) => ({
   async kickoffFromStrapiTopics(opts = {}) {
     const { sampleSize = 4, proficiency = 'auto', includeHints = false } = opts;
 
-    // Filter by your proficiency relation if caller provided a key
     const filters = { is_active: true };
-    const keys = allowedProficiencyKeys(proficiency);
-    if (keys && keys.length) {
-      filters.proficiency_level = { key: { $in: keys.map(k => k.toLowerCase()) } };
+    const allowedCEFR = allowedCEFRFromProficiency(proficiency);
+    if (allowedCEFR && allowedCEFR.length) {
+      filters.difficulty_level = { code: { $in: allowedCEFR } };
     }
 
     const topics = await strapi.entityService.findMany('api::topic.topic', {
       filters,
       populate: {
-        proficiency_level: { fields: ['key'] },
+        difficulty_level: { fields: ['code'] },
       },
-      fields: ['title', 'tags', 'description', 'target_vocab', 'target_patterns', 'mode_hint', 'role_name', 'role_context'],
+      fields: ['title','tags','description','target_vocab','target_patterns','mode_hint','role_name','role_context'],
       limit: 30,
     });
 
@@ -311,13 +394,11 @@ module.exports = ({ strapi }) => ({
       };
     }
 
-    // Sample a small list (already filtered by key if requested)
     const pool = topics.sort(() => 0.5 - Math.random()).slice(0, sampleSize);
 
-    // Build topic lines for the kickoff message
     const topicLines = pool.map((t, i) => {
-      const key = extractProficiencyKeyFromTopic(t) || 'UNKNOWN';
-      let line = `${i + 1}) ${t.title} (${key})`;
+      const cefr = extractCEFRCodeFromTopic(t) || 'A?';
+      let line = `${i + 1}) ${t.title} (${cefr})`;
       if (t.mode_hint) line += ` | mode:${t.mode_hint}`;
       if (t.role_name) line += ` | role:${t.role_name}`;
       if (t.role_context) line += ` | ctx:${String(t.role_context).slice(0, 60)}`;
@@ -329,6 +410,7 @@ module.exports = ({ strapi }) => ({
       }
       return line;
     });
+
 
     // Decide target group for kickoff
     let group = groupFromProficiency(proficiency) || 'BEGINNER';
@@ -350,10 +432,10 @@ module.exports = ({ strapi }) => ({
    * @param {Array<{role:string, content:string}>} args.history
    * @param {string} [args.topicTitle]
    * @param {string} [args.proficiency='auto']
-   * @returns {Promise<{reply:string, inferred_proficiency_key:string|null, inferred_cefr_code:string|null, inferred_group:string}>}
-   */
+   * @param {'practice'|'scenario'|'auto'=} [args.mode]
+   * @returns {Promise<NextTurn>}   */
     // ✅ method inside the exported object
-    async generateNextPrompt({ history, topicTitle, proficiency = 'auto' }) {
+ async generateNextPrompt({ history, topicTitle, proficiency = 'auto', mode: modeOverride = null }) {
       if (!history || !Array.isArray(history) || history.length === 0) {
         throw new Error('generateNextPrompt requires non-empty history.');
       }
@@ -363,7 +445,7 @@ module.exports = ({ strapi }) => ({
       if (topicTitle) {
         const found = await strapi.entityService.findMany('api::topic.topic', {
           filters: { title: topicTitle },
-          populate: { proficiency_level: { fields: ['key'] } },
+          populate: { difficulty_level: { fields: ['code'] } },
           fields: ['title', 'target_vocab', 'target_patterns', 'mode_hint', 'role_name', 'role_context'],
           limit: 1,
         });
@@ -382,17 +464,26 @@ module.exports = ({ strapi }) => ({
         group =
           groupFromProficiency(inferred_proficiency_key) ||
           groupFromProficiency(inferred_cefr_code) ||
-          (topic ? groupFromProficiency(extractProficiencyKeyFromTopic(topic)) : null) ||
+          (topic ? groupFromProficiency(extractCEFRCodeFromTopic(topic)) : null) ||
           'BEGINNER';
       }
 
       // 3) MODE decision
+      // Signals + topic attrs
       const signals  = analyzeUserSignals(history);
       const t        = topic?.attributes || topic || {};
       const hint     = t.mode_hint || 'auto';
       const roleName = t.role_name || null;
       const roleCtx  = t.role_context || null;
-      const mode     = decideMode({ hint, group, signals });
+
+      // 1) Start from override > topic hint > auto
+      let mode = (modeOverride && ['practice','scenario','auto'].includes(String(modeOverride).toLowerCase()))
+        ? String(modeOverride).toLowerCase()
+        : decideMode({ hint, group, signals });
+
+      // 2) Assess if we should coach this turn
+      const support = await assessSupportNeed(history, group);
+      if (support.needs_instruction) mode = 'practice';
 
       // 4) Build system prompt (+ mode instructions)
       let systemMsg = buildBasePromptForGroup(group);
@@ -403,6 +494,10 @@ module.exports = ({ strapi }) => ({
       const range = cefrRangeFromGroup(group);
       if (range) systemMsg += `\n\n(Internal hint: Target CEFR ~ ${range.min}–${range.max}.)`;
 
+      // Lexical rules (keeps BEGINNER vocabulary simple)
+      systemMsg += `\n\n${lexicalRulesForGroup(group)}`;
+
+      // Mode-specific guidance (role-play vs coach)
       systemMsg += `\n\n${modeInstructions(mode, roleName, roleCtx, maxWordsForGroup(group))}`;
 
       const messages = [{ role: 'system', content: systemMsg }, ...history];
@@ -417,10 +512,10 @@ module.exports = ({ strapi }) => ({
         });
         const raw = resp.choices?.[0]?.message?.content || "Let's continue. What do you think?";
         const reply = sanitizeModelReply(raw, { maxWords: maxWordsForGroup(group) });
-        return { reply, inferred_proficiency_key, inferred_cefr_code, inferred_group: group };
+        return { reply, inferred_proficiency_key, inferred_cefr_code, inferred_group: group, decided_mode: mode };
       } catch (err) {
         strapi.log.error('Error generating next prompt:', err);
-        return { reply: "Sorry, I had a hiccup. Could you say that again?", inferred_proficiency_key, inferred_cefr_code, inferred_group: group };
+        return { reply: "Sorry, I had a hiccup. Could you say that again?", inferred_proficiency_key, inferred_cefr_code, inferred_group: group, decided_mode: mode || null };
       }
     },
 
