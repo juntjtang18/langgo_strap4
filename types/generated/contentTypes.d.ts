@@ -656,6 +656,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::word-definition.word-definition'
     >;
+    conversations: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::conversation.conversation'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -731,6 +736,21 @@ export interface ApiConversationConversation extends Schema.CollectionType {
   attributes: {
     sessionId: Attribute.String & Attribute.Required;
     history: Attribute.JSON;
+    topic: Attribute.Relation<
+      'api::conversation.conversation',
+      'manyToOne',
+      'api::topic.topic'
+    >;
+    summary: Attribute.JSON;
+    compacted_upto: Attribute.Integer & Attribute.DefaultTo<0>;
+    turns_total: Attribute.Integer & Attribute.DefaultTo<0>;
+    last_mode: Attribute.String;
+    last_active: Attribute.DateTime;
+    user: Attribute.Relation<
+      'api::conversation.conversation',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1796,6 +1816,11 @@ export interface ApiTopicTopic extends Schema.CollectionType {
       Attribute.DefaultTo<'auto'>;
     role_name: Attribute.String;
     role_context: Attribute.String;
+    conversations: Attribute.Relation<
+      'api::topic.topic',
+      'oneToMany',
+      'api::conversation.conversation'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

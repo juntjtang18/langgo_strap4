@@ -17,6 +17,35 @@
     },
     "history": {
       "type": "json"
+    },
+    "topic": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::topic.topic",
+      "inversedBy": "conversations"
+    },
+    "summary": {
+      "type": "json"
+    },
+    "compacted_upto": {
+      "type": "integer",
+      "default": 0
+    },
+    "turns_total": {
+      "type": "integer",
+      "default": 0
+    },
+    "last_mode": {
+      "type": "string"
+    },
+    "last_active": {
+      "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "conversations"
     }
   }
 }
