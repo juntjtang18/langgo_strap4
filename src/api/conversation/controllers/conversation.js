@@ -4,48 +4,44 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   /** GET /v1/conversation/start?proficiency=auto|BEGINNER|...&sampleSize=4&includeHints=true */
-  async start(ctx) {
-    try {
-      const svc = strapi.service('api::conversation.conversation-service');
+// GET /v1/conversation/start?proficiency=...&sampleSize=4&includeHints=false&resume=fresh|continue|practice&topicId=123
+async start(ctx) {
+  try {
+    const svc = strapi.service('api::conversation.conversation-service');
 
-      const proficiency = (ctx.query?.proficiency || 'auto').toString();
-      const includeHints =
-        typeof ctx.query?.includeHints === 'string'
-          ? ['1','true','yes','y'].includes(ctx.query.includeHints.toLowerCase())
-          : false;
-      const n = Number.parseInt(ctx.query?.sampleSize, 10);
-      const sampleSize = Number.isFinite(n) && n > 0 ? n : 4;
+    const proficiency = String(ctx.query?.proficiency || 'auto');
+    const includeHints = typeof ctx.query?.includeHints === 'string'
+      ? ['1','true','yes','y'].includes(ctx.query.includeHints.toLowerCase())
+      : false;
+    const n = Number.parseInt(ctx.query?.sampleSize, 10);
+    const sampleSize = Number.isFinite(n) && n > 0 ? n : 4;
 
-      // Pure service call (no persistence)
-      const { selected_topic, first_turn, inferred_level } =
-        await svc.kickoffFromStrapiTopics({ sampleSize, proficiency, includeHints });
+    const resume = String(ctx.query?.resume || 'fresh').toLowerCase(); // fresh|continue|practice
+    const topicId = ctx.query?.topicId ? Number(ctx.query.topicId) : null;
 
-      // Controller creates the session row
-      const sessionId = uuidv4();
-      await strapi.entityService.create('api::conversation.conversation', {
-        data: {
-          sessionId,
-          history: [{ role: 'assistant', content: first_turn }],
-          topicTitle: selected_topic || null,
-        },
-      });
+    // If you keep auth: false, ctx.state.user may be null.
+    // If you enable auth, you can read user id:
+    const userId = ctx.state?.user?.id || null;
 
-      ctx.send({
-        sessionId,
-        next_prompt: first_turn,
-        selected_topic,
-        suggested_topic: selected_topic || null, // backward compat
-        level_group: inferred_level || null,
-      });
-    } catch (error) {
-      strapi.log.error('Failed to start conversation:', error);
-      ctx.internalServerError('Error starting conversation.');
-    }
-  },
+    const result = await svc.startSession({
+      userId, resume, proficiency, topicId, sampleSize, includeHints
+    });
 
-  /** POST /v1/conversation/nextprompt  { sessionId, history, topic_title?, proficiency? } */
+    ctx.send(result);
+  } catch (err) {
+    strapi.log.error('Failed to start conversation:', err);
+    ctx.internalServerError('Error starting conversation.');
+  }
+},
+
+
+  /**
+   * POST /v1/conversation/nextprompt
+   * Body: { sessionId, history, proficiency?, mode?, topic_id? }
+   * - history: full client history (single source of truth)
+   */
   async nextPrompt(ctx) {
-    const { history, topic_title, sessionId, proficiency = 'auto', mode = null } = ctx.request.body || {};
+    const { history, sessionId, proficiency = 'auto', mode = null, topic_id = null } = ctx.request.body || {};
 
     if (!sessionId) return ctx.badRequest('A "sessionId" is required for the conversation.');
     if (!history || !Array.isArray(history) || history.length === 0) {
@@ -54,7 +50,22 @@ module.exports = {
 
     try {
       const svc = strapi.service('api::conversation.conversation-service');
-      // Pure service call (no persistence)
+
+      // Load conversation row (for summary + relation to topic)
+      const [conv] = await strapi.entityService.findMany('api::conversation.conversation', {
+        filters: { sessionId },
+        populate: { topic: true },
+        limit: 1,
+      });
+
+      if (!conv) {
+        return ctx.badRequest('Unknown sessionId.');
+      }
+
+      const effectiveTopicId = topic_id || conv.topic?.id || null;
+      const currentSummary   = conv.summary || null;
+
+      // Generate next reply (service infers group, decides mode, uses summary if present)
       const {
         reply,
         inferred_proficiency_key,
@@ -63,35 +74,31 @@ module.exports = {
         decided_mode,
       } = await svc.generateNextPrompt({
         history,
-        topicTitle: topic_title || null,
+        topicId: effectiveTopicId,
         proficiency,
-        mode, // optional override: 'practice' | 'scenario' | 'auto'
+        mode,                 // optional override: 'practice'|'scenario'|'auto'
+        summary: currentSummary,
       });
 
-      // Append to conversation log
-      const [logEntry] = await strapi.entityService.findMany('api::conversation.conversation', {
-        filters: { sessionId },
-        limit: 1,
+      // Persist + auto-compact in the service
+      const saved = await svc.persistTurnAndMaybeCompact({
+        sessionId,
+        topicId: effectiveTopicId || null,
+        history: [...history, { role: 'assistant', content: reply, ts: new Date().toISOString() }],
+        decided_mode,
       });
 
-      if (logEntry) {
-        const updatedHistory = [...history, { role: 'assistant', content: reply }];
-        await strapi.entityService.update('api::conversation.conversation', logEntry.id, {
-          data: { history: updatedHistory },
-        });
-        strapi.log.info(`Updated conversation log for session ID: ${sessionId}`);
-      } else {
-        strapi.log.warn(`Could not find conversation log for session ID: ${sessionId}`);
-      }
-
+      // Respond (you also get the counters back)
       ctx.send({
         sessionId,
         next_prompt: reply,
         inferred_proficiency_key: inferred_proficiency_key || null,
         inferred_cefr_code: inferred_cefr_code || null,
         inferred_group: inferred_group || null,
-        topic_title: topic_title || null,
-        decided_mode,
+        decided_mode: decided_mode || null,
+        topic_id: effectiveTopicId || null,
+        turns_total: saved.turns_total ?? null,
+        compacted_upto: saved.compacted_upto ?? null,
       });
     } catch (error) {
       strapi.log.error('Failed to get next AI prompt:', error);
