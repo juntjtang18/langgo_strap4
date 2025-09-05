@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cefr_syllabi",
+  "info": {
+    "singularName": "cefr-syllabus",
+    "pluralName": "cefr-syllabi",
+    "displayName": "CEFR Syllabus"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "difficulty_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::difficulty-level.difficulty-level",
+      "inversedBy": "cefr_syllabi"
+    },
+    "syllabi": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "syllabi"
+    },
+    "order": {
+      "type": "integer",
+      "required": true
+    },
+    "conv_topic_number": {
+      "type": "integer",
+      "default": 0
+    },
+    "topic_templates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::topic-template.topic-template",
+      "mappedBy": "cefr_syllabus"
+    },
+    "topics": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::topic.topic",
+      "mappedBy": "cefr_syllabus"
+    }
+  }
+}

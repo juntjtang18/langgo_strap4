@@ -71,6 +71,18 @@
       "relation": "oneToMany",
       "target": "api::story.story",
       "mappedBy": "difficulty_level"
+    },
+    "cefr_syllabi": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cefr-syllabus.cefr-syllabus",
+      "mappedBy": "difficulty_level"
+    },
+    "topic_templates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::topic-template.topic-template",
+      "mappedBy": "difficulty_level"
     }
   }
 }

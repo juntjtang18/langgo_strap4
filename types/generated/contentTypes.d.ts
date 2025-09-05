@@ -722,6 +722,53 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiCefrSyllabusCefrSyllabus extends Schema.CollectionType {
+  collectionName: 'cefr_syllabi';
+  info: {
+    singularName: 'cefr-syllabus';
+    pluralName: 'cefr-syllabi';
+    displayName: 'CEFR Syllabus';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    difficulty_level: Attribute.Relation<
+      'api::cefr-syllabus.cefr-syllabus',
+      'manyToOne',
+      'api::difficulty-level.difficulty-level'
+    >;
+    syllabi: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::cefr-syllabus.cefr-syllabus', 'syllabi'>;
+    order: Attribute.Integer & Attribute.Required;
+    conv_topic_number: Attribute.Integer & Attribute.DefaultTo<0>;
+    topic_templates: Attribute.Relation<
+      'api::cefr-syllabus.cefr-syllabus',
+      'oneToMany',
+      'api::topic-template.topic-template'
+    >;
+    topics: Attribute.Relation<
+      'api::cefr-syllabus.cefr-syllabus',
+      'oneToMany',
+      'api::topic.topic'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cefr-syllabus.cefr-syllabus',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cefr-syllabus.cefr-syllabus',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiConversationConversation extends Schema.CollectionType {
   collectionName: 'conversations';
   info: {
@@ -823,6 +870,16 @@ export interface ApiDifficultyLevelDifficultyLevel
       'api::difficulty-level.difficulty-level',
       'oneToMany',
       'api::story.story'
+    >;
+    cefr_syllabi: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToMany',
+      'api::cefr-syllabus.cefr-syllabus'
+    >;
+    topic_templates: Attribute.Relation<
+      'api::difficulty-level.difficulty-level',
+      'oneToMany',
+      'api::topic-template.topic-template'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1242,11 +1299,6 @@ export interface ApiProficiencyLevelProficiencyLevel
           localized: false;
         };
       }>;
-    topics: Attribute.Relation<
-      'api::proficiency-level.proficiency-level',
-      'oneToMany',
-      'api::topic.topic'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1796,17 +1848,10 @@ export interface ApiTopicTopic extends Schema.CollectionType {
       'manyToOne',
       'api::difficulty-level.difficulty-level'
     >;
-    description: Attribute.String;
+    description: Attribute.Text;
     questions: Attribute.Component<'a.question', true>;
     tags: Attribute.String;
     is_active: Attribute.Boolean & Attribute.DefaultTo<true>;
-    proficiency_level: Attribute.Relation<
-      'api::topic.topic',
-      'manyToOne',
-      'api::proficiency-level.proficiency-level'
-    >;
-    target_vocab: Attribute.JSON;
-    target_patterns: Attribute.JSON;
     grammar_point: Attribute.Relation<
       'api::topic.topic',
       'manyToOne',
@@ -1814,12 +1859,18 @@ export interface ApiTopicTopic extends Schema.CollectionType {
     >;
     mode_hint: Attribute.Enumeration<['auto', 'practice', 'scenario']> &
       Attribute.DefaultTo<'auto'>;
-    role_name: Attribute.String;
-    role_context: Attribute.String;
     conversations: Attribute.Relation<
       'api::topic.topic',
       'oneToMany',
       'api::conversation.conversation'
+    >;
+    scenarios: Attribute.Component<'a.scenario', true>;
+    quality_score: Attribute.Integer;
+    score_breakdown: Attribute.JSON;
+    cefr_syllabus: Attribute.Relation<
+      'api::topic.topic',
+      'manyToOne',
+      'api::cefr-syllabus.cefr-syllabus'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1831,6 +1882,48 @@ export interface ApiTopicTopic extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::topic.topic',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTopicTemplateTopicTemplate extends Schema.CollectionType {
+  collectionName: 'topic_templates';
+  info: {
+    singularName: 'topic-template';
+    pluralName: 'topic-templates';
+    displayName: 'topic template';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    cefr_syllabus: Attribute.Relation<
+      'api::topic-template.topic-template',
+      'manyToOne',
+      'api::cefr-syllabus.cefr-syllabus'
+    >;
+    difficulty_level: Attribute.Relation<
+      'api::topic-template.topic-template',
+      'manyToOne',
+      'api::difficulty-level.difficulty-level'
+    >;
+    core_templates: Attribute.JSON;
+    role_template: Attribute.JSON;
+    hint_pack: Attribute.JSON;
+    quality_score: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::topic-template.topic-template',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::topic-template.topic-template',
       'oneToOne',
       'admin::user'
     > &
@@ -2358,6 +2451,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;
       'api::conversation.conversation': ApiConversationConversation;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
@@ -2376,6 +2470,7 @@ declare module '@strapi/types' {
       'api::story-audio.story-audio': ApiStoryAudioStoryAudio;
       'api::story-like.story-like': ApiStoryLikeStoryLike;
       'api::topic.topic': ApiTopicTopic;
+      'api::topic-template.topic-template': ApiTopicTemplateTopicTemplate;
       'api::unit.unit': ApiUnitUnit;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
