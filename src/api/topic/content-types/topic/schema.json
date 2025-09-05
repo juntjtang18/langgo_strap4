@@ -23,7 +23,7 @@
       "inversedBy": "topics"
     },
     "description": {
-      "type": "string"
+      "type": "text"
     },
     "questions": {
       "type": "component",
@@ -36,18 +36,6 @@
     "is_active": {
       "type": "boolean",
       "default": true
-    },
-    "proficiency_level": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::proficiency-level.proficiency-level",
-      "inversedBy": "topics"
-    },
-    "target_vocab": {
-      "type": "json"
-    },
-    "target_patterns": {
-      "type": "json"
     },
     "grammar_point": {
       "type": "relation",
@@ -64,17 +52,28 @@
       ],
       "default": "auto"
     },
-    "role_name": {
-      "type": "string"
-    },
-    "role_context": {
-      "type": "string"
-    },
     "conversations": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::conversation.conversation",
       "mappedBy": "topic"
+    },
+    "scenarios": {
+      "type": "component",
+      "repeatable": true,
+      "component": "a.scenario"
+    },
+    "quality_score": {
+      "type": "integer"
+    },
+    "score_breakdown": {
+      "type": "json"
+    },
+    "cefr_syllabus": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cefr-syllabus.cefr-syllabus",
+      "inversedBy": "topics"
     }
   }
 }

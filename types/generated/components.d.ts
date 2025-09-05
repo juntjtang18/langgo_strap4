@@ -89,6 +89,19 @@ export interface AQuiz extends Schema.Component {
   };
 }
 
+export interface AScenario extends Schema.Component {
+  collectionName: 'components_a_scenarios';
+  info: {
+    displayName: 'scenario';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    role: Attribute.String;
+    role_context: Attribute.String;
+  };
+}
+
 export interface ASentRef extends Schema.Component {
   collectionName: 'components_a_sent_refs';
   info: {
@@ -193,6 +206,7 @@ declare module '@strapi/types' {
       'a.pagebreaker': APagebreaker;
       'a.question': AQuestion;
       'a.quiz': AQuiz;
+      'a.scenario': AScenario;
       'a.sent-ref': ASentRef;
       'a.taglist': ATaglist;
       'a.user-sent-ref': AUserSentRef;

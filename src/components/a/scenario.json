@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_a_scenarios",
+  "info": {
+    "displayName": "scenario",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "role": {
+      "type": "string"
+    },
+    "role_context": {
+      "type": "string"
+    }
+  }
+}

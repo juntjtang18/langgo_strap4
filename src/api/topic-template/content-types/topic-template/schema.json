@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "topic_templates",
+  "info": {
+    "singularName": "topic-template",
+    "pluralName": "topic-templates",
+    "displayName": "topic template"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cefr_syllabus": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cefr-syllabus.cefr-syllabus",
+      "inversedBy": "topic_templates"
+    },
+    "difficulty_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::difficulty-level.difficulty-level",
+      "inversedBy": "topic_templates"
+    },
+    "core_templates": {
+      "type": "json"
+    },
+    "role_template": {
+      "type": "json"
+    },
+    "hint_pack": {
+      "type": "json"
+    },
+    "quality_score": {
+      "type": "integer"
+    }
+  }
+}

@@ -231,15 +231,10 @@ function buildTopicHints(topic) {
   const cefr = extractCEFRCodeFromTopic(topic) || 'UNKNOWN';
   const title = t?.title || 'Unknown Topic';
 
-  const tv = Array.isArray(t.target_vocab) ? t.target_vocab : [];
-  const tp = Array.isArray(t.target_patterns) ? t.target_patterns : [];
-
-  let hints = `Topic: ${title} (CEFR ${cefr}) — use naturally, not as a script.`;
-  if (tv.length) hints += `\nTarget vocabulary (hints): ${JSON.stringify(tv)}`;
-  if (tp.length) hints += `\nTarget patterns (hints): ${JSON.stringify(tp)}`;
-  hints += `\nDo NOT list hints to the learner. Weave them naturally.`;
-  return hints;
+  // Light, non-prescriptive hint
+  return `Topic: ${title} (CEFR ${cefr}). Use this naturally; do not list hints.`;
 }
+
 
 /* =======================
    Level inference
@@ -443,14 +438,13 @@ module.exports = ({ strapi }) => ({
     const lex  = lexicalRulesForGroup(group);
 
     const bg = `
-  BACKGROUND (do not say this directly):
-  - Topic: ${topicTitle || '(unknown)'}
-  - Vocab seen: ${(summary?.vocab || []).slice(0,8).join(', ') || '—'}
-  - Patterns: ${(summary?.patterns || []).slice(0,6).join(' | ') || '—'}
-  - Open threads: ${(summary?.open_threads || []).slice(0,3).join(' | ') || '—'}
-  - Recent turns: 
-  ${lastTurns.map(t => `${t.role.toUpperCase()}: ${t.content}`).join('\n')}
-  `.trim();
+    BACKGROUND (do not say this directly):
+    - Topic: ${topicTitle || '(unknown)'}
+    - Learned: ${(summary?.learned || []).slice(0,6).join(' | ') || '—'}
+    - Open threads: ${(summary?.open_threads || []).slice(0,3).join(' | ') || '—'}
+    - Recent turns:
+    ${lastTurns.map(t => `${t.role.toUpperCase()}: ${t.content}`).join('\n')}
+    `.trim();
 
     const system = [
       base,
@@ -594,8 +588,7 @@ module.exports = ({ strapi }) => ({
 
   /** Kickoff: fetch topics, LLM picks one by level, return first turn (no persistence here) */
   async kickoffFromStrapiTopics(opts = {}) {
-    const { sampleSize = 4, proficiency = 'auto', includeHints = false, background = null } = opts;
-
+    const { sampleSize = 4, proficiency = 'auto', /* includeHints unused */ background = null } = opts;
     const filters = { is_active: true };
     const allowedCEFR = allowedCEFRFromProficiency(proficiency);
     if (allowedCEFR && allowedCEFR.length) {
@@ -605,7 +598,7 @@ module.exports = ({ strapi }) => ({
     const topics = await strapi.entityService.findMany('api::topic.topic', {
       filters,
       populate: { difficulty_level: { fields: ['code'] } },
-      fields: ['title','tags','description','target_vocab','target_patterns','mode_hint','role_name','role_context'],
+      fields: ['title','mode_hint','role_name','role_context'],
       limit: 30,
     });
 
@@ -627,12 +620,6 @@ module.exports = ({ strapi }) => ({
       if (t.mode_hint) line += ` | mode:${t.mode_hint}`;
       if (t.role_name) line += ` | role:${t.role_name}`;
       if (t.role_context) line += ` | ctx:${String(t.role_context).slice(0, 60)}`;
-      if (includeHints) {
-        const tv = Array.isArray(t.target_vocab) ? t.target_vocab : [];
-        const tp = Array.isArray(t.target_patterns) ? t.target_patterns : [];
-        if (tv.length) line += ` | vocab: ${tv.slice(0, 6).join(', ')}`;
-        if (tp.length) line += ` | patterns: ${tp.slice(0, 3).map(s => `"${s}"`).join(', ')}`;
-      }
       return line;
     });
 
@@ -731,7 +718,7 @@ module.exports = ({ strapi }) => ({
     if (topicId) {
       topic = await strapi.entityService.findOne('api::topic.topic', topicId, {
         populate: { difficulty_level: { fields: ['code'] } },
-        fields: ['title', 'target_vocab', 'target_patterns', 'mode_hint', 'role_name', 'role_context'],
+        fields: ['title', 'mode_hint', 'role_name', 'role_context'],
       });
     }
 
