@@ -7,7 +7,103 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // ---------- constants ----------
 const MUST_ANGLE_KEYS = ['roleplay','compare','plan','problem','clarify','story','advice'];
 
-// ---------- helpers ----------
+// ---------- small helpers ----------
+function hasAngle(label = '', angle = '') {
+  const s = String(label).toLowerCase();
+  const a = String(angle).toLowerCase();
+  return new RegExp(`\\b${a}\\b`).test(s) || s.startsWith(a);
+}
+function uniqStrings(arr = []) {
+  const seen = new Set();
+  const out = [];
+  for (const s of arr) {
+    const t = String(s || '').trim();
+    if (!t) continue;
+    const k = t.toLowerCase();
+    if (!seen.has(k)) { seen.add(k); out.push(t); }
+  }
+  return out;
+}
+
+// ---------- TEMPLATE SCORER (single source of truth) ----------
+function scoreTemplate(tpl = {}, { levelCode = 'A1' } = {}) {
+  const lc = String(levelCode || '').toUpperCase();
+  const low = (lc === 'A1' || lc === 'A2');
+
+  const core = uniqStrings(Array.isArray(tpl.core_templates) ? tpl.core_templates : []);
+  const roles = Array.isArray(tpl.role_templates)
+    ? tpl.role_templates
+    : Array.isArray(tpl.role_template) ? tpl.role_template : [];
+  const hint = typeof tpl.hint_pack === 'object' && tpl.hint_pack ? tpl.hint_pack : {};
+
+  // 1) Breadth (0–35)
+  const hitAngles = MUST_ANGLE_KEYS.filter(a => core.some(c => hasAngle(c, a)));
+  const breadth = hitAngles.length * 5;
+  const missingAngles = MUST_ANGLE_KEYS.filter(a => !hitAngles.includes(a));
+
+  // 2) Core size + label quality (0–25)
+  const n = core.length;
+  let coreSize = 0;
+  if (n >= 11 && n <= 14) coreSize = 22;
+  else if (n >= 9 && n <= 10) coreSize = 18;
+  else if (n >= 5 && n <= 8) coreSize = 12;
+  else if (n > 14) coreSize = 16;
+  else coreSize = Math.max(0, n * 2);
+
+  const labelGood = core.filter(s => s.length >= 6 && s.length <= 48).length;
+  const labelBonus = Math.min(3, Math.floor((labelGood / Math.max(1, n)) * 3));
+  coreSize = Math.min(25, coreSize + labelBonus);
+
+  // 3) Roles (0–20)
+  const rCount = roles.length;
+  let roleBase = 0;
+  if (rCount >= 5 && rCount <= 8) roleBase = 12;
+  else if (rCount === 4) roleBase = 8;
+  else if (rCount > 8) roleBase = 10;
+  else roleBase = Math.max(0, rCount * 2);
+
+  let roleCompleteness = 0;
+  for (const r of roles) if (r?.title && r?.role && r?.role_context) roleCompleteness++;
+  const roleBonus = Math.min(8, roleCompleteness);
+  const roleSize = Math.min(20, roleBase + roleBonus);
+
+  // 4) Hint pack (0–15)
+  const hasLevel = !!hint.level_guidance;
+  const gt = Array.isArray(hint.grammar_targets) ? hint.grammar_targets.length : 0;
+  const mv = Array.isArray(hint.must_vocab) ? hint.must_vocab.length : 0;
+  const av = Array.isArray(hint.avoid) ? hint.avoid.length : 0;
+  const dm = Array.isArray(hint.discourse_moves) ? hint.discourse_moves.length : 0;
+
+  let hintScore = 0;
+  if (hasLevel) hintScore += 4;
+  hintScore += gt >= 3 ? 4 : gt >= 1 ? 2 : 0;
+  hintScore += mv >= 3 ? 3 : mv >= 1 ? 1 : 0;
+  hintScore += av >= 3 ? 2 : av >= 1 ? 1 : 0;
+  hintScore += dm >= 3 ? 2 : dm >= 1 ? 1 : 0;
+  hintScore = Math.min(15, hintScore);
+
+  // 5) Penalties (0 to −10)
+  let penalty = 0;
+  const joined = core.join(' | ').toLowerCase();
+  if (low && /(debate|ethic|global|politic|philosoph|controvers)/i.test(joined)) penalty -= 6;
+  if (rCount === 0) penalty -= 6;
+
+  let total = breadth + coreSize + roleSize + hintScore + penalty;
+  total = Math.max(0, Math.min(100, total));
+
+  return {
+    total,
+    breakdown: {
+      breadth, coreSize, roleSize, hintScore, penalty,
+      anglesHit: hitAngles, missingAngles,
+      counts: { core: n, roles: rCount },
+      hintStats: { hasLevel, grammarTargets: gt, mustVocab: mv, avoid: av, discourseMoves: dm },
+      lowLevel: low
+    }
+  };
+}
+
+// ---------- normalization helpers ----------
 function defaultLevelGuidance(level) {
   switch ((level||'').toUpperCase()) {
     case 'A1': return 'Use simple, concrete language; short turns; present tense; everyday words.';
@@ -62,7 +158,6 @@ function normalizeDesign(raw, { levelCode }) {
   return { core_templates: core, role_templates: roles, role_template: roles, hint_pack: hint };
 }
 
-
 // deterministic backfill to guarantee breadth & roles
 function backfillDeterministic(tpl, { levelCode }) {
   const out = JSON.parse(JSON.stringify(tpl));
@@ -110,25 +205,7 @@ function backfillDeterministic(tpl, { levelCode }) {
   return out;
 }
 
-// detailed scoring
-function scoreDesignDetailed(tpl, { levelCode }) {
-  const core  = tpl.core_templates || [];
-  const roles = tpl.role_templates || tpl.role_template || []; // <-- score uses either
-  const joined = core.join('|').toLowerCase();
-
-  const breadthHits = MUST_ANGLE_KEYS.filter(k => joined.includes(k));
-  const breadth = breadthHits.length * 10;           // max 70
-  const coreSize = Math.min(core.length, 12) * 2;    // max 24
-  const roleSize = Math.min(roles.length, 6) * 3;    // max 18
-  const penalty  = (['A1','A2'].includes((levelCode||'').toUpperCase()) && /debate|ethic/.test(joined)) ? -10 : 0;
-
-  let total = breadth + coreSize + roleSize + penalty;
-  total = Math.max(0, Math.min(100, total));
-
-  const missingAngles = MUST_ANGLE_KEYS.filter(k => !breadthHits.includes(k));
-  return { total, breadth, coreSize, roleSize, penalty, missingAngles };
-}
-
+// ---------- OpenAI helper ----------
 async function callOpenAIJSON(messages, temperature = 0.7) {
   const resp = await openai.chat.completions.create({
     model: 'gpt-4-turbo',
@@ -142,20 +219,7 @@ async function callOpenAIJSON(messages, temperature = 0.7) {
 // ---------- service ----------
 module.exports = createCoreService('api::topic-template.topic-template', ({ strapi }) => ({
 
-  // used by your existing controller earlier — still available
   async designFor({ levelCode, syllabusTitle }) {
-    const system = `You design reusable conversation template sets for English speaking practice. Return strict JSON only.`;
-    const user = [
-      `CEFR: ${levelCode}`,
-      `Syllabus: "${syllabusTitle}"`,
-      `Output JSON with keys:`,
-      `- core_templates: 10-14 short labels. INCLUDE at least these angles: roleplay, compare, plan, problem, clarify, story, advice.`,
-      `- role_templates: 5-8 objects { "title": "...", "role": "AI ...", "role_context": "1-2 sentences" }.`,
-      `- hint_pack: { "level_guidance": "...", "grammar_targets": [...], "must_vocab": [...], "avoid": [...], "discourse_moves": [...] }`,
-      `Rules: match ${levelCode} abilities and "${syllabusTitle}". Avoid debate-heavy/abstract angles at A1–A2.`,
-      `Return ONLY valid JSON.`,
-    ].join('\n');
-
     let raw;
     try {
       raw = await callOpenAIJSON(
@@ -181,12 +245,12 @@ module.exports = createCoreService('api::topic-template.topic-template', ({ stra
 
     let normalized = normalizeDesign(raw, { levelCode });
     normalized = backfillDeterministic(normalized, { levelCode });
-    const scores = scoreDesignDetailed(normalized, { levelCode });
-    return { ...normalized, quality_score: scores.total, _scores: scores };
+    const sc = scoreTemplate(normalized, { levelCode });
+    return { ...normalized, quality_score: sc.total, _scores: sc.breakdown };
   },
 
   /**
-   * New: one-shot design with auto-improve loop.
+   * One-shot design with auto-improve loop.
    * Returns { core_templates, role_templates, hint_pack, quality_score, _scores, rounds }
    */
   async designAndImprove({ levelCode, syllabusTitle, targetScore = 70, maxRounds = 2 }) {
@@ -195,16 +259,16 @@ module.exports = createCoreService('api::topic-template.topic-template', ({ stra
 
     while (result.quality_score < targetScore && rounds < maxRounds) {
       rounds++;
-      const { missingAngles } = result._scores;
-      const needRoles = (result.role_templates?.length || result.role_template?.length || 0) < 5;
 
+      const b = result._scores;
       const feedback = [
-        `Current core_templates: ${JSON.stringify(result.core_templates)}`,
-        `Missing angles: ${missingAngles.join(', ') || 'none'}`,
-        `Current role_templates count: ${result.role_templates?.length || result.role_template?.length || 0}`,
-        needRoles ? `Please add personas so we have 5-6 role_templates with clear role_context.` : '',
-        `Ensure labels include these keywords: ${MUST_ANGLE_KEYS.join(', ')}.`,
-        `Keep CEFR ${levelCode} appropriate and relevant to "${syllabusTitle}".`
+        `Missing angles: ${b.missingAngles.join(', ') || 'none'}.`,
+        `Core labels: ${b.counts.core} (target 10–14 unique, readable labels; aim for 6–48 chars each).`,
+        `Roles: ${b.counts.roles} (need 5–8), ensure each has: "title", "role", "role_context" (1–2 sentences).`,
+        `Hints coverage — level_guidance:${b.hintStats.hasLevel ? 'yes' : 'no'}, ` +
+          `grammar_targets:${b.hintStats.grammarTargets}, must_vocab:${b.hintStats.mustVocab}, ` +
+          `avoid:${b.hintStats.avoid}, discourse_moves:${b.hintStats.discourseMoves}. Increase any low counts.`,
+        b.lowLevel ? `For ${levelCode}, avoid abstract/debate angles; keep concrete and simple.` : ''
       ].filter(Boolean).join('\n');
 
       let improvedRaw;
@@ -229,24 +293,26 @@ module.exports = createCoreService('api::topic-template.topic-template', ({ stra
 
       let normalized = normalizeDesign(improvedRaw, { levelCode });
       normalized = backfillDeterministic(normalized, { levelCode });
-      const scores = scoreDesignDetailed(normalized, { levelCode });
-      result = { ...normalized, quality_score: scores.total, _scores: scores };
+      const sc = scoreTemplate(normalized, { levelCode });
+      result = { ...normalized, quality_score: sc.total, _scores: sc.breakdown };
     }
 
     return { ...result, rounds };
   },
 
-  // still available for the “improve” endpoint if you keep it
+  // Optional helper if you keep a separate improve entry point
   async improveTemplate({ current, levelCode, syllabusTitle }) {
     let normalized = normalizeDesign(current, { levelCode });
     normalized = backfillDeterministic(normalized, { levelCode });
-    const firstScores = scoreDesignDetailed(normalized, { levelCode });
-    if (firstScores.total >= 70) return { ...normalized, quality_score: firstScores.total, _scores: firstScores };
+    let sc = scoreTemplate(normalized, { levelCode });
+    if (sc.total >= 70) return { ...normalized, quality_score: sc.total, _scores: sc.breakdown };
+
+    // otherwise run one improvement round
     const tmp = await this.designAndImprove({ levelCode, syllabusTitle, targetScore: 70, maxRounds: 1 });
     return tmp;
   },
 
-  // expose detailed scoring (optional utility)
-  scoreDesignDetailed,
-
+  // expose scorers (alias keeps backward compatibility)
+  scoreTemplate,
+  scoreDesignDetailed: scoreTemplate,
 }));
