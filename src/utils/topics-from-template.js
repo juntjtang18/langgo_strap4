@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 // add helper near the top
@@ -135,3 +136,4 @@ function generateTopicsFromTemplate({ levelCode, syllabusTitle, count = 10, scen
 }
 
 module.exports = { generateTopicsFromTemplate };
+*/
