@@ -1,343 +1,311 @@
 'use strict';
 const { createCoreController } = require('@strapi/strapi').factories;
 const { scoreTopic, improveTopicWithLLM } = require('../../topic/services/evaluator');
-const { generateDraftTopics, selectUniqueDrafts } = require('../services/cefr-syllabus-services');
+//const { generateDraftTopics, selectUniqueDrafts } = require('../services/cefr-syllabus-services');
+const { generateDraftTopics, selectUniqueDrafts, baseAngle } = require('../services/cefr-syllabus-services');
 
-module.exports = createCoreController('api::cefr-syllabus.cefr-syllabus', ({ strapi }) => ({
+module.exports = createCoreController('api::cefr-syllabus.cefr-syllabus', ({ strapi }) => {
+  const clip = (s, n = 255) => String(s ?? '').slice(0, n);
+
+  const angleFromTitle = (title='') => baseAngle(title);
+
+  async function persistAndScoreDraft({ draft, syllabus, levelId, levelCode }) {
+    const row = await strapi.entityService.create('api::topic.topic', {
+      data: {
+        title: clip(draft.title, 200),
+        spoken_title: clip(draft.spoken_title || draft.title, 120),
+        description: draft.description,            // TEXT
+        tags: clip(draft.tags, 200),
+        mode_hint: 'scenario',
+        is_active: true,
+        difficulty_level: levelId,
+        cefr_syllabus: syllabus.id,
+        scenarios: (draft.scenarios || []).map(sc => ({
+          __component: 'a.scenario',
+          title: clip(sc.title, 200),
+          role: clip(sc.role, 200),
+          role_context: clip(sc.role_context, 250),
+        })),
+      }
+    });
+
+    const { total, breakdown } = scoreTopic(
+      { ...draft, title: row.title, description: row.description, tags: row.tags, scenarios: draft.scenarios },
+      { levelCode }
+    );
+    await strapi.entityService.update('api::topic.topic', row.id, {
+      data: { quality_score: total, score_breakdown: breakdown }
+    });
+
+    return { row, score: total };
+  }
 
   /**
-   * POST /api/cefr-syllabus/generate-topic
-   * body: { id, target?: number=80, maxRounds?: number=2, topics?: number=10, scenariosPerTopic?: number=5 }
-   * Generates topics for ONE syllabus id, evaluates, then improves (body only) up to target.
+   * Core helper used by BOTH endpoints.
+   * Returns { syllabus, created_count, results, before, after, levelCode }
    */
-  async generateTopicFromTemplate(ctx) {
-    const {
-      id,                 // optional: if omitted, pick the next syllabus needing topics
-      target = 80,        // target score
-      maxRounds = 2,      // max improvement rounds per topic
-      count = 10,         // topics to create for this syllabus (or remaining to cap)
-      scenariosPerTopic = 5
-    } = ctx.request.body || {};
-
-    // 1) pick syllabus
-    let syllabus;
-    if (id) {
-      syllabus = await strapi.entityService.findOne('api::cefr-syllabus.cefr-syllabus', id, {
-        populate: { difficulty_level: true }
-      });
-      if (!syllabus) return ctx.badRequest('Invalid syllabus id');
-    } else {
-      [syllabus] = await strapi.entityService.findMany('api::cefr-syllabus.cefr-syllabus', {
-        filters: { conv_topic_number: { $lt: count } },
-        populate: { difficulty_level: true },
-        sort: [{ conv_topic_number: 'asc' }, { order: 'asc' }, { id: 'asc' }],
-        limit: 1,
-      });
-      if (!syllabus) {
-        return ctx.send({ status: 'done', message: 'All syllabi appear complete.' });
-      }
-    }
+  async function generateForOne({ syllabusId, target = 80, maxRounds = 2, topics = 10, scenariosPerTopic = 5, improve = true }) {
+    // load syllabus
+    const syllabus = await strapi.entityService.findOne('api::cefr-syllabus.cefr-syllabus', syllabusId, {
+      populate: { difficulty_level: true }
+    });
+    if (!syllabus) return { created_count: 0, results: [], error: 'invalid-syllabus' };
 
     const levelId   = syllabus.difficulty_level?.id;
     const levelCode = syllabus.difficulty_level?.code || 'A1';
+    if (!levelId) return { created_count: 0, results: [], error: 'no-level' };
 
-    // 2) fetch its template
+    const before = syllabus.conv_topic_number || 0;
+    const remaining = Math.max(0, topics - before);
+    if (remaining === 0) {
+      return {
+        syllabus,
+        created_count: 0,
+        results: [],
+        before,
+        after: before,
+        reason: 'already-filled',
+        levelCode,
+      };
+    }
+
+    // template
     const [tpl] = await strapi.entityService.findMany('api::topic-template.topic-template', {
       filters: { cefr_syllabus: syllabus.id, difficulty_level: levelId },
-      populate: {},
       limit: 1,
     });
-    if (!tpl) return ctx.badRequest(`No topic-template for syllabus #${syllabus.id}. Create it first.`);
+    if (!tpl) {
+      return { syllabus, created_count: 0, results: [], before, after: before, reason: 'no-template', levelCode };
+    }
 
-    // 3) generate drafts (pure)
+    // generate drafts
     const drafts = generateDraftTopics({
       levelCode,
       syllabusTitle: syllabus.syllabi,
-      count,
+      count: remaining,
       scenariosPerTopic,
       coreTemplates: tpl.core_templates || [],
       roleTemplates: tpl.role_template || tpl.role_templates || [],
       hintPack: tpl.hint_pack || {},
       syllabusSlug: syllabus.slug,
     });
-    // 3.1) semantic de-duplication vs DB + among candidates
-    const existingTopics = await strapi.entityService.findMany('api::topic.topic', {
-        filters: { cefr_syllabus: syllabus.id },
-        fields: ['title'],
-        limit: 1000,
+
+    // semantic de-dupe against existing titles
+    const existing = await strapi.entityService.findMany('api::topic.topic', {
+      filters: { cefr_syllabus: syllabus.id }, fields: ['title'], limit: 1000,
     });
-    const existingTitles = existingTopics.map(t => t.title);
+    const existingTitles = existing.map(t => t.title);
 
     const { acceptedDrafts } = await selectUniqueDrafts({
-        syllabusTitle: syllabus.syllabi,
-        levelCode,
-        existingTitles,
-        candidateDrafts: drafts,
-        target: drafts.length, // keep your requested count
+      syllabusTitle: syllabus.syllabi,
+      levelCode,
+      existingTitles,
+      candidateDrafts: drafts,
+      target: remaining,
     });
 
-    // 4) persist each draft, then score and (optionally) improve
-    const clip = (s, n = 255) => String(s ?? '').slice(0, n);
-    const created = [];
-    const results = [];                               // <-- NEW: collect per-topic results
+    // persist + score (+ improve if requested)
+    const results = [];
+    let created = 0;
 
-    for (let i = 0; i < drafts.length; i++) {
-      const d = drafts[i];
-
-      // create
-      const createdRow = await strapi.entityService.create('api::topic.topic', {
-        data: {
-          title: clip(d.title, 200),
-          description: d.description,      // TEXT field
-          tags: clip(d.tags, 200),
-          mode_hint: 'scenario',
-          is_active: true,
-          difficulty_level: levelId,
-          cefr_syllabus: syllabus.id,    
-          // scenarios component
-          scenarios: (d.scenarios || []).map(s => ({
-            __component: 'a.scenario',
-            title: clip(s.title, 200),
-            role: clip(s.role, 200),
-            role_context: clip(s.role_context, 250),
-          })),
-        }
-      });
-
-      // score RIGHT AFTER creation (ensures every topic ends with a score)
-      const firstScore = scoreTopic(
-        { ...d, title: createdRow.title, description: createdRow.description, tags: createdRow.tags, scenarios: d.scenarios },
-        { levelCode }
-      );
-      let score = firstScore.total;
-      let breakdown = firstScore.breakdown;
-
-      // persist initial score
-      await strapi.entityService.update('api::topic.topic', createdRow.id, {
-        data: { quality_score: score, score_breakdown: breakdown }
-      });
-
-      // improve loop (title/body/scenarios) only if below target
+    for (const draft of acceptedDrafts) {
+      const { row, score } = await persistAndScoreDraft({ draft, syllabus, levelId, levelCode });
+      let currentScore = score;
       let rounds = 0;
-      while (score < Number(target) && rounds < Number(maxRounds)) {
-        rounds++;
 
-        const improved = await improveTopicWithLLM(
-          { title: createdRow.title, description: createdRow.description, tags: createdRow.tags, scenarios: d.scenarios },
-          { levelCode, hintPack: tpl.hint_pack || {} }
-        );
+      if (improve) {
+        // improve only description & scenarios; keep category part of tag stable, update angle from improved title
+        while (currentScore < Number(target) && rounds < Number(maxRounds)) {
+            rounds++;
 
-        // update entity (clip lengths)
-        await strapi.entityService.update('api::topic.topic', createdRow.id, {
-          data: {
-            title: clip(improved.title, 200),
-            description: improved.description,
-            // keep category (first part), recompute angle from title to keep tag stable & informative
-            tags: (() => {
-              const category = (createdRow.tags || '').split(',')[0]?.trim() || 'general';
-              const angle = (() => {
-                const t = (improved.title || '').toLowerCase();
-                if (t.includes('roleplay')) return 'roleplay';
-                if (t.includes('compare'))  return 'compare';
-                if (t.includes('plan'))     return 'plan';
-                if (t.includes('problem'))  return 'problem';
-                if (t.includes('clarify'))  return 'clarify';
-                if (t.includes('story'))    return 'story';
-                if (t.includes('advice'))   return 'advice';
-                return 'general';
-              })();
-              return clip([category, angle].filter(Boolean).join(', '), 200);
-            })(),
-            scenarios: (improved.scenarios || []).slice(0, 5).map(s => ({
-              __component: 'a.scenario',
-              title: clip(s.title, 200),
-              role: clip(s.role, 200),
-              role_context: clip(s.role_context, 250),
-            })),
-          }
-        });
+            const improved = await improveTopicWithLLM(
+                { title: row.title, description: row.description, tags: row.tags, scenarios: draft.scenarios },
+                { levelCode, hintPack: tpl.hint_pack || {} }
+            );
 
-        // reload a minimal shape for rescoring
-        const reloaded = await strapi.entityService.findOne('api::topic.topic', createdRow.id, {
-          populate: { scenarios: true, difficulty_level: true }
-        });
+            const category = (row.tags || '').split(',')[0]?.trim() || 'general';
+            const angle = angleFromTitle(improved.title);
+            const rescored = scoreTopic(
+                { ...draft, title: improved.title, description: improved.description,
+                    tags: [category, angle].join(', '), scenarios: improved.scenarios },
+                { levelCode }
+            );
+            await strapi.entityService.update('api::topic.topic', row.id, {
+                data: {
+                title: clip(improved.title, 200),
+                description: improved.description,
+                tags: clip([category, angle].join(', '), 200),
+                scenarios: (improved.scenarios || []).slice(0, 5).map(sc => ({
+                    __component: 'a.scenario',
+                    title: clip(sc.title, 200),
+                    role: clip(sc.role, 200),
+                    role_context: clip(sc.role_context, 250),
+                })),
+                }
+            });
+            currentScore = rescored.total;
 
-        const rescored = scoreTopic(reloaded, { levelCode });
-        score = rescored.total;
-        breakdown = rescored.breakdown;
+            //const reloaded = await strapi.entityService.findOne('api::topic.topic', row.id, { populate: { scenarios: true } });
+            //const rescored = scoreTopic(reloaded, { levelCode });
+            //currentScore = rescored.total;
 
-        // persist improved score
-        await strapi.entityService.update('api::topic.topic', createdRow.id, {
-          data: { quality_score: score, score_breakdown: breakdown }
-        });
-
-        if (score >= Number(target)) break;
+            await strapi.entityService.update('api::topic.topic', row.id, {
+                data: { quality_score: currentScore, score_breakdown: rescored.breakdown }
+            });
+        }
       }
 
-      created.push(createdRow);
-      results.push({ id: createdRow.id, score, rounds });   // <-- record per-topic
+      created++;
+      results.push({ id: row.id, score: currentScore, rounds });
     }
 
-    // 5) bump syllabus counter
-    const already = syllabus.conv_topic_number || 0;
-    await strapi.entityService.update('api::cefr-syllabus.cefr-syllabus', syllabus.id, {
-      data: { conv_topic_number: already + created.length },
-    });
+    // bump counter -- commented out for lifecycle added to Topic
+    //await strapi.entityService.update('api::cefr-syllabus.cefr-syllabus', syllabus.id, {
+    //  data: { conv_topic_number: before + created },
+    //});
+    // Re-read accurate count maintained by topic lifecycles
+    const updated = await strapi.entityService.findOne('api::cefr-syllabus.cefr-syllabus', syllabus.id);
+    const after = updated?.conv_topic_number ?? (before + created);
 
-    ctx.send({
-      status: 'ok',
-      syllabus: {
-        id: syllabus.id,
-        title: syllabus.syllabi,
-        level: levelCode,
-        slug: syllabus.slug,
-        before: already,
-        after: already + created.length,
-      },
-      created_count: created.length,
-      results,                              // <-- back in the payload
-    });
-  },
+    return {
+      syllabus,
+      created_count: created,
+      results,
+      before,
+      after: before + created,
+      levelCode,
+    };
+  }
 
-  /**
-   * POST /api/cefr-syllabus/generate-topic-bulk
-   * body: { target?: number=80, maxRounds?: number=2, topics?: number=10, scenariosPerTopic?: number=5 }
-   * Generates topics for ALL syllabi that are underfilled. Returns progress summary.
-   */
+  return {
+    /**
+     * POST /api/cefr-syllabus/generate-topic
+     * body: { id, target?: number=80, maxRounds?: number=2, topics?: number=10, scenariosPerTopic?: number=5 }
+     */
+    async generateTopicFromTemplate(ctx) {
+      const { id, target = 80, maxRounds = 2, topics = 10, scenariosPerTopic = 5 } = ctx.request.body || {};
+      if (!id) return ctx.badRequest('Missing id');
+
+      const res = await generateForOne({ syllabusId: Number(id), target, maxRounds, topics, scenariosPerTopic, improve: true });
+
+      if (res.error) return ctx.badRequest(res.error);
+
+      const { syllabus, levelCode } = res;
+      ctx.send({
+        status: 'ok',
+        syllabus: {
+          id: syllabus.id,
+          title: syllabus.syllabi,
+          level: levelCode,
+          slug: syllabus.slug,
+          before: res.before,
+          after: res.after,
+        },
+        created_count: res.created_count,
+        results: res.results,
+        reason: res.reason,
+      });
+    },
+
+    /**
+     * POST /api/cefr-syllabus/generate-topic-bulk
+     * body: { topics?: number=10, scenariosPerTopic?: number=5, target?: number=80, maxRounds?: number=1, ids?: number[] }
+     * Loops syllabi and calls the SAME helper, reporting progress. Bulk also improves to target (configurable).
+     */
+    // POST /api/cefr-syllabus/generate-topic-bulk
     async generateTopicBulk(ctx) {
         const {
             topics = 10,
             scenariosPerTopic = 5,
+            target = 85,
+            maxRounds = 2,
+            verbose = false,         // NEW: return detailed results per syllabus if true
         } = ctx.request.body || {};
 
-        const clip = (s, n = 255) => String(s ?? '').slice(0, n);
+        const t0 = Date.now();
+        strapi.log.info(`[topic-bulk] starting… target=${target} maxRounds=${maxRounds} topics=${topics}`);
 
-        strapi.log.info(`[bulk] starting: topics=${topics}, scenariosPerTopic=${scenariosPerTopic}`);
-
-        const all = await strapi.entityService.findMany('api::cefr-syllabus.cefr-syllabus', {
+        // get all syllabi in order
+        const syllabi = await strapi.entityService.findMany('api::cefr-syllabus.cefr-syllabus', {
             populate: { difficulty_level: true },
             sort: [{ order: 'asc' }, { id: 'asc' }],
             limit: 9999,
         });
 
+        const total = syllabi.length || 0;
         const progress = [];
+        let processed = 0;
 
-        for (const s of all) {
-            const levelId   = s.difficulty_level?.id;
-            const levelCode = s.difficulty_level?.code || 'A1';
+        // Helper: consistent progress logging
+        const logStep = (payload) => {
+            const i = ++processed;
+            const pct = total ? Math.round((i / total) * 100) : 100;
+            const msg = `[topic-bulk] (${i}/${total}, ${pct}%)` +
+            ` syllabus#${payload.syllabusId}` +
+            (payload.title ? ` "${payload.title}"` : '') +
+            (payload.level ? ` [${payload.level}]` : '') +
+            ` -> created=${payload.created}` +
+            (payload.reason ? ` reason=${payload.reason}` : '') +
+            (payload.err ? ` ERROR=${payload.err}` : '');
+            strapi.log.info(msg);
+            progress.push(payload);
+        };
+
+        for (const s of syllabi) {
+            const start = Date.now();
 
             try {
-            if (!levelId) {
-                progress.push({ syllabusId: s.id, skipped: true, reason: 'no-level' });
-                continue;
-            }
-
-            // find template
-            const [tpl] = await strapi.entityService.findMany('api::topic-template.topic-template', {
-                filters: { cefr_syllabus: s.id, difficulty_level: levelId },
-                limit: 1,
-            });
-            if (!tpl) {
-                strapi.log.info(`[bulk] skip syllabus #${s.id} — no template`);
-                progress.push({ syllabusId: s.id, skipped: true, reason: 'no-template' });
-                continue;
-            }
-
-            // compute remaining to avoid overshooting any internal cap you might want
-            const already = s.conv_topic_number || 0;
-            const toCreate = Math.max(0, topics - already);
-            if (toCreate === 0) {
-                strapi.log.info(`[bulk] syllabus #${s.id} already has ${already}; skipping`);
-                progress.push({ syllabusId: s.id, created: 0, reason: 'already-filled' });
-                continue;
-            }
-
-            strapi.log.info(`[bulk] syllabus #${s.id} "${s.syllabi}" — generating ${toCreate}`);
-
-            // generate drafts
-            const drafts = generateDraftTopics({
-                levelCode,
-                syllabusTitle: s.syllabi,
-                count: toCreate,
+            // Reuse the *service* that your single endpoint uses.
+            // If you have a helper `generateForOne` on the cefr-syllabus service, use it.
+            // Otherwise, call what your single endpoint calls internally.
+            //const svc = strapi.service('api::cefr-syllabus.cefr-syllabus');
+            //const res = await svc.generateForOne({
+            const res = await generateForOne({
+                syllabusId: s.id,
+                topics,
                 scenariosPerTopic,
-                coreTemplates: tpl.core_templates || [],
-                roleTemplates: tpl.role_template || tpl.role_templates || [],
-                hintPack: tpl.hint_pack || {},
-                syllabusSlug: s.slug,
+                target,
+                maxRounds,
+                // You can pass a silent flag if your service supports it
             });
 
-            // DB titles for this syllabus
-            const existingTopics = await strapi.entityService.findMany('api::topic.topic', {
-                filters: { cefr_syllabus: s.id },
-                fields: ['title'],
-                limit: 1000,
+            const took = Date.now() - start;
+            logStep({
+                syllabusId: s.id,
+                title: s.syllabi,
+                level: s?.difficulty_level?.code,
+                created: res?.created_count || 0,
+                before: res?.before,
+                after: res?.after,
+                ms: took,
+                ...(verbose ? { results: res?.results || [] } : {}),
+                ...(res?.reason ? { reason: res.reason } : {}),
             });
-
-            const existingTitles = existingTopics.map(t => t.title);
-
-            // pick distinct drafts
-            const { acceptedDrafts } = await selectUniqueDrafts({
-                syllabusTitle: s.syllabi,
-                levelCode,
-                existingTitles,
-                candidateDrafts: drafts,
-                target: toCreate,
-            });
-
-            let created = 0;
-
-            for (const d of drafts) {
-                const row = await strapi.entityService.create('api::topic.topic', {
-                data: {
-                    title: clip(d.title, 200),
-                    description: d.description,     // TEXT field
-                    tags: clip(d.tags, 200),
-                    mode_hint: 'scenario',
-                    is_active: true,
-                    difficulty_level: levelId,
-                    cefr_syllabus: s.id,
-                    scenarios: (d.scenarios || []).map(sc => ({
-                    __component: 'a.scenario',
-                    title: clip(sc.title, 200),
-                    role: clip(sc.role, 200),
-                    role_context: clip(sc.role_context, 250),
-                    })),
-                }
-                });
-
-                // score once (no improve in bulk)
-                const { total, breakdown } = scoreTopic(
-                { ...d, title: row.title, description: row.description, tags: row.tags, scenarios: d.scenarios },
-                { levelCode }
-                );
-                await strapi.entityService.update('api::topic.topic', row.id, {
-                data: { quality_score: total, score_breakdown: breakdown }
-                });
-
-                created++;
-                if (created % 5 === 0) {
-                strapi.log.info(`[bulk] syllabus #${s.id} created ${created}/${toCreate}`);
-                }
-            }
-
-            // bump syllabus counter
-            await strapi.entityService.update('api::cefr-syllabus.cefr-syllabus', s.id, {
-                data: { conv_topic_number: already + created }
-            });
-
-            strapi.log.info(`[bulk] syllabus #${s.id} done — created ${created}`);
-            progress.push({ syllabusId: s.id, created });
 
             } catch (err) {
-            strapi.log.error(`[bulk] syllabus #${s.id} failed: ${err.message}`);
-            progress.push({ syllabusId: s.id, error: err.message });
-            // continue with the rest
+                const took = Date.now() - start;
+                strapi.log.error(`[topic-bulk] syllabus#${s.id} FAILED in ${took}ms: ${err.message}`);
+                logStep({
+                    syllabusId: s.id,
+                    title: s.syllabi,
+                    level: s?.difficulty_level?.code,
+                    created: 0,
+                    err: err.message,
+                    ms: took,
+                });
+                // continue to next syllabus
             }
         }
 
-        strapi.log.info(`[bulk] finished: ${progress.length} syllabi processed`);
-        ctx.send({ status: 'ok', progress });
-    }
-    //module.exports.generateTopicBulk = generateTopicBulk;
+        const totalMs = Date.now() - t0;
+        strapi.log.info(`[topic-bulk] finished in ${totalMs}ms`);
 
-}));
+        ctx.send({
+            status: 'ok',
+            took_ms: totalMs,
+            progress,
+        });
+    },
+
+  };
+});

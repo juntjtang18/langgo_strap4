@@ -24,7 +24,8 @@ module.exports = ({ env }) => {
     },
     watchIgnoreFiles: [
       '**/test/**',
-      '**/database/**'
+      '**/database/**',
+      '**/script/**',
     ],
   };
 };

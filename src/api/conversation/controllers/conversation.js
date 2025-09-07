@@ -2,44 +2,53 @@
 
 const { v4: uuidv4 } = require('uuid');
 
+/**
+ * Conversation Controller
+ *
+ * PARAMETERS (client-visible):
+ * - GET /v1/conversation/start
+ *    • sampleSize (optional, int): number of topic **suggestions** to seed for the LLM (1–3; default 3).
+ *      NOTE: This is NOT "conversation log entries". It only controls how many candidate topics we whisper
+ *      to the LLM as soft suggestions if the user asks for something new.
+ *    • includeHints (optional, deprecated): accepted but ignored; scaffolding is decided by level rules.
+ *
+ * - POST /v1/conversation/nextprompt
+ *    • sessionId (required): string
+ *    • history (required): array of full chat turns (client = source of truth)
+ *    • proficiency (optional): override; if omitted or 'auto' we read from user profile and/or infer.
+ *    • mode (optional): 'practice' | 'scenario' | 'auto' — override if you want to lock the style.
+ *    • topic_id (optional): force-bind a topic (normally the LLM drives this; we keep it open).
+ */
 module.exports = {
-  /** GET /v1/conversation/start?proficiency=auto|BEGINNER|...&sampleSize=4&includeHints=true */
-// GET /v1/conversation/start?proficiency=...&sampleSize=4&includeHints=false&resume=fresh|continue|practice&topicId=123
-async start(ctx) {
-  try {
-    const svc = strapi.service('api::conversation.conversation-service');
+  /** GET /v1/conversation/start */
+  async start(ctx) {
+    try {
+      const svc = strapi.service('api::conversation.conversation-service');
 
-    const proficiency = String(ctx.query?.proficiency || 'auto');
-    const includeHints = typeof ctx.query?.includeHints === 'string'
-      ? ['1','true','yes','y'].includes(ctx.query.includeHints.toLowerCase())
-      : false;
-    const n = Number.parseInt(ctx.query?.sampleSize, 10);
-    const sampleSize = Number.isFinite(n) && n > 0 ? n : 4;
+      // NOTE: We purposely do NOT accept recentWithinDays; it is hard-coded in the service (2 days).
+      // sampleSize: how many suggestion topics to whisper to the LLM later (max 3).
+      const n = Number.parseInt(ctx.query?.sampleSize, 10);
+      const sampleSize = Number.isFinite(n) && n > 0 ? Math.min(3, n) : 3;
 
-    const resume = String(ctx.query?.resume || 'fresh').toLowerCase(); // fresh|continue|practice
-    const topicId = ctx.query?.topicId ? Number(ctx.query.topicId) : null;
+      // includeHints is deprecated; accept but ignore (kept for backward compatibility).
+      const _includeHintsIgnored = typeof ctx.query?.includeHints === 'string';
 
-    // If you keep auth: false, ctx.state.user may be null.
-    // If you enable auth, you can read user id:
-    const userId = ctx.state?.user?.id || null;
+      const userId = ctx.state?.user?.id || null;
 
-    const result = await svc.startSession({
-      userId, resume, proficiency, topicId, sampleSize, includeHints
-    });
+      // New startSession no longer needs proficiency in query; it reads profile internally.
+      const result = await svc.startSession({
+        userId,
+        suggestCount: sampleSize,
+      });
 
-    ctx.send(result);
-  } catch (err) {
-    strapi.log.error('Failed to start conversation:', err);
-    ctx.internalServerError('Error starting conversation.');
-  }
-},
+      ctx.send(result);
+    } catch (err) {
+      strapi.log.error('Failed to start conversation:', err);
+      ctx.internalServerError('Error starting conversation.');
+    }
+  },
 
-
-  /**
-   * POST /v1/conversation/nextprompt
-   * Body: { sessionId, history, proficiency?, mode?, topic_id? }
-   * - history: full client history (single source of truth)
-   */
+  /** POST /v1/conversation/nextprompt */
   async nextPrompt(ctx) {
     const { history, sessionId, proficiency = 'auto', mode = null, topic_id = null } = ctx.request.body || {};
 
@@ -51,44 +60,42 @@ async start(ctx) {
     try {
       const svc = strapi.service('api::conversation.conversation-service');
 
-      // Load conversation row (for summary + relation to topic)
+      // Load convo (for seed/summary/topic)
       const [conv] = await strapi.entityService.findMany('api::conversation.conversation', {
         filters: { sessionId },
         populate: { topic: true },
         limit: 1,
       });
 
-      if (!conv) {
-        return ctx.badRequest('Unknown sessionId.');
-      }
+      if (!conv) return ctx.badRequest('Unknown sessionId.');
 
       const effectiveTopicId = topic_id || conv.topic?.id || null;
       const currentSummary   = conv.summary || null;
+      const userId           = ctx.state?.user?.id || null;
 
-      // Generate next reply (service infers group, decides mode, uses summary if present)
       const {
         reply,
         inferred_proficiency_key,
         inferred_cefr_code,
         inferred_group,
         decided_mode,
+        maybe_new_topic_id
       } = await svc.generateNextPrompt({
         history,
         topicId: effectiveTopicId,
-        proficiency,
-        mode,                 // optional override: 'practice'|'scenario'|'auto'
+        proficiency,      // optional override from client; service will prefer profile/auto if 'auto'
+        mode,
         summary: currentSummary,
+        userId,           // NEW: so service can read profile if needed
       });
 
-      // Persist + auto-compact in the service
       const saved = await svc.persistTurnAndMaybeCompact({
         sessionId,
-        topicId: effectiveTopicId || null,
+        topicId: maybe_new_topic_id || effectiveTopicId || null,
         history: [...history, { role: 'assistant', content: reply, ts: new Date().toISOString() }],
         decided_mode,
       });
 
-      // Respond (you also get the counters back)
       ctx.send({
         sessionId,
         next_prompt: reply,
@@ -96,7 +103,7 @@ async start(ctx) {
         inferred_cefr_code: inferred_cefr_code || null,
         inferred_group: inferred_group || null,
         decided_mode: decided_mode || null,
-        topic_id: effectiveTopicId || null,
+        topic_id: maybe_new_topic_id || effectiveTopicId || null,
         turns_total: saved.turns_total ?? null,
         compacted_upto: saved.compacted_upto ?? null,
       });

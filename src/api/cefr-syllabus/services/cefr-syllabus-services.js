@@ -2,6 +2,13 @@
 // at top
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const SPOKEN_MAX = 250;
+
+
+function clamp(str = '', n = SPOKEN_MAX) {
+  const s = String(str || '').trim();
+  return s.length <= n ? s : s.slice(0, n).replace(/\s+\S*$/, ''); // no mid-word cut
+}
 
 // ---- helpers ----
 function baseAngle(core) {
@@ -103,6 +110,7 @@ function topicsFrom(coreList, rolePicker, { levelCode, syllabusTitle, hintPack, 
 
     out.push({
       title,
+      spoken_title: clamp(title.replace(/^Roleplay:\s*/i, '').replace(/—/g, '-')), // simple, only used when LLM didn’t create it
       description,
       tags: [category, angle].filter(Boolean).join(', '),
       scenarios,
@@ -159,15 +167,15 @@ function heuristicPrune(candidates) {
 }
 
 async function llmSelectDistinct({ syllabusTitle, levelCode, existingTitles, candidates, need }) {
-  const system = `You are selecting distinct EN speaking practice TOPIC TITLES for syllabus-specific practice.
-Return STRICT JSON:
-{ "accepted": ["title1",...], "missing": 0 }.
+ const system = `You are selecting distinct EN speaking practice TOPIC TITLES for syllabus-specific practice.
+ Return STRICT JSON:
+ { "accepted": [ { "title": "...", "spoken_title": "..." } , ... ], "missing": 0 }.
 Rules:
 - Titles must be distinct ideas (not rephrases).
 - Exclude anything semantically similar to existing titles.
 - Prefer covering varied angles: roleplay, compare, plan, problem, clarify, story, advice.
-- Keep titles concise (<=120 chars), natural, and relevant to "${syllabusTitle}".`;
-
+- Keep "title" concise (<=120 chars), natural, and relevant to "${syllabusTitle}".
+- "spoken_title" must be SHORT & speakable (<= ${SPOKEN_MAX} chars), no colons if possible, no jargon.`;
   const user = JSON.stringify({
     levelCode,
     syllabusTitle,
@@ -186,7 +194,11 @@ Rules:
       ]
     });
     const data = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
-    const accepted = Array.isArray(data.accepted) ? data.accepted : [];
+    const acceptedRaw = Array.isArray(data.accepted) ? data.accepted : [];
+    const accepted = acceptedRaw.map(x => {
+      if (typeof x === 'string') return { title: x, spoken_title: clamp(x) };
+      return { title: String(x.title || ''), spoken_title: clamp(x.spoken_title || x.title || '') };
+    }).filter(o => o.title);
     const missing = Math.max(0, need - accepted.length);
     return { accepted, missing };
   } catch {
@@ -195,11 +207,12 @@ Rules:
 }
 
 async function llmTopUpNew({ syllabusTitle, levelCode, existingTitles, alreadyAccepted, needMore }) {
-  const system = `You propose NEW topic titles for "${syllabusTitle}" (CEFR ${levelCode}).
-Return STRICT JSON: { "titles": ["..."] }
+ const system = `You propose NEW topic titles for "${syllabusTitle}" (CEFR ${levelCode}).
+ Return STRICT JSON: { "titles": [ { "title":"...", "spoken_title":"..." }, ... ] }
 Rules:
 - Propose ${needMore} fresh, distinct titles unlike existing or accepted.
-- Keep titles concise (<=120 chars), natural.
+- Keep "title" concise (<=120 chars), natural.
+- "spoken_title" must be SHORT & speakable (<= ${SPOKEN_MAX} chars), no heavy punctuation.
 - Vary angles among: roleplay, compare, plan, problem, clarify, story, advice.`;
   const user = JSON.stringify({
     existing: existingTitles,
@@ -217,7 +230,11 @@ Rules:
       ]
     });
     const data = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
-    return Array.isArray(data.titles) ? data.titles : [];
+    const arr = Array.isArray(data.titles) ? data.titles : [];
+    return arr.map(x => {
+      if (typeof x === 'string') return { title: x, spoken_title: clamp(x) };
+      return { title: String(x.title || ''), spoken_title: clamp(x.spoken_title || x.title || '') };
+    }).filter(o => o.title);
   } catch {
     return [];
   }
@@ -267,14 +284,22 @@ async function selectUniqueDrafts({ syllabusTitle, levelCode, existingTitles, ca
   const byTitle = new Map(candidateDrafts.map(d => [norm(d.title), d]));
   const acceptedDrafts = [];
   const used = new Set();
-  for (const t of accepted) {
-    const k = norm(t);
+  for (const item of accepted) {
+    const k = norm(item.title);
+
     // prefer original draft if existed; else build a shell, your caller can fill body later
     if (byTitle.has(k) && !used.has(k)) {
-      acceptedDrafts.push(byTitle.get(k));
+      const base = byTitle.get(k);
+      acceptedDrafts.push({ ...base, spoken_title: clamp(item.spoken_title || base.spoken_title || base.title) });
       used.add(k);
     } else {
-      acceptedDrafts.push({ title: t, description: '', tags: '', scenarios: [] });
+      acceptedDrafts.push({
+        title: item.title,
+        spoken_title: clamp(item.spoken_title || item.title),
+        description: '',
+        tags: '',
+        scenarios: []
+      });
     }
   }
 
