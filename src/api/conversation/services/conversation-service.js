@@ -13,6 +13,102 @@ const PROF_KEYS = ['BEGINNER','INTERMEDIATE','ADVANCED','PROFICIENT'];
 const COMPACT_EVERY = parseInt(process.env.CONVO_COMPACT_EVERY || '8', 10);
 const START_LAST_TURNS = parseInt(process.env.CONVO_START_LAST_TURNS || '6', 10);
 const TAIL_TURNS = 8;
+// Hard-coded recent window (days) per product decision
+const RECENT_WINDOW_DAYS = 2;
+// Hard-coded number of “new topic” suggestions we whisper to the LLM
+const SUGGESTION_COUNT = 3;
+
+function daysBetween(a, b) {
+  const ms = Math.abs((a?.getTime?.() || 0) - (b?.getTime?.() || 0));
+  return ms / (1000 * 60 * 60 * 24);
+}
+
+function isRecent(dateIso, withinDays) {
+  if (!dateIso) return false;
+  return daysBetween(new Date(), new Date(dateIso)) <= withinDays;
+}
+
+function timeAgo(dateIso) {
+  if (!dateIso) return '';
+  const d = new Date(dateIso);
+  const days = Math.floor(daysBetween(new Date(), d));
+  if (days <= 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days} days ago`;
+}
+
+// Store a lightweight “seed” so the next turn can decide resume/new/free-talk
+function seedSummary({ recent, suggestions }) {
+  return {
+    kind: 'start_seed_v1',
+    recent: recent || null,         // { topic_id, topic_title, last_active_iso, recap }
+    suggestions: suggestions || [], // [{ topic_id, title, cefr }]
+  };
+}
+
+// Read proficiency from user profile (adjust UID/fields to your setup if needed)
+async function getUserProfileProficiency({ strapi, userId }) {
+  if (!userId) return null;
+
+  // TODO: adjust UID/fields to your real profile content type
+  try {
+    const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
+      filters: { user: userId },
+      fields: ['proficiency', 'level_group', 'cefr_code'],
+      limit: 1,
+    });
+    const p = profiles?.[0];
+    if (!p) return null;
+
+    const cefr = (p.cefr_code || '').toUpperCase();
+    const group = (p.level_group || p.proficiency || '').toUpperCase();
+
+    if (['A1','A2','B1','B2','C1','C2'].includes(cefr)) return cefr;
+    if (['BEGINNER','INTERMEDIATE','ADVANCED','PROFICIENT'].includes(group)) return group;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+// Decision policy to prioritize FREE-TALK > resume > new > clarify
+function decisionPolicyBlock() {
+  return `
+DECISION POLICY (invisible; follow strictly):
+1) FREE-TALK has highest priority:
+   - If the user's latest message already contains substance (story, opinion, plan, problem, or a concrete question), respond to THAT and develop it.
+   - Do NOT switch to a preset topic in this case.
+2) If the user clearly wants to RESUME last topic, continue it naturally (do not announce the choice).
+3) If the user clearly wants something NEW and hasn't already started free-talk, gently propose or pick a fitting topic and begin.
+4) If unclear, ask ONE short clarifying question.
+Always produce ONE question total and keep level-appropriate brevity.
+`.trim();
+}
+
+// Fetch 2–3 CEFR-matched titles to whisper for “new topic” (no binding)
+async function fetchSuggestionTopics({ proficiency = 'auto', strapi }) {
+  const filters = { is_active: true };
+  const allowedCEFR = allowedCEFRFromProficiency(proficiency);
+  if (allowedCEFR && allowedCEFR.length) {
+    filters.difficulty_level = { code: { $in: allowedCEFR } };
+  }
+
+  const topics = await strapi.entityService.findMany('api::topic.topic', {
+    filters,
+    populate: { difficulty_level: { fields: ['code'] } },
+    fields: ['title'],
+    sort: [{ quality_score: 'desc' }, { id: 'desc' }],
+    limit: 20,
+  });
+
+  const pool = (topics || []).sort(() => 0.5 - Math.random()).slice(0, SUGGESTION_COUNT);
+  return pool.map(t => ({
+    topic_id: t.id,
+    title: t.title,
+    cefr: (t?.difficulty_level?.data?.attributes?.code || '').toUpperCase()
+  }));
+}
+
 
 // Small helper to slice conversation turns safely (assistant+user)
 function lastNTurns(history = [], n = 6) {
@@ -474,13 +570,16 @@ module.exports = ({ strapi }) => ({
     });
   },
 
-  async startSession({ userId = null, resume = 'fresh', proficiency = 'auto', topicId = null, sampleSize = 4, includeHints = false }) {
-    // 1) If resume is not 'fresh', try to find last conversation
+  async startSession({ userId = null /* suggestCount removed; fixed to SUGGESTION_COUNT */ }) {
+    // Prefer profile proficiency; fallback to mapper; fallback to BEGINNER
+    const profPref = await getUserProfileProficiency({ strapi, userId });
+    const group = groupFromProficiency(profPref) || 'BEGINNER';
+
+    // Find most recent conversation
     let last = null;
-    if (resume !== 'fresh' && userId) {
-      const filter = topicId ? { user: userId, topic: topicId } : { user: userId };
+    if (userId) {
       const recent = await strapi.entityService.findMany('api::conversation.conversation', {
-        filters: filter,
+        filters: { user: userId },
         sort: { last_active: 'desc' },
         populate: { topic: true },
         limit: 1,
@@ -488,86 +587,40 @@ module.exports = ({ strapi }) => ({
       last = recent?.[0] || null;
     }
 
-    // 2) Pick group now (fallback BEGINNER)
-    const group = groupFromProficiency(proficiency) || 'BEGINNER';
+    const hasRecent = !!(last && isRecent(last.last_active, RECENT_WINDOW_DAYS));
+    const recentSeed = hasRecent ? {
+      topic_id: last.topic?.id || null,
+      topic_title: last.topic?.title || null,
+      last_active_iso: last.last_active || null,
+      recap: (last.summary && (last.summary.synopsis || last.summary.recap)) || null
+    } : null;
 
-    // 3) If we can warm start
-    if (last && (resume === 'continue' || resume === 'practice')) {
-      const topicTitle = last.topic?.title || null;
-      const summary    = last.summary || null;
-      const history    = Array.isArray(last.history) ? last.history : [];
-      const snippet    = lastNTurns(history, START_LAST_TURNS);
+    const suggestions = await fetchSuggestionTopics({
+      proficiency: profPref || 'auto',
+      strapi
+    });
 
-      const first_turn = await this.warmStartFromMemory({
-        mode: resume, group, topicTitle, summary, lastTurns: snippet
-      });
-
-      const sessionId = uuidv4();
-      const created = await strapi.entityService.create('api::conversation.conversation', {
-        data: {
-          sessionId,
-          history: [{ role: 'assistant', content: first_turn }],
-          topic: last.topic?.id || null,
-          summary: null,            // new session starts its own summary
-          compacted_upto: 0,
-          turns_total: 1,
-          last_mode: resume,
-          last_active: new Date(),
-          user: userId || null,
-        },
-      });
-
-      return {
-        sessionId,
-        selected_topic_id: last.topic?.id || null,
-        selected_topic: topicTitle || null,
-        next_prompt: first_turn,
-        level_group: group,
-      };
+    // First turn: ask; do not decide/bind a topic
+    let first_turn;
+    if (hasRecent && recentSeed?.topic_title) {
+      const when = timeAgo(recentSeed.last_active_iso);
+      first_turn =
+        `Hi there! Last time we talked about ${recentSeed.topic_title} ${when}. ` +
+        `Would you like to continue that, start something new, or just tell me what's on your mind?`;
+    } else {
+      const s = suggestions?.[0]?.title;
+      first_turn = s
+        ? `Hi there! What do you want to talk about today? If you like, we could try “${s}”.`
+        : `Hi there! What do you want to talk about today?`;
     }
-
-    // 4) Fresh with background (personalized kickoff) if last exists
-    if (last && resume === 'fresh') {
-      const { selected_topic_id, selected_topic_title, first_turn, inferred_level } =
-        await this.kickoffFromStrapiTopics({
-          sampleSize, proficiency, includeHints, background: last.summary || null
-        });
-
-      const sessionId = uuidv4();
-      await strapi.entityService.create('api::conversation.conversation', {
-        data: {
-          sessionId,
-          history: [{ role: 'assistant', content: first_turn }],
-          topic: selected_topic_id || null,
-          summary: null,
-          compacted_upto: 0,
-          turns_total: 1,
-          last_mode: 'fresh',
-          last_active: new Date(),
-          user: userId || null,
-        },
-      });
-
-      return {
-        sessionId,
-        selected_topic_id,
-        selected_topic: selected_topic_title,
-        next_prompt: first_turn,
-        level_group: inferred_level || group,
-      };
-    }
-
-    // 5) No previous session or no user → fall back to your current kickoff
-    const { selected_topic, first_turn, inferred_level } =
-      await this.kickoffFromStrapiTopics({ sampleSize, proficiency, includeHints });
 
     const sessionId = uuidv4();
     await strapi.entityService.create('api::conversation.conversation', {
       data: {
         sessionId,
         history: [{ role: 'assistant', content: first_turn }],
-        topic: null,
-        summary: null,
+        topic: null, // not binding at start
+        summary: seedSummary({ recent: recentSeed, suggestions }),
         compacted_upto: 0,
         turns_total: 1,
         last_mode: 'fresh',
@@ -579,9 +632,9 @@ module.exports = ({ strapi }) => ({
     return {
       sessionId,
       selected_topic_id: null,
-      selected_topic,
+      selected_topic: null,
       next_prompt: first_turn,
-      level_group: inferred_level || group,
+      level_group: group,
     };
   },
 
@@ -708,12 +761,12 @@ module.exports = ({ strapi }) => ({
    *
    * args: { history, topicId?, proficiency?, mode?, summary? }
    */
-  async generateNextPrompt({ history, topicId = null, proficiency = 'auto', mode: modeOverride = null, summary = null }) {
+  async generateNextPrompt({ history, topicId = null, proficiency = 'auto', mode: modeOverride = null, summary = null, userId = null }) {
     if (!Array.isArray(history) || history.length === 0) {
       throw new Error('generateNextPrompt requires non-empty history.');
     }
 
-    // Load topic (for hints)
+    // Load topic if already bound
     let topic = null;
     if (topicId) {
       topic = await strapi.entityService.findOne('api::topic.topic', topicId, {
@@ -722,13 +775,20 @@ module.exports = ({ strapi }) => ({
       });
     }
 
-    // 1) Decide level group
-    let group = groupFromProficiency(proficiency);
+    // Determine group: client override > profile > inference > topic CEFR > BEGINNER
+    let group = null;
     let inferred_proficiency_key = null;
     let inferred_cefr_code = null;
 
-    if (!group || proficiency === 'auto') {
-      const est = await estimateProficiencyFromHistory(history);
+    if (!proficiency || String(proficiency).toLowerCase() === 'auto') {
+      const profPref = await getUserProfileProficiency({ strapi, userId });
+      group = groupFromProficiency(profPref);
+    } else {
+      group = groupFromProficiency(proficiency);
+    }
+
+    if (!group) {
+      const est = await this.estimateProficiencyFromHistory(history);
       inferred_proficiency_key = est.proficiency_key || null;
       inferred_cefr_code = est.cefr_code || null;
       group =
@@ -738,7 +798,7 @@ module.exports = ({ strapi }) => ({
         'BEGINNER';
     }
 
-    // 2) MODE decision
+    // Mode decision (your existing logic)
     const signals  = analyzeUserSignals(history);
     const t        = topic?.attributes || topic || {};
     const hint     = t?.mode_hint || 'auto';
@@ -752,7 +812,7 @@ module.exports = ({ strapi }) => ({
     const support = await assessSupportNeed(history, group);
     if (support.needs_instruction) mode = 'practice';
 
-    // 3) Build messages
+    // Build system prompt (add decision policy + seed)
     let systemMsg = buildBasePromptForGroup(group);
     const hints = buildTopicHints(topic);
     if (hints) systemMsg += `\n\n${hints}`;
@@ -761,40 +821,36 @@ module.exports = ({ strapi }) => ({
     systemMsg += `\n\n${lexicalRulesForGroup(group)}`;
     systemMsg += `\n\n${modeInstructions(mode, roleName, roleCtx, maxWordsForGroup(group))}`;
 
-    const messages = [{ role: 'system', content: systemMsg }];
+    // NEW: priority policy
+    systemMsg += `\n\n${decisionPolicyBlock()}`;
 
-    // If we have a running summary, prepend as background
-    if (summary) {
-      let bg;
-      if (summary.kind === 'conv_summary_v1') {
-        bg = {
-          topic_title: summary.topic_title || (topic?.title || null),
-          facts: summary.facts || [],
-          learned: summary.learned || [],
-          open_threads: summary.open_threads || [],
-        };
-      } else {
-        // older shape: { synopsis, vocab, patterns, facts }
-        bg = {
-          topic_title: topic?.title || null,
-          synopsis: summary.synopsis || '',
-          vocab: summary.vocab || [],
-          patterns: summary.patterns || [],
-          facts: summary.facts || {},
-        };
-      }
-      messages.push({
-        role: 'system',
-        content:
-          'BACKGROUND SUMMARY (do not quote or list it, just use it to keep continuity):\n' +
-          JSON.stringify(bg),
-      });
+    // Pass start seed invisibly (recent + suggestions)
+    if (summary && summary.kind === 'start_seed_v1') {
+      const seed = {
+        recent: summary.recent || null,
+        suggestions: (summary.suggestions || []).slice(0, SUGGESTION_COUNT),
+      };
+      systemMsg += `\n\nBACKGROUND SEED (do not mention directly): ${JSON.stringify(seed)}`;
+    } else if (summary) {
+      // Back-compat for older summary shapes
+      const bg = summary.kind === 'conv_summary_v1'
+        ? {
+            topic_title: summary.topic_title || null,
+            facts: summary.facts || [],
+            learned: summary.learned || [],
+            open_threads: summary.open_threads || [],
+          }
+        : {
+            synopsis: summary.synopsis || '',
+            vocab: summary.vocab || [],
+            patterns: summary.patterns || [],
+            facts: summary.facts || {},
+          };
+      systemMsg += `\n\nBACKGROUND SUMMARY (continuity only): ${JSON.stringify(bg)}`;
     }
 
-    // Add full client history (you keep that contract)
-    messages.push(...history);
+    const messages = [{ role: 'system', content: systemMsg }, ...history];
 
-    // 4) Call OpenAI
     try {
       const resp = await openai.chat.completions.create({
         model: 'gpt-4-turbo',
@@ -805,12 +861,28 @@ module.exports = ({ strapi }) => ({
       });
       const raw = resp.choices?.[0]?.message?.content || "Let's continue. What do you think?";
       const reply = sanitizeModelReply(raw, { maxWords: maxWordsForGroup(group) });
-      return { reply, inferred_proficiency_key, inferred_cefr_code, inferred_group: group, decided_mode: mode };
+
+      // Optional: if we started fresh and reply clearly uses one of the suggestion titles, bind it.
+      let maybe_new_topic_id = null;
+      if (!topicId && summary && summary.kind === 'start_seed_v1' && Array.isArray(summary.suggestions)) {
+        const hit = summary.suggestions.find(s => s.title && reply.toLowerCase().includes(s.title.toLowerCase()));
+        if (hit?.topic_id) maybe_new_topic_id = hit.topic_id;
+      }
+
+      return {
+        reply,
+        inferred_proficiency_key,
+        inferred_cefr_code,
+        inferred_group: group,
+        decided_mode: mode,
+        maybe_new_topic_id
+      };
     } catch (err) {
       strapi.log.error('Error generating next prompt:', err);
       return {
         reply: "Sorry, I had a hiccup. Could you say that again?",
-        inferred_proficiency_key, inferred_cefr_code, inferred_group: group, decided_mode: mode || null
+        inferred_proficiency_key, inferred_cefr_code, inferred_group: group, decided_mode: mode || null,
+        maybe_new_topic_id: null
       };
     }
   },
