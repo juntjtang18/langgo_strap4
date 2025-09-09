@@ -668,7 +668,128 @@ curl -X GET http://localhost:1338/api/topics \
 -H "Content-Type: application/json" \
 | jq .
 
-curl -X GET "http://localhost:1338/api/topics?populate=questions,difficulty_level&pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2" \
+curl -X GET "http://localhost:1338/api/topics?populate=questions,proficiency_levels&pagination%5Bpage%5D=1&pagination%5BpageSize%5D=2" \
 -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
 -H "Content-Type: application/json" \
 | jq .
+
+
+curl -X GET "http://localhost:1338/api/v1/conversation/start?proficiency=beginner&sampleSize=4&includeHints=false" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+-H "Content-Type: application/json" \
+| jq .
+
+
+curl -X GET "http://localhost:1338/api/difficulty-levels" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -s "http://localhost:1338/api/v1/conversation/start?proficiency=beginner&sampleSize=4&includeHints=false" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+  -H "Content-Type: application/json" | jq .
+
+
+
+curl -s "http://localhost:1338/api/v1/conversation/start?proficiency=beginner&sampleSize=4&includeHints=false" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+  -H "Content-Type: application/json" | jq .
+
+curl -s -X POST "http://localhost:1338/api/v1/conversation/nextprompt" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+  -H "Content-Type: application/json" \
+  -d @- <<'JSON' | jq .
+{
+  "sessionId": "599f3858-5bc2-4f00-8e88-d6c43ef3e6d9",
+  "proficiency": "beginner",
+  "history": [
+    { "role": "assistant", "content": "Let's practice Basic Greetings and Introductions. You can say: Hello, how are you?" },
+    { "role": "user", "content": "Hello, I am Lily." }
+  ]
+}
+JSON
+
+
+ADMIN_TOKEN=949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0
+
+curl -X GET 'http://localhost:1338/api/difficulty-levels' \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NTU5OTgxMjUsImV4cCI6MTc1ODU5MDEyNX0.kFvjFkohBDgG7MUWLSMgnFZDizs7JXTDDvTbdHBZNKQ" \
+ -H "Content-Type: application/json" | jq .
+
+
+curl -X POST http://localhost:1338/api/topic-templates/design \
+  -H "Authorization: Bearer ed394da35822acebfa62c939af8ac80069b656c446c1c5c1fa49c41e85fdfe849c42d6e43de600cce40515433600c375149a297910f33a70cce7f060e4144e8d7a9d17cb4fa339a3c2b7770c04268ce2c38e182007f57d1f8a0d81686f77589b69576cd4f8495b0e0549687eb5a5320e83aadd3895b4f52c42aea32470ce11bf" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "syllabusId": "1"
+  }' \
+| jq .
+
+curl -X GET 'http://localhost:1338/api/topic-templates?populate=proficiency_levels,difficulty_levels' \
+  -H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+  -H "Content-Type: application/json" \
+| jq .
+
+
+curl -X POST http://localhost:1338/api/topic-templates/design \
+  -H "Authorization: Bearer ed394da35822acebfa62c939af8ac80069b656c446c1c5c1fa49c41e85fdfe849c42d6e43de600cce40515433600c375149a297910f33a70cce7f060e4144e8d7a9d17cb4fa339a3c2b7770c04268ce2c38e182007f57d1f8a0d81686f77589b69576cd4f8495b0e0549687eb5a5320e83aadd3895b4f52c42aea32470ce11bf" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "syllabusId": 1,
+    "targetScore": 80,
+    "maxRounds": 5
+  }' | jq .
+
+
+
+curl -X POST http://localhost:1338/api/cefr-syllabus/generate-topic \
+  -H "Authorization: Bearer ed394da35822acebfa62c939af8ac80069b656c446c1c5c1fa49c41e85fdfe849c42d6e43de600cce40515433600c375149a297910f33a70cce7f060e4144e8d7a9d17cb4fa339a3c2b7770c04268ce2c38e182007f57d1f8a0d81686f77589b69576cd4f8495b0e0549687eb5a5320e83aadd3895b4f52c42aea32470ce11bf" \
+  -H "Content-Type: application/json" | jq .
+
+curl -X POST 'http://localhost:1338/api/cefr-syllabus/generate-topic' \
+  -H "Authorization: Bearer ed394da35822acebfa62c939af8ac80069b656c446c1c5c1fa49c41e85fdfe849c42d6e43de600cce40515433600c375149a297910f33a70cce7f060e4144e8d7a9d17cb4fa339a3c2b7770c04268ce2c38e182007f57d1f8a0d81686f77589b69576cd4f8495b0e0549687eb5a5320e83aadd3895b4f52c42aea32470ce11bf" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": 1,
+    "targetScore": 80,
+    "maxRounds": 5
+  }' | jq .
+
+
+curl -X POST 'http://localhost:1338/api/cefr-syllabus/generate-topic-bulk' \
+-H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+-H "Content-Type: application/json" \
+| jq .
+
+curl -X GET "http://localhost:1338/api/topics?filters%5Bid%5D%5B$eq%5D=70&populate=*" \
+  -H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+  -H "Content-Type: application/json" | jq .
+
+
+curl -X POST "http://localhost:1338/api/topics/evaluate" \
+  -H "Authorization: Bearer ed394da35822acebfa62c939af8ac80069b656c446c1c5c1fa49c41e85fdfe849c42d6e43de600cce40515433600c375149a297910f33a70cce7f060e4144e8d7a9d17cb4fa339a3c2b7770c04268ce2c38e182007f57d1f8a0d81686f77589b69576cd4f8495b0e0549687eb5a5320e83aadd3895b4f52c42aea32470ce11bf" \
+  -H "Content-Type: application/json" \
+  -d '{"ids":[40],"improve":true,"target":90,"maxRounds":5}' | jq .
+
+
+curl -X POST "http://localhost:1338/api/topic-templates/design/bulk" \
+  -H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+  -H "Content-Type: application/json" \
+| jq .
+
+
+curl -G "http://localhost:1338/api/topics" \
+  -H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+  --data-urlencode "filters[cefr_syllabus][id][\$eq]=2" \
+  --data-urlencode "populate=*"
+
+
+
+curl -X GET 'http://localhost:1338/api/cefr-syllabi/1' \
+  -H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+| jq .
+
+curl -X GET 'http://localhost:1338/api/cefr-syllabi/1?populate%5Bdifficulty_level%5D=*' \
+  -H "Authorization: Bearer 949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0" \
+| jq .
+

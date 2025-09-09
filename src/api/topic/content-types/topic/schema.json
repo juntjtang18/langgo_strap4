@@ -74,9 +74,6 @@
       "relation": "manyToOne",
       "target": "api::cefr-syllabus.cefr-syllabus",
       "inversedBy": "topics"
-    },
-    "spoken_title": {
-      "type": "string"
     }
   }
 }

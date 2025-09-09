@@ -1872,7 +1872,6 @@ export interface ApiTopicTopic extends Schema.CollectionType {
       'manyToOne',
       'api::cefr-syllabus.cefr-syllabus'
     >;
-    spoken_title: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
