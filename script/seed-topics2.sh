@@ -1,3 +1,4 @@
+#seed-topics2.sh
 #!/usr/bin/env bash
 
 # --- set your creds ---

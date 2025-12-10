@@ -2,32 +2,38 @@
 
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-const { v4: uuidv4 } = require('uuid'); // <-- add this
+const { v4: uuidv4 } = require('uuid');
 
-/* =======================
-   Utilities: level & mode
-   ======================= */
+/* =========================
+   Env knobs (safe defaults)
+   ========================= */
+const RECENT_WINDOW_DAYS = parseInt(process.env.RECENT_WINDOW_DAYS || '2', 10);
+const SUGGESTION_COUNT   = parseInt(process.env.SUGGESTION_COUNT   || '3', 10);
+const CONVO_TAIL_TURNS   = parseInt(process.env.CONVO_TAIL_TURNS   || '6', 10);
+
+// Model routing
+const CHAT_MODEL_PRIMARY  = process.env.OPENAI_CHAT_MODEL_PRIMARY  || 'gpt-4o-mini';
+const CHAT_MODEL_FALLBACK = process.env.OPENAI_CHAT_MODEL_FALLBACK || 'gpt-4.1';
+const ANALYZE_MODEL       = process.env.OPENAI_ANALYZE_MODEL       || 'gpt-4o-mini';
+
+// Throttling heuristics for cheap meta-calls
+const INFER_AT_TURNS   = parseInt(process.env.INFER_AT_TURNS   || '2', 10);   // infer at <=2nd turn
+const INFER_EVERY_N    = parseInt(process.env.INFER_EVERY_N    || '20', 10);  // then each 20 turns
+const SUPPORT_EVERY_N  = parseInt(process.env.SUPPORT_EVERY_N  || '3', 10);   // if short user msg AND every 3rd turn
 
 const PROF_KEYS = ['BEGINNER','INTERMEDIATE','ADVANCED','PROFICIENT'];
-// ---- Config knobs (ENV) ----
-const COMPACT_EVERY = parseInt(process.env.CONVO_COMPACT_EVERY || '8', 10);
-const START_LAST_TURNS = parseInt(process.env.CONVO_START_LAST_TURNS || '6', 10);
-const TAIL_TURNS = 8;
-// Hard-coded recent window (days) per product decision
-const RECENT_WINDOW_DAYS = 2;
-// Hard-coded number of “new topic” suggestions we whisper to the LLM
-const SUGGESTION_COUNT = 3;
 
+/* ==============
+   Small helpers
+   ============== */
 function daysBetween(a, b) {
   const ms = Math.abs((a?.getTime?.() || 0) - (b?.getTime?.() || 0));
   return ms / (1000 * 60 * 60 * 24);
 }
-
 function isRecent(dateIso, withinDays) {
   if (!dateIso) return false;
   return daysBetween(new Date(), new Date(dateIso)) <= withinDays;
 }
-
 function timeAgo(dateIso) {
   if (!dateIso) return '';
   const d = new Date(dateIso);
@@ -37,138 +43,6 @@ function timeAgo(dateIso) {
   return `${days} days ago`;
 }
 
-// Store a lightweight “seed” so the next turn can decide resume/new/free-talk
-function seedSummary({ recent, suggestions }) {
-  return {
-    kind: 'start_seed_v1',
-    recent: recent || null,         // { topic_id, topic_title, last_active_iso, recap }
-    suggestions: suggestions || [], // [{ topic_id, title, cefr }]
-  };
-}
-
-// Read proficiency from user profile (adjust UID/fields to your setup if needed)
-async function getUserProfileProficiency({ strapi, userId }) {
-  if (!userId) return null;
-
-  // TODO: adjust UID/fields to your real profile content type
-  try {
-    const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
-      filters: { user: userId },
-      fields: ['proficiency', 'level_group', 'cefr_code'],
-      limit: 1,
-    });
-    const p = profiles?.[0];
-    if (!p) return null;
-
-    const cefr = (p.cefr_code || '').toUpperCase();
-    const group = (p.level_group || p.proficiency || '').toUpperCase();
-
-    if (['A1','A2','B1','B2','C1','C2'].includes(cefr)) return cefr;
-    if (['BEGINNER','INTERMEDIATE','ADVANCED','PROFICIENT'].includes(group)) return group;
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-// Decision policy to prioritize FREE-TALK > resume > new > clarify
-function decisionPolicyBlock() {
-  return `
-DECISION POLICY (invisible; follow strictly):
-1) FREE-TALK has highest priority:
-   - If the user's latest message already contains substance (story, opinion, plan, problem, or a concrete question), respond to THAT and develop it.
-   - Do NOT switch to a preset topic in this case.
-2) If the user clearly wants to RESUME last topic, continue it naturally (do not announce the choice).
-3) If the user clearly wants something NEW and hasn't already started free-talk, gently propose or pick a fitting topic and begin.
-4) If unclear, ask ONE short clarifying question.
-Always produce ONE question total and keep level-appropriate brevity.
-`.trim();
-}
-
-// Fetch 2–3 CEFR-matched titles to whisper for “new topic” (no binding)
-async function fetchSuggestionTopics({ proficiency = 'auto', strapi }) {
-  const filters = { is_active: true };
-  const allowedCEFR = allowedCEFRFromProficiency(proficiency);
-  if (allowedCEFR && allowedCEFR.length) {
-    filters.difficulty_level = { code: { $in: allowedCEFR } };
-  }
-
-  const topics = await strapi.entityService.findMany('api::topic.topic', {
-    filters,
-    populate: { difficulty_level: { fields: ['code'] } },
-    fields: ['title'],
-    sort: [{ quality_score: 'desc' }, { id: 'desc' }],
-    limit: 20,
-  });
-
-  const pool = (topics || []).sort(() => 0.5 - Math.random()).slice(0, SUGGESTION_COUNT);
-  return pool.map(t => ({
-    topic_id: t.id,
-    title: t.title,
-    cefr: (t?.difficulty_level?.data?.attributes?.code || '').toUpperCase()
-  }));
-}
-
-
-// Small helper to slice conversation turns safely (assistant+user)
-function lastNTurns(history = [], n = 6) {
-  const start = Math.max(0, history.length - n);
-  return history.slice(start);
-}
-
-// Summarize a slice of history (pure, OpenAI)
-async function summarizeChunk({ historySlice, startIndex = 0, endIndex = 0, topicTitle = null }) {
-  const sys = `
-You summarize an English learning chat for reuse later. Produce strict JSON:
-{
-  "recap": "<2-3 precise sentences focused on what was practiced/decided>",
-  "vocab": ["hello","..."],          // key words/phrases practiced
-  "patterns": ["My name is ..."],    // sentence frames used
-  "facts": { "user_name": "Lily" }   // durable user facts only if explicit
-}
-Do not invent facts. Keep it concise, useful for next sessions.
-`.trim();
-
-  const text = historySlice
-    .map((m, i) => `${startIndex + i}. [${m.role}] ${m.content}`)
-    .join('\n')
-    .slice(0, 4000);
-
-  const user = (topicTitle ? `Topic: ${topicTitle}\n` : '') + `Turns ${startIndex}–${endIndex}:\n${text}`;
-
-  try {
-    const r = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
-      messages: [
-        { role: 'system', content: sys },
-        { role: 'user', content: user }
-      ],
-      temperature: 0.2,
-      max_tokens: 240,
-      response_format: { type: 'json_object' },
-    });
-    return JSON.parse(r.choices?.[0]?.message?.content || '{}');
-  } catch {
-    return { recap: '', vocab: [], patterns: [], facts: {} };
-  }
-}
-
-function uniq(arr) { return Array.from(new Set((arr || []).filter(Boolean))); }
-
-// Merge a small delta summary into the running summary
-function mergeSummary(existing, delta, lastCoveredTurn) {
-  const base = existing || { synopsis: '', vocab: [], patterns: [], facts: {}, last_covered_turn: 0 };
-
-  return {
-    synopsis: [base.synopsis, delta.recap].filter(Boolean).join(' ').trim().slice(0, 2000), // keep tidy
-    vocab:    uniq([...(base.vocab || []), ...(delta.vocab || [])]).slice(0, 200),
-    patterns: uniq([...(base.patterns || []), ...(delta.patterns || [])]).slice(0, 120),
-    facts:    { ...(base.facts || {}), ...(delta.facts || {}) },
-    last_covered_turn: lastCoveredTurn,
-  };
-}
-
-
 function normalizeProficiency(input) {
   if (!input) return 'auto';
   const s = String(input).trim().toUpperCase();
@@ -177,7 +51,6 @@ function normalizeProficiency(input) {
   if (s === 'AUTO') return 'auto';
   return 'auto';
 }
-
 function groupFromProficiency(pref) {
   const p = normalizeProficiency(pref);
   if (PROF_KEYS.includes(p)) return p;
@@ -185,9 +58,8 @@ function groupFromProficiency(pref) {
   if (['B1'].includes(p))     return 'INTERMEDIATE';
   if (['B2','C1'].includes(p))return 'ADVANCED';
   if (['C2'].includes(p))     return 'PROFICIENT';
-  return null; // auto
+  return null;
 }
-
 function allowedCEFRFromProficiency(pref) {
   const p = String(pref || 'auto').toUpperCase();
   if (['A1','A2','B1','B2','C1','C2'].includes(p)) return [p];
@@ -197,7 +69,6 @@ function allowedCEFRFromProficiency(pref) {
   if (p === 'PROFICIENT')   return ['C2'];
   return null;
 }
-
 function cefrRangeFromGroup(group) {
   switch (group) {
     case 'BEGINNER':     return { min: 'A1', max: 'A2' };
@@ -214,7 +85,6 @@ function analyzeUserSignals(history) {
   const rich = wc >= 8 || /because|but|and|since|when|so|that/i.test(lastUser);
   return { lastUser, wc, rich };
 }
-
 function decideMode({ hint, group, signals }) {
   const h = String(hint || 'auto').toLowerCase();
   if (h === 'practice' || h === 'scenario') return h;
@@ -223,78 +93,51 @@ function decideMode({ hint, group, signals }) {
   return 'scenario';
 }
 
-/* =======================
-   Prompt framing
-   ======================= */
-
-function buildBasePromptForGroup(group) {
-  if (group === 'PROFICIENT') {
-    return `You are an English Conversation Partner for PROFICIENT users.
-Be concise (≤80 words). Ask exactly ONE open question (why/how/what if/compare).
-Encourage nuance; no step-by-step scaffolding unless asked.
-Recast only if meaning is unclear. End with exactly one question mark.`.trim();
-  }
-  if (group === 'ADVANCED') {
-    return `You are an English Conversation Partner for ADVANCED users.
-Keep replies concise (≤60 words). Ask exactly ONE probing question (why/how/what if).
-Favor natural discourse and light challenge. Recast only if needed.
-End with exactly one question mark.`.trim();
-  }
-  if (group === 'INTERMEDIATE') {
-    return `You are an English Conversation Partner for INTERMEDIATE users.
-Keep replies short (≤35 words). Ask exactly ONE question (reason/example/contrast).
-If the learner struggles, offer a brief hint.
-Recast brief errors once, then continue. End with exactly one question mark.`.trim();
-  }
-  return `You are an English Conversation Guide for BEGINNERS.
-Keep replies VERY short (≤25 words). Ask exactly ONE question.
-If user is brief/unsure: give ONE example they can copy OR TWO choices (not both).
-If user errs, recast once; if easy, add a tiny stretch. End with one question mark.`.trim();
+function firstSentence(text) {
+  if (!text) return '';
+  const s = String(text).replace(/\s+/g, ' ').trim();
+  const m = s.match(/(.+?[.?!])\s|(.+)$/);
+  const sent = m ? (m[1] || m[2] || '') : s;
+  return sent.trim();
 }
-
-function maxWordsForGroup(group) {
-  if (group === 'PROFICIENT') return 80;
-  if (group === 'ADVANCED')   return 60;
-  if (group === 'INTERMEDIATE') return 35;
-  return 25;
+function smartFirstSentence(text, minLen = 7, maxLen = 60) {
+  let s = firstSentence(text)
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/\p{Emoji_Presentation}/gu, '')
+    .trim();
+  if (s.length < minLen) return '';
+  if (s.length > maxLen) s = s.slice(0, maxLen - 1) + '…';
+  return s;
 }
+function updateStateV2Deterministic({ prev, history, topicId, group, cefr, mode }) {
+  const state = prev?.kind === 'conv_state_v2' ? { ...prev } : { kind: 'conv_state_v2' };
 
-function lexicalRulesForGroup(group) {
-  if (group === 'BEGINNER') {
-    return `LEXICAL RULES (BEGINNER, A1–A2):
-- Use very simple words and short sentences (Present Simple).
-- Prefer: say, ask, name, from, like, want, live, work, friend.
-- Avoid: introduce, yourself, themselves, either, usually, prefer, perhaps.
-- If you need "introduce yourself", say: "say your name".
-- No rare adverbs; keep it basic.
-- ONE question only, end with "?".`.trim();
+  state.topic_anchor_id = topicId || null;
+  if (group) state.group_cached = group;
+  if (cefr)  state.cefr_cached  = cefr;
+  if (mode)  state.last_mode    = mode;
+
+  const lastUser = [...history].reverse().find(m => m.role === 'user')?.content || '';
+  const lus = smartFirstSentence(lastUser, 7, 120);
+  if (lus) state.last_user_summary = lus;
+
+  if (!topicId && !state.topic_title_hint) {
+    const firstUser = history.find(m => m.role === 'user')?.content || '';
+    const hint = smartFirstSentence(firstUser, 7, 60);
+    if (hint) state.topic_title_hint = hint;
   }
-  if (group === 'INTERMEDIATE') {
-    return `LEXICAL RULES (INTERMEDIATE, ~B1):
-- Keep it clear and concrete; simple clauses are okay.
-- Prefer common vocabulary; avoid rare/abstract words.
-- ONE question only, end with "?".`.trim();
+
+  const lastAssistantQIdx = [...history].map((m,i)=>({m,i}))
+    .reverse().find(({m}) => m.role==='assistant' && /\?$/.test(m.content))?.i;
+  if (lastAssistantQIdx != null) {
+    const after = history.slice(lastAssistantQIdx + 1);
+    const nextUser = after.find(m => m.role==='user')?.content || '';
+    const answered = (nextUser.trim().split(/\s+/).length >= 5);
+    state.open_threads = answered ? [] : [firstSentence(history[lastAssistantQIdx].content)];
   }
-  return `LEXICAL RULES:
-- Natural, concise wording. Avoid jargon unless the learner uses it.
-- ONE question only, end with "?".`.trim();
+
+  return state;
 }
-
-function modeInstructions(mode, roleName, roleCtx, maxWords) {
-  if (mode === 'scenario') {
-    return `MODE: SCENARIO (role-play)
-- Speak in character as ${roleName || 'a friendly person'}${roleCtx ? ` (${roleCtx})` : ''}.
-- Be natural, concise (≤${maxWords} words).
-- Ask EXACTLY ONE follow-up question, end with "?". No lists.
-- Light recast only if meaning is unclear.`.trim();
-  }
-  return `MODE: PRACTICE (coach)
-- Be very clear and concise (≤${maxWords} words).
-- If the learner's last message was short, include ONE example they can copy OR TWO simple choices (not both).
-- Tiny positive feedback; brief recast of obvious errors.
-- Ask EXACTLY ONE practice question, end with "?".`.trim();
-}
-
 function sanitizeModelReply(text, { maxWords = 30 } = {}) {
   if (!text || typeof text !== 'string') return text;
   const firstQ = text.indexOf('?');
@@ -311,32 +154,77 @@ function sanitizeModelReply(text, { maxWords = 30 } = {}) {
   return text.trim();
 }
 
-/* =======================
-   Topic helpers
-   ======================= */
+/* ===================
+   Model routing/calls
+   =================== */
+function chooseChatModel({ kind, group }) {
+  if (kind === 'analyze')   return ANALYZE_MODEL;
+  if (kind === 'generate' || kind === 'kickoff' || kind === 'warmstart') {
+    if (group === 'ADVANCED' || group === 'PROFICIENT') return CHAT_MODEL_FALLBACK;
+    return CHAT_MODEL_PRIMARY;
+  }
+  return CHAT_MODEL_PRIMARY;
+}
+async function callChatWithResilience(opts) {
+  const { model, messages, temperature=0.5, max_tokens=120, frequency_penalty=0.0, response_format } = opts;
+  try {
+    return await openai.chat.completions.create({ model, messages, temperature, max_tokens, frequency_penalty, response_format });
+  } catch (e) {
+    const status = e?.status || e?.response?.status;
+    const code   = e?.response?.data?.code || e?.code || '';
+    if ([429,500,502,503,504].includes(status) || /insufficient_quota|rate_limit/i.test(code)) {
+      const fallback = (model === CHAT_MODEL_PRIMARY) ? CHAT_MODEL_FALLBACK : CHAT_MODEL_PRIMARY;
+      await new Promise(r => setTimeout(r, 300));
+      return await openai.chat.completions.create({ model: fallback, messages, temperature, max_tokens, frequency_penalty, response_format });
+    }
+    throw e;
+  }
+}
 
+/* ======================
+   Topic utils (Strapi)
+   ====================== */
+async function fetchSuggestionTopics({ proficiency = 'auto', strapi }) {
+  const filters = { is_active: true };
+  const allowed = allowedCEFRFromProficiency(proficiency);
+  if (allowed && allowed.length) filters.difficulty_level = { code: { $in: allowed } };
+
+  const topics = await strapi.entityService.findMany('api::topic.topic', {
+    filters,
+    populate: { difficulty_level: { fields: ['code'] } },
+    fields: ['title'],
+    sort: [{ quality_score: 'desc' }, { id: 'desc' }],
+    limit: 20,
+  });
+
+  const pool = (topics || []).sort(() => 0.5 - Math.random()).slice(0, SUGGESTION_COUNT);
+  return pool.map(t => ({
+    topic_id: t.id,
+    title: t.title,
+    cefr: (t?.difficulty_level?.data?.attributes?.code || '').toUpperCase()
+  }));
+}
 function extractCEFRCodeFromTopic(topic) {
   const t = topic?.attributes || topic;
   const code = t?.difficulty_level?.data?.attributes?.code;
   return code ? String(code).toUpperCase() : null;
 }
-
 function buildTopicHints(topic) {
   if (!topic) return '';
   const t = topic.attributes || topic;
   const cefr = extractCEFRCodeFromTopic(topic) || 'UNKNOWN';
   const title = t?.title || 'Unknown Topic';
-
-  // Light, non-prescriptive hint
   return `Topic: ${title} (CEFR ${cefr}). Use this naturally; do not list hints.`;
 }
+function seedSummary({ recent, suggestions }) {
+  return { kind: 'start_seed_v1', recent: recent || null, suggestions: suggestions || [] };
+}
 
-
-/* =======================
-   Level inference
-   ======================= */
-
-async function estimateProficiencyFromHistory(history) {
+/* ============================
+   Cheap meta: joint analyzer
+   ============================ */
+async function analyzeMeta(history) {
+  // Last 4 user turns, compact
   const lastUserTurns = history
     .filter(m => m.role === 'user')
     .slice(-4)
@@ -344,14 +232,19 @@ async function estimateProficiencyFromHistory(history) {
     .join('\n---\n')
     .slice(0, 1200);
 
-  const system = `Rate the user's English using BOTH:
-- "proficiency_key": one of ["beginner","intermediate","advanced","proficient"]
-- "cefr_code": one of ["A1","A2","B1","B2","C1","C2"]
-Return strict JSON: {"proficiency_key":"intermediate","cefr_code":"B1","confidence":0.78}`.trim();
+  const system = `
+Return strict JSON only:
+{
+  "proficiency_key": "beginner|intermediate|advanced|proficient",
+  "cefr_code": "A1|A2|B1|B2|C1|C2",
+  "needs_instruction": true|false
+}
+Use the text to estimate level; also flag needs_instruction if responses are very short, off-topic, or confused for the given level.
+`.trim();
 
   try {
-    const resp = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
+    const resp = await callChatWithResilience({
+      model: chooseChatModel({ kind: 'analyze' }),
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: lastUserTurns || 'No user text provided.' }
@@ -361,218 +254,191 @@ Return strict JSON: {"proficiency_key":"intermediate","cefr_code":"B1","confiden
       response_format: { type: 'json_object' },
     });
     const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
-    const key = String(parsed.proficiency_key || 'beginner').toUpperCase();
-    const cefr = String(parsed.cefr_code || 'A1').toUpperCase();
-    const confidence = Number(parsed.confidence || 0);
-    return { proficiency_key: key, cefr_code: cefr, confidence };
-  } catch {
-    return { proficiency_key: 'BEGINNER', cefr_code: 'A1', confidence: 0 };
-  }
-}
-
-/* =======================
-   Support assessment
-   ======================= */
-
-async function assessSupportNeed(history, group) {
-  const last2User = history
-    .filter(m => m.role === 'user')
-    .slice(-2)
-    .map(m => m.content)
-    .join('\n---\n')
-    .slice(0, 500);
-
-  const system = `You are a monitor for an English conversation. Decide if the learner now needs brief instruction.
-Consider level group: ${group}. Beginners may need help if answers are very short, off-topic, or show confusion.
-
-Return strict JSON:
-{"needs_instruction": true|false, "confidence": 0.0-1.0, "reason": "<short>"}`.trim();
-
-  try {
-    const resp = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
-      messages: [
-        { role: 'system', content: system },
-        { role: 'user', content: last2User || 'No user text.' }
-      ],
-      temperature: 0.0,
-      max_tokens: 100,
-      response_format: { type: 'json_object' },
-    });
-    const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
     return {
+      proficiency_key: String(parsed.proficiency_key || 'beginner').toUpperCase(),
+      cefr_code: String(parsed.cefr_code || 'A1').toUpperCase(),
       needs_instruction: !!parsed.needs_instruction,
-      confidence: Number(parsed.confidence || 0),
-      reason: String(parsed.reason || '')
     };
   } catch {
-    return { needs_instruction: false, confidence: 0, reason: 'fallback' };
+    return { proficiency_key: 'BEGINNER', cefr_code: 'A1', needs_instruction: false };
   }
 }
 
-/* =======================
-   Kickoff (ID-based)
-   ======================= */
-
-async function kickoffFromTopicsList(topicLines, group) {
-  const kickoffSystem = `
-You are an English Conversation Guide.
-
-You will receive a short list of topics formatted like: "[id:123] Title (CEFR) | ...".
-Pick ONE topic that best fits. Return JSON ONLY:
-{"selected_topic_id": 123, "selected_topic_title": "<exact title>", "first_turn": "<message to learner>"}
-
-FIRST TURN RULES:
-- Respect ${group} constraints (keep it short).
-- BEGINNER (practice):
-  • Start with: "Let's practice <topic>."
-  • If ONE example, write: You can say: Hello, how are you?
-  • If TWO choices, write: You can say: Hello! or Hi!
-- BEGINNER (scenario) or higher: start in character if a role is provided.
-- EXACTLY ONE question, end with "?".
-- Do NOT show lists, bullets, or internal hints. No quotes around example phrases.
-`.trim();
-
-  const msg = `Topics:\n${topicLines.join('\n')}`;
-
-  let selected_topic_id = null;
-  let selected_topic_title = null;
-  let first_turn = `Let's begin. What would you like to talk about?`;
-
-  try {
-    const resp = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
-      messages: [
-        { role: 'system', content: kickoffSystem },
-        { role: 'user', content: msg }
-      ],
-      temperature: 0.35,
-      max_tokens: 220,
-      response_format: { type: 'json_object' },
-    });
-    const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
-    if (parsed.selected_topic_id != null) selected_topic_id = Number(parsed.selected_topic_id);
-    if (parsed.selected_topic_title) selected_topic_title = String(parsed.selected_topic_title);
-    if (parsed.first_turn) first_turn = String(parsed.first_turn);
-  } catch { /* fallback */ }
-
-  return { selected_topic_id, selected_topic_title, first_turn };
+/* ======================
+   Prompt factory (lean)
+   ====================== */
+function baseRulesForGroup(group) {
+  if (group === 'PROFICIENT') {
+    return `You are an English Conversation Partner for PROFICIENT users.
+Be concise (≤80 words). Ask exactly ONE open question (why/how/what if/compare).
+Encourage nuance; no step-by-step scaffolding unless asked.
+Recast only if meaning is unclear. End with exactly one question mark.`;
+  }
+  if (group === 'ADVANCED') {
+    return `You are an English Conversation Partner for ADVANCED users.
+Keep replies concise (≤60 words). Ask exactly ONE probing question (why/how/what if).
+Favor natural discourse and light challenge. Recast only if needed.
+End with exactly one question mark.`;
+  }
+  if (group === 'INTERMEDIATE') {
+    return `You are an English Conversation Partner for INTERMEDIATE users.
+Keep replies short (≤35 words). Ask exactly ONE question (reason/example/contrast).
+If the learner struggles, offer a brief hint.
+Recast brief errors once, then continue. End with exactly one question mark.`;
+  }
+  return `You are an English Conversation Guide for BEGINNERS.
+Keep replies VERY short (≤25 words). Ask exactly ONE question.
+If user is brief/unsure: give ONE example they can copy OR TWO choices (not both).
+If user errs, recast once; if easy, add a tiny stretch. End with one question mark.`;
 }
-  /**
-   * Compaction hook. If nothing to do, returns unchanged summary & compacted_upto.
-   * Otherwise, summarizes the older segment and updates the summary JSON.
-   */
-  // Decide whether to compact; if yes, summarize the new slice and merge
-  async function maybeCompact({ history, existingSummary, compactedUpto, turnsTotal, topicId, strapi }) {
-    const deltaCount = turnsTotal - (compactedUpto || 0);
-    if (deltaCount < COMPACT_EVERY) {
-      return { newSummary: existingSummary || null, newCompactedUpto: compactedUpto || 0 };
-    }
+function lexicalRulesForGroup(group) {
+  if (group === 'BEGINNER') {
+    return `LEXICAL RULES (BEGINNER, A1–A2):
+- Use very simple words and short sentences (Present Simple).
+- Prefer: say, ask, name, from, like, want, live, work, friend.
+- Avoid: introduce, yourself, themselves, either, usually, prefer, perhaps.
+- If you need "introduce yourself", say: "say your name".
+- No rare adverbs; keep it basic.
+- ONE question only, end with "?".`;
+  }
+  if (group === 'INTERMEDIATE') {
+    return `LEXICAL RULES (INTERMEDIATE, ~B1):
+- Keep it clear and concrete; simple clauses are okay.
+- Prefer common vocabulary; avoid rare/abstract words.
+- ONE question only, end with "?".`;
+  }
+  return `LEXICAL RULES:
+- Natural, concise wording. Avoid jargon unless the learner uses it.
+- ONE question only, end with "?".`;
+}
+function modeInstructions(mode, roleName, roleCtx, maxWords) {
+  if (mode === 'scenario') {
+    return `MODE: SCENARIO (role-play)
+- Speak in character as ${roleName || 'a friendly person'}${roleCtx ? ` (${roleCtx})` : ''}.
+- Be natural, concise (≤${maxWords} words).
+- Ask EXACTLY ONE follow-up question, end with "?". No lists.
+- Light recast only if meaning is unclear.`;
+  }
+  return `MODE: PRACTICE (coach)
+- Be very clear and concise (≤${maxWords} words).
+- If the learner's last message was short, include ONE example they can copy OR TWO simple choices (not both).
+- Tiny positive feedback; brief recast of obvious errors.
+- Ask EXACTLY ONE practice question, end with "?".`;
+}
+function decisionPolicyBlock() {
+  return `DECISION POLICY (invisible; follow strictly):
+1) FREE-TALK has highest priority:
+   - If the user's latest message already contains substance (story, opinion, plan, problem, or a concrete question), respond to THAT and develop it.
+   - Do NOT switch to a preset topic in this case.
+2) If the user clearly wants to RESUME last topic, continue it naturally (do not announce the choice).
+3) If the user clearly wants something NEW and hasn't already started free-talk, gently propose or pick a fitting topic and begin.
+4) If unclear, ask ONE short clarifying question.
+Always produce ONE question total and keep level-appropriate brevity.`;
+}
+function buildSystemPrompt({ group, mode, topic, summary }) {
+  const t = topic?.attributes || topic || {};
+  const range = cefrRangeFromGroup(group);
+  let sys = [
+    baseRulesForGroup(group),
+    lexicalRulesForGroup(group),
+    modeInstructions(mode, t?.role_name || null, t?.role_context || null, (group==='PROFICIENT'?80:group==='ADVANCED'?60:group==='INTERMEDIATE'?35:25)),
+    decisionPolicyBlock()
+  ].join('\n\n');
 
-    // slice new turns since last compaction
-    const start = compactedUpto || 0;
-    const end   = turnsTotal;
-    const historySlice = history.slice(start, end);
+  const hints = buildTopicHints(topic);
+  if (hints) sys += `\n\n${hints}`;
+  if (range) sys += `\n\n(Internal hint: Target CEFR ~ ${range.min}–${range.max}.)`;
 
-    // fetch topic title if we have a relation id
-    let topicTitle = null;
-    if (topicId) {
-      const topic = await strapi.entityService.findOne('api::topic.topic', topicId, { fields: ['title'] });
-      topicTitle = topic?.title || null;
-    }
-
-    const delta = await summarizeChunk({ historySlice, startIndex: start, endIndex: end, topicTitle });
-    const merged = mergeSummary(existingSummary, delta, end);
-    return { newSummary: merged, newCompactedUpto: end };
+  if (summary?.kind === 'conv_state_v2') {
+    const minimal = {
+      topic_title_hint: summary.topic_title_hint || null,
+      last_user_summary: summary.last_user_summary || null,
+      open_threads: (summary.open_threads || []).slice(0, 1),
+      cefr: summary.cefr_cached || null,
+    };
+    sys += `\n\nDIALOGUE STATE (use for continuity; do not quote): ${JSON.stringify(minimal)}`;
+  } else if (summary?.kind === 'start_seed_v1') {
+    const seed = { recent: summary.recent || null, suggestions: (summary.suggestions || []).slice(0, SUGGESTION_COUNT) };
+    sys += `\n\nBACKGROUND SEED (do not mention directly): ${JSON.stringify(seed)}`;
   }
 
-/* =======================
-   Public service
-   ======================= */
+  return sys;
+}
 
+/* ===================================
+   Service (single-file, trimmed down)
+   =================================== */
 module.exports = ({ strapi }) => ({
-  // Persist one turn + counters + optional compaction; returns updated counters
+
+  // Persist one turn + tiny deterministic state (no heavy compaction)
   async persistTurnAndMaybeCompact({ sessionId, topicId = null, history, decided_mode = null }) {
     const [conv] = await strapi.entityService.findMany('api::conversation.conversation', {
       filters: { sessionId },
       populate: { topic: true },
-      fields: ['id','summary','compacted_upto','turns_total'],
+      fields: ['id','summary','turns_total','last_mode'],
       limit: 1,
     });
     if (!conv) throw new Error('Unknown sessionId');
 
     const turnsTotal = history.length;
 
-    const { newSummary, newCompactedUpto } = await maybeCompact({
+    // Build tiny deterministic state
+    const state = updateStateV2Deterministic({
+      prev: conv.summary?.kind === 'conv_state_v2' ? conv.summary : null,
       history,
-      existingSummary: conv.summary || null,
-      compactedUpto: Number(conv.compacted_upto || 0),
-      turnsTotal,
       topicId: topicId || conv.topic?.id || null,
-      strapi,
+      group: null,
+      cefr: null,
+      mode: decided_mode || conv.last_mode || null,
     });
 
-    const nowIso = new Date().toISOString();
     await strapi.entityService.update('api::conversation.conversation', conv.id, {
       data: {
         history,
-        summary: newSummary,
-        compacted_upto: newCompactedUpto,
+        summary: state,
+        compacted_upto: 0, // legacy field kept for compatibility
         turns_total: turnsTotal,
         last_mode: decided_mode || null,
-        last_active: nowIso,
+        last_active: new Date().toISOString(),
         topic: topicId || conv.topic?.id || null,
       },
     });
 
-    return { turns_total: turnsTotal, compacted_upto: newCompactedUpto };
+    return { turns_total: turnsTotal, compacted_upto: 0 };
   },
 
-
   async warmStartFromMemory({ mode, group, topicTitle, summary, lastTurns }) {
-    const base = buildBasePromptForGroup(group);
-    const lex  = lexicalRulesForGroup(group);
-
-    const bg = `
-    BACKGROUND (do not say this directly):
-    - Topic: ${topicTitle || '(unknown)'}
-    - Learned: ${(summary?.learned || []).slice(0,6).join(' | ') || '—'}
-    - Open threads: ${(summary?.open_threads || []).slice(0,3).join(' | ') || '—'}
-    - Recent turns:
-    ${lastTurns.map(t => `${t.role.toUpperCase()}: ${t.content}`).join('\n')}
-    `.trim();
+    const bg = `BACKGROUND (do not say this directly):
+- Topic: ${topicTitle || '(unknown)'}
+- Open threads: ${(summary?.open_threads || []).slice(0,3).join(' | ') || '—'}
+- Recent turns:
+${lastTurns.map(t => `${t.role.toUpperCase()}: ${t.content}`).join('\n')}`;
 
     const system = [
-      base,
-      lex,
+      baseRulesForGroup(group),
+      lexicalRulesForGroup(group),
       bg,
-      modeInstructions(
-        mode === 'continue' ? 'scenario' : mode === 'practice' ? 'practice' : 'scenario',
-        null, null, maxWordsForGroup(group)
-      ),
+      modeInstructions(mode === 'continue' ? 'scenario' : mode, null, null, 60),
       `Ask exactly one question and end with "?".`
     ].join('\n\n');
 
-    const user = `Start the new turn now. Keep it natural and short.`;
-
-    const resp = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
+    const resp = await callChatWithResilience({
+      model: chooseChatModel({ kind: 'warmstart', group }),
       messages: [
         { role: 'system', content: system },
-        { role: 'user', content: user }
+        { role: 'user', content: 'Start the new turn now. Keep it natural and short.' }
       ],
       temperature: 0.4,
-      max_tokens: 140,
+      max_tokens: 120,
     });
 
     return sanitizeModelReply(resp.choices?.[0]?.message?.content || 'Ready to continue—what would you like to say?', {
-      maxWords: maxWordsForGroup(group)
+      maxWords: 60
     });
   },
 
-  async startSession({ userId = null /* suggestCount removed; fixed to SUGGESTION_COUNT */ }) {
-    // Prefer profile proficiency; fallback to mapper; fallback to BEGINNER
-    const profPref = await getUserProfileProficiency({ strapi, userId });
+  async startSession({ userId = null }) {
+    const profPref = await getProfilePref({ strapi, userId });
     const group = groupFromProficiency(profPref) || 'BEGINNER';
 
     // Find most recent conversation
@@ -595,32 +461,21 @@ module.exports = ({ strapi }) => ({
       recap: (last.summary && (last.summary.synopsis || last.summary.recap)) || null
     } : null;
 
-    const suggestions = await fetchSuggestionTopics({
-      proficiency: profPref || 'auto',
-      strapi
-    });
+    const suggestions = await fetchSuggestionTopics({ proficiency: profPref || 'auto', strapi });
 
-    // First turn: ask; do not decide/bind a topic
-    let first_turn;
-    if (hasRecent && recentSeed?.topic_title) {
-      const when = timeAgo(recentSeed.last_active_iso);
-      first_turn =
-        `Hi there! Last time we talked about ${recentSeed.topic_title} ${when}. ` +
-        `Would you like to continue that, start something new, or just tell me what's on your mind?`;
-    } else {
-      const s = suggestions?.[0]?.title;
-      first_turn = s
-        ? `Hi there! What do you want to talk about today? If you like, we could try “${s}”.`
-        : `Hi there! What do you want to talk about today?`;
-    }
+    const first_turn = (hasRecent && recentSeed?.topic_title)
+      ? `Hi there! Last time we talked about ${recentSeed.topic_title} ${timeAgo(recentSeed.last_active_iso)}. Would you like to continue that, start something new, or just tell me what's on your mind?`
+      : (suggestions?.[0]?.title
+          ? `Hi there! What do you want to talk about today? If you like, we could try “${suggestions[0].title}”.`
+          : `Hi there! What do you want to talk about today?`);
 
     const sessionId = uuidv4();
     await strapi.entityService.create('api::conversation.conversation', {
       data: {
         sessionId,
         history: [{ role: 'assistant', content: first_turn }],
-        topic: null, // not binding at start
-        summary: seedSummary({ recent: recentSeed, suggestions }),
+        topic: null,
+        summary: seedSummary({ recent: recentSeed, suggestions }), // will switch to conv_state_v2 after 1st persist
         compacted_upto: 0,
         turns_total: 1,
         last_mode: 'fresh',
@@ -638,15 +493,11 @@ module.exports = ({ strapi }) => ({
     };
   },
 
-
-  /** Kickoff: fetch topics, LLM picks one by level, return first turn (no persistence here) */
   async kickoffFromStrapiTopics(opts = {}) {
-    const { sampleSize = 4, proficiency = 'auto', /* includeHints unused */ background = null } = opts;
+    const { sampleSize = 4, proficiency = 'auto', background = null } = opts;
     const filters = { is_active: true };
-    const allowedCEFR = allowedCEFRFromProficiency(proficiency);
-    if (allowedCEFR && allowedCEFR.length) {
-      filters.difficulty_level = { code: { $in: allowedCEFR } };
-    }
+    const allowed = allowedCEFRFromProficiency(proficiency);
+    if (allowed && allowed.length) filters.difficulty_level = { code: { $in: allowed } };
 
     const topics = await strapi.entityService.findMany('api::topic.topic', {
       filters,
@@ -665,204 +516,126 @@ module.exports = ({ strapi }) => ({
     }
 
     const pool = topics.sort(() => 0.5 - Math.random()).slice(0, sampleSize);
-
-    // include the ID so the LLM can return it
-    const topicLines = pool.map((t, i) => {
-      const cefr = extractCEFRCodeFromTopic(t) || 'A?';
-      let line = `${i + 1}) [id:${t.id}] ${t.title} (${cefr})`;
-      if (t.mode_hint) line += ` | mode:${t.mode_hint}`;
-      if (t.role_name) line += ` | role:${t.role_name}`;
-      if (t.role_context) line += ` | ctx:${String(t.role_context).slice(0, 60)}`;
-      return line;
+    const lines = pool.map((t, i) => {
+      const cefr = t?.difficulty_level?.data?.attributes?.code || 'A?';
+      let s = `${i + 1}) [id:${t.id}] ${t.title} (${String(cefr).toUpperCase()})`;
+      if (t.mode_hint) s += ` | mode:${t.mode_hint}`;
+      if (t.role_name) s += ` | role:${t.role_name}`;
+      if (t.role_context) s += ` | ctx:${String(t.role_context).slice(0, 60)}`;
+      return s;
     });
 
     const group = groupFromProficiency(proficiency) || 'BEGINNER';
 
     const kickoffSystem = `
-  You are an English Conversation Guide.
+You are an English Conversation Guide.
+You will receive a short list of topics formatted like: "[id:123] Title (CEFR) | ...".
+Pick ONE topic that best fits. Return JSON ONLY:
+{"selected_topic_id": 123, "selected_topic_title": "<exact title>", "first_turn": "<message to learner>"}
+FIRST TURN RULES:
+- Respect ${group} constraints (keep it short).
+- BEGINNER (practice):
+  • Start with: "Let's practice <topic>."
+  • If ONE example, write: You can say: Hello, how are you?
+  • If TWO choices, write: You can say: Hello! or Hi!
+- BEGINNER (scenario) or higher: start in character if a role is provided.
+- EXACTLY ONE question, end with "?".
+- Do NOT show lists, bullets, or internal hints. No quotes around example phrases.
+`.trim();
 
-  You will receive a short list of topics formatted like: "[id:123] Title (CEFR) | ...".
-  Pick ONE topic that best fits. Return JSON ONLY:
-  {"selected_topic_id": 123, "selected_topic_title": "<exact title>", "first_turn": "<message to learner>"}
+    const resp = await callChatWithResilience({
+      model: chooseChatModel({ kind: 'kickoff', group }),
+      messages: [
+        ...(background ? [{ role: 'system', content: 'BACKGROUND SUMMARY (use only for personalization; do NOT quote it):\n' + JSON.stringify(background) }] : []),
+        { role: 'system', content: kickoffSystem },
+        { role: 'user', content: `Topics:\n${lines.join('\n')}` }
+      ],
+      temperature: 0.35,
+      max_tokens: 200,
+      response_format: { type: 'json_object' },
+    });
 
-  FIRST TURN RULES:
-  - Respect ${group} constraints (keep it short).
-  - BEGINNER (practice):
-    • Start with: "Let's practice <topic>."
-    • If ONE example, write: You can say: Hello, how are you?
-    • If TWO choices, write: You can say: Hello! or Hi!
-  - BEGINNER (scenario) or higher: start in character if a role is provided.
-  - EXACTLY ONE question, end with "?".
-  - Do NOT show lists, bullets, or internal hints. No quotes around example phrases.
-  `.trim();
-
-    // Build messages with optional background summary as an extra system message
-    const sysMsgs = [{ role: 'system', content: kickoffSystem }];
-
-    if (background) {
-      // normalize both v1 and legacy shapes
-      let bg;
-      if (background.kind === 'conv_summary_v1') {
-        bg = {
-          topic_title: background.topic_title || null,
-          facts: background.facts || [],
-          learned: background.learned || [],
-          open_threads: background.open_threads || [],
-        };
-      } else {
-        bg = {
-          topic_title: null,
-          synopsis: background.synopsis || '',
-          vocab: background.vocab || [],
-          patterns: background.patterns || [],
-          facts: background.facts || {},
-        };
-      }
-      sysMsgs.push({
-        role: 'system',
-        content:
-          'BACKGROUND SUMMARY (use only for personalization; do NOT quote it):\n' +
-          JSON.stringify(bg),
-      });
-    }
-
-    const msg = `Topics:\n${topicLines.join('\n')}`;
-
-    let selected_topic_id = null;
-    let selected_topic_title = null;
-    let first_turn = `Let's begin. What would you like to talk about?`;
-
-    try {
-      const resp = await openai.chat.completions.create({
-        model: 'gpt-4-turbo',
-        messages: [...sysMsgs, { role: 'user', content: msg }],
-        temperature: 0.35,
-        max_tokens: 220,
-        response_format: { type: 'json_object' },
-      });
-      const parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}');
-      if (parsed.selected_topic_id != null) selected_topic_id = Number(parsed.selected_topic_id);
-      if (parsed.selected_topic_title) selected_topic_title = String(parsed.selected_topic_title);
-      if (parsed.first_turn) first_turn = String(parsed.first_turn);
-    } catch { /* fallback */ }
+    let parsed = {};
+    try { parsed = JSON.parse(resp.choices?.[0]?.message?.content || '{}'); } catch {}
+    const first_turn = sanitizeModelReply(parsed.first_turn || `Let's begin. What would you like to talk about?`, { maxWords: 60 });
 
     return {
-      selected_topic_id,
-      selected_topic_title,
-      first_turn: sanitizeModelReply(first_turn, { maxWords: maxWordsForGroup(group) }),
+      selected_topic_id: Number(parsed.selected_topic_id) || null,
+      selected_topic_title: parsed.selected_topic_title || null,
+      first_turn,
       inferred_level: group,
     };
   },
 
-
   /**
-   * Continue the conversation with adaptive level.
-   * Uses summary (if provided) for context; no DB writes here.
-   *
-   * args: { history, topicId?, proficiency?, mode?, summary? }
+   * Continue conversation with adaptive level and minimal context.
+   * args: { history, topicId?, proficiency?, mode?, summary?, userId? }
    */
   async generateNextPrompt({ history, topicId = null, proficiency = 'auto', mode: modeOverride = null, summary = null, userId = null }) {
     if (!Array.isArray(history) || history.length === 0) {
       throw new Error('generateNextPrompt requires non-empty history.');
     }
 
-    // Load topic if already bound
+    // Optional topic
     let topic = null;
     if (topicId) {
       topic = await strapi.entityService.findOne('api::topic.topic', topicId, {
         populate: { difficulty_level: { fields: ['code'] } },
-        fields: ['title', 'mode_hint', 'role_name', 'role_context'],
+        fields: ['title','mode_hint','role_name','role_context'],
       });
     }
 
-    // Determine group: client override > profile > inference > topic CEFR > BEGINNER
-    let group = null;
-    let inferred_proficiency_key = null;
-    let inferred_cefr_code = null;
+    // Group: client > profile > (throttled) inference > topic CEFR > BEGINNER
+    let group = null, inferred_proficiency_key = null, inferred_cefr_code = null;
+    const profPref = (!proficiency || String(proficiency).toLowerCase() === 'auto')
+      ? await getProfilePref({ strapi, userId })
+      : proficiency;
+    group = groupFromProficiency(profPref);
 
-    if (!proficiency || String(proficiency).toLowerCase() === 'auto') {
-      const profPref = await getUserProfileProficiency({ strapi, userId });
-      group = groupFromProficiency(profPref);
-    } else {
-      group = groupFromProficiency(proficiency);
-    }
+    const turnsTotal = history.length;
+    const signals = analyzeUserSignals(history);
 
-    if (!group) {
-      const est = await this.estimateProficiencyFromHistory(history);
-      inferred_proficiency_key = est.proficiency_key || null;
-      inferred_cefr_code = est.cefr_code || null;
+    const SHOULD_INFER = (!group) && (turnsTotal <= INFER_AT_TURNS || (turnsTotal % INFER_EVERY_N === 0));
+    let needs_instruction = false;
+    if (SHOULD_INFER || (signals.wc < 6 && turnsTotal % SUPPORT_EVERY_N === 0)) {
+      const meta = await analyzeMeta(history);
+      inferred_proficiency_key = meta.proficiency_key || null;
+      inferred_cefr_code       = meta.cefr_code || null;
+      needs_instruction        = !!meta.needs_instruction;
+
       group =
         groupFromProficiency(inferred_proficiency_key) ||
         groupFromProficiency(inferred_cefr_code) ||
         (topic ? groupFromProficiency(extractCEFRCodeFromTopic(topic)) : null) ||
         'BEGINNER';
     }
+    if (!group) group = (topic ? groupFromProficiency(extractCEFRCodeFromTopic(topic)) : null) || 'BEGINNER';
 
-    // Mode decision (your existing logic)
-    const signals  = analyzeUserSignals(history);
-    const t        = topic?.attributes || topic || {};
-    const hint     = t?.mode_hint || 'auto';
-    const roleName = t?.role_name || null;
-    const roleCtx  = t?.role_context || null;
-
+    // Mode decision
+    const t = topic?.attributes || topic || {};
+    const hint = t?.mode_hint || 'auto';
     let mode = (modeOverride && ['practice','scenario','auto'].includes(String(modeOverride).toLowerCase()))
       ? String(modeOverride).toLowerCase()
       : decideMode({ hint, group, signals });
+    if (needs_instruction) mode = 'practice';
 
-    const support = await assessSupportNeed(history, group);
-    if (support.needs_instruction) mode = 'practice';
-
-    // Build system prompt (add decision policy + seed)
-    let systemMsg = buildBasePromptForGroup(group);
-    const hints = buildTopicHints(topic);
-    if (hints) systemMsg += `\n\n${hints}`;
-    const range = cefrRangeFromGroup(group);
-    if (range) systemMsg += `\n\n(Internal hint: Target CEFR ~ ${range.min}–${range.max}.)`;
-    systemMsg += `\n\n${lexicalRulesForGroup(group)}`;
-    systemMsg += `\n\n${modeInstructions(mode, roleName, roleCtx, maxWordsForGroup(group))}`;
-
-    // NEW: priority policy
-    systemMsg += `\n\n${decisionPolicyBlock()}`;
-
-    // Pass start seed invisibly (recent + suggestions)
-    if (summary && summary.kind === 'start_seed_v1') {
-      const seed = {
-        recent: summary.recent || null,
-        suggestions: (summary.suggestions || []).slice(0, SUGGESTION_COUNT),
-      };
-      systemMsg += `\n\nBACKGROUND SEED (do not mention directly): ${JSON.stringify(seed)}`;
-    } else if (summary) {
-      // Back-compat for older summary shapes
-      const bg = summary.kind === 'conv_summary_v1'
-        ? {
-            topic_title: summary.topic_title || null,
-            facts: summary.facts || [],
-            learned: summary.learned || [],
-            open_threads: summary.open_threads || [],
-          }
-        : {
-            synopsis: summary.synopsis || '',
-            vocab: summary.vocab || [],
-            patterns: summary.patterns || [],
-            facts: summary.facts || {},
-          };
-      systemMsg += `\n\nBACKGROUND SUMMARY (continuity only): ${JSON.stringify(bg)}`;
-    }
-
-    const messages = [{ role: 'system', content: systemMsg }, ...history];
+    // System prompt + last K turns
+    const systemMsg = buildSystemPrompt({ group, mode, topic, summary });
+    const messages = [{ role: 'system', content: systemMsg }, ...history.slice(-CONVO_TAIL_TURNS)];
 
     try {
-      const resp = await openai.chat.completions.create({
-        model: 'gpt-4-turbo',
+      const resp = await callChatWithResilience({
+        model: chooseChatModel({ kind: 'generate', group }),
         messages,
-        temperature: (group === 'ADVANCED' || group === 'PROFICIENT') ? 0.7 : 0.5,
+        temperature: (group === 'ADVANCED' || group === 'PROFICIENT') ? 0.6 : 0.5,
         max_tokens: 120,
         frequency_penalty: 0.1,
       });
-      const raw = resp.choices?.[0]?.message?.content || "Let's continue. What do you think?";
-      const reply = sanitizeModelReply(raw, { maxWords: maxWordsForGroup(group) });
 
-      // Optional: if we started fresh and reply clearly uses one of the suggestion titles, bind it.
+      const raw = resp.choices?.[0]?.message?.content || "Let's continue. What do you think?";
+      const reply = sanitizeModelReply(raw, { maxWords: (group==='PROFICIENT'?80:group==='ADVANCED'?60:group==='INTERMEDIATE'?35:25) });
+
+      // Optional: bind topic if reply echoes a suggestion title from seed
       let maybe_new_topic_id = null;
       if (!topicId && summary && summary.kind === 'start_seed_v1' && Array.isArray(summary.suggestions)) {
         const hit = summary.suggestions.find(s => s.title && reply.toLowerCase().includes(s.title.toLowerCase()));
@@ -878,7 +651,11 @@ module.exports = ({ strapi }) => ({
         maybe_new_topic_id
       };
     } catch (err) {
-      strapi.log.error('Error generating next prompt:', err);
+      const status = err?.status || err?.response?.status || 'n/a';
+      const reqId  = err?.response?.headers?.['x-request-id'] || err?.headers?.['x-request-id'] || 'n/a';
+      let body     = err?.response?.data ?? err?.error ?? err?.message ?? err?.toString?.() ?? 'n/a';
+      try { body = typeof body === 'string' ? body : JSON.stringify(body); } catch {}
+      strapi.log.error(`Error generating next prompt: status=${status} reqId=${reqId} body=${body}`);
       return {
         reply: "Sorry, I had a hiccup. Could you say that again?",
         inferred_proficiency_key, inferred_cefr_code, inferred_group: group, decided_mode: mode || null,
@@ -887,18 +664,29 @@ module.exports = ({ strapi }) => ({
     }
   },
 
-  /* Expose utils if you want to unit test */
+  // expose tiny helper for tests if desired
   sanitizeModelReply,
-  buildTopicHints,
-  estimateProficiencyFromHistory,
-  buildBasePromptForGroup,
-  normalizeProficiency,
-  groupFromProficiency,
-  allowedCEFRFromProficiency,
-  cefrRangeFromGroup,
-  mergeSummary,
-  summarizeChunk,
-  //maybeCompact,                 // if you want direct access
-  //persistTurnAndMaybeCompact,   // ← the new one used by controller
-
 });
+
+/* =======================================
+   Local Strapi profile helper (unchanged)
+   ======================================= */
+async function getProfilePref({ strapi, userId }) {
+  if (!userId) return null;
+  try {
+    const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
+      filters: { user: userId },
+      fields: ['proficiency', 'level_group', 'cefr_code'],
+      limit: 1,
+    });
+    const p = profiles?.[0];
+    if (!p) return null;
+    const cefr = (p.cefr_code || '').toUpperCase();
+    const group = (p.level_group || p.proficiency || '').toUpperCase();
+    if (['A1','A2','B1','B2','C1','C2'].includes(cefr)) return cefr;
+    if (['BEGINNER','INTERMEDIATE','ADVANCED','PROFICIENT'].includes(group)) return group;
+    return null;
+  } catch {
+    return null;
+  }
+}
