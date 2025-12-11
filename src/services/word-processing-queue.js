@@ -45,10 +45,10 @@ module.exports = ({ strapi }) => {
       const updateData = {};
 
       // 3. Generate exam options if they don't exist
-      if (!exam_base && base_text) {
+      if (base_text) {
         updateData.exam_base = await openAIService.generateExamOptions(base_text, baseLocale, wordDefinitionId);
       }
-      if (!exam_target && target_text) {
+      if (target_text) {
         updateData.exam_target = await openAIService.generateExamOptions(target_text, targetLocale, wordDefinitionId);
       }
 

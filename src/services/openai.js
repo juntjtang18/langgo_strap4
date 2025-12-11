@@ -3,6 +3,7 @@ const OpenAI = require('openai');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+
 module.exports = ({ strapi }) => ({
   /**
    * Generates a natural, conversational reply based on the chat history.
@@ -91,63 +92,168 @@ module.exports = ({ strapi }) => ({
   },
 
   /**
-   * Generates multiple-choice exam options for a given word.
-   * @param {string} text - The correct word for the question from the word_definition.
-   * @param {string} locale - The language of the word (e.g., 'en', 'es').
-   * @param {number | string} wordDefinitionId - The ID of the word_definition for logging purposes.
-   * @returns {Promise<Array<object>>} - An array of 4 exam options.
+   * Generate exam options for a given word.
+   * - text: the correct word (base_text or target_text)
+   * - locale: language code for the options (e.g. "en", "zh")
    */
   async generateExamOptions(text, locale, wordDefinitionId = 'N/A') {
-    const prompt = `Generate 3 incorrect alternative words in ${locale} that are similar in category or difficulty to "${text}". The output should be a JSON array of objects, where each object has "text" and "isCorrect" (boolean). The correct word should also be included with "isCorrect": true. Ensure the correct word is randomly placed among the options.`;
+    const prompt = `
+You are generating multiple-choice options for a language-learning exam in ${locale}.
+
+The CORRECT word is: "${text}".
+
+Your job:
+- Create a total of 4 options.
+- Exactly ONE option must be the correct word "${text}".
+- The other 3 must be incorrect options.
+
+STRICT RULES:
+
+1) Meaning:
+   - Only one option is correct for "${text}".
+   - The 3 incorrect options must NOT:
+     - have the same meaning as "${text}",
+     - be synonyms or near-synonyms of "${text}",
+     - be valid translations of the same concept as "${text}" in normal usage.
+   - They should be clearly wrong in meaning, not "almost right".
+
+2) Form:
+   - The incorrect options should be plausible confusions:
+     - same part of speech if possible (all verbs, or all nouns),
+     - similar length, characters, or phonetic feel.
+   - Avoid inflected forms of the same word (e.g. for "go": "goes", "going", etc.).
+
+3) OUTPUT FORMAT (IMPORTANT):
+   - You MUST return a JSON object with this exact shape:
+
+     {
+       "options": [
+         { "text": "option1", "isCorrect": false },
+         { "text": "option2", "isCorrect": false },
+         { "text": "option3", "isCorrect": false },
+         { "text": "option4", "isCorrect": true }
+       ]
+     }
+
+   - "options" must be an array of exactly 4 items.
+   - Each item must have:
+       - "text": string
+       - "isCorrect": boolean
+   - Exactly one item must have "isCorrect": true and its "text" must be "${text}".
+`;
+
     try {
       const chatCompletion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a helpful assistant that generates multiple-choice options for language learning. Provide only the JSON array." },
-          { role: "user", content: prompt }
+          {
+            role: "system",
+            content:
+              "You are a helpful assistant that generates multiple-choice options for language learning. Always return a valid JSON object as specified.",
+          },
+          { role: "user", content: prompt },
         ],
         response_format: { type: "json_object" },
+        temperature: 0,
       });
 
       const responseContent = chatCompletion.choices[0].message.content;
-      let generatedOptions = JSON.parse(responseContent);
-      generatedOptions = Array.isArray(generatedOptions)
-        ? generatedOptions
-        : generatedOptions.options || generatedOptions.choices || Object.values(generatedOptions)[0];
+      strapi.log.debug(
+        `Exam options raw response (${locale}, wordDef ${wordDefinitionId}): \n${responseContent}`
+      );
 
-      if (!Array.isArray(generatedOptions)) {
-        throw new Error("OpenAI response did not contain a valid array of options.");
+      let parsed;
+      try {
+        parsed = JSON.parse(responseContent);
+      } catch (e) {
+        throw new Error(`Failed to parse JSON: ${e.message}`);
       }
 
-      let finalOptions = [
-        ...generatedOptions.filter(opt => !opt.isCorrect),
-        { text: text, isCorrect: true }
-      ];
+      // Normalize to an array of options
+      let options = null;
+
+      if (Array.isArray(parsed)) {
+        // Model returned raw array
+        options = parsed;
+      } else if (parsed && Array.isArray(parsed.options)) {
+        // Model returned { options: [...] }
+        options = parsed.options;
+      } else if (parsed && typeof parsed === "object") {
+        // Model returned a single object: wrap into array
+        options = [parsed];
+      }
+
+      if (!Array.isArray(options)) {
+        throw new Error("OpenAI response did not contain a valid options array.");
+      }
+
+      // Filter to objects with required shape
+      options = options.filter(
+        (opt) =>
+          opt &&
+          typeof opt.text === "string" &&
+          typeof opt.isCorrect === "boolean"
+      );
+
+      // Remove any options that look like our fallback
+      options = options.filter(
+        (opt) => !/^Error opt\s*\d+/i.test(opt.text.trim())
+      );
+
+      // Force our own correct option
+      const correctOption = { text: String(text).trim(), isCorrect: true };
+
+      // Remove any duplicates of the correct text from incorrect options
+      options = options.filter(
+        (opt) => opt.text.trim() !== correctOption.text
+      );
+
+      // Take at most 3 incorrect options from the model
+      const incorrectOptions = options
+        .filter((opt) => !opt.isCorrect)
+        .slice(0, 3);
+
+      // Build the final list: our correct option + up to 3 incorrect
+      let finalOptions = [...incorrectOptions, correctOption];
+
+      // Pad with simple placeholders if needed to reach 4 options
       while (finalOptions.length < 4) {
-        finalOptions.push({ text: `Placeholder ${finalOptions.length}`, isCorrect: false });
+        finalOptions.push({
+          text: `Placeholder ${finalOptions.length}`,
+          isCorrect: false,
+        });
       }
+
+      // Ensure exactly 4
       finalOptions = finalOptions.slice(0, 4);
 
+      // Shuffle the options
       for (let i = finalOptions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [finalOptions[i], finalOptions[j]] = [finalOptions[j], finalOptions[i]];
       }
-      return finalOptions;
 
+      return finalOptions;
     } catch (error) {
       strapi.log.error(
         `Error calling OpenAI API for ${locale} for word_definition ${wordDefinitionId}:`,
         error.message
       );
-      // Return fallback options on error
-      return [
-        { text: text, isCorrect: true },
+
+      // Fallback options in case of failure
+      const correctOption = { text: text, isCorrect: true };
+      const fallback = [
+        correctOption,
         { text: `Error opt 1`, isCorrect: false },
         { text: `Error opt 2`, isCorrect: false },
-        { text: `Error opt 3`, isCorrect: false }
-      ].sort(() => Math.random() - 0.5);
+        { text: `Error opt 3`, isCorrect: false },
+      ];
+
+      // Shuffle fallback
+      return fallback.sort(() => Math.random() - 0.5);
     }
   },
+
 
     /**
    * Gets a complete list of story titles for a given author in a reliable JSON format.
@@ -600,4 +706,69 @@ module.exports = ({ strapi }) => ({
       return null;
     }
   },
+    /**
+   * Validates existing exam options using simple local rules.
+   * Returns true if valid, false if invalid.
+   */
+  isExamOptionsValid(correctText, options, meta = {}) {
+    const { wordDefinitionId = 'N/A', field = 'exam_base', locale = 'unknown' } = meta;
+
+    if (!correctText) {
+      strapi.log.warn(
+        `ExamOptionsValidation: missing correctText for ${field} on word_definition ${wordDefinitionId}.`
+      );
+      return false;
+    }
+
+    if (!Array.isArray(options) || options.length !== 4) {
+      strapi.log.warn(
+        `ExamOptionsValidation: ${field} is not an array of length 4 on word_definition ${wordDefinitionId}.`
+      );
+      return false;
+    }
+
+    let correctCount = 0;
+    const expected = String(correctText).trim();
+
+    for (const opt of options) {
+      if (!opt || typeof opt.text !== 'string' || typeof opt.isCorrect !== 'boolean') {
+        strapi.log.warn(
+          `ExamOptionsValidation: ${field} has invalid option shape on word_definition ${wordDefinitionId}.`
+        );
+        return false;
+      }
+
+      const text = opt.text.trim();
+
+      // If fallback "Error opt X" exists → invalid
+      if (/^Error opt\s*\d+/i.test(text)) {
+        strapi.log.warn(
+          `ExamOptionsValidation: ${field} contains fallback "Error opt" for word_definition ${wordDefinitionId}.`
+        );
+        return false;
+      }
+
+      if (opt.isCorrect) {
+        correctCount += 1;
+
+        if (text !== expected) {
+          strapi.log.warn(
+            `ExamOptionsValidation: ${field} correct text mismatch on word_definition ${wordDefinitionId}. expected="${expected}", got="${text}".`
+          );
+          return false;
+        }
+      }
+    }
+
+    if (correctCount !== 1) {
+      strapi.log.warn(
+        `ExamOptionsValidation: ${field} has ${correctCount} correct options on word_definition ${wordDefinitionId}.`
+      );
+      return false;
+    }
+
+    // All checks passed → valid
+    return true;
+  },
+
 });

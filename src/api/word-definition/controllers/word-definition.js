@@ -275,4 +275,139 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       return ctx.internalServerError('An error occurred while creating the word entry.');
     }
   },
+
+    /**
+   * Maintenance endpoint:
+   * Enqueue ALL relevant word-definitions into the background queue
+   * to regenerate exam_base and exam_target.
+   *
+   * POST /api/word-definitions/refine-exam-options
+   *
+   * Optional query params:
+   *   - locales=en,zh-CN (comma-separated) to restrict which locales to include.
+   */
+  async refineExamOptions(ctx) {
+    const { user } = ctx.state;
+    if (!user) {
+      return ctx.unauthorized('Authentication is required.');
+    }
+
+    const locale = ctx.query.locale;
+    if (!locale) {
+      return ctx.badRequest('Missing required query parameter: locale');
+    }
+
+    const batchSize = Number(ctx.query.batchSize) > 0
+      ? Number(ctx.query.batchSize)
+      : 200;
+
+    const queueService = strapi.service('word-processing-queue');
+    const openAIService = strapi.service('openai');
+
+    if (!queueService) {
+      strapi.log.error("RefineExamOptions: 'word-processing-queue' service not found.");
+      return ctx.internalServerError('Queue service not available.');
+    }
+    if (!openAIService) {
+      strapi.log.error("RefineExamOptions: 'openai' service not found.");
+      return ctx.internalServerError('OpenAI service not available.');
+    }
+
+    let start = 0;
+    let totalQueued = 0;
+    let totalSkipped = 0;
+
+    strapi.log.info(
+      `RefineExamOptions: scanning word_definitions for locale "${locale}". batchSize=${batchSize}`
+    );
+
+    while (true) {
+      const wordDefinitions = await strapi.entityService.findMany(
+        'api::word-definition.word-definition',
+        {
+          limit: batchSize,
+          start,
+          locale, // i18n locale filter (top-level)
+          populate: {
+            word: true,
+            flashcards: true,
+          },
+        }
+      );
+
+      if (!wordDefinitions || wordDefinitions.length === 0) {
+        break;
+      }
+
+      for (const wd of wordDefinitions) {
+        const wordDefinitionId = wd.id;
+        const flashcards = wd.flashcards || [];
+        const flashcard = flashcards[0];
+
+        if (!flashcard) {
+          totalSkipped += 1;
+          strapi.log.warn(
+            `RefineExamOptions: word_definition ${wordDefinitionId} has no flashcards. Skipping.`
+          );
+          continue;
+        }
+
+        const base_text = wd.base_text;
+        const exam_base = wd.exam_base;
+        const target_text = wd.word?.target_text;
+        const exam_target = wd.exam_target;
+
+        let needsRefine = false;
+
+        if (base_text) {
+          const baseOk = openAIService.isExamOptionsValid(base_text, exam_base, {
+            field: 'exam_base',
+            wordDefinitionId,
+            locale,
+          });
+          if (!baseOk) needsRefine = true;
+        }
+
+        if (target_text) {
+          const targetOk = openAIService.isExamOptionsValid(target_text, exam_target, {
+            field: 'exam_target',
+            wordDefinitionId,
+            locale,
+          });
+          if (!targetOk) needsRefine = true;
+        }
+
+        if (!needsRefine) {
+          totalSkipped += 1;
+          continue;
+        }
+
+        // Only enqueue those that failed validation
+        queueService.addJob({
+          wordDefinitionId,
+          flashcardId: flashcard.id,
+        });
+
+        totalQueued += 1;
+      }
+
+      start += wordDefinitions.length;
+      if (wordDefinitions.length < batchSize) {
+        break;
+      }
+    }
+
+    strapi.log.info(
+      `RefineExamOptions: finished scan for locale "${locale}". queued=${totalQueued}, skipped=${totalSkipped}.`
+    );
+
+    ctx.body = {
+      message:
+        'Scanned word_definitions and enqueued invalid exam options for background refinement.',
+      queued: totalQueued,
+      skipped: totalSkipped,
+      locale,
+    };
+  },
+
 }));

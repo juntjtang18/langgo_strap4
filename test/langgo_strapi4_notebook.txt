@@ -797,3 +797,20 @@ curl -X GET 'http://localhost:1338/api/cefr-syllabi/1?populate%5Bdifficulty_leve
 export STRAPI_URL="http://localhost:1338"
 export STRAPI_TOKEN="949394799a60ba70219293f2188419a00d55c8105032a35037e2405a68e9b00b18c08a53fb60b39d989e68941abb0622846b2e4edc2e5181bd6b2d26bd4a1ada8c1078758d05960c310cf214cd748ddce3ae276f5aa859e681a7d11e30a6c360de5f6d005e631ab77d4de360ee5bfcc4f1890b8bfe9e443dc030879b89663fa0"
 node seed-topics.js
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NjU0MDU1OTgsImV4cCI6MTc2Nzk5NzU5OH0.GTn6YWWIgIzutdN54vFIHdB4UVlGvDzmdBMbJS89dZI
+
+curl -X POST http://localhost:1338/api/word-definitions \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NjU0MDU1OTgsImV4cCI6MTc2Nzk5NzU5OH0.GTn6YWWIgIzutdN54vFIHdB4UVlGvDzmdBMbJS89dZI" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "word": {
+        "target_text": "go"
+      },
+      "base_text": "去",
+      "part_of_speech": "verb",
+      "locale": "zh-CN"
+    }
+  }'

@@ -19,5 +19,14 @@ module.exports = {
         auth: {},
       },
     },
+    {
+      // NEW: enqueue all word-definitions for exam_base/target regeneration
+      method: 'POST',
+      path: '/word-definitions/refine-exam-options',
+      handler: 'word-definition.refineExamOptions',
+      config: {
+        auth: {}, // keep this protected; only authenticated users with proper permissions
+      },
+    },
   ],
 };
