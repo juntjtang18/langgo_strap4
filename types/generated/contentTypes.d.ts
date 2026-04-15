@@ -769,94 +769,6 @@ export interface ApiCefrSyllabusCefrSyllabus extends Schema.CollectionType {
   };
 }
 
-export interface ApiClessonClesson extends Schema.CollectionType {
-  collectionName: 'clessons';
-  info: {
-    singularName: 'clesson';
-    pluralName: 'clessons';
-    displayName: 'clesson';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.UID<'api::clesson.clesson', 'title'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    order: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    tags: Attribute.Component<'a.taglist', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    estimated_minutes: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    xp_reward: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    course: Attribute.Relation<
-      'api::clesson.clesson',
-      'manyToOne',
-      'api::course.course'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::clesson.clesson',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::clesson.clesson',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::clesson.clesson',
-      'oneToMany',
-      'api::clesson.clesson'
-    >;
-    locale: Attribute.String;
-  };
-}
-
 export interface ApiConversationConversation extends Schema.CollectionType {
   collectionName: 'conversations';
   info: {
@@ -951,10 +863,10 @@ export interface ApiCourseCourse extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    clessons: Attribute.Relation<
+    lessons: Attribute.Relation<
       'api::course.course',
       'oneToMany',
-      'api::clesson.clesson'
+      'api::lesson.lesson'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1165,6 +1077,49 @@ export interface ApiGrammarPointGrammarPoint extends Schema.CollectionType {
   };
 }
 
+export interface ApiLearningUnitLearningUnit extends Schema.CollectionType {
+  collectionName: 'learning_units';
+  info: {
+    singularName: 'learning-unit';
+    pluralName: 'learning-units';
+    displayName: 'learning_unit';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    order: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>;
+    learning_way: Attribute.Enumeration<
+      ['read', 'mcq_base', 'mcq_target', 'input_target', 'word_reorder']
+    >;
+    section: Attribute.Relation<
+      'api::learning-unit.learning-unit',
+      'manyToOne',
+      'api::section.section'
+    >;
+    word_definition: Attribute.Relation<
+      'api::learning-unit.learning-unit',
+      'manyToOne',
+      'api::word-definition.word-definition'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::learning-unit.learning-unit',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::learning-unit.learning-unit',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiLessonLesson extends Schema.CollectionType {
   collectionName: 'lessons';
   info: {
@@ -1206,36 +1161,15 @@ export interface ApiLessonLesson extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    tags: Attribute.Component<'a.taglist', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    lessonlevel: Attribute.Relation<
-      'api::lesson.lesson',
-      'manyToOne',
-      'api::lessonlevel.lessonlevel'
-    >;
     sections: Attribute.Relation<
       'api::lesson.lesson',
       'oneToMany',
       'api::section.section'
     >;
-    user_words: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToMany',
-      'api::user-word.user-word'
-    >;
-    user_sentences: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToMany',
-      'api::user-sentence.user-sentence'
-    >;
-    unit: Attribute.Relation<
+    course: Attribute.Relation<
       'api::lesson.lesson',
       'manyToOne',
-      'api::unit.unit'
+      'api::course.course'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1274,11 +1208,6 @@ export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
   attributes: {
     level: Attribute.String;
     description: Attribute.String;
-    lessons: Attribute.Relation<
-      'api::lessonlevel.lessonlevel',
-      'oneToMany',
-      'api::lesson.lesson'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1293,75 +1222,6 @@ export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-  };
-}
-
-export interface ApiModuleModule extends Schema.CollectionType {
-  collectionName: 'modules';
-  info: {
-    singularName: 'module';
-    pluralName: 'modules';
-    displayName: 'module';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    goal: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    icon_media: Attribute.Media &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    units: Attribute.Relation<
-      'api::module.module',
-      'oneToMany',
-      'api::unit.unit'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::module.module',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::module.module',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::module.module',
-      'oneToMany',
-      'api::module.module'
-    >;
-    locale: Attribute.String;
   };
 }
 
@@ -1626,6 +1486,7 @@ export interface ApiSectionSection extends Schema.CollectionType {
     singularName: 'section';
     pluralName: 'sections';
     displayName: 'section';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1653,25 +1514,10 @@ export interface ApiSectionSection extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    components: Attribute.DynamicZone<
-      [
-        'a.word-ref',
-        'a.video',
-        'a.sent-ref',
-        'a.quiz',
-        'a.pagebreaker',
-        'a.external-video'
-      ]
-    > &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    word_definitions: Attribute.Relation<
+    learning_units: Attribute.Relation<
       'api::section.section',
       'oneToMany',
-      'api::word-definition.word-definition'
+      'api::learning-unit.learning-unit'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -2096,78 +1942,6 @@ export interface ApiTopicTemplateTopicTemplate extends Schema.CollectionType {
   };
 }
 
-export interface ApiUnitUnit extends Schema.CollectionType {
-  collectionName: 'units';
-  info: {
-    singularName: 'unit';
-    pluralName: 'units';
-    displayName: 'unit';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.UID<'api::unit.unit', 'title'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    order: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    lessons: Attribute.Relation<
-      'api::unit.unit',
-      'oneToMany',
-      'api::lesson.lesson'
-    >;
-    precondition: Attribute.Relation<
-      'api::unit.unit',
-      'oneToOne',
-      'api::unit.unit'
-    >;
-    unlocks: Attribute.Relation<'api::unit.unit', 'oneToOne', 'api::unit.unit'>;
-    module: Attribute.Relation<
-      'api::unit.unit',
-      'manyToOne',
-      'api::module.module'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::unit.unit', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::unit.unit', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::unit.unit',
-      'oneToMany',
-      'api::unit.unit'
-    >;
-    locale: Attribute.String;
-  };
-}
-
 export interface ApiUserProfileUserProfile extends Schema.CollectionType {
   collectionName: 'user_profiles';
   info: {
@@ -2240,11 +2014,6 @@ export interface ApiUserSentenceUserSentence extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    lesson: Attribute.Relation<
-      'api::user-sentence.user-sentence',
-      'manyToOne',
-      'api::lesson.lesson'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2321,11 +2090,6 @@ export interface ApiUserWordUserWord extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    lesson: Attribute.Relation<
-      'api::user-word.user-word',
-      'manyToOne',
-      'api::lesson.lesson'
-    >;
     exam_base: Attribute.JSON &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -2492,11 +2256,6 @@ export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
       'manyToOne',
       'api::word.word'
     >;
-    section: Attribute.Relation<
-      'api::word-definition.word-definition',
-      'manyToOne',
-      'api::section.section'
-    >;
     base_text: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -2577,6 +2336,11 @@ export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    learning_units: Attribute.Relation<
+      'api::word-definition.word-definition',
+      'oneToMany',
+      'api::learning-unit.learning-unit'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2617,15 +2381,14 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;
-      'api::clesson.clesson': ApiClessonClesson;
       'api::conversation.conversation': ApiConversationConversation;
       'api::course.course': ApiCourseCourse;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::grammar-point.grammar-point': ApiGrammarPointGrammarPoint;
+      'api::learning-unit.learning-unit': ApiLearningUnitLearningUnit;
       'api::lesson.lesson': ApiLessonLesson;
       'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
-      'api::module.module': ApiModuleModule;
       'api::part-of-speech.part-of-speech': ApiPartOfSpeechPartOfSpeech;
       'api::ping.ping': ApiPingPing;
       'api::proficiency-level.proficiency-level': ApiProficiencyLevelProficiencyLevel;
@@ -2638,7 +2401,6 @@ declare module '@strapi/types' {
       'api::story-like.story-like': ApiStoryLikeStoryLike;
       'api::topic.topic': ApiTopicTopic;
       'api::topic-template.topic-template': ApiTopicTemplateTopicTemplate;
-      'api::unit.unit': ApiUnitUnit;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
       'api::user-word.user-word': ApiUserWordUserWord;

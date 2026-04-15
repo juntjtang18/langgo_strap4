@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_units",
+  "info": {
+    "singularName": "learning-unit",
+    "pluralName": "learning-units",
+    "displayName": "learning_unit",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "learning_way": {
+      "type": "enumeration",
+      "enum": [
+        "read",
+        "mcq_base",
+        "mcq_target",
+        "input_target",
+        "word_reorder"
+      ]
+    },
+    "section": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::section.section",
+      "inversedBy": "learning_units"
+    },
+    "word_definition": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::word-definition.word-definition",
+      "inversedBy": "learning_units"
+    }
+  }
+}

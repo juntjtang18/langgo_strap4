@@ -71,10 +71,10 @@
       "type": "integer",
       "required": true
     },
-    "clessons": {
+    "lessons": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::clesson.clesson",
+      "target": "api::lesson.lesson",
       "mappedBy": "course"
     }
   }

@@ -37,12 +37,6 @@
         }
       },
       "type": "string"
-    },
-    "lesson": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::lesson.lesson",
-      "inversedBy": "user_sentences"
     }
   }
 }

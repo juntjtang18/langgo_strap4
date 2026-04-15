@@ -58,12 +58,6 @@
         "pronoun"
       ]
     },
-    "lesson": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::lesson.lesson",
-      "inversedBy": "user_words"
-    },
     "exam_base": {
       "pluginOptions": {
         "i18n": {

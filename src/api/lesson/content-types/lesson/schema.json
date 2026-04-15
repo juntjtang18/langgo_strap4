@@ -49,44 +49,16 @@
       },
       "type": "integer"
     },
-    "tags": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "a.taglist"
-    },
-    "lessonlevel": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::lessonlevel.lessonlevel",
-      "inversedBy": "lessons"
-    },
     "sections": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::section.section",
       "mappedBy": "lesson"
     },
-    "user_words": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-word.user-word",
-      "mappedBy": "lesson"
-    },
-    "user_sentences": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-sentence.user-sentence",
-      "mappedBy": "lesson"
-    },
-    "unit": {
+    "course": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::unit.unit",
+      "target": "api::course.course",
       "inversedBy": "lessons"
     }
   }
