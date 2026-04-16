@@ -139,12 +139,6 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "word_definitions"
-    },
-    "learning_units": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::learning-unit.learning-unit",
-      "mappedBy": "word_definition"
     }
   }
 }

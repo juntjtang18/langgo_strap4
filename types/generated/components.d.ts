@@ -1,14 +1,32 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
-export interface AExternalVideo extends Schema.Component {
-  collectionName: 'components_a_external_videos';
+export interface AContentMeta extends Schema.Component {
+  collectionName: 'components_u_content_metas';
   info: {
-    displayName: 'external_video';
-    icon: 'cast';
+    displayName: 'content_meta';
+    icon: 'bulletList';
+    description: '';
   };
   attributes: {
-    url: Attribute.String;
-    caption: Attribute.String;
+    article: Attribute.String;
+    gender: Attribute.Enumeration<['masculine', 'feminine', 'neuter']>;
+    register: Attribute.String;
+    plural_form: Attribute.String;
+    part_of_speech: Attribute.String;
+    verb_meta: Attribute.Component<'a.verb-meta', true>;
+  };
+}
+
+export interface AExerciseMeta extends Schema.Component {
+  collectionName: 'components_u_exercise_metas';
+  info: {
+    displayName: 'exercise_meta';
+    icon: 'dashboard';
+    description: '';
+  };
+  attributes: {
+    base_mcq: Attribute.JSON;
+    target_mcq: Attribute.JSON;
   };
 }
 
@@ -47,18 +65,6 @@ export interface AIllustrations extends Schema.Component {
     alt_text: Attribute.String;
     media: Attribute.Media;
     paragraph: Attribute.Integer;
-  };
-}
-
-export interface APagebreaker extends Schema.Component {
-  collectionName: 'components_a_pagebreakers';
-  info: {
-    displayName: 'pagebreaker';
-    icon: 'expand';
-  };
-  attributes: {
-    backbutton: Attribute.Boolean & Attribute.DefaultTo<true>;
-    nextbutton: Attribute.Boolean & Attribute.DefaultTo<true>;
   };
 }
 
@@ -102,22 +108,6 @@ export interface AScenario extends Schema.Component {
   };
 }
 
-export interface ASentRef extends Schema.Component {
-  collectionName: 'components_a_sent_refs';
-  info: {
-    displayName: 'sentRef';
-    icon: 'discuss';
-    description: '';
-  };
-  attributes: {
-    sentence: Attribute.Relation<
-      'a.sent-ref',
-      'oneToOne',
-      'api::sentence.sentence'
-    >;
-  };
-}
-
 export interface ATaglist extends Schema.Component {
   collectionName: 'components_a_taglists';
   info: {
@@ -126,36 +116,6 @@ export interface ATaglist extends Schema.Component {
   };
   attributes: {
     tag: Attribute.String;
-  };
-}
-
-export interface AUserSentRef extends Schema.Component {
-  collectionName: 'components_a_user_sent_refs';
-  info: {
-    displayName: 'UserSentRef';
-    icon: 'command';
-  };
-  attributes: {
-    user_sentence: Attribute.Relation<
-      'a.user-sent-ref',
-      'oneToOne',
-      'api::user-sentence.user-sentence'
-    >;
-  };
-}
-
-export interface AUserWordRef extends Schema.Component {
-  collectionName: 'components_a_user_word_refs';
-  info: {
-    displayName: 'UserWordRef';
-    icon: 'dashboard';
-  };
-  attributes: {
-    user_word: Attribute.Relation<
-      'a.user-word-ref',
-      'oneToOne',
-      'api::user-word.user-word'
-    >;
   };
 }
 
@@ -175,45 +135,19 @@ export interface AVerbMeta extends Schema.Component {
   };
 }
 
-export interface AVideo extends Schema.Component {
-  collectionName: 'components_a_videos';
-  info: {
-    displayName: 'video';
-    icon: 'medium';
-  };
-  attributes: {
-    media: Attribute.Media;
-    thumbnail: Attribute.Media;
-  };
-}
-
-export interface AWordRef extends Schema.Component {
-  collectionName: 'components_a_word_refs';
-  info: {
-    displayName: 'wordRef';
-    icon: 'dashboard';
-  };
-  attributes: {};
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
-      'a.external-video': AExternalVideo;
+      'a.content-meta': AContentMeta;
+      'a.exercise-meta': AExerciseMeta;
       'a.generation-prompts': AGenerationPrompts;
       'a.illustration-prompt': AIllustrationPrompt;
       'a.illustrations': AIllustrations;
-      'a.pagebreaker': APagebreaker;
       'a.question': AQuestion;
       'a.quiz': AQuiz;
       'a.scenario': AScenario;
-      'a.sent-ref': ASentRef;
       'a.taglist': ATaglist;
-      'a.user-sent-ref': AUserSentRef;
-      'a.user-word-ref': AUserWordRef;
       'a.verb-meta': AVerbMeta;
-      'a.video': AVideo;
-      'a.word-ref': AWordRef;
     }
   }
 }

@@ -815,83 +815,6 @@ export interface ApiConversationConversation extends Schema.CollectionType {
   };
 }
 
-export interface ApiCourseCourse extends Schema.CollectionType {
-  collectionName: 'courses';
-  info: {
-    singularName: 'course';
-    pluralName: 'courses';
-    displayName: 'course';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    icon_media: Attribute.Media &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    cover_media: Attribute.Media &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    order: Attribute.Integer &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    lessons: Attribute.Relation<
-      'api::course.course',
-      'oneToMany',
-      'api::lesson.lesson'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::course.course',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::course.course',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::course.course',
-      'oneToMany',
-      'api::course.course'
-    >;
-    locale: Attribute.String;
-  };
-}
-
 export interface ApiDifficultyLevelDifficultyLevel
   extends Schema.CollectionType {
   collectionName: 'difficulty_levels';
@@ -1093,16 +1016,13 @@ export interface ApiLearningUnitLearningUnit extends Schema.CollectionType {
     learning_way: Attribute.Enumeration<
       ['read', 'mcq_base', 'mcq_target', 'input_target', 'word_reorder']
     >;
-    section: Attribute.Relation<
-      'api::learning-unit.learning-unit',
-      'manyToOne',
-      'api::section.section'
-    >;
-    word_definition: Attribute.Relation<
-      'api::learning-unit.learning-unit',
-      'manyToOne',
-      'api::word-definition.word-definition'
-    >;
+    type: Attribute.Enumeration<['word', 'sentence', 'paragraph', 'dialog']>;
+    instruction: Attribute.Text;
+    target_text: Attribute.Text;
+    base_text: Attribute.Text;
+    audio_url: Attribute.String;
+    content_meta: Attribute.Component<'a.content-meta'>;
+    exercise_meta: Attribute.Component<'a.exercise-meta'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1113,111 +1033,6 @@ export interface ApiLearningUnitLearningUnit extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::learning-unit.learning-unit',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiLessonLesson extends Schema.CollectionType {
-  collectionName: 'lessons';
-  info: {
-    singularName: 'lesson';
-    pluralName: 'lessons';
-    displayName: 'lesson';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.UID<'api::lesson.lesson', 'title'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    order: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    sections: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToMany',
-      'api::section.section'
-    >;
-    course: Attribute.Relation<
-      'api::lesson.lesson',
-      'manyToOne',
-      'api::course.course'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::lesson.lesson',
-      'oneToMany',
-      'api::lesson.lesson'
-    >;
-    locale: Attribute.String;
-  };
-}
-
-export interface ApiLessonlevelLessonlevel extends Schema.CollectionType {
-  collectionName: 'lessonlevels';
-  info: {
-    singularName: 'lessonlevel';
-    pluralName: 'lessonlevels';
-    displayName: 'lessonlevel';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    level: Attribute.String;
-    description: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::lessonlevel.lessonlevel',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::lessonlevel.lessonlevel',
       'oneToOne',
       'admin::user'
     > &
@@ -1477,68 +1292,6 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-  };
-}
-
-export interface ApiSectionSection extends Schema.CollectionType {
-  collectionName: 'sections';
-  info: {
-    singularName: 'section';
-    pluralName: 'sections';
-    displayName: 'section';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    lesson: Attribute.Relation<
-      'api::section.section',
-      'manyToOne',
-      'api::lesson.lesson'
-    >;
-    order: Attribute.Integer &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    learning_units: Attribute.Relation<
-      'api::section.section',
-      'oneToMany',
-      'api::learning-unit.learning-unit'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::section.section',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::section.section',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::section.section',
-      'oneToMany',
-      'api::section.section'
-    >;
-    locale: Attribute.String;
   };
 }
 
@@ -2336,11 +2089,6 @@ export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    learning_units: Attribute.Relation<
-      'api::word-definition.word-definition',
-      'oneToMany',
-      'api::learning-unit.learning-unit'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2382,19 +2130,15 @@ declare module '@strapi/types' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;
       'api::conversation.conversation': ApiConversationConversation;
-      'api::course.course': ApiCourseCourse;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::grammar-point.grammar-point': ApiGrammarPointGrammarPoint;
       'api::learning-unit.learning-unit': ApiLearningUnitLearningUnit;
-      'api::lesson.lesson': ApiLessonLesson;
-      'api::lessonlevel.lessonlevel': ApiLessonlevelLessonlevel;
       'api::part-of-speech.part-of-speech': ApiPartOfSpeechPartOfSpeech;
       'api::ping.ping': ApiPingPing;
       'api::proficiency-level.proficiency-level': ApiProficiencyLevelProficiencyLevel;
       'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
-      'api::section.section': ApiSectionSection;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::story.story': ApiStoryStory;
       'api::story-audio.story-audio': ApiStoryAudioStoryAudio;

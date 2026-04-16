@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_u_content_metas",
+  "info": {
+    "displayName": "content_meta",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "article": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "masculine",
+        "feminine",
+        "neuter"
+      ]
+    },
+    "register": {
+      "type": "string"
+    },
+    "plural_form": {
+      "type": "string"
+    },
+    "part_of_speech": {
+      "type": "string"
+    },
+    "verb_meta": {
+      "type": "component",
+      "repeatable": true,
+      "component": "a.verb-meta"
+    }
+  }
+}

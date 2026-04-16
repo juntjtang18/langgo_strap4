@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_u_exercise_metas",
+  "info": {
+    "displayName": "exercise_meta",
+    "icon": "dashboard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "base_mcq": {
+      "type": "json"
+    },
+    "target_mcq": {
+      "type": "json"
+    }
+  }
+}

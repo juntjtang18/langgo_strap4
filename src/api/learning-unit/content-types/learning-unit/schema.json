@@ -27,17 +27,36 @@
         "word_reorder"
       ]
     },
-    "section": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::section.section",
-      "inversedBy": "learning_units"
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "word",
+        "sentence",
+        "paragraph",
+        "dialog"
+      ]
     },
-    "word_definition": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::word-definition.word-definition",
-      "inversedBy": "learning_units"
+    "instruction": {
+      "type": "text"
+    },
+    "target_text": {
+      "type": "text"
+    },
+    "base_text": {
+      "type": "text"
+    },
+    "audio_url": {
+      "type": "string"
+    },
+    "content_meta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "a.content-meta"
+    },
+    "exercise_meta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "a.exercise-meta"
     }
   }
 }
