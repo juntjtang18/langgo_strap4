@@ -45,6 +45,21 @@
       "relation": "manyToOne",
       "target": "api::flashcard.flashcard",
       "inversedBy": "reviewlogs"
+    },
+    "effective": {
+      "type": "boolean",
+      "required": false
+    },
+    "newlevel": {
+      "type": "enumeration",
+      "enum": [
+        "new",
+        "warmup",
+        "daily",
+        "weekly",
+        "monthly",
+        "remembered"
+      ]
     }
   }
 }

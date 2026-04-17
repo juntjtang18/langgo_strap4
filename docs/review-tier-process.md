@@ -51,6 +51,8 @@ Each log stores:
 - `reviewed_at`
 - `result`: `correct` or `wrong`
 - `level`: the tier name at the time of review
+- `effective`: whether this review counted after cooldown was checked
+- `newlevel`: the tier name after the review calculation finished
 
 Important detail:
 
@@ -99,8 +101,13 @@ The log write happens here:
 - `reviewed_at = now`
 - `result = correct|wrong`
 - `level = currentTier?.tier?.toLowerCase()`
+- `effective = !reviewIsOnCooldown`
+- `newlevel = resulting tier after promotion/demotion logic`
 
-That means the log records the tier before the current review changes the flashcard.
+That means each log now records both:
+
+- the tier before the review changes the flashcard in `level`
+- the resulting tier after calculation in `newlevel`
 
 ## What Counts As an Effective Review
 
@@ -122,6 +129,8 @@ If the card is still on cooldown:
 
 - A `reviewlog` is still created
 - The flashcard itself is not updated
+- `reviewlog.effective = false`
+- `reviewlog.newlevel = reviewlog.level`
 
 ## Promotion and Demotion Rules
 
@@ -136,6 +145,8 @@ When the review is effective and `result === "correct"`:
 - `review_tire` is recalculated from the new `correct_streak`
 - `last_reviewed_at` is updated
 - `is_remembered = true` if the new tier is `remembered`
+- `reviewlog.effective = true`
+- `reviewlog.newlevel` is the promoted or recalculated tier
 
 ### On `wrong`
 
@@ -144,6 +155,7 @@ When the review is effective and `result === "wrong"`:
 - `wrong_streak` is incremented by 1
 - `last_reviewed_at` is updated
 - `correct_streak` is unchanged unless demotion happens
+- `reviewlog.effective = true`
 
 If `wrong_streak >= currentTier.demote_bar`:
 
@@ -152,6 +164,12 @@ If `wrong_streak >= currentTier.demote_bar`:
 - `wrong_streak` is reset to `0`
 - `review_tire` is set to the previous tier
 - `is_remembered = false`
+- `reviewlog.newlevel` is the demoted tier
+
+If `wrong_streak < currentTier.demote_bar`:
+
+- the flashcard stays in the current tier
+- `reviewlog.newlevel` stays equal to `level`
 
 Note:
 
@@ -294,6 +312,13 @@ Then confirm the active rule table:
 - all `review-tire` rows
 - sorted by `min_streak`
 - with expected `cooldown_hours` and `demote_bar`
+
+When debugging review history, inspect these values on the latest `reviewlog` row:
+
+- `level`
+- `effective`
+- `newlevel`
+- `result`
 
 ## Current Caveats
 

@@ -1,4 +1,5 @@
 module.exports = ({ env }) => {
+  const isTest = env('NODE_ENV') === 'test';
   const dbConfig = {
     client: 'postgres',
     connection: {
@@ -13,16 +14,17 @@ module.exports = ({ env }) => {
     debug: false,
   };
 
-  // ✅ Log the database connection configuration (except the password for security)
-  console.log('Strapi is connecting to the database with config:');
-  console.log({
-    client: dbConfig.client,
-    host: dbConfig.connection.host,
-    port: dbConfig.connection.port,
-    database: dbConfig.connection.database,
-    user: dbConfig.connection.user,
-    schema: dbConfig.connection.schema,
-  });
+  if (!isTest) {
+    console.log('Strapi is connecting to the database with config:');
+    console.log({
+      client: dbConfig.client,
+      host: dbConfig.connection.host,
+      port: dbConfig.connection.port,
+      database: dbConfig.connection.database,
+      user: dbConfig.connection.user,
+      schema: dbConfig.connection.schema,
+    });
+  }
 
   return {
     connection: dbConfig,

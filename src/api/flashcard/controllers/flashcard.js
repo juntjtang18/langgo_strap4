@@ -1,11 +1,7 @@
 'use strict';
 
 const { createCoreController } = require('@strapi/strapi').factories;
-
-// Helper: derive the log level string
-const getReviewLevel = (tier) => {
-  return tier?.tier?.toLowerCase() || null;
-};
+const { calculateReviewOutcome } = require('./review-logic');
 
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
@@ -166,41 +162,20 @@ module.exports = createCoreController(
           let currentTier = flashcard.review_tire || tierService.findTierForStreakWithRules(flashcard.correct_streak, reviewTiers);
     
           const effectiveCooldown = getEffectiveCooldown(currentTier?.cooldown_hours || 0);
-          const reviewIsOnCooldown = currentTier && flashcard.last_reviewed_at
-            ? (new Date() - new Date(flashcard.last_reviewed_at)) / 3600e3 <= effectiveCooldown
-            : false;
-    
-          const effective = !reviewIsOnCooldown;
           const now = new Date();
-          const updateData = {};
-    
-          if (effective) {
-            updateData.last_reviewed_at = now.toISOString();
-    
-            if (result === 'correct') {
-              const newStreak = (flashcard.correct_streak ?? 0) + 1;
-              updateData.correct_streak = newStreak;
-              updateData.wrong_streak = 0;
-    
-              const newTier = tierService.findTierForStreakWithRules(newStreak, reviewTiers);
-              updateData.review_tire = newTier.id;
-              if (newTier.tier === 'remembered') {
-                updateData.is_remembered = true;
-              }
-            } else {
-              const newWrong = (flashcard.wrong_streak ?? 0) + 1;
-              updateData.wrong_streak = newWrong;
-    
-              if (currentTier && newWrong >= currentTier.demote_bar) {
-                const idx = reviewTiers.findIndex((t) => t.id === currentTier.id);
-                const prevTier = idx > 0 ? reviewTiers[idx - 1] : reviewTiers[0];
-                updateData.correct_streak = prevTier.min_streak;
-                updateData.wrong_streak = 0;
-                updateData.review_tire = prevTier.id;
-                updateData.is_remembered = false;
-              }
-            }
-          }
+          const {
+            effective,
+            currentLevel,
+            newLevel,
+            updateData,
+          } = calculateReviewOutcome({
+            flashcard,
+            currentTier,
+            reviewTiers,
+            result,
+            effectiveCooldownHours: effectiveCooldown,
+            now,
+          });
     
           await strapi.entityService.create('api::reviewlog.reviewlog', {
             data: {
@@ -208,7 +183,9 @@ module.exports = createCoreController(
               flashcard: id,
               reviewed_at: now.toISOString(),
               result,
-              level: getReviewLevel(currentTier),
+              level: currentLevel,
+              effective,
+              newlevel: newLevel,
             },
           });
     

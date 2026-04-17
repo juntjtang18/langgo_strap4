@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_states",
+  "info": {
+    "singularName": "user-state",
+    "pluralName": "user-states",
+    "displayName": "user state"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_state"
+    },
+    "points": {
+      "type": "integer",
+      "default": 0
+    },
+    "points_updated_at": {
+      "type": "datetime"
+    },
+    "last_active_at": {
+      "type": "datetime"
+    },
+    "last_review_at": {
+      "type": "datetime"
+    }
+  }
+}

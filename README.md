@@ -32,6 +32,33 @@ npm run build
 yarn build
 ```
 
+### `test`
+
+Run the fast unit tests.
+
+```
+npm test
+```
+
+### `test:integration`
+
+Run the Postgres-backed integration tests that boot Strapi and verify the review flow.
+
+Safety requirement:
+
+- `DATABASE_NAME` must be explicitly set to a test or CI database name containing `test` or `ci`
+
+Example:
+
+```bash
+DATABASE_HOST=127.0.0.1 \
+DATABASE_PORT=5432 \
+DATABASE_NAME=langgo_ci_test \
+DATABASE_USERNAME=postgres \
+DATABASE_PASSWORD=postgres \
+npm run test:integration
+```
+
 ## ⚙️ Deployment
 
 Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.

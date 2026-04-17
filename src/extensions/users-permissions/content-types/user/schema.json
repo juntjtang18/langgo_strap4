@@ -125,6 +125,12 @@
       "relation": "oneToMany",
       "target": "api::user-article.user-article",
       "mappedBy": "user"
+    },
+    "user_state": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-state.user-state",
+      "mappedBy": "user"
     }
   }
 }

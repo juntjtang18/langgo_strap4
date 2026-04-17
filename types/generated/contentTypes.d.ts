@@ -666,6 +666,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::user-article.user-article'
     >;
+    user_state: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::user-state.user-state'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1283,6 +1288,10 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'manyToOne',
       'api::flashcard.flashcard'
     >;
+    effective: Attribute.Boolean;
+    newlevel: Attribute.Enumeration<
+      ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered']
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1838,6 +1847,43 @@ export interface ApiUserSentenceUserSentence extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserStateUserState extends Schema.CollectionType {
+  collectionName: 'user_states';
+  info: {
+    singularName: 'user-state';
+    pluralName: 'user-states';
+    displayName: 'user state';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::user-state.user-state',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    points: Attribute.Integer & Attribute.DefaultTo<0>;
+    points_updated_at: Attribute.DateTime;
+    last_active_at: Attribute.DateTime;
+    last_review_at: Attribute.DateTime;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-state.user-state',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-state.user-state',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiUserWordUserWord extends Schema.CollectionType {
   collectionName: 'user_words';
   info: {
@@ -2196,6 +2242,7 @@ declare module '@strapi/types' {
       'api::user-article.user-article': ApiUserArticleUserArticle;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
+      'api::user-state.user-state': ApiUserStateUserState;
       'api::user-word.user-word': ApiUserWordUserWord;
       'api::vbsetting.vbsetting': ApiVbsettingVbsetting;
       'api::word.word': ApiWordWord;

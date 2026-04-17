@@ -1,6 +1,7 @@
 // config/server.js
 module.exports = ({ env }) => {
   const isLocal = env('IS_LOCAL', 'false') === 'true';
+  const cronEnabled = env.bool('CRON_ENABLED', true);
 
   return {
     host: env('HOST', '0.0.0.0'),
@@ -9,7 +10,7 @@ module.exports = ({ env }) => {
       keys: env.array('APP_KEYS'),
     },
     cron: {
-      enabled: true,
+      enabled: cronEnabled,
     },
     webhooks: {
       populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),

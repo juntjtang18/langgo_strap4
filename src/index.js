@@ -5,6 +5,10 @@ module.exports = {
   register(/*{ strapi }*/) {},
 
   bootstrap({ strapi }) {
+    const disableBackgroundTasks =
+      process.env.DISABLE_BACKGROUND_TASKS === 'true' ||
+      process.env.NODE_ENV === 'test';
+
     // Crash safety logging
     process.on('unhandledRejection', (reason) => {
       strapi.log.error('🔴 Unhandled Promise Rejection:', reason);
@@ -52,29 +56,31 @@ module.exports = {
       strapi.log.error('Failed to initialize topic-generator service.');
     }
 
-    // Cron: Generate topic every hour
-    strapi.cron.add({
-      '0 0 * * * *': async () => {
-        try {
-          strapi.log.info("🚀 Running topic generator job every 30 seconds...");
-          // await strapi.service('topic-generator').generateProgressiveLesson();
-          strapi.log.info("✅ Topic generation job completed successfully.");
-        } catch (error) {
-          strapi.log.error("❌ An error occurred during the topic generation job:", error);
-        }
-      },
-    });
+    if (!disableBackgroundTasks) {
+      // Cron: Generate topic every hour
+      strapi.cron.add({
+        '0 0 * * * *': async () => {
+          try {
+            strapi.log.info("🚀 Running topic generator job every 30 seconds...");
+            // await strapi.service('topic-generator').generateProgressiveLesson();
+            strapi.log.info("✅ Topic generation job completed successfully.");
+          } catch (error) {
+            strapi.log.error("❌ An error occurred during the topic generation job:", error);
+          }
+        },
+      });
 
-    // Cron: Keep subsystem warm every minute
-    strapi.cron.add({
-      '*/8 * * * *': async () => {
-        try {
-          await keepSubsysWarm(strapi);
-        } catch (err) {
-          strapi.log.error('❌ keepSubsysWarm cron job crashed unexpectedly:', err);
-        }
-      },
-    });
+      // Cron: Keep subsystem warm every minute
+      strapi.cron.add({
+        '*/8 * * * *': async () => {
+          try {
+            await keepSubsysWarm(strapi);
+          } catch (err) {
+            strapi.log.error('❌ keepSubsysWarm cron job crashed unexpectedly:', err);
+          }
+        },
+      });
+    }
   },
   
 };
