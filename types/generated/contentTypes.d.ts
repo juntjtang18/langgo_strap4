@@ -661,6 +661,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::conversation.conversation'
     >;
+    user_articles: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::user-article.user-article'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1695,6 +1700,49 @@ export interface ApiTopicTemplateTopicTemplate extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserArticleUserArticle extends Schema.CollectionType {
+  collectionName: 'user_articles';
+  info: {
+    singularName: 'user-article';
+    pluralName: 'user-articles';
+    displayName: 'user article';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    title: Attribute.String;
+    text: Attribute.Text;
+    language_code: Attribute.String;
+    word_count: Attribute.Integer;
+    tags: Attribute.Component<'a.taglist', true>;
+    difficulty_level: Attribute.String;
+    status: Attribute.Enumeration<
+      ['ready', 'processing', 'failed', 'archived']
+    >;
+    user: Attribute.Relation<
+      'api::user-article.user-article',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-article.user-article',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-article.user-article',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiUserProfileUserProfile extends Schema.CollectionType {
   collectionName: 'user_profiles';
   info: {
@@ -2145,6 +2193,7 @@ declare module '@strapi/types' {
       'api::story-like.story-like': ApiStoryLikeStoryLike;
       'api::topic.topic': ApiTopicTopic;
       'api::topic-template.topic-template': ApiTopicTemplateTopicTemplate;
+      'api::user-article.user-article': ApiUserArticleUserArticle;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
       'api::user-word.user-word': ApiUserWordUserWord;

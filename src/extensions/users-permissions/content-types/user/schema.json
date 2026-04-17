@@ -119,6 +119,12 @@
       "relation": "oneToMany",
       "target": "api::conversation.conversation",
       "mappedBy": "user"
+    },
+    "user_articles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-article.user-article",
+      "mappedBy": "user"
     }
   }
 }

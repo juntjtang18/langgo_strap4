@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_articles",
+  "info": {
+    "singularName": "user-article",
+    "pluralName": "user-articles",
+    "displayName": "user article",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "language_code": {
+      "type": "string"
+    },
+    "word_count": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "a.taglist"
+    },
+    "difficulty_level": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "ready",
+        "processing",
+        "failed",
+        "archived"
+      ]
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_articles"
+    }
+  }
+}
