@@ -30,6 +30,16 @@
     },
     "reminder_enabled": {
       "type": "boolean"
+    },
+    "Bio": {
+      "type": "string"
+    },
+    "avatar_img": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

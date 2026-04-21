@@ -32,17 +32,28 @@ module.exports = {
     const tierService = initTierService({ strapi });
     strapi.container.get('services').set('tier-service', tierService);
 
+    // Register Google Pub/Sub service
+    const initPubSubService = require('./services/pubsub');
+    const pubSubService = initPubSubService({ strapi });
+    strapi.container.get('services').set('pubsub', pubSubService);
+
     // Register flashcard validation
     const initFlashcardValidateService = require('./services/flashcard-validate');
     const flashcardValidateService = initFlashcardValidateService({ strapi });
     strapi.container.get('services').set('flashcard-validate', flashcardValidateService);
 
     // Log service setup success
-    if (wordProcessingQueueService && openAIService && tierService && flashcardValidateService) {
+    if (wordProcessingQueueService && openAIService && tierService && pubSubService && flashcardValidateService) {
       strapi.log.info('All custom services initialized successfully during bootstrap.');
       strapi.log.info('Word processing queue (in-process) is ready.');
     } else {
       strapi.log.error('Failed to initialize one or more custom services during bootstrap.');
+    }
+
+    if (pubSubService.isConfigured()) {
+      strapi.log.info(`Google Pub/Sub service initialized for project ${pubSubService.getProjectId() || '(ADC inferred)'}.`);
+    } else {
+      strapi.log.warn('Google Pub/Sub service initialized without explicit project configuration.');
     }
 
     // Register topic generator

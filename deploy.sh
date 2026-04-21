@@ -32,6 +32,7 @@ CLOUD_SQL_INSTANCE="lucid-arch-451211-b0:us-west1:cloud-sql-server"
 REDIS_HOST="10.165.40.67"
 REDIS_PORT="6379"
 VPC_CONNECTOR="langgo-vpc-connector"
+REVIEWLOG_EVENTS_TOPIC="pointserver-reviewlogs"
 
 # --- Deployment Steps ---
 echo "--- Deploying version: ${VERSION} ---"
@@ -72,6 +73,8 @@ gcloud run deploy "${SERVICE_NAME}" \
   --set-env-vars "SUBSCRIPTION_SERVICE_SECRET=${SUBSCRIPTION_SERVICE_SECRET}" \
   --set-env-vars "GOOGLE_TRANSLATE_API_KEY=${GOOGLE_TRANSLATE_API_KEY}" \
   --set-env-vars "GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}" \
+  --set-env-vars "GOOGLE_PUBSUB_PROJECT_ID=${GOOGLE_PUBSUB_PROJECT_ID}" \
+  --set-env-vars "REVIEWLOG_EVENTS_TOPIC=${REVIEWLOG_EVENTS_TOPIC}" \
   --set-env-vars "DATABASE_CLIENT=${DATABASE_CLIENT}" \
   --set-env-vars "DATABASE_HOST=${DATABASE_HOST}" \
   --set-env-vars "DATABASE_PORT=${DATABASE_PORT}" \

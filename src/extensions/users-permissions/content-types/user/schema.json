@@ -126,10 +126,10 @@
       "target": "api::user-article.user-article",
       "mappedBy": "user"
     },
-    "user_state": {
+    "article_tags": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::user-state.user-state",
+      "relation": "oneToMany",
+      "target": "api::article-tag.article-tag",
       "mappedBy": "user"
     }
   }

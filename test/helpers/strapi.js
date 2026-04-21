@@ -19,12 +19,15 @@ const setDefaultEnv = () => {
 
 const assertSafeTestDatabase = () => {
   const databaseName = process.env.DATABASE_NAME;
+  const databaseSchema = process.env.DATABASE_SCHEMA;
 
-  if (!databaseName || !/(test|ci)/i.test(databaseName)) {
-    throw new Error(
-      'Integration tests require DATABASE_NAME to be explicitly set to a test/ci database.'
-    );
+  if (/(test|ci)/i.test(databaseName || '') || /(test|ci)/i.test(databaseSchema || '')) {
+    return;
   }
+
+  throw new Error(
+    'Integration tests require DATABASE_NAME or DATABASE_SCHEMA to be explicitly set to a test/ci target.'
+  );
 };
 
 const createStrapi = async () => {

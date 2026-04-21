@@ -9,12 +9,14 @@
     "build": "strapi build",
     "strapi": "strapi",
     "test": "npm run test:unit",
-    "test:unit": "node --test test/review-logic.test.js",
+    "test:unit": "node --test test/*.test.js",
     "test:integration": "node --test test/integration/*.test.js",
+    "test:smoke:user-endpoints": "node --test test/user-endpoints.smoke.test.js",
     "test:ci": "npm run test:unit && npm run test:integration",
     "backup": "env-cmd -f .env -- sh -c 'pg_dump -h \"$DATABASE_HOST\" -U \"$DATABASE_USERNAME\" \"$DATABASE_NAME\" > database/backup/langgo_full.sql'"
   },
   "dependencies": {
+    "@google-cloud/pubsub": "^5.3.0",
     "@google-cloud/translate": "^9.1.0",
     "@strapi-community/strapi-provider-upload-google-cloud-storage": "^4.10.5",
     "@strapi/plugin-cloud": "4.15.5",

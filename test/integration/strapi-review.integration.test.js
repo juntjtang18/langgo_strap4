@@ -106,6 +106,52 @@ test('boots Strapi and exposes the flashcard review controller', async () => {
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.newlevel.type, 'enumeration');
 });
 
+test('review action publishes a reviewlog event when configured', async () => {
+  const originalTopic = process.env.REVIEWLOG_EVENTS_TOPIC;
+  process.env.REVIEWLOG_EVENTS_TOPIC = 'pointserver-reviewlogs';
+
+  const user = await createAuthenticatedUser();
+  const flashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+    },
+  });
+
+  const pubsubService = app.service('pubsub');
+  const originalPublishJson = pubsubService.publishJson;
+  const published = [];
+  pubsubService.publishJson = async (...args) => {
+    published.push(args);
+    return 'message-1';
+  };
+
+  try {
+    const controller = app.controller('api::flashcard.flashcard');
+    await controller.review(makeCtx(user, flashcard.id, 'correct'));
+
+    assert.equal(published.length, 1);
+    assert.equal(published[0][0], 'pointserver-reviewlogs');
+    assert.equal(published[0][1].event, 'reviewlog.created');
+    assert.equal(published[0][1].reviewlog.result, 'correct');
+    assert.equal(published[0][1].reviewlog.flashcard_id, String(flashcard.id));
+    assert.equal(published[0][1].reviewlog.user.id, String(user.id));
+    assert.equal(published[0][1].reviewlog.user.username, user.username);
+    assert.equal(published[0][2].eventType, 'reviewlog.created');
+    assert.equal(published[0][2].source, 'langgo-strapi4');
+  } finally {
+    pubsubService.publishJson = originalPublishJson;
+    if (originalTopic === undefined) {
+      delete process.env.REVIEWLOG_EVENTS_TOPIC;
+    } else {
+      process.env.REVIEWLOG_EVENTS_TOPIC = originalTopic;
+    }
+  }
+});
+
 test('review action writes reviewlog effective and newlevel from real Strapi flow', async () => {
   const user = await createAuthenticatedUser();
 

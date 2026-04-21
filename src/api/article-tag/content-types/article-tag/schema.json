@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "article_tags",
+  "info": {
+    "singularName": "article-tag",
+    "pluralName": "article-tags",
+    "displayName": "article tag",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tag": {
+      "type": "string",
+      "maxLength": 16
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "article_tags"
+    },
+    "user_articles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::user-article.user-article",
+      "mappedBy": "article_tags"
+    }
+  }
+}

@@ -59,6 +59,83 @@ DATABASE_PASSWORD=postgres \
 npm run test:integration
 ```
 
+If you are using the shared local Cloud SQL-backed setup from this workspace, this also works:
+
+```bash
+DATABASE_NAME=langgo-en-dev2 \
+DATABASE_SCHEMA=ci_test \
+npm test -- test/integration/strapi-review.integration.test.js
+```
+
+## Google Pub/Sub
+
+This project now exposes a Strapi service named `pubsub`.
+
+Example usage in code:
+
+```js
+await strapi.service('pubsub').publishJson('my-topic', {
+  event: 'flashcard.reviewed',
+  flashcardId: 123,
+});
+```
+
+Environment variables:
+
+- `GOOGLE_PUBSUB_PROJECT_ID`: optional explicit Pub/Sub project id
+- `GOOGLE_PROJECT_ID`: fallback project id
+- `GOOGLE_PUBSUB_CREDENTIALS_JSON`: optional inline service account JSON for local/dev use
+- `GOOGLE_CREDENTIALS_JSON`: fallback inline credentials JSON
+- `GOOGLE_APPLICATION_CREDENTIALS`: optional path to a service account key file
+- `REVIEWLOG_EVENTS_TOPIC`: optional Pub/Sub topic used to publish reviewlog-created events for PointServer
+
+Recommended production setup on Cloud Run:
+
+- do not mount a key file
+- rely on Application Default Credentials from the Cloud Run service account
+- grant that service account the minimum Pub/Sub IAM role it needs, typically `roles/pubsub.publisher` and/or `roles/pubsub.subscriber`
+
+## Run With PointServer
+
+Shared Pub/Sub resources:
+
+- topic: `pointserver-reviewlogs`
+- subscription: `pointserver-reviewlogs-sub`
+
+The local `.env` is configured to publish reviewlog events to:
+
+```bash
+REVIEWLOG_EVENTS_TOPIC=pointserver-reviewlogs
+```
+
+Start Strapi:
+
+```bash
+npm install
+npm run develop
+```
+
+Start PointServer in the sibling repo:
+
+```bash
+cd ../pointserver
+npm install
+npm run build
+npm start
+```
+
+End-to-end flow:
+
+1. Review a flashcard in Strapi.
+2. Strapi creates `reviewlog` and publishes `reviewlog.created` to `pointserver-reviewlogs`.
+3. PointServer consumes from `pointserver-reviewlogs-sub`.
+4. Check the leaderboard API:
+
+```bash
+curl http://127.0.0.1:3000/leaderboard
+curl http://127.0.0.1:3000/leaderboard/<userId>/points
+```
+
 ## ⚙️ Deployment
 
 Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.

@@ -15,7 +15,7 @@
     "title": {
       "type": "string"
     },
-    "text": {
+    "content": {
       "type": "text"
     },
     "language_code": {
@@ -24,27 +24,22 @@
     "word_count": {
       "type": "integer"
     },
-    "tags": {
-      "type": "component",
-      "repeatable": true,
-      "component": "a.taglist"
-    },
-    "difficulty_level": {
-      "type": "string"
-    },
-    "status": {
-      "type": "enumeration",
-      "enum": [
-        "ready",
-        "processing",
-        "failed",
-        "archived"
-      ]
-    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
+      "inversedBy": "user_articles"
+    },
+    "progress": {
+      "type": "float"
+    },
+    "last_read_at": {
+      "type": "datetime"
+    },
+    "article_tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::article-tag.article-tag",
       "inversedBy": "user_articles"
     }
   }

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * user-state router
+ * article-tag router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::user-state.user-state');
+module.exports = createCoreRouter('api::article-tag.article-tag');

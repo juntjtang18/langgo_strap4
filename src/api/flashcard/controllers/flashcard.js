@@ -11,6 +11,43 @@ const getEffectiveCooldown = (hours) => {
   return hours || 0;
 };
 
+const getReviewlogEventsTopic = () => process.env.REVIEWLOG_EVENTS_TOPIC || 'pointserver-reviewlogs';
+
+const buildReviewlogEventPayload = ({ reviewlog, flashcardId, user }) => ({
+  event: 'reviewlog.created',
+  eventId: `reviewlog:${reviewlog.id}`,
+  reviewlog: {
+    id: reviewlog.id,
+    flashcard_id: String(flashcardId),
+    reviewed_at: reviewlog.reviewed_at,
+    result: reviewlog.result,
+    level: reviewlog.level,
+    effective: reviewlog.effective,
+    newlevel: reviewlog.newlevel,
+    user: {
+      id: String(user.id),
+      username: user.username || user.email || `user-${user.id}`,
+    },
+  },
+});
+
+const publishReviewlogEvent = async (strapi, payload) => {
+  const topicName = getReviewlogEventsTopic();
+
+  if (!topicName) {
+    return;
+  }
+
+  await strapi.service('pubsub').publishJson(
+    topicName,
+    payload,
+    {
+      eventType: 'reviewlog.created',
+      source: 'langgo-strapi4',
+    }
+  );
+};
+
 module.exports = createCoreController(
   'api::flashcard.flashcard',
   ({ strapi }) => ({
@@ -145,7 +182,7 @@ module.exports = createCoreController(
       }
     
       try {
-        const finalCard = await strapi.db.transaction(async () => {
+        const reviewResult = await strapi.db.transaction(async () => {
           const flashcard = await strapi.entityService.findOne(
             'api::flashcard.flashcard',
             id,
@@ -176,8 +213,8 @@ module.exports = createCoreController(
             effectiveCooldownHours: effectiveCooldown,
             now,
           });
-    
-          await strapi.entityService.create('api::reviewlog.reviewlog', {
+
+          const reviewlog = await strapi.entityService.create('api::reviewlog.reviewlog', {
             data: {
               user: user.id,
               flashcard: id,
@@ -196,15 +233,35 @@ module.exports = createCoreController(
               { data: updateData }
             );
           }
-    
-          return await strapi.entityService.findOne(
+
+          const finalCard = await strapi.entityService.findOne(
             'api::flashcard.flashcard',
             id,
             { populate: this._commonPopulate() }
           );
+
+          return {
+            finalCard,
+            reviewlog,
+          };
         });
+
+        if (getReviewlogEventsTopic()) {
+          try {
+            await publishReviewlogEvent(
+              strapi,
+              buildReviewlogEventPayload({
+                reviewlog: reviewResult.reviewlog,
+                flashcardId: id,
+                user,
+              })
+            );
+          } catch (publishError) {
+            strapi.log.error(`review event publish error: ${publishError.message}`, publishError.stack);
+          }
+        }
     
-        return this.transformResponse(finalCard);
+        return this.transformResponse(reviewResult.finalCard);
       } catch (err) {
         strapi.log.error(`review error: ${err.message}`, err.stack);
         return ctx.internalServerError('Error during review.');

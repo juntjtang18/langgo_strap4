@@ -666,10 +666,10 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::user-article.user-article'
     >;
-    user_state: Attribute.Relation<
+    article_tags: Attribute.Relation<
       'plugin::users-permissions.user',
-      'oneToOne',
-      'api::user-state.user-state'
+      'oneToMany',
+      'api::article-tag.article-tag'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -725,6 +725,49 @@ export interface PluginI18NLocale extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiArticleTagArticleTag extends Schema.CollectionType {
+  collectionName: 'article_tags';
+  info: {
+    singularName: 'article-tag';
+    pluralName: 'article-tags';
+    displayName: 'article tag';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    tag: Attribute.String &
+      Attribute.SetMinMaxLength<{
+        maxLength: 16;
+      }>;
+    user: Attribute.Relation<
+      'api::article-tag.article-tag',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    user_articles: Attribute.Relation<
+      'api::article-tag.article-tag',
+      'manyToMany',
+      'api::user-article.user-article'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::article-tag.article-tag',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::article-tag.article-tag',
       'oneToOne',
       'admin::user'
     > &
@@ -1722,18 +1765,20 @@ export interface ApiUserArticleUserArticle extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String;
-    text: Attribute.Text;
+    content: Attribute.Text;
     language_code: Attribute.String;
     word_count: Attribute.Integer;
-    tags: Attribute.Component<'a.taglist', true>;
-    difficulty_level: Attribute.String;
-    status: Attribute.Enumeration<
-      ['ready', 'processing', 'failed', 'archived']
-    >;
     user: Attribute.Relation<
       'api::user-article.user-article',
       'manyToOne',
       'plugin::users-permissions.user'
+    >;
+    progress: Attribute.Float;
+    last_read_at: Attribute.DateTime;
+    article_tags: Attribute.Relation<
+      'api::user-article.user-article',
+      'manyToMany',
+      'api::article-tag.article-tag'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1773,6 +1818,8 @@ export interface ApiUserProfileUserProfile extends Schema.CollectionType {
     baseLanguage: Attribute.String & Attribute.Required;
     proficiency: Attribute.String;
     reminder_enabled: Attribute.Boolean;
+    Bio: Attribute.String;
+    avatar_img: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1844,43 +1891,6 @@ export interface ApiUserSentenceUserSentence extends Schema.CollectionType {
       'api::user-sentence.user-sentence'
     >;
     locale: Attribute.String;
-  };
-}
-
-export interface ApiUserStateUserState extends Schema.CollectionType {
-  collectionName: 'user_states';
-  info: {
-    singularName: 'user-state';
-    pluralName: 'user-states';
-    displayName: 'user state';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    user: Attribute.Relation<
-      'api::user-state.user-state',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    points: Attribute.Integer & Attribute.DefaultTo<0>;
-    points_updated_at: Attribute.DateTime;
-    last_active_at: Attribute.DateTime;
-    last_review_at: Attribute.DateTime;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::user-state.user-state',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::user-state.user-state',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
   };
 }
 
@@ -2222,6 +2232,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::article-tag.article-tag': ApiArticleTagArticleTag;
       'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;
       'api::conversation.conversation': ApiConversationConversation;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
@@ -2242,7 +2253,6 @@ declare module '@strapi/types' {
       'api::user-article.user-article': ApiUserArticleUserArticle;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
-      'api::user-state.user-state': ApiUserStateUserState;
       'api::user-word.user-word': ApiUserWordUserWord;
       'api::vbsetting.vbsetting': ApiVbsettingVbsetting;
       'api::word.word': ApiWordWord;
