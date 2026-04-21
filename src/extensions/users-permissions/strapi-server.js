@@ -7,6 +7,51 @@ const { ApplicationError, ValidationError } = require('@strapi/utils').errors;
 const { sanitize } = require('@strapi/utils');
 
 module.exports = (plugin) => {
+  const formatMediaRelation = (media) => {
+    if (!media) {
+      return null;
+    }
+
+    return {
+      data: {
+        id: media.id,
+        attributes: {
+          name: media.name,
+          alternativeText: media.alternativeText,
+          caption: media.caption,
+          width: media.width,
+          height: media.height,
+          formats: media.formats,
+          hash: media.hash,
+          ext: media.ext,
+          mime: media.mime,
+          size: media.size,
+          url: media.url,
+          previewUrl: media.previewUrl,
+          provider: media.provider,
+          createdAt: media.createdAt,
+          updatedAt: media.updatedAt,
+        },
+      },
+    };
+  };
+
+  const formatUserProfile = (userProfile) => {
+    if (!userProfile) {
+      return null;
+    }
+
+    return {
+      id: userProfile.id,
+      telephone: userProfile.telephone,
+      baseLanguage: userProfile.baseLanguage,
+      proficiency: userProfile.proficiency,
+      reminder_enabled: userProfile.reminder_enabled,
+      Bio: userProfile.Bio,
+      avatar_img: formatMediaRelation(userProfile.avatar_img),
+    };
+  };
+
   // =================================================================
   // 1. 'ME' ENDPOINT - (MODIFIED)
   // =================================================================
@@ -23,7 +68,7 @@ module.exports = (plugin) => {
       role: true,
       user_profile: {
         populate: {
-          proficiency: true,
+          avatar_img: true,
         },
       },
     };
@@ -69,15 +114,7 @@ module.exports = (plugin) => {
 
     // MODIFIED: The cleanUserProfile object now includes the missing fields.
     // This ensures the data sent to the app matches what the Swift models expect.
-    const cleanUserProfile = user.user_profile
-      ? {
-          id: user.user_profile.id,
-          telephone: user.user_profile.telephone,
-          baseLanguage: user.user_profile.baseLanguage,
-          proficiency: user.user_profile.proficiency, // This will be the string key
-          reminder_enabled: user.user_profile.reminder_enabled,
-        }
-      : null;
+    const cleanUserProfile = formatUserProfile(user.user_profile);
 
     ctx.body = {
       id: user.id,
@@ -108,7 +145,16 @@ module.exports = (plugin) => {
       let userWithDetails = await strapi.entityService.findOne(
         "plugin::users-permissions.user",
         user.id,
-        { populate: { role: true, user_profile: true } }
+        {
+          populate: {
+            role: true,
+            user_profile: {
+              populate: {
+                avatar_img: true,
+              },
+            },
+          },
+        }
       );
 
       // --- CREATE USER PROFILE IF IT DOESN'T EXIST ---
@@ -166,6 +212,7 @@ module.exports = (plugin) => {
       // Sanitize the user with the role, then attach the subscription and profile
       const userSchema = strapi.getModel('plugin::users-permissions.user');
       const sanitizedUser = await sanitize.contentAPI.output(userWithDetails, userSchema);
+      sanitizedUser.user_profile = formatUserProfile(userWithDetails.user_profile);
       sanitizedUser.subscription = subscription;
       
       // Replace the original user object in the response with our new, detailed one

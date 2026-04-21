@@ -101,7 +101,10 @@ module.exports = createCoreController(
 
       const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
         filters: { user: userId },
-        populate: '*',
+        populate: {
+          avatar_img: true,
+          user: true,
+        },
       });
 
       if (profiles.length === 0) {
@@ -136,7 +139,78 @@ module.exports = createCoreController(
         { data }
       );
 
-      return this.transformResponse(updatedProfile);
+      const populatedProfile = await strapi.entityService.findOne(
+        'api::user-profile.user-profile',
+        updatedProfile.id,
+        {
+          populate: {
+            avatar_img: true,
+            user: true,
+          },
+        }
+      );
+
+      return this.transformResponse(populatedProfile);
+    },
+
+    /**
+     * Uploads and sets the avatar image for the currently authenticated user.
+     */
+    async uploadMyAvatar(ctx) {
+      if (!ctx.state.user) {
+        return ctx.unauthorized('You must be logged in to perform this action.');
+      }
+
+      const { id: userId } = ctx.state.user;
+      const avatarFile = ctx.request.files?.avatar;
+
+      if (!avatarFile) {
+        throw new ValidationError('Missing avatar file.');
+      }
+
+      const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
+        filters: { user: userId },
+      });
+
+      if (profiles.length === 0) {
+        return ctx.notFound('No user profile found for the current user to update.');
+      }
+
+      const uploadedFiles = await strapi.plugin('upload').service('upload').upload({
+        data: {
+          fileInfo: {
+            name: avatarFile.name || `avatar-${userId}`,
+            alternativeText: `avatar-${userId}`,
+          },
+        },
+        files: avatarFile,
+      });
+
+      if (!uploadedFiles || uploadedFiles.length === 0) {
+        throw new ApplicationError('Avatar upload failed.');
+      }
+
+      const uploadedAvatar = uploadedFiles[0];
+      const profileId = profiles[0].id;
+
+      await strapi.entityService.update('api::user-profile.user-profile', profileId, {
+        data: {
+          avatar_img: uploadedAvatar.id,
+        },
+      });
+
+      const populatedProfile = await strapi.entityService.findOne(
+        'api::user-profile.user-profile',
+        profileId,
+        {
+          populate: {
+            avatar_img: true,
+            user: true,
+          },
+        }
+      );
+
+      return this.transformResponse(populatedProfile);
     },
 
   })

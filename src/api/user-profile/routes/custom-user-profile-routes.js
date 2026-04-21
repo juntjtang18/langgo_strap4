@@ -22,6 +22,15 @@ module.exports = {
       },
     },
     {
+      method: 'POST',
+      path: '/user-profiles/mine/avatar',
+      handler: 'user-profile.uploadMyAvatar',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
         // This is the new route for our custom registration
         method: 'POST',
         path: '/user-profiles/register', // A cleaner, more consistent endpoint path
