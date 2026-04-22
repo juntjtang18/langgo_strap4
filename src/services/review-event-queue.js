@@ -32,18 +32,26 @@ module.exports = ({ strapi }) => {
   return {
     getConfiguredDriverName,
 
-    async dispatchReviewCompleted(event) {
+    async dispatch(event) {
       try {
         return await getDriver().enqueue(event);
       } catch (error) {
-        strapi.log.error(`Review event queue dispatch failed: ${error.message}`);
-        strapi.log.warn('Falling back to inline review event handling.');
-        await strapi.service('review-event-handler').handleReviewCompleted(event);
+        strapi.log.error(`Event queue dispatch failed for ${event?.event || 'unknown'}: ${error.message}`);
+        strapi.log.warn('Falling back to inline event handling.');
+        await strapi.service('event-handler').handle(event);
         return {
           queued: false,
           driver: 'inline-fallback',
         };
       }
+    },
+
+    async dispatchReviewCompleted(event) {
+      return this.dispatch(event);
+    },
+
+    async dispatchWordDefinitionCreated(event) {
+      return this.dispatch(event);
     },
 
     async waitForIdle(timeoutMs) {

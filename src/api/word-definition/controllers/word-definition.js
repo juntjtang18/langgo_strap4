@@ -3,6 +3,31 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
+const buildWordDefinitionCreatedEvent = ({
+  wordDefinitionId,
+  flashcardId,
+  user,
+  createdAt,
+  locale,
+  baseText,
+  targetText,
+}) => ({
+  event: 'word_definition.created',
+  eventId: `word-definition-created:${wordDefinitionId}`,
+  occurredAt: createdAt,
+  wordDefinition: {
+    wordDefinitionId,
+    flashcardId,
+    userId: user.id,
+    username: user.username || user.email || `user-${user.id}`,
+    email: user.email || null,
+    createdAt,
+    locale: locale || null,
+    baseText: baseText || null,
+    targetText: targetText || null,
+  },
+});
+
 module.exports = createCoreController('api::word-definition.word-definition', ({ strapi }) => ({
   /**
    * Corrected Custom search action to find word definitions by base_text.
@@ -220,8 +245,11 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       }))[0];
 
       let flashcard;
+      let wordDefinitionCreatedEvent = null;
 
       if (!wordDefinition) {
+        const createdAt = new Date().toISOString();
+
         await strapi.db.transaction(async ({ trx }) => {
           wordDefinition = await strapi.entityService.create('api::word-definition.word-definition', {
             data: {
@@ -246,6 +274,16 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
             populate: { word: true, part_of_speech: true },
         });
 
+        wordDefinitionCreatedEvent = buildWordDefinitionCreatedEvent({
+          wordDefinitionId: wordDefinition.id,
+          flashcardId: flashcard.id,
+          user,
+          createdAt,
+          locale: finalLocale,
+          baseText: trimmedBase,
+          targetText: trimmedTarget,
+        });
+
       } else {
         flashcard = (await strapi.entityService.findMany('api::flashcard.flashcard', {
           filters: { user: user.id, word_definition: wordDefinition.id },
@@ -266,6 +304,14 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
           });
       } else {
           strapi.log.error("Could not find 'word-processing-queue' service.");
+      }
+
+      if (wordDefinitionCreatedEvent) {
+        try {
+          await strapi.service('event-api').dispatchWordDefinitionCreated(wordDefinitionCreatedEvent);
+        } catch (dispatchError) {
+          strapi.log.error(`word_definition.created dispatch error: ${dispatchError.message}`, dispatchError.stack);
+        }
       }
       
       return this.transformResponse(wordDefinition);

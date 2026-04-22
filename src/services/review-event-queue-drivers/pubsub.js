@@ -1,6 +1,9 @@
 'use strict';
 
-const getTopicName = () => process.env.REVIEW_EVENT_QUEUE_TOPIC || 'flashcard-review-events';
+const getTopicName = () =>
+  process.env.EVENT_QUEUE_TOPIC ||
+  process.env.REVIEW_EVENT_QUEUE_TOPIC ||
+  'flashcard-review-events';
 
 module.exports = ({ strapi }) => ({
   name: 'pubsub',
@@ -12,7 +15,7 @@ module.exports = ({ strapi }) => ({
       topicName,
       event,
       {
-        eventType: event?.event || 'flashcard.review.completed',
+        eventType: event?.event || 'unknown',
         source: 'langgo-strapi4',
       }
     );

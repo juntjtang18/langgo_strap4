@@ -4,14 +4,14 @@ const async = require('async');
 
 module.exports = ({ strapi }) => {
   const worker = async (job) => {
-    await strapi.service('review-event-handler').handleReviewCompleted(job);
+    await strapi.service('event-handler').handle(job);
   };
 
   const queue = async.queue(worker, 1);
 
   queue.error((err, job) => {
     strapi.log.error(
-      `Review event queue job failed for flashcard ${job?.review?.flashcardId}: ${err.message}`
+      `Event queue job failed for ${job?.event || 'unknown'}: ${err.message}`
     );
   });
 

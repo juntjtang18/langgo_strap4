@@ -554,16 +554,24 @@ module.exports = ({ strapi }) => {
     return records[0] || null;
   };
 
-  const buildUserPointCreateData = ({ userId, recordDate, snapshot, pointGroupId, deltaPoints = 0 }) => {
+  const buildUserPointCreateData = ({
+    userId,
+    recordDate,
+    snapshot,
+    pointGroupId,
+    deltaPoints = 0,
+    deltaWords = 0,
+    deltaArticles = 0,
+  }) => {
     const data = {
       user: userId,
       record_date: recordDate,
       points: (snapshot?.points ?? 0) + deltaPoints,
       points_add: deltaPoints,
-      word_count: snapshot?.word_count ?? 0,
-      word_add: 0,
-      article_count: snapshot?.article_count ?? 0,
-      article_add: 0,
+      word_count: (snapshot?.word_count ?? 0) + deltaWords,
+      word_add: deltaWords,
+      article_count: (snapshot?.article_count ?? 0) + deltaArticles,
+      article_add: deltaArticles,
       group_rank_change: snapshot?.group_rank_change ?? 0,
       rank: snapshot?.rank ?? 0,
       rank_change: snapshot?.rank_change ?? 0,
@@ -622,8 +630,19 @@ module.exports = ({ strapi }) => {
     return basePoints + tierUpPoints;
   };
 
-  const applyPoints = async ({ userId, delta, reviewedAt }, trx) => {
-    if (!userId || delta === null || delta === undefined || !reviewedAt) {
+  const calculateWordDefinitionPoints = async () => {
+    const rule = await getPointRule();
+    return rule.new_word_point ?? 0;
+  };
+
+  const applyDelta = async ({
+    userId,
+    reviewedAt,
+    deltaPoints = 0,
+    deltaWords = 0,
+    deltaArticles = 0,
+  }, trx) => {
+    if (!userId || !reviewedAt) {
       return null;
     }
 
@@ -642,8 +661,12 @@ module.exports = ({ strapi }) => {
 
     if (todayRecord) {
       const data = {
-        points: (todayRecord.points ?? 0) + delta,
-        points_add: (todayRecord.points_add ?? 0) + delta,
+        points: (todayRecord.points ?? 0) + deltaPoints,
+        points_add: (todayRecord.points_add ?? 0) + deltaPoints,
+        word_count: (todayRecord.word_count ?? 0) + deltaWords,
+        word_add: (todayRecord.word_add ?? 0) + deltaWords,
+        article_count: (todayRecord.article_count ?? 0) + deltaArticles,
+        article_add: (todayRecord.article_add ?? 0) + deltaArticles,
       };
 
       if (currentPointGroupId && !getPointGroupId(todayRecord)) {
@@ -672,7 +695,9 @@ module.exports = ({ strapi }) => {
         recordDate,
         snapshot: baseSnapshot,
         pointGroupId: currentPointGroupId || baseSnapshot.point_group_id,
-        deltaPoints: delta,
+        deltaPoints,
+        deltaWords,
+        deltaArticles,
       }),
       db: trx,
     });
@@ -702,6 +727,55 @@ module.exports = ({ strapi }) => {
     return createdRecord;
   };
 
+  const applyPoints = async ({ userId, delta, reviewedAt }, trx) => {
+    return applyDelta({
+      userId,
+      reviewedAt,
+      deltaPoints: delta,
+    }, trx);
+  };
+
+  const applyReviewEvent = async (event, trx) => {
+    const review = event?.review;
+
+    if (!review?.userId || !review?.reviewedAt) {
+      return null;
+    }
+
+    const pointsAwarded = await calculatePoints(event);
+    const userPoint = await applyDelta({
+      userId: review.userId,
+      reviewedAt: review.reviewedAt,
+      deltaPoints: pointsAwarded,
+    }, trx);
+
+    return {
+      pointsAwarded,
+      userPoint,
+    };
+  };
+
+  const applyWordDefinitionCreatedEvent = async (event, trx) => {
+    const payload = event?.wordDefinition;
+
+    if (!payload?.userId || !payload?.createdAt) {
+      return null;
+    }
+
+    const pointsAwarded = await calculateWordDefinitionPoints(event);
+    const userPoint = await applyDelta({
+      userId: payload.userId,
+      reviewedAt: payload.createdAt,
+      deltaPoints: pointsAwarded,
+      deltaWords: 1,
+    }, trx);
+
+    return {
+      pointsAwarded,
+      userPoint,
+    };
+  };
+
   return {
     getRecordDate,
     getPointRule,
@@ -714,6 +788,10 @@ module.exports = ({ strapi }) => {
     syncUserPointGroupAssignment,
     syncHonorTitle,
     calculatePoints,
+    calculateWordDefinitionPoints,
+    applyDelta,
     applyPoints,
+    applyReviewEvent,
+    applyWordDefinitionCreatedEvent,
   };
 };

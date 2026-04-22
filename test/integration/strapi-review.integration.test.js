@@ -54,6 +54,9 @@ const cleanupTestData = async () => {
   await app.db.query('api::user-point.user-point').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::user-point-group.user-point-group').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::flashcard.flashcard').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::word-definition.word-definition').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::part-of-speech.part-of-speech').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::word.word').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::user-profile.user-profile').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('plugin::users-permissions.user').deleteMany({
     where: {
@@ -66,6 +69,20 @@ const makeCtx = (user, flashcardId, result) => ({
   state: { user },
   params: { id: String(flashcardId) },
   request: { body: { result } },
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+  badRequest(message) {
+    throw new Error(`badRequest: ${message}`);
+  },
+  internalServerError(message) {
+    throw new Error(`internalServerError: ${message}`);
+  },
+});
+
+const makeWordDefinitionCreateCtx = (user, data) => ({
+  state: { user },
+  request: { body: { data } },
   unauthorized(message) {
     throw new Error(`unauthorized: ${message}`);
   },
@@ -108,7 +125,7 @@ test.before(async () => {
     data: {
       review_point: 1,
       review_tier_up_point: 2,
-      new_word_point: 0,
+      new_word_point: 1,
       article_point: 0,
     },
   });
@@ -205,6 +222,11 @@ test('boots Strapi and exposes the flashcard review controller', async () => {
   assert.equal(typeof controller.review, 'function');
   assert.ok(app.service('review-event-queue'));
   assert.equal(typeof app.service('review-event-queue').dispatchReviewCompleted, 'function');
+  assert.equal(typeof app.service('review-event-queue').dispatchWordDefinitionCreated, 'function');
+  assert.ok(app.service('event-api'));
+  assert.equal(typeof app.service('event-api').dispatchEvent, 'function');
+  assert.ok(app.service('point-service'));
+  assert.equal(typeof app.service('point-service').applyWordDefinitionCreatedEvent, 'function');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.event_id.type, 'string');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.effective.type, 'boolean');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.points_awarded.type, 'integer');
@@ -338,6 +360,98 @@ test('review action writes reviewlog and daily user points from the local event 
   assert.equal(userPointGroups[0].point_group.group_no, 1);
   assert.equal(userPoints[1].point_group.id, seededPointGroups.active.id);
   assert.equal(userPointGroups[0].point_group.id, seededPointGroups.active.id);
+});
+
+test('word-definition create dispatches a queued event and updates user points through the handler', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::word-definition.word-definition');
+  const wordProcessingQueue = app.service('word-processing-queue');
+  const originalAddJob = wordProcessingQueue.addJob;
+  const queuedWordJobs = [];
+
+  wordProcessingQueue.addJob = (job) => {
+    queuedWordJobs.push(job);
+  };
+
+  try {
+    const response = await controller.create(
+      makeWordDefinitionCreateCtx(user, {
+        target_text: 'lernen',
+        base_text: 'learn',
+        part_of_speech: 'verb',
+        locale: 'en',
+      })
+    );
+
+    await app.service('event-api').waitForIdle();
+
+    const createdWordDefinitionId = response?.data?.id;
+    const createdWordDefinition = await app.entityService.findOne(
+      'api::word-definition.word-definition',
+      createdWordDefinitionId,
+      {
+        populate: {
+          word: true,
+          part_of_speech: true,
+        },
+      }
+    );
+    const flashcards = await app.entityService.findMany('api::flashcard.flashcard', {
+      filters: {
+        user: user.id,
+        word_definition: createdWordDefinitionId,
+      },
+    });
+    const userPoints = await app.entityService.findMany('api::user-point.user-point', {
+      filters: { user: user.id },
+      sort: { record_date: 'asc' },
+      populate: {
+        point_group: {
+          populate: {
+            group_rank: true,
+          },
+        },
+      },
+    });
+    const userPointGroups = await app.entityService.findMany('api::user-point-group.user-point-group', {
+      filters: { user: user.id },
+      populate: {
+        point_group: {
+          populate: {
+            group_rank: true,
+          },
+        },
+      },
+    });
+    const userWithHonor = await app.entityService.findOne('plugin::users-permissions.user', user.id, {
+      populate: {
+        honor_title: true,
+      },
+    });
+
+    assert.equal(createdWordDefinition.word.target_text, 'lernen');
+    assert.equal(createdWordDefinition.base_text, 'learn');
+    assert.equal(createdWordDefinition.part_of_speech.name, 'verb');
+    assert.equal(flashcards.length, 1);
+    assert.equal(queuedWordJobs.length, 1);
+    assert.equal(queuedWordJobs[0].wordDefinitionId, createdWordDefinitionId);
+    assert.equal(queuedWordJobs[0].flashcardId, flashcards[0].id);
+    assert.equal(userPoints.length, 2);
+    assert.equal(userPoints[0].points, 0);
+    assert.equal(userPoints[1].points, pointRule.new_word_point);
+    assert.equal(userPoints[1].points_add, pointRule.new_word_point);
+    assert.equal(userPoints[1].word_count, 1);
+    assert.equal(userPoints[1].word_add, 1);
+    assert.equal(userPoints[1].point_group.group_rank.id, groupRanks.starter.id);
+    assert.equal(userPoints[1].rank, 1);
+    assert.equal(userPoints[1].rank_change, 1);
+    assert.equal(userPointGroups.length, 1);
+    assert.equal(userPointGroups[0].period_points, pointRule.new_word_point);
+    assert.equal(userPointGroups[0].point_group.group_rank.id, groupRanks.starter.id);
+    assert.equal(userWithHonor.honor_title?.id, honorTitles.bronze.id);
+  } finally {
+    wordProcessingQueue.addJob = originalAddJob;
+  }
 });
 
 test('review event handler is idempotent for the same event id', async () => {

@@ -1,13 +1,65 @@
 # Review Tier Process
 
-This document describes how this Strapi project records review activity, calculates the current review tier, and changes the review tier for a flashcard or a "word".
+This document describes how this Strapi project records review activity, calculates the current review tier, changes the review tier for a flashcard or a "word", and applies point updates for both review events and new word-definition events.
 
 ## Short Version
 
 - The review state is stored on `flashcard`, not on `word` or `user-word`.
 - A "word tier" is therefore the tier of the flashcard linked to that word definition for a given user.
-- Review events are dispatched to a review-event queue, and the queued handler writes `reviewlog`.
+- The API layer dispatches domain events through `event-api`.
+- Those events go through a queue facade, then a queue handler, then `point-service`.
+- Review events are queued and the handler writes `reviewlog`.
+- New `word_definition` create events are queued and the handler updates `user-point`.
 - The current tier is derived from `correct_streak` and the `review-tire` rules, then stored on `flashcard.review_tire`.
+
+## Current Architecture
+
+Sources:
+
+- [src/services/event-api.js](/Users/James/develop/langgo/langgo_strapi4/src/services/event-api.js:1)
+- [src/services/review-event-queue.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-queue.js:1)
+- [src/services/event-handler.js](/Users/James/develop/langgo/langgo_strapi4/src/services/event-handler.js:1)
+- [src/services/review-event-handler.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-handler.js:1)
+- [src/services/point-service.js](/Users/James/develop/langgo/langgo_strapi4/src/services/point-service.js:1)
+- [src/services/review-reward-service.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-reward-service.js:1)
+
+Runtime shape:
+
+```text
+strapi api -> event-api -> queue -> event-handler -> point-service
+```
+
+Responsibilities by layer:
+
+- `strapi api`
+  - performs the core synchronous write for its own endpoint
+  - example: review endpoint updates `flashcard`
+  - example: word-definition create endpoint saves `word_definition` and `flashcard`
+- `event-api`
+  - hides queue-dispatch details from controller code
+  - exposes domain methods such as `dispatchReviewCompleted` and `dispatchWordDefinitionCreated`
+- `queue`
+  - accepts domain events
+  - delivers them through the configured driver
+  - can later be backed by a different transport without changing controller code
+- `event-handler`
+  - routes by event type
+  - performs event-specific persistence that is not part of point-rule evaluation
+  - for review events, creates `reviewlog`
+  - delegates point/rank/group calculations to `point-service`
+- `point-service`
+  - owns point-rule lookup
+  - owns user-point snapshot updates
+  - owns honor-title updates
+  - owns group-rank and point-group assignment logic
+  - is the boundary the queue handler calls instead of touching rule internals
+
+Current compatibility detail:
+
+- the generic facades are in place now
+- `point-service` currently delegates to `review-reward-service`, which is the concrete point engine implementation
+- `event-handler` currently delegates to `review-event-handler`, which is the concrete queued-event processor
+- this means the design boundary is already established even though some internal filenames are still review-oriented
 
 ## Relevant Models
 
@@ -64,15 +116,22 @@ Important detail:
 
 Source: [src/api/point-rule/content-types/point-rule/schema.json](/Users/James/develop/langgo/langgo_strapi4/src/api/point-rule/content-types/point-rule/schema.json:1)
 
-The local review-event handler currently reads the first `point-rule` row and uses:
+The local point-service currently reads the first `point-rule` row and uses:
 
 - `review_point`
 - `review_tier_up_point`
+- `new_word_point`
 
 For review events:
 
 - `review_point` is always added
 - `review_tier_up_point` is added only when `newlevel` is above `level`
+
+For `word_definition.created` events:
+
+- `new_word_point` is added
+- `word_count` is incremented by `1`
+- `word_add` is incremented by `1`
 
 ### `user-point`
 
@@ -80,7 +139,7 @@ Source: [src/api/user-point/content-types/user-point/schema.json](/Users/James/d
 
 This is the local daily snapshot table for user points.
 
-Fields currently written by the review-event handler:
+Fields currently written by the queued event flow:
 
 - `user`
 - `record_date`
@@ -95,13 +154,17 @@ Fields currently written by the review-event handler:
 - `rank`
 - `rank_change`
 
-The handler currently only changes:
+The handler currently changes:
 
 - `points`
 - `points_add`
+- `word_count`
+- `word_add`
 - `point_group`
+- `rank`
+- `rank_change`
 
-The other counters are initialized and carried forward, but not yet recalculated by review events.
+The article counters are still only initialized and carried forward.
 
 ### `user-point-group`
 
@@ -113,7 +176,7 @@ This stores a user's current point-group assignment:
 - `point_group`
 - `period_points`
 
-It is only created when the user does not already have one.
+It is created on the first qualifying daily event if the user does not already have one, and later updated when first-event-of-day reassignment is needed.
 
 ### `group-rank`
 
@@ -199,7 +262,7 @@ The controller does the following inside a DB transaction:
 3. Checks whether the card is still on cooldown.
 4. Calculates the review outcome payload: `level`, `effective`, `newlevel`
 5. Updates streaks, tier, `last_reviewed_at`, and `is_remembered` when the review is effective
-6. After the transaction commits, dispatches a `flashcard.review.completed` event to the review-event queue facade
+6. After the transaction commits, dispatches a `flashcard.review.completed` event through `event-api`
 
 The queue handler then performs the side effects:
 
@@ -212,7 +275,7 @@ The queue handler then performs the side effects:
 6. Assigns `user-point-group` and `point-group` for users who do not yet have one
 7. Hosts extension hooks for future side effects
 
-This means `reviewlog` is now eventually consistent with the flashcard update. The flashcard update is the synchronous core path; the log write is asynchronous queue work.
+This means `reviewlog` is now eventually consistent with the flashcard update. The flashcard update is the synchronous core path; the log write and point updates are asynchronous queue work.
 
 The queued event includes:
 
@@ -227,16 +290,53 @@ So each resulting `reviewlog` still records both:
 - the tier before the review changes the flashcard in `level`
 - the resulting tier after calculation in `newlevel`
 
-Current local reward behavior:
+Current local point behavior:
 
-- the local Strapi handler reads the first `point-rule` entry
+- the local Strapi event handler does not know point-rule details
+- it delegates point updates to `point-service`
+- `point-service` reads the first `point-rule` entry
 - `review_point` is added for each handled review event
 - `review_tier_up_point` is added when `newlevel` is above `level`
+- `new_word_point` is added for each handled `word_definition.created` event
 - the per-event value is stored in `reviewlog.points_awarded`
 - the daily snapshot is stored in `user-point`
 - if the previous day row is missing, the handler backfills it before updating today's row
 - honor-title calculation only runs when today's `user-point` row is being created for the first time
 - point-group / group-rank calculation only runs when today's `user-point` row is being created for the first time
+
+## How Word-Definition Create Is Recorded
+
+Source: [src/api/word-definition/controllers/word-definition.js](/Users/James/develop/langgo/langgo_strapi4/src/api/word-definition/controllers/word-definition.js:1)
+
+The runtime endpoint is:
+
+- `POST /api/word-definitions`
+
+When a brand-new `word_definition` is created, the controller:
+
+1. validates the user and payload
+2. finds or creates the `word`
+3. finds or creates the `part_of_speech`
+4. creates the new `word_definition`
+5. creates the user's `flashcard` for that `word_definition`
+6. dispatches `word_definition.created` through `event-api`
+
+The queued handler then:
+
+1. routes the event by `event`
+2. calls `point-service`
+3. loads `point-rule.new_word_point`
+4. upserts today's `user-point`
+5. increments:
+   - `points`
+   - `points_add`
+   - `word_count`
+   - `word_add`
+6. if this is the first event creating today's row, also runs:
+   - honor-title sync
+   - group-rank / point-group sync
+
+The controller still separately pushes the background word-processing job for exam-option generation. That queue is independent from the event/point pipeline described here.
 
 ### Daily `user-point` write logic
 
@@ -246,7 +346,7 @@ The handler follows this order:
 2. Find today's `user-point` by `user + record_date`
 3. Ensure there is a previous-day `user-point` snapshot
 4. If today already exists:
-   update `points` and `points_add`
+   update the relevant delta columns on that row
 5. If today does not exist:
    create a new row using the previous snapshot as the base, then add today's delta
 
@@ -257,7 +357,7 @@ Current snapshot rule:
 - today row missing:
   create it from the previous snapshot plus today's awarded points
 - today row exists:
-  increment `points` and `points_add`
+  increment `points` / `points_add` and any event-specific counters such as `word_count` / `word_add`
 - same-day updates do not recalculate `honor_title`
 - same-day updates do not recalculate `user-point-group`, `group-rank`, or `point_group`
 
@@ -318,58 +418,79 @@ Current integration coverage includes these behavior checks:
 
 1. Basic review flow
    - review endpoint updates the flashcard
-   - endpoint dispatches queue event instead of writing `reviewlog` directly
+   - endpoint dispatches through `event-api` instead of writing `reviewlog` directly
    - local handler writes `reviewlog` and daily `user-point`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:239)
 
-2. Idempotency
+2. New word-definition flow
+   - word-definition create endpoint saves `word_definition`
+   - endpoint dispatches `word_definition.created` through `event-api`
+   - queue handler calls `point-service`
+   - daily `user-point` is updated with `new_word_point`, `word_count`, and `word_add`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:365)
+
+3. Idempotency
    - the same `event_id` does not double-write `reviewlog`
    - the same `event_id` does not double-award points
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:457)
 
-3. Same-day gating
+4. Same-day gating
    - if today's `user-point` already exists, same-day reviews only update `points` and `points_add`
    - same-day reviews do not recalculate `honor_title`
    - same-day reviews do not recalculate `user-point-group` or `group-rank`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:515)
 
-4. Group-rank threshold crossed on a second same-day review
+5. Group-rank threshold crossed on a second same-day review
    - a user can move from `278` to `280` points on the same day
    - if today's row already existed before those reviews, `group-rank` stays unchanged
    - no new target-rank group is created in that case
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:627)
 
-5. Honor-title threshold crossed on same-day follow-up reviews
+6. Honor-title threshold crossed on same-day follow-up reviews
    - if today's row already existed before the reviews, the user can cross the next honor threshold
    - `honor_title` still stays unchanged for those same-day updates
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:794)
 
-6. First review creates the day row and promotes honor title
+7. First review creates the day row and promotes honor title
    - previous day can be one point below the next honor threshold
    - first review of the day can promote `user.honor_title`
    - the created daily `user-point` stores the promoted `rank`
    - the created daily `user-point` stores `rank_change`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:942)
 
-7. New user bootstrap
+8. New user bootstrap
    - a new user with no `user-point-group` and no `honor_title` gets both on first review
    - if the target `group-rank` has no `point_group`, the first group is created
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1082)
 
-8. Reassignment to a higher group rank on first review of the day
+9. Reassignment to a higher group rank on first review of the day
    - a user with `279` period points can cross to `282`
    - on the first review event of the day, the user is reassigned to `Learner`
    - if `Learner` has no existing groups, the first one is created and assigned
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1138)
 
-9. Group split behavior
+10. Group split behavior
    - assignment goes to the least-filled existing group first
    - when membership reaches `2 * group_size`, the group is split into two groups
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1017)
 
-## Queue Facade And Drivers
+## Queue Drivers
 
 Sources:
 
 - [src/services/review-event-queue.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-queue.js:1)
-- [src/services/review-event-handler.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-handler.js:1)
 - [src/services/review-event-queue-drivers/internal.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-queue-drivers/internal.js:1)
 - [src/services/review-event-queue-drivers/pubsub.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-queue-drivers/pubsub.js:1)
-
-The review endpoint does not write `reviewlog` directly anymore. It calls the queue facade:
-
-- `strapi.service('review-event-queue').dispatchReviewCompleted(event)`
 
 Driver selection is controlled by:
 

@@ -15,22 +15,11 @@ module.exports = ({ strapi }) => {
   };
 
   const calculatePointsAwarded = async (event) => {
-    return strapi.service('review-reward-service').calculatePoints(event);
+    return strapi.service('point-service').calculateReviewPoints(event);
   };
 
-  const persistPointsAwarded = async ({ review, pointsAwarded }, trx) => {
-    if (pointsAwarded === null || pointsAwarded === undefined) {
-      return null;
-    }
-
-    return strapi.service('review-reward-service').applyPoints(
-      {
-        userId: review.userId,
-        delta: pointsAwarded,
-        reviewedAt: review.reviewedAt,
-      },
-      trx
-    );
+  const persistPointsAwarded = async (event, trx) => {
+    return strapi.service('point-service').applyReviewEvent(event, trx);
   };
 
   const handleReviewCompleted = async (event) => {
@@ -70,7 +59,7 @@ module.exports = ({ strapi }) => {
           db: trx,
         });
 
-        await persistPointsAwarded({ event, review, reviewlog, pointsAwarded }, trx);
+        await persistPointsAwarded(event, trx);
       });
     } catch (error) {
       if (error.code === '23505') {
@@ -95,8 +84,39 @@ module.exports = ({ strapi }) => {
     };
   };
 
+  const handleWordDefinitionCreated = async (event) => {
+    const payload = event?.wordDefinition;
+
+    if (!event?.eventId || !payload?.userId || !payload?.wordDefinitionId || !payload?.createdAt) {
+      throw new Error('Invalid word_definition.created event payload.');
+    }
+
+    const result = await strapi.db.transaction(async ({ trx }) => {
+      return strapi.service('point-service').applyWordDefinitionCreatedEvent(event, trx);
+    });
+
+    return {
+      wordDefinitionId: payload.wordDefinitionId,
+      pointsAwarded: result?.pointsAwarded ?? 0,
+      duplicate: false,
+    };
+  };
+
+  const handleEvent = async (event) => {
+    switch (event?.event) {
+      case 'flashcard.review.completed':
+        return handleReviewCompleted(event);
+      case 'word_definition.created':
+        return handleWordDefinitionCreated(event);
+      default:
+        throw new Error(`Unsupported queued event type: ${event?.event || '(missing)'}`);
+    }
+  };
+
   return {
+    handleEvent,
     handleReviewCompleted,
+    handleWordDefinitionCreated,
     calculatePointsAwarded,
     persistPointsAwarded,
   };

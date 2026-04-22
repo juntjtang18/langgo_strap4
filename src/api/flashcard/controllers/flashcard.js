@@ -231,7 +231,7 @@ module.exports = createCoreController(
         );
 
         try {
-          await strapi.service('review-event-queue').dispatchReviewCompleted(reviewResult.reviewEvent);
+          await strapi.service('event-api').dispatchReviewCompleted(reviewResult.reviewEvent);
         } catch (dispatchError) {
           strapi.log.error(`review event dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }

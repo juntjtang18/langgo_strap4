@@ -42,13 +42,25 @@ module.exports = {
     const reviewRewardService = initReviewRewardService({ strapi });
     strapi.container.get('services').set('review-reward-service', reviewRewardService);
 
+    const initPointService = require('./services/point-service');
+    const pointService = initPointService({ strapi });
+    strapi.container.get('services').set('point-service', pointService);
+
     const initReviewEventHandlerService = require('./services/review-event-handler');
     const reviewEventHandlerService = initReviewEventHandlerService({ strapi });
     strapi.container.get('services').set('review-event-handler', reviewEventHandlerService);
 
+    const initEventHandlerService = require('./services/event-handler');
+    const eventHandlerService = initEventHandlerService({ strapi });
+    strapi.container.get('services').set('event-handler', eventHandlerService);
+
     const initReviewEventQueueService = require('./services/review-event-queue');
     const reviewEventQueueService = initReviewEventQueueService({ strapi });
     strapi.container.get('services').set('review-event-queue', reviewEventQueueService);
+
+    const initEventApiService = require('./services/event-api');
+    const eventApiService = initEventApiService({ strapi });
+    strapi.container.get('services').set('event-api', eventApiService);
 
     // Register flashcard validation
     const initFlashcardValidateService = require('./services/flashcard-validate');
@@ -67,8 +79,11 @@ module.exports = {
       tierService &&
       pubSubService &&
       reviewRewardService &&
+      pointService &&
       reviewEventHandlerService &&
+      eventHandlerService &&
       reviewEventQueueService &&
+      eventApiService &&
       flashcardValidateService &&
       accountDeletionService
     ) {
