@@ -635,6 +635,11 @@ module.exports = ({ strapi }) => {
     return rule.new_word_point ?? 0;
   };
 
+  const calculateArticlePoints = async () => {
+    const rule = await getPointRule();
+    return rule.article_point ?? 0;
+  };
+
   const applyDelta = async ({
     userId,
     reviewedAt,
@@ -776,6 +781,27 @@ module.exports = ({ strapi }) => {
     };
   };
 
+  const applyArticleCreatedEvent = async (event, trx) => {
+    const payload = event?.article;
+
+    if (!payload?.userId || !payload?.createdAt) {
+      return null;
+    }
+
+    const pointsAwarded = await calculateArticlePoints(event);
+    const userPoint = await applyDelta({
+      userId: payload.userId,
+      reviewedAt: payload.createdAt,
+      deltaPoints: pointsAwarded,
+      deltaArticles: 1,
+    }, trx);
+
+    return {
+      pointsAwarded,
+      userPoint,
+    };
+  };
+
   return {
     getRecordDate,
     getPointRule,
@@ -789,9 +815,11 @@ module.exports = ({ strapi }) => {
     syncHonorTitle,
     calculatePoints,
     calculateWordDefinitionPoints,
+    calculateArticlePoints,
     applyDelta,
     applyPoints,
     applyReviewEvent,
     applyWordDefinitionCreatedEvent,
+    applyArticleCreatedEvent,
   };
 };

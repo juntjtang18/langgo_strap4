@@ -12,4 +12,8 @@ module.exports = ({ strapi }) => ({
   async handleWordDefinitionCreated(event) {
     return strapi.service('review-event-handler').handleWordDefinitionCreated(event);
   },
+
+  async handleArticleCreated(event) {
+    return strapi.service('review-event-handler').handleArticleCreated(event);
+  },
 });

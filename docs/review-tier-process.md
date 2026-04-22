@@ -1,6 +1,6 @@
 # Review Tier Process
 
-This document describes how this Strapi project records review activity, calculates the current review tier, changes the review tier for a flashcard or a "word", and applies point updates for both review events and new word-definition events.
+This document describes how this Strapi project records review activity, calculates the current review tier, changes the review tier for a flashcard or a "word", and applies point updates for review events, new word-definition events, and new article events.
 
 ## Short Version
 
@@ -10,6 +10,7 @@ This document describes how this Strapi project records review activity, calcula
 - Those events go through a queue facade, then a queue handler, then `point-service`.
 - Review events are queued and the handler writes `reviewlog`.
 - New `word_definition` create events are queued and the handler updates `user-point`.
+- New `user_article` create events are queued and the handler updates `user-point`.
 - The current tier is derived from `correct_streak` and the `review-tire` rules, then stored on `flashcard.review_tire`.
 
 ## Current Architecture
@@ -35,6 +36,7 @@ Responsibilities by layer:
   - performs the core synchronous write for its own endpoint
   - example: review endpoint updates `flashcard`
   - example: word-definition create endpoint saves `word_definition` and `flashcard`
+  - example: article create endpoint saves `user_article`
 - `event-api`
   - hides queue-dispatch details from controller code
   - exposes domain methods such as `dispatchReviewCompleted` and `dispatchWordDefinitionCreated`
@@ -121,6 +123,7 @@ The local point-service currently reads the first `point-rule` row and uses:
 - `review_point`
 - `review_tier_up_point`
 - `new_word_point`
+- `article_point`
 
 For review events:
 
@@ -132,6 +135,12 @@ For `word_definition.created` events:
 - `new_word_point` is added
 - `word_count` is incremented by `1`
 - `word_add` is incremented by `1`
+
+For `user_article.created` events:
+
+- `article_point` is added
+- `article_count` is incremented by `1`
+- `article_add` is incremented by `1`
 
 ### `user-point`
 
@@ -160,11 +169,13 @@ The handler currently changes:
 - `points_add`
 - `word_count`
 - `word_add`
+- `article_count`
+- `article_add`
 - `point_group`
 - `rank`
 - `rank_change`
 
-The article counters are still only initialized and carried forward.
+So article counters are no longer only carried forward; they are incremented by article-create events.
 
 ### `user-point-group`
 
@@ -298,6 +309,7 @@ Current local point behavior:
 - `review_point` is added for each handled review event
 - `review_tier_up_point` is added when `newlevel` is above `level`
 - `new_word_point` is added for each handled `word_definition.created` event
+- `article_point` is added for each handled `user_article.created` event
 - the per-event value is stored in `reviewlog.points_awarded`
 - the daily snapshot is stored in `user-point`
 - if the previous day row is missing, the handler backfills it before updating today's row
@@ -337,6 +349,37 @@ The queued handler then:
    - group-rank / point-group sync
 
 The controller still separately pushes the background word-processing job for exam-option generation. That queue is independent from the event/point pipeline described here.
+
+## How User-Article Create Is Recorded
+
+Source: [src/api/user-article/controllers/user-article.js](/Users/James/develop/langgo/langgo_strapi4/src/api/user-article/controllers/user-article.js:1)
+
+The runtime endpoint is:
+
+- `POST /api/user-articles`
+
+When a new article is created, the controller:
+
+1. validates the authenticated user and payload
+2. creates `user_article`
+3. sets `user` on the saved article
+4. derives `word_count` from the content when it is not provided
+5. dispatches `user_article.created` through `event-api`
+
+The queued handler then:
+
+1. routes the event by `event`
+2. calls `point-service`
+3. loads `point-rule.article_point`
+4. upserts today's `user-point`
+5. increments:
+   - `points`
+   - `points_add`
+   - `article_count`
+   - `article_add`
+6. if this is the first event creating today's row, also runs:
+   - honor-title sync
+   - group-rank / point-group sync
 
 ### Daily `user-point` write logic
 
@@ -431,58 +474,66 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:365)
 
-3. Idempotency
-   - the same `event_id` does not double-write `reviewlog`
-   - the same `event_id` does not double-award points
+3. New article flow
+   - user-article create endpoint saves `user_article`
+   - endpoint dispatches `user_article.created` through `event-api`
+   - queue handler calls `point-service`
+   - daily `user-point` is updated with `article_point`, `article_count`, and `article_add`
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:457)
 
-4. Same-day gating
+4. Idempotency
+   - the same `event_id` does not double-write `reviewlog`
+   - the same `event_id` does not double-award points
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:549)
+
+5. Same-day gating
    - if today's `user-point` already exists, same-day reviews only update `points` and `points_add`
    - same-day reviews do not recalculate `honor_title`
    - same-day reviews do not recalculate `user-point-group` or `group-rank`
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:515)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:607)
 
-5. Group-rank threshold crossed on a second same-day review
+6. Group-rank threshold crossed on a second same-day review
    - a user can move from `278` to `280` points on the same day
    - if today's row already existed before those reviews, `group-rank` stays unchanged
    - no new target-rank group is created in that case
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:627)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:719)
 
-6. Honor-title threshold crossed on same-day follow-up reviews
+7. Honor-title threshold crossed on same-day follow-up reviews
    - if today's row already existed before the reviews, the user can cross the next honor threshold
    - `honor_title` still stays unchanged for those same-day updates
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:794)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:886)
 
-7. First review creates the day row and promotes honor title
+8. First review creates the day row and promotes honor title
    - previous day can be one point below the next honor threshold
    - first review of the day can promote `user.honor_title`
    - the created daily `user-point` stores the promoted `rank`
    - the created daily `user-point` stores `rank_change`
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:942)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1034)
 
-8. New user bootstrap
+9. New user bootstrap
    - a new user with no `user-point-group` and no `honor_title` gets both on first review
    - if the target `group-rank` has no `point_group`, the first group is created
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1082)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1174)
 
-9. Reassignment to a higher group rank on first review of the day
+10. Reassignment to a higher group rank on first review of the day
    - a user with `279` period points can cross to `282`
    - on the first review event of the day, the user is reassigned to `Learner`
    - if `Learner` has no existing groups, the first one is created and assigned
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1138)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1230)
 
-10. Group split behavior
+11. Group split behavior
    - assignment goes to the least-filled existing group first
    - when membership reaches `2 * group_size`, the group is split into two groups
    - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1017)
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1109)
 
 ## Queue Drivers
 

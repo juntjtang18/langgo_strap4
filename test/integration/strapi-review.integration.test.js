@@ -54,6 +54,8 @@ const cleanupTestData = async () => {
   await app.db.query('api::user-point.user-point').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::user-point-group.user-point-group').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::flashcard.flashcard').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::user-article.user-article').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::article-tag.article-tag').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::word-definition.word-definition').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::part-of-speech.part-of-speech').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::word.word').deleteMany({ where: { id: { $gt: 0 } } });
@@ -81,6 +83,20 @@ const makeCtx = (user, flashcardId, result) => ({
 });
 
 const makeWordDefinitionCreateCtx = (user, data) => ({
+  state: { user },
+  request: { body: { data } },
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+  badRequest(message) {
+    throw new Error(`badRequest: ${message}`);
+  },
+  internalServerError(message) {
+    throw new Error(`internalServerError: ${message}`);
+  },
+});
+
+const makeUserArticleCreateCtx = (user, data) => ({
   state: { user },
   request: { body: { data } },
   unauthorized(message) {
@@ -126,7 +142,7 @@ test.before(async () => {
       review_point: 1,
       review_tier_up_point: 2,
       new_word_point: 1,
-      article_point: 0,
+      article_point: 1,
     },
   });
 
@@ -223,10 +239,12 @@ test('boots Strapi and exposes the flashcard review controller', async () => {
   assert.ok(app.service('review-event-queue'));
   assert.equal(typeof app.service('review-event-queue').dispatchReviewCompleted, 'function');
   assert.equal(typeof app.service('review-event-queue').dispatchWordDefinitionCreated, 'function');
+  assert.equal(typeof app.service('review-event-queue').dispatchArticleCreated, 'function');
   assert.ok(app.service('event-api'));
   assert.equal(typeof app.service('event-api').dispatchEvent, 'function');
   assert.ok(app.service('point-service'));
   assert.equal(typeof app.service('point-service').applyWordDefinitionCreatedEvent, 'function');
+  assert.equal(typeof app.service('point-service').applyArticleCreatedEvent, 'function');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.event_id.type, 'string');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.effective.type, 'boolean');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.points_awarded.type, 'integer');
@@ -452,6 +470,72 @@ test('word-definition create dispatches a queued event and updates user points t
   } finally {
     wordProcessingQueue.addJob = originalAddJob;
   }
+});
+
+test('user-article create dispatches a queued event and updates user points through the handler', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::user-article.user-article');
+
+  const response = await controller.create(
+    makeUserArticleCreateCtx(user, {
+      title: 'Learning German',
+      content: 'One short article for reading practice.',
+      language_code: 'en',
+    })
+  );
+
+  await app.service('event-api').waitForIdle();
+
+  const createdArticleId = response?.data?.id;
+  const createdArticle = await app.entityService.findOne('api::user-article.user-article', createdArticleId, {
+    populate: {
+      user: true,
+    },
+  });
+  const userPoints = await app.entityService.findMany('api::user-point.user-point', {
+    filters: { user: user.id },
+    sort: { record_date: 'asc' },
+    populate: {
+      point_group: {
+        populate: {
+          group_rank: true,
+        },
+      },
+    },
+  });
+  const userPointGroups = await app.entityService.findMany('api::user-point-group.user-point-group', {
+    filters: { user: user.id },
+    populate: {
+      point_group: {
+        populate: {
+          group_rank: true,
+        },
+      },
+    },
+  });
+  const userWithHonor = await app.entityService.findOne('plugin::users-permissions.user', user.id, {
+    populate: {
+      honor_title: true,
+    },
+  });
+
+  assert.equal(createdArticle.user.id, user.id);
+  assert.equal(createdArticle.title, 'Learning German');
+  assert.equal(createdArticle.language_code, 'en');
+  assert.equal(createdArticle.word_count, 6);
+  assert.equal(userPoints.length, 2);
+  assert.equal(userPoints[0].points, 0);
+  assert.equal(userPoints[1].points, pointRule.article_point);
+  assert.equal(userPoints[1].points_add, pointRule.article_point);
+  assert.equal(userPoints[1].article_count, 1);
+  assert.equal(userPoints[1].article_add, 1);
+  assert.equal(userPoints[1].point_group.group_rank.id, groupRanks.starter.id);
+  assert.equal(userPoints[1].rank, 1);
+  assert.equal(userPoints[1].rank_change, 1);
+  assert.equal(userPointGroups.length, 1);
+  assert.equal(userPointGroups[0].period_points, pointRule.article_point);
+  assert.equal(userPointGroups[0].point_group.group_rank.id, groupRanks.starter.id);
+  assert.equal(userWithHonor.honor_title?.id, honorTitles.bronze.id);
 });
 
 test('review event handler is idempotent for the same event id', async () => {

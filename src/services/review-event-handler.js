@@ -102,12 +102,32 @@ module.exports = ({ strapi }) => {
     };
   };
 
+  const handleArticleCreated = async (event) => {
+    const payload = event?.article;
+
+    if (!event?.eventId || !payload?.userId || !payload?.userArticleId || !payload?.createdAt) {
+      throw new Error('Invalid user_article.created event payload.');
+    }
+
+    const result = await strapi.db.transaction(async ({ trx }) => {
+      return strapi.service('point-service').applyArticleCreatedEvent(event, trx);
+    });
+
+    return {
+      userArticleId: payload.userArticleId,
+      pointsAwarded: result?.pointsAwarded ?? 0,
+      duplicate: false,
+    };
+  };
+
   const handleEvent = async (event) => {
     switch (event?.event) {
       case 'flashcard.review.completed':
         return handleReviewCompleted(event);
       case 'word_definition.created':
         return handleWordDefinitionCreated(event);
+      case 'user_article.created':
+        return handleArticleCreated(event);
       default:
         throw new Error(`Unsupported queued event type: ${event?.event || '(missing)'}`);
     }
@@ -117,6 +137,7 @@ module.exports = ({ strapi }) => {
     handleEvent,
     handleReviewCompleted,
     handleWordDefinitionCreated,
+    handleArticleCreated,
     calculatePointsAwarded,
     persistPointsAwarded,
   };

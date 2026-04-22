@@ -49,11 +49,19 @@ module.exports = ({ strapi }) => ({
     return strapi.service('review-reward-service').calculateWordDefinitionPoints(...args);
   },
 
+  calculateArticlePoints(...args) {
+    return strapi.service('review-reward-service').calculateArticlePoints(...args);
+  },
+
   applyReviewEvent(...args) {
     return strapi.service('review-reward-service').applyReviewEvent(...args);
   },
 
   applyWordDefinitionCreatedEvent(...args) {
     return strapi.service('review-reward-service').applyWordDefinitionCreatedEvent(...args);
+  },
+
+  applyArticleCreatedEvent(...args) {
+    return strapi.service('review-reward-service').applyArticleCreatedEvent(...args);
   },
 });

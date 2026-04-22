@@ -13,6 +13,10 @@ module.exports = ({ strapi }) => ({
     return strapi.service('review-event-queue').dispatchWordDefinitionCreated(event);
   },
 
+  async dispatchArticleCreated(event) {
+    return strapi.service('review-event-queue').dispatchArticleCreated(event);
+  },
+
   async waitForIdle(timeoutMs) {
     return strapi.service('review-event-queue').waitForIdle(timeoutMs);
   },

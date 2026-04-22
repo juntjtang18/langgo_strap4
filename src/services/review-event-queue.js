@@ -54,6 +54,10 @@ module.exports = ({ strapi }) => {
       return this.dispatch(event);
     },
 
+    async dispatchArticleCreated(event) {
+      return this.dispatch(event);
+    },
+
     async waitForIdle(timeoutMs) {
       const driver = getDriver();
 
