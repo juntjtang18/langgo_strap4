@@ -67,6 +67,67 @@ DATABASE_SCHEMA=ci_test \
 npm test -- test/integration/strapi-review.integration.test.js
 ```
 
+## Custom REST Endpoints
+
+### `DELETE /api/users/me`
+
+Deletes the currently authenticated account and its user-owned data.
+
+Authentication:
+
+- send `Authorization: Bearer <jwt>`
+
+Password confirmation:
+
+- send `X-Account-Delete-Password: <current-password>`
+- `DELETE` request bodies are not relied on in this project, so the header is the supported client contract
+
+Current deletion scope:
+
+- user profile
+- vbsetting
+- flashcards
+- reviewlogs
+- user words
+- user sentences
+- story likes
+- conversations
+- user articles
+- article tags
+- word definitions owned by the user
+
+Success response:
+
+```json
+{
+  "ok": true,
+  "deletedUserId": 123,
+  "deletionSummary": {
+    "api::flashcard.flashcard": 42,
+    "api::reviewlog.reviewlog": 300
+  }
+}
+```
+
+Failure cases:
+
+- `401` if the JWT is missing or no longer maps to a valid user
+- `400` if the current password is missing or incorrect
+- `404` if the user record no longer exists
+
+Logout behavior:
+
+- this project uses JWT auth, not server-side sessions
+- after deletion, the old JWT no longer authenticates because the user record is gone
+- the client should still clear its locally stored token immediately after a successful delete
+
+Smoke test:
+
+```bash
+LANGGO_SMOKE_BASE_URL=http://127.0.0.1:1338 \
+npm run test:smoke:delete-account
+```
+
 ## Google Pub/Sub
 
 This project now exposes a Strapi service named `pubsub`.

@@ -4,9 +4,14 @@ const { createCoreController } = require('@strapi/strapi').factories;
 const utils = require('@strapi/utils');
 const { sanitize } = utils;
 const { ApplicationError, ValidationError } = utils.errors;
+const {
+  buildUserProfilePopulate,
+  formatUserProfile,
+  pickUserProfileData,
+} = require('../../../utils/user-profile');
 
 // A helper function to sanitize the output user data
-const sanitizeUser = (user, ctx) => {
+const sanitizeUser = (strapi, user, ctx) => {
   const { auth } = ctx.state;
   const userSchema = strapi.getModel('plugin::users-permissions.user');
   return sanitize.contentAPI.output(user, userSchema, { auth });
@@ -27,7 +32,9 @@ module.exports = createCoreController(
         name: 'users-permissions',
       });
 
-      const { email, username, password, baseLanguage } = ctx.request.body;
+      const { email, username, password, ...profileInput } = ctx.request.body;
+      const profileData = pickUserProfileData(strapi, profileInput);
+      const { baseLanguage } = profileData;
       if (!email || !password || !baseLanguage) {
         throw new ValidationError('Missing required fields: email, password, and baseLanguage are required.');
       }
@@ -57,7 +64,7 @@ module.exports = createCoreController(
           // 2) Create the User Profile
           await strapi.entityService.create('api::user-profile.user-profile', {
             data: {
-              baseLanguage,
+              ...profileData,
               user: createdUser.id,
             },
             db: trx,
@@ -76,7 +83,19 @@ module.exports = createCoreController(
 
         // Issue JWT and sanitize response
         const jwt = strapi.plugin('users-permissions').service('jwt').issue({ id: user.id });
-        const sanitized = await sanitizeUser(user, ctx);
+        const userWithDetails = await strapi.entityService.findOne(
+          'plugin::users-permissions.user',
+          user.id,
+          {
+            populate: {
+              user_profile: {
+                populate: buildUserProfilePopulate(strapi),
+              },
+            },
+          }
+        );
+        const sanitized = await sanitizeUser(strapi, userWithDetails, ctx);
+        sanitized.user_profile = formatUserProfile(strapi, userWithDetails.user_profile);
         return ctx.send({ jwt, user: sanitized });
 
       } catch (error) {
@@ -101,10 +120,7 @@ module.exports = createCoreController(
 
       const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
         filters: { user: userId },
-        populate: {
-          avatar_img: true,
-          user: true,
-        },
+        populate: buildUserProfilePopulate(strapi),
       });
 
       if (profiles.length === 0) {
@@ -122,7 +138,7 @@ module.exports = createCoreController(
         return ctx.unauthorized('You must be logged in to perform this action.');
       }
       const { id: userId } = ctx.state.user;
-      const { data } = ctx.request.body;
+      const data = pickUserProfileData(strapi, ctx.request.body?.data || {});
 
       const profiles = await strapi.entityService.findMany('api::user-profile.user-profile', {
         filters: { user: userId },
@@ -143,10 +159,7 @@ module.exports = createCoreController(
         'api::user-profile.user-profile',
         updatedProfile.id,
         {
-          populate: {
-            avatar_img: true,
-            user: true,
-          },
+          populate: buildUserProfilePopulate(strapi),
         }
       );
 
@@ -203,10 +216,7 @@ module.exports = createCoreController(
         'api::user-profile.user-profile',
         profileId,
         {
-          populate: {
-            avatar_img: true,
-            user: true,
-          },
+          populate: buildUserProfilePopulate(strapi),
         }
       );
 

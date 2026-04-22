@@ -42,8 +42,20 @@ module.exports = {
     const flashcardValidateService = initFlashcardValidateService({ strapi });
     strapi.container.get('services').set('flashcard-validate', flashcardValidateService);
 
+    // Register account deletion service
+    const initAccountDeletionService = require('./services/account-deletion');
+    const accountDeletionService = initAccountDeletionService({ strapi });
+    strapi.container.get('services').set('account-deletion', accountDeletionService);
+
     // Log service setup success
-    if (wordProcessingQueueService && openAIService && tierService && pubSubService && flashcardValidateService) {
+    if (
+      wordProcessingQueueService &&
+      openAIService &&
+      tierService &&
+      pubSubService &&
+      flashcardValidateService &&
+      accountDeletionService
+    ) {
       strapi.log.info('All custom services initialized successfully during bootstrap.');
       strapi.log.info('Word processing queue (in-process) is ready.');
     } else {
@@ -66,6 +78,17 @@ module.exports = {
     } else {
       strapi.log.error('Failed to initialize topic-generator service.');
     }
+
+    strapi.server.routes([
+      {
+        method: 'DELETE',
+        path: '/api/users/me',
+        handler: async (ctx) => {
+          await strapi.service('account-deletion').deleteMyAccount(ctx);
+        },
+        config: { auth: false },
+      },
+    ]);
 
     if (!disableBackgroundTasks) {
       // Cron: Generate topic every hour

@@ -60,3 +60,36 @@ jobs:
 
       - name: Run unit and integration tests
         run: npm run test:ci
+
+      - name: Start Strapi for smoke tests
+        run: |
+          npm run develop > /tmp/strapi-smoke.log 2>&1 &
+          echo $! > /tmp/strapi-smoke.pid
+
+      - name: Wait for Strapi
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS "http://127.0.0.1:${PORT}/api/ping" >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Strapi did not become ready in time."
+          cat /tmp/strapi-smoke.log
+          exit 1
+
+      - name: Run account deletion smoke test
+        env:
+          LANGGO_SMOKE_BASE_URL: http://127.0.0.1:1337
+        run: npm run test:smoke:delete-account
+
+      - name: Print Strapi log on failure
+        if: failure()
+        run: cat /tmp/strapi-smoke.log
+
+      - name: Stop Strapi
+        if: always()
+        run: |
+          if [ -f /tmp/strapi-smoke.pid ]; then
+            kill "$(cat /tmp/strapi-smoke.pid)" || true
+          fi

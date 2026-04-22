@@ -1820,6 +1820,7 @@ export interface ApiUserProfileUserProfile extends Schema.CollectionType {
     reminder_enabled: Attribute.Boolean;
     Bio: Attribute.String;
     avatar_img: Attribute.Media;
+    visible_on_ladder: Attribute.Boolean & Attribute.DefaultTo<true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

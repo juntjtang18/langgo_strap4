@@ -61,6 +61,21 @@ const getWithJwt = async (path, jwt) => {
   return body;
 };
 
+const putWithJwt = async (path, jwt, data) => {
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ data }),
+  });
+
+  const body = await response.json();
+  assert.equal(response.status, 200, `PUT ${path} failed: ${JSON.stringify(body)}`);
+  return body;
+};
+
 test('GET /api/users/me returns the customized user/profile payload', async (t) => {
   if (!(await ensureBaseUrlReachable(t))) {
     return;
@@ -87,6 +102,8 @@ test('GET /api/users/me returns the customized user/profile payload', async (t) 
   assert.ok('reminder_enabled' in me.user_profile);
   assert.ok('Bio' in me.user_profile);
   assert.ok('avatar_img' in me.user_profile);
+  assert.ok('visible_on_ladder' in me.user_profile);
+  assert.equal(typeof me.user_profile.visible_on_ladder, 'boolean');
 
   if (me.user_profile.avatar_img) {
     assert.ok(me.user_profile.avatar_img.data);
@@ -114,6 +131,8 @@ test('GET /api/user-profiles/mine returns the authenticated user profile and mat
   assert.ok('reminder_enabled' in attrs);
   assert.ok('Bio' in attrs);
   assert.ok('avatar_img' in attrs);
+  assert.ok('visible_on_ladder' in attrs);
+  assert.equal(typeof attrs.visible_on_ladder, 'boolean');
 
   assert.ok(attrs.user?.data, 'mine.data.attributes.user.data should be present');
   assert.equal(attrs.user.data.id, me.id);
@@ -123,4 +142,33 @@ test('GET /api/user-profiles/mine returns the authenticated user profile and mat
   if (attrs.avatar_img) {
     assert.ok('data' in attrs.avatar_img);
   }
+});
+
+test('PUT /api/user-profiles/mine updates visible_on_ladder and GET endpoints reflect it', async (t) => {
+  if (!(await ensureBaseUrlReachable(t))) {
+    return;
+  }
+
+  const { jwt } = await login();
+  const before = await getWithJwt('/api/user-profiles/mine', jwt);
+  const originalValue = before.data.attributes.visible_on_ladder;
+  const toggledValue = !originalValue;
+
+  const updated = await putWithJwt('/api/user-profiles/mine', jwt, {
+    visible_on_ladder: toggledValue,
+  });
+
+  assert.equal(updated.data.attributes.visible_on_ladder, toggledValue);
+
+  const meAfterToggle = await getWithJwt('/api/users/me', jwt);
+  assert.equal(meAfterToggle.user_profile.visible_on_ladder, toggledValue);
+
+  const restored = await putWithJwt('/api/user-profiles/mine', jwt, {
+    visible_on_ladder: originalValue,
+  });
+
+  assert.equal(restored.data.attributes.visible_on_ladder, originalValue);
+
+  const meAfterRestore = await getWithJwt('/api/users/me', jwt);
+  assert.equal(meAfterRestore.user_profile.visible_on_ladder, originalValue);
 });

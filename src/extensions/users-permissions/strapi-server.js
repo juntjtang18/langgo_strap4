@@ -3,55 +3,15 @@
 console.log("[DEBUG] ==> Loading custom users-permissions strapi-server.js");
 
 const axios = require("axios");
-const { ApplicationError, ValidationError } = require('@strapi/utils').errors;
+const { ApplicationError } = require('@strapi/utils').errors;
 const { sanitize } = require('@strapi/utils');
+const {
+  buildUserProfilePopulate,
+  formatUserProfile,
+  pickUserProfileData,
+} = require('../../utils/user-profile');
 
 module.exports = (plugin) => {
-  const formatMediaRelation = (media) => {
-    if (!media) {
-      return null;
-    }
-
-    return {
-      data: {
-        id: media.id,
-        attributes: {
-          name: media.name,
-          alternativeText: media.alternativeText,
-          caption: media.caption,
-          width: media.width,
-          height: media.height,
-          formats: media.formats,
-          hash: media.hash,
-          ext: media.ext,
-          mime: media.mime,
-          size: media.size,
-          url: media.url,
-          previewUrl: media.previewUrl,
-          provider: media.provider,
-          createdAt: media.createdAt,
-          updatedAt: media.updatedAt,
-        },
-      },
-    };
-  };
-
-  const formatUserProfile = (userProfile) => {
-    if (!userProfile) {
-      return null;
-    }
-
-    return {
-      id: userProfile.id,
-      telephone: userProfile.telephone,
-      baseLanguage: userProfile.baseLanguage,
-      proficiency: userProfile.proficiency,
-      reminder_enabled: userProfile.reminder_enabled,
-      Bio: userProfile.Bio,
-      avatar_img: formatMediaRelation(userProfile.avatar_img),
-    };
-  };
-
   // =================================================================
   // 1. 'ME' ENDPOINT - (MODIFIED)
   // =================================================================
@@ -67,9 +27,7 @@ module.exports = (plugin) => {
     const populate = {
       role: true,
       user_profile: {
-        populate: {
-          avatar_img: true,
-        },
+        populate: buildUserProfilePopulate(strapi),
       },
     };
 
@@ -114,7 +72,7 @@ module.exports = (plugin) => {
 
     // MODIFIED: The cleanUserProfile object now includes the missing fields.
     // This ensures the data sent to the app matches what the Swift models expect.
-    const cleanUserProfile = formatUserProfile(user.user_profile);
+    const cleanUserProfile = formatUserProfile(strapi, user.user_profile);
 
     ctx.body = {
       id: user.id,
@@ -149,9 +107,7 @@ module.exports = (plugin) => {
           populate: {
             role: true,
             user_profile: {
-              populate: {
-                avatar_img: true,
-              },
+              populate: buildUserProfilePopulate(strapi),
             },
           },
         }
@@ -212,7 +168,7 @@ module.exports = (plugin) => {
       // Sanitize the user with the role, then attach the subscription and profile
       const userSchema = strapi.getModel('plugin::users-permissions.user');
       const sanitizedUser = await sanitize.contentAPI.output(userWithDetails, userSchema);
-      sanitizedUser.user_profile = formatUserProfile(userWithDetails.user_profile);
+      sanitizedUser.user_profile = formatUserProfile(strapi, userWithDetails.user_profile);
       sanitizedUser.subscription = subscription;
       
       // Replace the original user object in the response with our new, detailed one
@@ -244,7 +200,9 @@ module.exports = (plugin) => {
       throw new ApplicationError("Register action is currently disabled");
     }
 
-    const { email, username, password, baseLanguage, proficiency, reminder_enabled } = ctx.request.body;
+    const { email, username, password, ...profileInput } = ctx.request.body;
+    const profileData = pickUserProfileData(strapi, profileInput);
+    const { baseLanguage } = profileData;
     
     if (!username || !email || !password || !baseLanguage) {
         throw new ApplicationError("Username, email, password, and baseLanguage are required.");
@@ -283,9 +241,7 @@ module.exports = (plugin) => {
         userProfile = await strapi.entityService.create('api::user-profile.user-profile', {
             data: { 
                 user: newUser.id, 
-                baseLanguage,
-                proficiency: proficiency,
-                reminder_enabled: reminder_enabled,
+                ...profileData,
             },
         });
         console.log(`[DEBUG] UserProfile created for user ${newUser.id} with onboarding data.`);
@@ -322,13 +278,20 @@ module.exports = (plugin) => {
       const userWithDetails = await strapi.entityService.findOne(
         "plugin::users-permissions.user",
         newUser.id,
-        { populate: { role: true } }
+        {
+          populate: {
+            role: true,
+            user_profile: {
+              populate: buildUserProfilePopulate(strapi),
+            },
+          },
+        }
       );
 
       const userSchema = strapi.getModel('plugin::users-permissions.user');
       const sanitizedUser = await sanitize.contentAPI.output(userWithDetails, userSchema);
 
-      sanitizedUser.user_profile = userProfile;
+      sanitizedUser.user_profile = formatUserProfile(strapi, userWithDetails.user_profile || userProfile);
       sanitizedUser.subscription = subscription;
       
       const jwtPayload = {

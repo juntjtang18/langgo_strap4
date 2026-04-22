@@ -11,6 +11,7 @@
     "test": "npm run test:unit",
     "test:unit": "node --test test/*.test.js",
     "test:integration": "node --test test/integration/*.test.js",
+    "test:smoke:delete-account": "node --test test/delete-account.smoke.test.js",
     "test:smoke:user-endpoints": "node --test test/user-endpoints.smoke.test.js",
     "test:ci": "npm run test:unit && npm run test:integration",
     "backup": "env-cmd -f .env -- sh -c 'pg_dump -h \"$DATABASE_HOST\" -U \"$DATABASE_USERNAME\" \"$DATABASE_NAME\" > database/backup/langgo_full.sql'"

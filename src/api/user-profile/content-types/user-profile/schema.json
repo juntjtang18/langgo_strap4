@@ -35,11 +35,16 @@
       "type": "string"
     },
     "avatar_img": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "visible_on_ladder": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
