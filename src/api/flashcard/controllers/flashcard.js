@@ -11,42 +11,30 @@ const getEffectiveCooldown = (hours) => {
   return hours || 0;
 };
 
-const getReviewlogEventsTopic = () => process.env.REVIEWLOG_EVENTS_TOPIC || 'pointserver-reviewlogs';
-
-const buildReviewlogEventPayload = ({ reviewlog, flashcardId, user }) => ({
-  event: 'reviewlog.created',
-  eventId: `reviewlog:${reviewlog.id}`,
-  reviewlog: {
-    id: reviewlog.id,
-    flashcard_id: String(flashcardId),
-    reviewed_at: reviewlog.reviewed_at,
-    result: reviewlog.result,
-    level: reviewlog.level,
-    effective: reviewlog.effective,
-    newlevel: reviewlog.newlevel,
-    user: {
-      id: String(user.id),
-      username: user.username || user.email || `user-${user.id}`,
-    },
+const buildReviewCompletedEvent = ({
+  flashcardId,
+  user,
+  reviewedAt,
+  result,
+  level,
+  effective,
+  newlevel,
+}) => ({
+  event: 'flashcard.review.completed',
+  eventId: `flashcard-review:${flashcardId}:${reviewedAt}:${user.id}`,
+  occurredAt: reviewedAt,
+  review: {
+    flashcardId,
+    userId: user.id,
+    username: user.username || user.email || `user-${user.id}`,
+    email: user.email || null,
+    reviewedAt,
+    result,
+    level,
+    effective,
+    newlevel,
   },
 });
-
-const publishReviewlogEvent = async (strapi, payload) => {
-  const topicName = getReviewlogEventsTopic();
-
-  if (!topicName) {
-    return;
-  }
-
-  await strapi.service('pubsub').publishJson(
-    topicName,
-    payload,
-    {
-      eventType: 'reviewlog.created',
-      source: 'langgo-strapi4',
-    }
-  );
-};
 
 module.exports = createCoreController(
   'api::flashcard.flashcard',
@@ -213,18 +201,6 @@ module.exports = createCoreController(
             effectiveCooldownHours: effectiveCooldown,
             now,
           });
-
-          const reviewlog = await strapi.entityService.create('api::reviewlog.reviewlog', {
-            data: {
-              user: user.id,
-              flashcard: id,
-              reviewed_at: now.toISOString(),
-              result,
-              level: currentLevel,
-              effective,
-              newlevel: newLevel,
-            },
-          });
     
           if (Object.keys(updateData).length > 0) {
             await strapi.entityService.update(
@@ -234,34 +210,33 @@ module.exports = createCoreController(
             );
           }
 
-          const finalCard = await strapi.entityService.findOne(
-            'api::flashcard.flashcard',
-            id,
-            { populate: this._commonPopulate() }
-          );
-
           return {
-            finalCard,
-            reviewlog,
+            reviewedAt: now.toISOString(),
+            reviewEvent: buildReviewCompletedEvent({
+              flashcardId: flashcard.id,
+              user,
+              reviewedAt: now.toISOString(),
+              result,
+              level: currentLevel,
+              effective,
+              newlevel: newLevel,
+            }),
           };
         });
 
-        if (getReviewlogEventsTopic()) {
-          try {
-            await publishReviewlogEvent(
-              strapi,
-              buildReviewlogEventPayload({
-                reviewlog: reviewResult.reviewlog,
-                flashcardId: id,
-                user,
-              })
-            );
-          } catch (publishError) {
-            strapi.log.error(`review event publish error: ${publishError.message}`, publishError.stack);
-          }
+        const finalCard = await strapi.entityService.findOne(
+          'api::flashcard.flashcard',
+          id,
+          { populate: this._commonPopulate() }
+        );
+
+        try {
+          await strapi.service('review-event-queue').dispatchReviewCompleted(reviewResult.reviewEvent);
+        } catch (dispatchError) {
+          strapi.log.error(`review event dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }
     
-        return this.transformResponse(reviewResult.finalCard);
+        return this.transformResponse(finalCard);
       } catch (err) {
         strapi.log.error(`review error: ${err.message}`, err.stack);
         return ctx.internalServerError('Error during review.');

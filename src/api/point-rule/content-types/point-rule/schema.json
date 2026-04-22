@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "point_rules",
+  "info": {
+    "singularName": "point-rule",
+    "pluralName": "point-rules",
+    "displayName": "point rule"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "review_point": {
+      "type": "integer"
+    },
+    "new_word_point": {
+      "type": "integer"
+    },
+    "article_point": {
+      "type": "integer"
+    },
+    "review_tier_up_point": {
+      "type": "integer"
+    }
+  }
+}

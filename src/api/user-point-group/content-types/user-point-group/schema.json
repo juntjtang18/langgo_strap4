@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_point_groups",
+  "info": {
+    "singularName": "user-point-group",
+    "pluralName": "user-point-groups",
+    "displayName": "user point group"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_point_groups"
+    },
+    "point_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::point-group.point-group",
+      "inversedBy": "user_point_groups"
+    },
+    "period_points": {
+      "type": "integer"
+    }
+  }
+}

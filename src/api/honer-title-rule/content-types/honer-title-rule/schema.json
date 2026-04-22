@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "honer_title_rules",
+  "info": {
+    "singularName": "honer-title-rule",
+    "pluralName": "honer-title-rules",
+    "displayName": "honer title rule"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "base_points": {
+      "type": "integer"
+    },
+    "increase_points": {
+      "type": "integer"
+    }
+  }
+}

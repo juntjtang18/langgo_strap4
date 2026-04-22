@@ -21,6 +21,10 @@
     "reviewed_at": {
       "type": "datetime"
     },
+    "event_id": {
+      "type": "string",
+      "unique": true
+    },
     "level": {
       "type": "enumeration",
       "enum": [
@@ -49,6 +53,10 @@
     "effective": {
       "type": "boolean",
       "required": false
+    },
+    "points_awarded": {
+      "type": "integer",
+      "default": 0
     },
     "newlevel": {
       "type": "enumeration",

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "point_groups",
+  "info": {
+    "singularName": "point-group",
+    "pluralName": "point-groups",
+    "displayName": "point group"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "group_rank": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::group-rank.group-rank",
+      "inversedBy": "point_groups"
+    },
+    "group_no": {
+      "type": "integer"
+    },
+    "user_point_groups": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-point-group.user-point-group",
+      "mappedBy": "point_group"
+    },
+    "user_points": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-point.user-point",
+      "mappedBy": "point_group"
+    }
+  }
+}

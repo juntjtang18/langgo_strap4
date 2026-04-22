@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "group_ranks",
+  "info": {
+    "singularName": "group-rank",
+    "pluralName": "group-ranks",
+    "displayName": "group rank"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
+    },
+    "min_period_points": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer"
+    },
+    "point_groups": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::point-group.point-group",
+      "mappedBy": "group_rank"
+    }
+  }
+}

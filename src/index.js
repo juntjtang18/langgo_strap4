@@ -37,6 +37,19 @@ module.exports = {
     const pubSubService = initPubSubService({ strapi });
     strapi.container.get('services').set('pubsub', pubSubService);
 
+    // Register review event handler and queue facade
+    const initReviewRewardService = require('./services/review-reward-service');
+    const reviewRewardService = initReviewRewardService({ strapi });
+    strapi.container.get('services').set('review-reward-service', reviewRewardService);
+
+    const initReviewEventHandlerService = require('./services/review-event-handler');
+    const reviewEventHandlerService = initReviewEventHandlerService({ strapi });
+    strapi.container.get('services').set('review-event-handler', reviewEventHandlerService);
+
+    const initReviewEventQueueService = require('./services/review-event-queue');
+    const reviewEventQueueService = initReviewEventQueueService({ strapi });
+    strapi.container.get('services').set('review-event-queue', reviewEventQueueService);
+
     // Register flashcard validation
     const initFlashcardValidateService = require('./services/flashcard-validate');
     const flashcardValidateService = initFlashcardValidateService({ strapi });
@@ -53,6 +66,9 @@ module.exports = {
       openAIService &&
       tierService &&
       pubSubService &&
+      reviewRewardService &&
+      reviewEventHandlerService &&
+      reviewEventQueueService &&
       flashcardValidateService &&
       accountDeletionService
     ) {

@@ -671,6 +671,21 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::article-tag.article-tag'
     >;
+    user_point_groups: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::user-point-group.user-point-group'
+    >;
+    user_points: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::user-point.user-point'
+    >;
+    honor_title: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToOne',
+      'api::honor-title.honor-title'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1053,6 +1068,144 @@ export interface ApiGrammarPointGrammarPoint extends Schema.CollectionType {
   };
 }
 
+export interface ApiGroupRankGroupRank extends Schema.CollectionType {
+  collectionName: 'group_ranks';
+  info: {
+    singularName: 'group-rank';
+    pluralName: 'group-ranks';
+    displayName: 'group rank';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    min_period_points: Attribute.Integer &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    point_groups: Attribute.Relation<
+      'api::group-rank.group-rank',
+      'oneToMany',
+      'api::point-group.point-group'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::group-rank.group-rank',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::group-rank.group-rank',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::group-rank.group-rank',
+      'oneToMany',
+      'api::group-rank.group-rank'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiHonerTitleRuleHonerTitleRule extends Schema.CollectionType {
+  collectionName: 'honer_title_rules';
+  info: {
+    singularName: 'honer-title-rule';
+    pluralName: 'honer-title-rules';
+    displayName: 'honer title rule';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    base_points: Attribute.Integer;
+    increase_points: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::honer-title-rule.honer-title-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::honer-title-rule.honer-title-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiHonorTitleHonorTitle extends Schema.CollectionType {
+  collectionName: 'honor_titles';
+  info: {
+    singularName: 'honor-title';
+    pluralName: 'honor-titles';
+    displayName: 'honor title';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    users: Attribute.Relation<
+      'api::honor-title.honor-title',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::honor-title.honor-title',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::honor-title.honor-title',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::honor-title.honor-title',
+      'oneToMany',
+      'api::honor-title.honor-title'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 export interface ApiLearningUnitLearningUnit extends Schema.CollectionType {
   collectionName: 'learning_units';
   info: {
@@ -1145,6 +1298,113 @@ export interface ApiPingPing extends Schema.CollectionType {
     createdBy: Attribute.Relation<'api::ping.ping', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::ping.ping', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPointGroupPointGroup extends Schema.CollectionType {
+  collectionName: 'point_groups';
+  info: {
+    singularName: 'point-group';
+    pluralName: 'point-groups';
+    displayName: 'point group';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    group_rank: Attribute.Relation<
+      'api::point-group.point-group',
+      'manyToOne',
+      'api::group-rank.group-rank'
+    >;
+    group_no: Attribute.Integer;
+    user_point_groups: Attribute.Relation<
+      'api::point-group.point-group',
+      'oneToMany',
+      'api::user-point-group.user-point-group'
+    >;
+    user_points: Attribute.Relation<
+      'api::point-group.point-group',
+      'oneToMany',
+      'api::user-point.user-point'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::point-group.point-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::point-group.point-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPointGroupRulePointGroupRule extends Schema.CollectionType {
+  collectionName: 'point_group_rules';
+  info: {
+    singularName: 'point-group-rule';
+    pluralName: 'point-group-rules';
+    displayName: 'point group rule';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    period_days: Attribute.Integer;
+    group_size: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::point-group-rule.point-group-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::point-group-rule.point-group-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPointRulePointRule extends Schema.CollectionType {
+  collectionName: 'point_rules';
+  info: {
+    singularName: 'point-rule';
+    pluralName: 'point-rules';
+    displayName: 'point rule';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    review_point: Attribute.Integer;
+    new_word_point: Attribute.Integer;
+    article_point: Attribute.Integer;
+    review_tier_up_point: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::point-rule.point-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::point-rule.point-rule',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
   };
 }
@@ -1322,6 +1582,7 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     reviewed_at: Attribute.DateTime;
+    event_id: Attribute.String & Attribute.Unique;
     level: Attribute.Enumeration<
       ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered']
     >;
@@ -1332,6 +1593,7 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'api::flashcard.flashcard'
     >;
     effective: Attribute.Boolean;
+    points_awarded: Attribute.Integer & Attribute.DefaultTo<0>;
     newlevel: Attribute.Enumeration<
       ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered']
     >;
@@ -1797,6 +2059,93 @@ export interface ApiUserArticleUserArticle extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserPointUserPoint extends Schema.CollectionType {
+  collectionName: 'user_points';
+  info: {
+    singularName: 'user-point';
+    pluralName: 'user-points';
+    displayName: 'user point';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::user-point.user-point',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    record_date: Attribute.Date;
+    point_group: Attribute.Relation<
+      'api::user-point.user-point',
+      'manyToOne',
+      'api::point-group.point-group'
+    >;
+    points: Attribute.Integer;
+    points_add: Attribute.Integer;
+    word_count: Attribute.Integer;
+    word_add: Attribute.Integer;
+    article_count: Attribute.Integer;
+    article_add: Attribute.Integer;
+    group_rank_change: Attribute.Integer;
+    rank: Attribute.Integer;
+    rank_change: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-point.user-point',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-point.user-point',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiUserPointGroupUserPointGroup extends Schema.CollectionType {
+  collectionName: 'user_point_groups';
+  info: {
+    singularName: 'user-point-group';
+    pluralName: 'user-point-groups';
+    displayName: 'user point group';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::user-point-group.user-point-group',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    point_group: Attribute.Relation<
+      'api::user-point-group.user-point-group',
+      'manyToOne',
+      'api::point-group.point-group'
+    >;
+    period_points: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-point-group.user-point-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-point-group.user-point-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiUserProfileUserProfile extends Schema.CollectionType {
   collectionName: 'user_profiles';
   info: {
@@ -2239,9 +2588,15 @@ declare module '@strapi/types' {
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::grammar-point.grammar-point': ApiGrammarPointGrammarPoint;
+      'api::group-rank.group-rank': ApiGroupRankGroupRank;
+      'api::honer-title-rule.honer-title-rule': ApiHonerTitleRuleHonerTitleRule;
+      'api::honor-title.honor-title': ApiHonorTitleHonorTitle;
       'api::learning-unit.learning-unit': ApiLearningUnitLearningUnit;
       'api::part-of-speech.part-of-speech': ApiPartOfSpeechPartOfSpeech;
       'api::ping.ping': ApiPingPing;
+      'api::point-group.point-group': ApiPointGroupPointGroup;
+      'api::point-group-rule.point-group-rule': ApiPointGroupRulePointGroupRule;
+      'api::point-rule.point-rule': ApiPointRulePointRule;
       'api::proficiency-level.proficiency-level': ApiProficiencyLevelProficiencyLevel;
       'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
@@ -2252,6 +2607,8 @@ declare module '@strapi/types' {
       'api::topic.topic': ApiTopicTopic;
       'api::topic-template.topic-template': ApiTopicTemplateTopicTemplate;
       'api::user-article.user-article': ApiUserArticleUserArticle;
+      'api::user-point.user-point': ApiUserPointUserPoint;
+      'api::user-point-group.user-point-group': ApiUserPointGroupUserPointGroup;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;
       'api::user-sentence.user-sentence': ApiUserSentenceUserSentence;
       'api::user-word.user-word': ApiUserWordUserWord;

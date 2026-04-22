@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "point_group_rules",
+  "info": {
+    "singularName": "point-group-rule",
+    "pluralName": "point-group-rules",
+    "displayName": "point group rule",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "period_days": {
+      "type": "integer"
+    },
+    "group_size": {
+      "type": "integer"
+    }
+  }
+}

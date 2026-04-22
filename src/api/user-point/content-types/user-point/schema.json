@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_points",
+  "info": {
+    "singularName": "user-point",
+    "pluralName": "user-points",
+    "displayName": "user point"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_points"
+    },
+    "record_date": {
+      "type": "date"
+    },
+    "point_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::point-group.point-group",
+      "inversedBy": "user_points"
+    },
+    "points": {
+      "type": "integer"
+    },
+    "points_add": {
+      "type": "integer"
+    },
+    "word_count": {
+      "type": "integer"
+    },
+    "word_add": {
+      "type": "integer"
+    },
+    "article_count": {
+      "type": "integer"
+    },
+    "article_add": {
+      "type": "integer"
+    },
+    "group_rank_change": {
+      "type": "integer"
+    },
+    "rank": {
+      "type": "integer"
+    },
+    "rank_change": {
+      "type": "integer"
+    }
+  }
+}
