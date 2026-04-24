@@ -369,6 +369,58 @@ test('review action updates the flashcard and delegates side effects to the queu
   }
 });
 
+test('review action updates flashcard-stat synchronously and creates missing rows on demand', async () => {
+  const user = await createAuthenticatedUser();
+  const word = await app.entityService.create('api::word.word', {
+    data: {
+      target_text: `review-stat-word-${Date.now()}`,
+    },
+  });
+  const wordDefinition = await app.entityService.create('api::word-definition.word-definition', {
+    data: {
+      locale: 'en',
+      owner: user.id,
+      word: word.id,
+      base_text: 'review stat word',
+    },
+  });
+  const flashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+    },
+  });
+  const controller = app.controller('api::flashcard.flashcard');
+
+  const beforeStats = await app.entityService.findMany('api::flashcard-stat.flashcard-stat', {
+    filters: { user: user.id },
+  });
+
+  assert.equal(beforeStats.length, 0);
+
+  await controller.review(makeCtx(user, flashcard.id, 'correct'));
+
+  const flashcardStats = await app.entityService.findMany('api::flashcard-stat.flashcard-stat', {
+    filters: { user: user.id },
+    populate: { review_tire: true },
+    sort: ['review_tire.id:asc'],
+  });
+
+  const newTierStat = flashcardStats.find((row) => row.review_tire?.id === reviewTiers.new.id);
+  const warmupTierStat = flashcardStats.find((row) => row.review_tire?.id === reviewTiers.warmup.id);
+
+  assert.ok(newTierStat);
+  assert.ok(warmupTierStat);
+  assert.equal(newTierStat.word_count, 0);
+  assert.equal(warmupTierStat.word_count, 1);
+
+  await app.service('review-event-queue').waitForIdle(15000);
+});
+
 test('registerWithProfile creates one flashcard-stat row per review tier for the new user', async () => {
   const controller = app.controller('api::user-profile.user-profile');
   const unique = Date.now();
@@ -403,14 +455,14 @@ test('registerWithProfile creates one flashcard-stat row per review tier for the
   assert.ok(flashcardStats.every((stat) => stat.word_count === 0));
 });
 
-test('flashcard statistics endpoint aggregates counts in one response', async () => {
+test('flashcard statistics endpoint returns the materialized flashcard-stat summary', async () => {
   const user = await createAuthenticatedUser();
   const otherUser = await createAuthenticatedUser();
   const controller = app.controller('api::flashcard.flashcard');
   const ctx = makeStatsCtx(user);
   const word = await app.entityService.create('api::word.word', {
     data: {
-      target_text: `stats-word-${Date.now()}`,
+      target_text: `materialized-stats-word-${Date.now()}`,
     },
   });
   const wordDefinition = await app.entityService.create('api::word-definition.word-definition', {
@@ -418,24 +470,33 @@ test('flashcard statistics endpoint aggregates counts in one response', async ()
       locale: 'en',
       owner: user.id,
       word: word.id,
-      base_text: 'stats word',
-    },
-  });
-  const otherWord = await app.entityService.create('api::word.word', {
-    data: {
-      target_text: `stats-word-other-${Date.now()}`,
-    },
-  });
-  const otherWordDefinition = await app.entityService.create('api::word-definition.word-definition', {
-    data: {
-      locale: 'en',
-      owner: otherUser.id,
-      word: otherWord.id,
-      base_text: 'other stats word',
+      base_text: 'materialized stats word',
     },
   });
 
-  const firstFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+  await app.entityService.create('api::flashcard-stat.flashcard-stat', {
+    data: {
+      user: user.id,
+      review_tire: reviewTiers.new.id,
+      word_count: 2,
+    },
+  });
+  await app.entityService.create('api::flashcard-stat.flashcard-stat', {
+    data: {
+      user: user.id,
+      review_tire: reviewTiers.warmup.id,
+      word_count: 3,
+    },
+  });
+  await app.entityService.create('api::flashcard-stat.flashcard-stat', {
+    data: {
+      user: otherUser.id,
+      review_tire: reviewTiers.new.id,
+      word_count: 99,
+    },
+  });
+
+  await app.entityService.create('api::flashcard.flashcard', {
     data: {
       user: user.id,
       word_definition: wordDefinition.id,
@@ -446,64 +507,35 @@ test('flashcard statistics endpoint aggregates counts in one response', async ()
       last_reviewed_at: null,
     },
   });
-  const secondFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+  await app.entityService.create('api::flashcard.flashcard', {
     data: {
       user: user.id,
       word_definition: wordDefinition.id,
       correct_streak: 1,
-      wrong_streak: 2,
-      is_remembered: false,
-      review_tire: reviewTiers.warmup.id,
-      last_reviewed_at: '2026-04-19T12:00:00.000Z',
-    },
-  });
-  const thirdFlashcard = await app.entityService.create('api::flashcard.flashcard', {
-    data: {
-      user: user.id,
-      word_definition: wordDefinition.id,
-      correct_streak: 3,
       wrong_streak: 0,
       is_remembered: false,
-      review_tire: reviewTiers.weekly.id,
+      review_tire: reviewTiers.warmup.id,
       last_reviewed_at: '2099-04-22T12:00:00.000Z',
     },
   });
-  const otherFlashcard = await app.entityService.create('api::flashcard.flashcard', {
-    data: {
-      user: otherUser.id,
-      word_definition: otherWordDefinition.id,
-      correct_streak: 0,
-      wrong_streak: 0,
-      is_remembered: false,
-      review_tire: reviewTiers.new.id,
-      last_reviewed_at: null,
-    },
-  });
-
-  await app.db.connection.withSchema(process.env.DATABASE_SCHEMA || 'public').table('flashcards_word_definition_links').insert([
-    { flashcard_id: firstFlashcard.id, word_definition_id: wordDefinition.id, flashcard_order: 1 },
-    { flashcard_id: secondFlashcard.id, word_definition_id: wordDefinition.id, flashcard_order: 1 },
-    { flashcard_id: thirdFlashcard.id, word_definition_id: wordDefinition.id, flashcard_order: 1 },
-    { flashcard_id: otherFlashcard.id, word_definition_id: otherWordDefinition.id, flashcard_order: 1 },
-  ]).onConflict(['flashcard_id', 'word_definition_id']).ignore();
 
   await controller.getStatistics(ctx);
 
-  assert.equal(ctx.body.data.totalCards, 3);
+  assert.equal(ctx.body.data.totalCards, 5);
   assert.equal(ctx.body.data.remembered, 0);
-  assert.equal(ctx.body.data.dueForReview, 2);
-  assert.equal(ctx.body.data.reviewed, 1);
-  assert.equal(ctx.body.data.hardToRemember, 1);
+  assert.equal(ctx.body.data.dueForReview, 1);
+  assert.equal(ctx.body.data.reviewed, null);
+  assert.equal(ctx.body.data.hardToRemember, null);
   assert.equal(ctx.body.data.byTier.length, 3);
   assert.equal(ctx.body.data.byTier[0].tier, 'new');
-  assert.equal(ctx.body.data.byTier[0].count, 1);
+  assert.equal(ctx.body.data.byTier[0].count, 2);
   assert.equal(ctx.body.data.byTier[0].dueCount, 1);
   assert.equal(ctx.body.data.byTier[1].tier, 'warmup');
-  assert.equal(ctx.body.data.byTier[1].count, 1);
-  assert.equal(ctx.body.data.byTier[1].dueCount, 1);
-  assert.equal(ctx.body.data.byTier[1].hardToRememberCount, 1);
+  assert.equal(ctx.body.data.byTier[1].count, 3);
+  assert.equal(ctx.body.data.byTier[1].dueCount, 0);
+  assert.equal(ctx.body.data.byTier[1].hardToRememberCount, null);
   assert.equal(ctx.body.data.byTier[2].tier, 'weekly');
-  assert.equal(ctx.body.data.byTier[2].count, 1);
+  assert.equal(ctx.body.data.byTier[2].count, 0);
   assert.equal(ctx.body.data.byTier[2].dueCount, 0);
 });
 

@@ -186,13 +186,14 @@ module.exports = createCoreController(
       }
     
       try {
-        const reviewResult = await strapi.db.transaction(async () => {
+        const reviewResult = await strapi.db.transaction(async ({ trx }) => {
           const flashcard = await strapi.entityService.findOne(
             'api::flashcard.flashcard',
             id,
             {
               filters: { user: user.id },
-              populate: { review_tire: true },
+              populate: { review_tire: true, word_definition: true },
+              db: trx,
             }
           );
     
@@ -217,13 +218,28 @@ module.exports = createCoreController(
             effectiveCooldownHours: effectiveCooldown,
             now,
           });
+
+          const shouldUpdateFlashcardStat =
+            effective
+            && flashcard.word_definition?.id
+            && currentTier?.id
+            && currentTier.id !== (updateData.review_tire || currentTier.id);
     
           if (Object.keys(updateData).length > 0) {
             await strapi.entityService.update(
               'api::flashcard.flashcard',
               id,
-              { data: updateData }
+              {
+                data: updateData,
+                db: trx,
+              }
             );
+          }
+
+          if (shouldUpdateFlashcardStat) {
+            await strapi
+              .service('api::flashcard-stat.flashcard-stat')
+              .move(user.id, currentTier.id, updateData.review_tire, trx);
           }
 
           return {
@@ -557,10 +573,9 @@ module.exports = createCoreController(
       if (!user) return ctx.unauthorized('You must be logged in to view statistics.');
 
       try {
-        const tierService = strapi.service('tier-service');
-        const tiers = await tierService.getAllTiers();
-        const statistics = await this._getStatisticsFast(user.id, tiers)
-          || await this._getStatisticsLegacy(user.id, tiers);
+        const statistics = await strapi
+          .service('api::flashcard-stat.flashcard-stat')
+          .getUserStatisticsSummary(user.id);
 
         return ctx.send({
           data: statistics,

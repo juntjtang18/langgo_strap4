@@ -10,15 +10,156 @@
 const { createCoreService } = require('@strapi/strapi').factories;
 
 const PAGE_SIZE = 500;
+const getEffectiveCooldown = (hours) => (
+  process.env.SHORT_TIME_FOR_REVIEW === 'true'
+    ? (hours || 0) / 180
+    : (hours || 0)
+);
 
 module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ strapi }) => ({
-  async findOrCreateStatRow(userId, reviewTireId) {
+  async getLiveDueSummary(userId, tiers) {
+    if (!userId || !tiers.length) {
+      return {
+        dueForReview: 0,
+        dueCountByTierId: new Map(),
+      };
+    }
+
+    const dbSchemaName = strapi.config.get('database.connection.connection.schema', 'public');
+    const rows = await strapi.db.connection.withSchema(dbSchemaName).from('flashcards as f')
+      .join('flashcards_user_links as ful', 'ful.flashcard_id', 'f.id')
+      .join('flashcards_word_definition_links as fwdl', 'fwdl.flashcard_id', 'f.id')
+      .leftJoin('flashcards_review_tire_links as frtl', 'frtl.flashcard_id', 'f.id')
+      .where('ful.user_id', userId)
+      .whereNotNull('fwdl.word_definition_id')
+      .groupBy(
+        'f.id',
+        'f.last_reviewed_at',
+        'f.correct_streak'
+      )
+      .select(
+        'f.id',
+        'f.last_reviewed_at',
+        'f.correct_streak'
+      )
+      .max({ review_tire_id: 'frtl.review_tire_id' });
+
+    const tierById = new Map(tiers.map((tier) => [tier.id, tier]));
+    const dueCountByTierId = new Map(tiers.map((tier) => [tier.id, 0]));
+    const now = new Date();
+    let dueForReview = 0;
+
+    for (const row of rows) {
+      const tier = row.review_tire_id && tierById.has(row.review_tire_id)
+        ? tierById.get(row.review_tire_id)
+        : strapi.service('tier-service').findTierForStreakWithRules(row.correct_streak || 0, tiers);
+
+      if (!tier?.id) {
+        continue;
+      }
+
+      const effectiveCooldownHours = getEffectiveCooldown(tier.cooldown_hours);
+      const isDue = !row.last_reviewed_at
+        || now >= new Date(new Date(row.last_reviewed_at).getTime() + (effectiveCooldownHours * 3600 * 1000));
+
+      if (!isDue) {
+        continue;
+      }
+
+      dueForReview += 1;
+      dueCountByTierId.set(tier.id, (dueCountByTierId.get(tier.id) || 0) + 1);
+    }
+
+    return {
+      dueForReview,
+      dueCountByTierId,
+    };
+  },
+
+  async getUserStatisticsSummary(userId) {
+    if (!userId) {
+      return {
+        totalCards: 0,
+        remembered: 0,
+        dueForReview: 0,
+        reviewed: null,
+        hardToRemember: null,
+        byTier: [],
+      };
+    }
+
+    const tierService = strapi.service('tier-service');
+    const tiers = await tierService.getAllTiers();
+
+    if (!tiers.length) {
+      return {
+        totalCards: 0,
+        remembered: 0,
+        dueForReview: 0,
+        reviewed: null,
+        hardToRemember: null,
+        byTier: [],
+      };
+    }
+
+    const rows = await strapi.entityService.findMany('api::flashcard-stat.flashcard-stat', {
+      filters: { user: userId },
+      populate: { review_tire: true },
+      limit: 500,
+    });
+
+    const countByTierId = new Map();
+
+    for (const row of rows) {
+      const reviewTireId = typeof row.review_tire === 'number'
+        ? row.review_tire
+        : row.review_tire?.id;
+
+      if (!reviewTireId) {
+        continue;
+      }
+
+      countByTierId.set(
+        reviewTireId,
+        (countByTierId.get(reviewTireId) || 0) + (row.word_count || 0)
+      );
+    }
+
+    const { dueForReview, dueCountByTierId } = await this.getLiveDueSummary(userId, tiers);
+
+    const byTier = tiers.map((tier) => ({
+      id: tier.id,
+      tier: tier.tier,
+      display_name: tier.display_name || null,
+      min_streak: tier.min_streak,
+      max_streak: tier.max_streak,
+      cooldown_hours: tier.cooldown_hours,
+      count: countByTierId.get(tier.id) || 0,
+      dueCount: dueCountByTierId.get(tier.id) || 0,
+      hardToRememberCount: null,
+    }));
+
+    const totalCards = byTier.reduce((sum, tier) => sum + tier.count, 0);
+    const remembered = byTier.find((tier) => tier.tier === 'remembered')?.count || 0;
+
+    return {
+      totalCards,
+      remembered,
+      dueForReview,
+      reviewed: null,
+      hardToRemember: null,
+      byTier,
+    };
+  },
+
+  async findOrCreateStatRow(userId, reviewTireId, trx) {
     const rows = await strapi.entityService.findMany('api::flashcard-stat.flashcard-stat', {
       filters: {
         user: userId,
         review_tire: reviewTireId,
       },
       limit: 2,
+      db: trx,
     });
 
     if (rows.length > 0) {
@@ -31,31 +172,33 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
         review_tire: reviewTireId,
         word_count: 0,
       },
+      db: trx,
     });
   },
 
-  async increment(userId, reviewTireId, delta = 1) {
+  async increment(userId, reviewTireId, delta = 1, trx) {
     if (!userId || !reviewTireId || !delta) return null;
 
-    const row = await this.findOrCreateStatRow(userId, reviewTireId);
+    const row = await this.findOrCreateStatRow(userId, reviewTireId, trx);
     const currentCount = row.word_count || 0;
 
     return strapi.entityService.update('api::flashcard-stat.flashcard-stat', row.id, {
       data: {
         word_count: Math.max(0, currentCount + delta),
       },
+      db: trx,
     });
   },
 
-  async move(userId, fromReviewTireId, toReviewTireId) {
+  async move(userId, fromReviewTireId, toReviewTireId, trx) {
     if (!userId || fromReviewTireId === toReviewTireId) return;
 
     if (fromReviewTireId) {
-      await this.increment(userId, fromReviewTireId, -1);
+      await this.increment(userId, fromReviewTireId, -1, trx);
     }
 
     if (toReviewTireId) {
-      await this.increment(userId, toReviewTireId, 1);
+      await this.increment(userId, toReviewTireId, 1, trx);
     }
   },
 
