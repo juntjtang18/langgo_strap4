@@ -4,7 +4,7 @@ const { keepSubsysWarm } = require('./utils/cron-jobs');
 module.exports = {
   register(/*{ strapi }*/) {},
 
-  bootstrap({ strapi }) {
+  async bootstrap({ strapi }) {
     const disableBackgroundTasks =
       process.env.DISABLE_BACKGROUND_TASKS === 'true' ||
       process.env.NODE_ENV === 'test';
@@ -76,6 +76,10 @@ module.exports = {
     const flashcardStatBootstrapService = initFlashcardStatBootstrapService({ strapi });
     strapi.container.get('services').set('flashcard-stat-bootstrap', flashcardStatBootstrapService);
 
+    const initDbIndexEnsureService = require('./services/db-index-ensure');
+    const dbIndexEnsureService = initDbIndexEnsureService({ strapi });
+    strapi.container.get('services').set('db-index-ensure', dbIndexEnsureService);
+
     // Log service setup success
     if (
       wordProcessingQueueService &&
@@ -90,7 +94,8 @@ module.exports = {
       eventApiService &&
       flashcardValidateService &&
       accountDeletionService &&
-      flashcardStatBootstrapService
+      flashcardStatBootstrapService &&
+      dbIndexEnsureService
     ) {
       strapi.log.info('All custom services initialized successfully during bootstrap.');
       strapi.log.info('Word processing queue (in-process) is ready.');
@@ -113,6 +118,12 @@ module.exports = {
       strapi.log.info('Custom topic-generator service initialized successfully.');
     } else {
       strapi.log.error('Failed to initialize topic-generator service.');
+    }
+
+    try {
+      await strapi.service('db-index-ensure').ensureIndexes();
+    } catch (error) {
+      strapi.log.error('Failed to ensure database indexes.', error);
     }
 
     strapi.server.routes([
