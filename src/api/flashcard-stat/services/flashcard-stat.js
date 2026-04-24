@@ -11,6 +11,7 @@ const { createCoreService } = require('@strapi/strapi').factories;
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 
 const PAGE_SIZE = 500;
+const BATCH_WINDOW_MINUTES = 20;
 
 module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ strapi }) => ({
   async getLiveDueSummary(userId, tiers) {
@@ -60,6 +61,35 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
     };
   },
 
+  async getNextFetchAt(userId) {
+    if (!userId) {
+      return null;
+    }
+
+    const dbSchemaName = strapi.config.get('database.connection.connection.schema', 'public');
+    const nowTimestamp = toFlashcardDbTimestamp(new Date());
+    const row = await strapi.db.connection.withSchema(dbSchemaName).from('flashcards as f')
+      .join('flashcards_user_links as ful', 'ful.flashcard_id', 'f.id')
+      .join('flashcards_word_definition_links as fwdl', 'fwdl.flashcard_id', 'f.id')
+      .where('ful.user_id', userId)
+      .whereNotNull('fwdl.word_definition_id')
+      .whereNotNull('f.next_review_at')
+      .andWhereRaw('f.next_review_at > ?::timestamp', [nowTimestamp])
+      .orderBy('f.next_review_at', 'asc')
+      .first('f.next_review_at');
+
+    if (!row?.next_review_at) {
+      return null;
+    }
+
+    const firstDueAt = new Date(row.next_review_at);
+    if (Number.isNaN(firstDueAt.getTime())) {
+      return null;
+    }
+
+    return new Date(firstDueAt.getTime() + BATCH_WINDOW_MINUTES * 60 * 1000).toISOString();
+  },
+
   async getUserStatisticsSummary(userId) {
     if (!userId) {
       return {
@@ -69,6 +99,8 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
         reviewed: null,
         hardToRemember: null,
         byTier: [],
+        nextFetchAt: null,
+        batchWindowMinutes: BATCH_WINDOW_MINUTES,
       };
     }
 
@@ -83,6 +115,8 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
         reviewed: null,
         hardToRemember: null,
         byTier: [],
+        nextFetchAt: null,
+        batchWindowMinutes: BATCH_WINDOW_MINUTES,
       };
     }
 
@@ -126,6 +160,10 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
     const totalCards = byTier.reduce((sum, tier) => sum + tier.count, 0);
     const remembered = byTier.find((tier) => tier.tier === 'remembered')?.count || 0;
 
+    const nextFetchAt = dueForReview > 0
+      ? null
+      : await this.getNextFetchAt(userId);
+
     return {
       totalCards,
       remembered,
@@ -133,6 +171,8 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
       reviewed: null,
       hardToRemember: null,
       byTier,
+      nextFetchAt,
+      batchWindowMinutes: BATCH_WINDOW_MINUTES,
     };
   },
 
