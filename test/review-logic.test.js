@@ -13,7 +13,7 @@ const reviewTiers = [
 ];
 
 test('effective correct review promotes tier and records new level', () => {
-  const now = new Date('2026-04-16T12:00:00.000Z');
+  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
   const flashcard = {
     correct_streak: 0,
     wrong_streak: 0,
@@ -33,8 +33,8 @@ test('effective correct review promotes tier and records new level', () => {
   assert.equal(outcome.currentLevel, 'new');
   assert.equal(outcome.newLevel, 'warmup');
   assert.deepEqual(outcome.updateData, {
-    last_reviewed_at: now.toISOString(),
-    next_review_at: '2026-04-17T12:00:00.000Z',
+    last_reviewed_at: '2026-04-16 12:00:00.000',
+    next_review_at: '2026-04-17 12:00:00.000',
     correct_streak: 1,
     wrong_streak: 0,
     review_tire: 2,
@@ -42,11 +42,11 @@ test('effective correct review promotes tier and records new level', () => {
 });
 
 test('review on cooldown is not effective and does not change level', () => {
-  const now = new Date('2026-04-16T12:00:00.000Z');
+  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
   const flashcard = {
     correct_streak: 1,
     wrong_streak: 0,
-    last_reviewed_at: '2026-04-16T11:00:00.000Z',
+    last_reviewed_at: '2026-04-16 11:00:00.000',
   };
 
   const outcome = calculateReviewOutcome({
@@ -65,11 +65,11 @@ test('review on cooldown is not effective and does not change level', () => {
 });
 
 test('effective wrong review demotes when demote bar is reached', () => {
-  const now = new Date('2026-04-16T12:00:00.000Z');
+  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
   const flashcard = {
     correct_streak: 3,
     wrong_streak: 1,
-    last_reviewed_at: '2026-04-01T12:00:00.000Z',
+    last_reviewed_at: '2026-04-01 12:00:00.000',
   };
 
   const outcome = calculateReviewOutcome({
@@ -85,8 +85,8 @@ test('effective wrong review demotes when demote bar is reached', () => {
   assert.equal(outcome.currentLevel, 'weekly');
   assert.equal(outcome.newLevel, 'warmup');
   assert.deepEqual(outcome.updateData, {
-    last_reviewed_at: now.toISOString(),
-    next_review_at: '2026-04-17T12:00:00.000Z',
+    last_reviewed_at: '2026-04-16 12:00:00.000',
+    next_review_at: '2026-04-17 12:00:00.000',
     wrong_streak: 0,
     correct_streak: 1,
     review_tire: 2,
@@ -95,11 +95,11 @@ test('effective wrong review demotes when demote bar is reached', () => {
 });
 
 test('effective wrong review below demote bar keeps current level', () => {
-  const now = new Date('2026-04-16T12:00:00.000Z');
+  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
   const flashcard = {
     correct_streak: 3,
     wrong_streak: 0,
-    last_reviewed_at: '2026-04-01T12:00:00.000Z',
+    last_reviewed_at: '2026-04-01 12:00:00.000',
   };
 
   const outcome = calculateReviewOutcome({
@@ -115,8 +115,8 @@ test('effective wrong review below demote bar keeps current level', () => {
   assert.equal(outcome.currentLevel, 'weekly');
   assert.equal(outcome.newLevel, 'weekly');
   assert.deepEqual(outcome.updateData, {
-    last_reviewed_at: now.toISOString(),
-    next_review_at: '2026-04-23T12:00:00.000Z',
+    last_reviewed_at: '2026-04-16 12:00:00.000',
+    next_review_at: '2026-04-23 12:00:00.000',
     wrong_streak: 1,
   });
 });

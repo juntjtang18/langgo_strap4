@@ -2,14 +2,7 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 const { calculateReviewOutcome } = require('./review-logic');
-
-const toDbLocalTimestamp = (date = new Date()) => {
-  const pad = (value, width = 2) => String(value).padStart(width, '0');
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
-    + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.`
-    + `${pad(date.getMilliseconds(), 3)}`;
-};
+const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
@@ -117,7 +110,7 @@ module.exports = createCoreController(
       const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
 
       try {
-        const nowTimestamp = toDbLocalTimestamp(new Date());
+        const nowTimestamp = toFlashcardDbTimestamp(new Date());
         const dueFilters = {
           user: user.id,
           word_definition: { $not: null },
@@ -485,7 +478,7 @@ module.exports = createCoreController(
         tiers.map(async (tier) => {
           const membership = membershipForTier(tier);
           const hours = getEffectiveCooldown(tier.cooldown_hours);
-          const thresholdIso = new Date(now.getTime() - hours * 3600 * 1000).toISOString();
+          const thresholdIso = toFlashcardDbTimestamp(new Date(now.getTime() - hours * 3600 * 1000));
 
           const count = await strapi.entityService.count('api::flashcard.flashcard', {
             filters: { ...baseFilter, ...membership },

@@ -8,16 +8,9 @@
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
+const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 
 const PAGE_SIZE = 500;
-
-const toDbLocalTimestamp = (date = new Date()) => {
-  const pad = (value, width = 2) => String(value).padStart(width, '0');
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
-    + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.`
-    + `${pad(date.getMilliseconds(), 3)}`;
-};
 
 module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ strapi }) => ({
   async getLiveDueSummary(userId, tiers) {
@@ -29,7 +22,7 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
     }
 
     const dbSchemaName = strapi.config.get('database.connection.connection.schema', 'public');
-    const nowTimestamp = toDbLocalTimestamp(new Date());
+    const nowTimestamp = toFlashcardDbTimestamp(new Date());
     const rows = await strapi.db.connection.withSchema(dbSchemaName).from('flashcards as f')
       .join('flashcards_user_links as ful', 'ful.flashcard_id', 'f.id')
       .join('flashcards_word_definition_links as fwdl', 'fwdl.flashcard_id', 'f.id')

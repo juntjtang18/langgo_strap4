@@ -1,7 +1,11 @@
 'use strict';
 
+const {
+  toFlashcardDbTimestamp,
+  addHoursAsFlashcardDbTimestamp,
+} = require('../../../utils/flashcard-datetime');
+
 const getReviewLevel = (tier) => tier?.tier?.toLowerCase() || null;
-const addHours = (date, hours) => new Date(date.getTime() + ((hours || 0) * 3600 * 1000)).toISOString();
 
 const calculateReviewOutcome = ({
   flashcard,
@@ -21,7 +25,7 @@ const calculateReviewOutcome = ({
   let nextTier = currentTier;
 
   if (effective) {
-    updateData.last_reviewed_at = now.toISOString();
+    updateData.last_reviewed_at = toFlashcardDbTimestamp(now);
 
     if (result === 'correct') {
       const newStreak = (flashcard.correct_streak ?? 0) + 1;
@@ -53,7 +57,7 @@ const calculateReviewOutcome = ({
       }
     }
 
-    updateData.next_review_at = addHours(now, getCooldownHoursForTier(nextTier));
+    updateData.next_review_at = addHoursAsFlashcardDbTimestamp(now, getCooldownHoursForTier(nextTier));
   }
 
   return {
