@@ -10,11 +10,6 @@
 const { createCoreService } = require('@strapi/strapi').factories;
 
 const PAGE_SIZE = 500;
-const getEffectiveCooldown = (hours) => (
-  process.env.SHORT_TIME_FOR_REVIEW === 'true'
-    ? (hours || 0) / 180
-    : (hours || 0)
-);
 
 module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ strapi }) => ({
   async getLiveDueSummary(userId, tiers) {
@@ -26,48 +21,34 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
     }
 
     const dbSchemaName = strapi.config.get('database.connection.connection.schema', 'public');
+    const nowIso = new Date().toISOString();
     const rows = await strapi.db.connection.withSchema(dbSchemaName).from('flashcards as f')
       .join('flashcards_user_links as ful', 'ful.flashcard_id', 'f.id')
       .join('flashcards_word_definition_links as fwdl', 'fwdl.flashcard_id', 'f.id')
       .leftJoin('flashcards_review_tire_links as frtl', 'frtl.flashcard_id', 'f.id')
       .where('ful.user_id', userId)
       .whereNotNull('fwdl.word_definition_id')
-      .groupBy(
-        'f.id',
-        'f.last_reviewed_at',
-        'f.correct_streak'
-      )
-      .select(
-        'f.id',
-        'f.last_reviewed_at',
-        'f.correct_streak'
-      )
-      .max({ review_tire_id: 'frtl.review_tire_id' });
+      .where((builder) => {
+        builder.whereNull('f.next_review_at').orWhere('f.next_review_at', '<=', nowIso);
+      })
+      .groupBy('frtl.review_tire_id')
+      .select('frtl.review_tire_id')
+      .countDistinct({ due_count: 'f.id' });
 
-    const tierById = new Map(tiers.map((tier) => [tier.id, tier]));
     const dueCountByTierId = new Map(tiers.map((tier) => [tier.id, 0]));
-    const now = new Date();
     let dueForReview = 0;
 
     for (const row of rows) {
-      const tier = row.review_tire_id && tierById.has(row.review_tire_id)
-        ? tierById.get(row.review_tire_id)
-        : strapi.service('tier-service').findTierForStreakWithRules(row.correct_streak || 0, tiers);
+      const reviewTireId = row.review_tire_id ? Number(row.review_tire_id) : null;
+      const dueCount = Number(row.due_count) || 0;
 
-      if (!tier?.id) {
+      dueForReview += dueCount;
+
+      if (!reviewTireId || !dueCountByTierId.has(reviewTireId)) {
         continue;
       }
 
-      const effectiveCooldownHours = getEffectiveCooldown(tier.cooldown_hours);
-      const isDue = !row.last_reviewed_at
-        || now >= new Date(new Date(row.last_reviewed_at).getTime() + (effectiveCooldownHours * 3600 * 1000));
-
-      if (!isDue) {
-        continue;
-      }
-
-      dueForReview += 1;
-      dueCountByTierId.set(tier.id, (dueCountByTierId.get(tier.id) || 0) + 1);
+      dueCountByTierId.set(reviewTireId, (dueCountByTierId.get(reviewTireId) || 0) + dueCount);
     }
 
     return {

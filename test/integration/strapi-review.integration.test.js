@@ -531,7 +531,7 @@ test('registerWithProfile creates one flashcard-stat row per review tier for the
   assert.ok(flashcardStats.every((stat) => stat.word_count === 0));
 });
 
-test('flashcard statistics endpoint returns the materialized flashcard-stat summary', async () => {
+test('flashcard statistics endpoint returns the materialized flashcard-stat summary with due counts from next_review_at', async () => {
   const user = await createAuthenticatedUser();
   const otherUser = await createAuthenticatedUser();
   const controller = app.controller('api::flashcard.flashcard');
@@ -580,7 +580,7 @@ test('flashcard statistics endpoint returns the materialized flashcard-stat summ
       wrong_streak: 0,
       is_remembered: false,
       review_tire: reviewTiers.new.id,
-      last_reviewed_at: null,
+      next_review_at: null,
     },
   });
   await app.entityService.create('api::flashcard.flashcard', {
@@ -591,7 +591,18 @@ test('flashcard statistics endpoint returns the materialized flashcard-stat summ
       wrong_streak: 0,
       is_remembered: false,
       review_tire: reviewTiers.warmup.id,
-      last_reviewed_at: '2099-04-22T12:00:00.000Z',
+      next_review_at: '2099-04-22T12:00:00.000Z',
+    },
+  });
+  await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: otherUser.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+      next_review_at: null,
     },
   });
 
