@@ -11,6 +11,14 @@ const { createCoreService } = require('@strapi/strapi').factories;
 
 const PAGE_SIZE = 500;
 
+const toDbLocalTimestamp = (date = new Date()) => {
+  const pad = (value, width = 2) => String(value).padStart(width, '0');
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
+    + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.`
+    + `${pad(date.getMilliseconds(), 3)}`;
+};
+
 module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ strapi }) => ({
   async getLiveDueSummary(userId, tiers) {
     if (!userId || !tiers.length) {
@@ -21,7 +29,7 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
     }
 
     const dbSchemaName = strapi.config.get('database.connection.connection.schema', 'public');
-    const nowIso = new Date().toISOString();
+    const nowTimestamp = toDbLocalTimestamp(new Date());
     const rows = await strapi.db.connection.withSchema(dbSchemaName).from('flashcards as f')
       .join('flashcards_user_links as ful', 'ful.flashcard_id', 'f.id')
       .join('flashcards_word_definition_links as fwdl', 'fwdl.flashcard_id', 'f.id')
@@ -29,7 +37,9 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
       .where('ful.user_id', userId)
       .whereNotNull('fwdl.word_definition_id')
       .where((builder) => {
-        builder.whereNull('f.next_review_at').orWhere('f.next_review_at', '<=', nowIso);
+        builder
+          .whereNull('f.next_review_at')
+          .orWhereRaw('f.next_review_at <= ?::timestamp', [nowTimestamp]);
       })
       .groupBy('frtl.review_tire_id')
       .select('frtl.review_tire_id')

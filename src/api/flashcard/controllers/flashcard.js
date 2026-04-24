@@ -3,6 +3,14 @@
 const { createCoreController } = require('@strapi/strapi').factories;
 const { calculateReviewOutcome } = require('./review-logic');
 
+const toDbLocalTimestamp = (date = new Date()) => {
+  const pad = (value, width = 2) => String(value).padStart(width, '0');
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
+    + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.`
+    + `${pad(date.getMilliseconds(), 3)}`;
+};
+
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
   if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
@@ -109,13 +117,13 @@ module.exports = createCoreController(
       const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
 
       try {
-        const nowIso = new Date().toISOString();
+        const nowTimestamp = toDbLocalTimestamp(new Date());
         const dueFilters = {
           user: user.id,
           word_definition: { $not: null },
           $or: [
             { next_review_at: null },
-            { next_review_at: { $lte: nowIso } },
+            { next_review_at: { $lte: nowTimestamp } },
           ],
         };
 
