@@ -57,6 +57,9 @@
       "relation": "manyToOne",
       "target": "api::word-definition.word-definition",
       "inversedBy": "flashcards"
+    },
+    "next_review_at": {
+      "type": "datetime"
     }
   }
 }

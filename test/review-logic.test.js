@@ -34,6 +34,7 @@ test('effective correct review promotes tier and records new level', () => {
   assert.equal(outcome.newLevel, 'warmup');
   assert.deepEqual(outcome.updateData, {
     last_reviewed_at: now.toISOString(),
+    next_review_at: '2026-04-17T12:00:00.000Z',
     correct_streak: 1,
     wrong_streak: 0,
     review_tire: 2,
@@ -85,6 +86,7 @@ test('effective wrong review demotes when demote bar is reached', () => {
   assert.equal(outcome.newLevel, 'warmup');
   assert.deepEqual(outcome.updateData, {
     last_reviewed_at: now.toISOString(),
+    next_review_at: '2026-04-17T12:00:00.000Z',
     wrong_streak: 0,
     correct_streak: 1,
     review_tire: 2,
@@ -114,6 +116,7 @@ test('effective wrong review below demote bar keeps current level', () => {
   assert.equal(outcome.newLevel, 'weekly');
   assert.deepEqual(outcome.updateData, {
     last_reviewed_at: now.toISOString(),
+    next_review_at: '2026-04-23T12:00:00.000Z',
     wrong_streak: 1,
   });
 });

@@ -216,6 +216,7 @@ module.exports = createCoreController(
             reviewTiers,
             result,
             effectiveCooldownHours: effectiveCooldown,
+            getCooldownHoursForTier: (tier) => getEffectiveCooldown(tier?.cooldown_hours || 0),
             now,
           });
 

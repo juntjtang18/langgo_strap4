@@ -1,6 +1,7 @@
 'use strict';
 
 const getReviewLevel = (tier) => tier?.tier?.toLowerCase() || null;
+const addHours = (date, hours) => new Date(date.getTime() + ((hours || 0) * 3600 * 1000)).toISOString();
 
 const calculateReviewOutcome = ({
   flashcard,
@@ -8,6 +9,7 @@ const calculateReviewOutcome = ({
   reviewTiers,
   result,
   effectiveCooldownHours,
+  getCooldownHoursForTier = (tier) => tier?.cooldown_hours || 0,
   now = new Date(),
 }) => {
   const reviewIsOnCooldown = currentTier && flashcard.last_reviewed_at
@@ -50,6 +52,8 @@ const calculateReviewOutcome = ({
         updateData.is_remembered = false;
       }
     }
+
+    updateData.next_review_at = addHours(now, getCooldownHoursForTier(nextTier));
   }
 
   return {

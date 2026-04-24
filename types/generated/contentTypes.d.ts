@@ -1019,6 +1019,7 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       'manyToOne',
       'api::word-definition.word-definition'
     >;
+    next_review_at: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

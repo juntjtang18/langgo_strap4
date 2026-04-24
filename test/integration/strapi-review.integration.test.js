@@ -355,6 +355,8 @@ test('review action updates the flashcard and delegates side effects to the queu
     assert.equal(updatedFlashcard.correct_streak, 1);
     assert.equal(updatedFlashcard.wrong_streak, 0);
     assert.equal(updatedFlashcard.review_tire.tier, 'warmup');
+    assert.ok(updatedFlashcard.next_review_at);
+    assert.ok(new Date(updatedFlashcard.next_review_at) > new Date(updatedFlashcard.last_reviewed_at));
 
     assert.equal(dispatchedEvents.length, 1);
     assert.equal(dispatchedEvents[0].event, 'flashcard.review.completed');
@@ -594,6 +596,8 @@ test('review action writes reviewlog and daily user points from the local event 
   assert.equal(updatedFlashcard.correct_streak, 1);
   assert.equal(updatedFlashcard.wrong_streak, 0);
   assert.equal(updatedFlashcard.review_tire.tier, 'warmup');
+  assert.ok(updatedFlashcard.next_review_at);
+  assert.ok(new Date(updatedFlashcard.next_review_at) > new Date(updatedFlashcard.last_reviewed_at));
 
   assert.equal(reviewlogs.length, 1);
   assert.equal(typeof reviewlogs[0].event_id, 'string');
