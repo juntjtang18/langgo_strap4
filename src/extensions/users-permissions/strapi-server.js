@@ -250,6 +250,9 @@ module.exports = (plugin) => {
             data: { user: newUser.id },
         });
         console.log(`[DEBUG] VBSetting created for user ${newUser.id}.`);
+
+        await strapi.service('flashcard-stat-bootstrap').ensureForUser(newUser.id);
+        console.log(`[DEBUG] FlashcardStat rows created for user ${newUser.id}.`);
       });
 
       let subscription = null;

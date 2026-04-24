@@ -686,6 +686,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'api::honor-title.honor-title'
     >;
+    flashcard_stats: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::flashcard-stat.flashcard-stat'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1024,6 +1029,45 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::flashcard.flashcard',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFlashcardStatFlashcardStat extends Schema.CollectionType {
+  collectionName: 'flashcard_stats';
+  info: {
+    singularName: 'flashcard-stat';
+    pluralName: 'flashcard-stats';
+    displayName: 'flashcard stat';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    user: Attribute.Relation<
+      'api::flashcard-stat.flashcard-stat',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    review_tire: Attribute.Relation<
+      'api::flashcard-stat.flashcard-stat',
+      'manyToOne',
+      'api::review-tire.review-tire'
+    >;
+    word_count: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::flashcard-stat.flashcard-stat',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::flashcard-stat.flashcard-stat',
       'oneToOne',
       'admin::user'
     > &
@@ -1541,6 +1585,11 @@ export interface ApiReviewTireReviewTire extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    flashcard_stats: Attribute.Relation<
+      'api::review-tire.review-tire',
+      'oneToMany',
+      'api::flashcard-stat.flashcard-stat'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2587,6 +2636,7 @@ declare module '@strapi/types' {
       'api::conversation.conversation': ApiConversationConversation;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
+      'api::flashcard-stat.flashcard-stat': ApiFlashcardStatFlashcardStat;
       'api::grammar-point.grammar-point': ApiGrammarPointGrammarPoint;
       'api::group-rank.group-rank': ApiGroupRankGroupRank;
       'api::honer-title-rule.honer-title-rule': ApiHonerTitleRuleHonerTitleRule;

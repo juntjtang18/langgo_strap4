@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "flashcard_stats",
+  "info": {
+    "singularName": "flashcard-stat",
+    "pluralName": "flashcard-stats",
+    "displayName": "flashcard stat"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "flashcard_stats"
+    },
+    "review_tire": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::review-tire.review-tire",
+      "inversedBy": "flashcard_stats"
+    },
+    "word_count": {
+      "type": "integer"
+    }
+  }
+}

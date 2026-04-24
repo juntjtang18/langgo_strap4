@@ -12,6 +12,7 @@ This document describes how this Strapi project records review activity, calcula
 - New `word_definition` create events are queued and the handler updates `user-point`.
 - New `user_article` create events are queued and the handler updates `user-point`.
 - The current tier is derived from `correct_streak` and the `review-tire` rules, then stored on `flashcard.review_tire`.
+- New user registration bootstraps one `flashcard-stat` row per review tier.
 
 ## Current Architecture
 
@@ -23,6 +24,7 @@ Sources:
 - [src/services/review-event-handler.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-event-handler.js:1)
 - [src/services/point-service.js](/Users/James/develop/langgo/langgo_strapi4/src/services/point-service.js:1)
 - [src/services/review-reward-service.js](/Users/James/develop/langgo/langgo_strapi4/src/services/review-reward-service.js:1)
+- [src/services/flashcard-stat-bootstrap.js](/Users/James/develop/langgo/langgo_strapi4/src/services/flashcard-stat-bootstrap.js:1)
 
 Runtime shape:
 
@@ -55,6 +57,9 @@ Responsibilities by layer:
   - owns honor-title updates
   - owns group-rank and point-group assignment logic
   - is the boundary the queue handler calls instead of touching rule internals
+- `flashcard-stat-bootstrap`
+  - owns initial `flashcard-stat` row creation for a newly registered user
+  - ensures one row exists per review tier
 
 Current compatibility detail:
 
@@ -113,6 +118,29 @@ Each log stores:
 Important detail:
 
 - `reviewlog.level` still allows `daily`, but `review-tire.tier` does not define `daily`. In the current flashcard flow, the level written into logs comes from the current `review_tire.tier`.
+
+### `flashcard-stat`
+
+Source: [src/api/flashcard-stat/content-types/flashcard-stat/schema.json](/Users/James/develop/langgo/langgo_strapi4/src/api/flashcard-stat/content-types/flashcard-stat/schema.json:1)
+
+This content type stores per-user aggregated flashcard counts by review tier.
+
+Fields:
+
+- `user`
+- `review_tire`
+- `word_count`
+
+Current bootstrap rule:
+
+- when a new user registers, the app creates one `flashcard-stat` row for every review tier returned by `tier-service.getAllTiers()`
+- each created row starts with `word_count = 0`
+
+Current implementation detail:
+
+- the bootstrap service is idempotent
+- if a row for `user + review_tire` already exists, it is left unchanged
+- this step initializes the rows only; incremental maintenance of `word_count` is separate work
 
 ### `point-rule`
 
@@ -350,6 +378,36 @@ The queued handler then:
 
 The controller still separately pushes the background word-processing job for exam-option generation. That queue is independent from the event/point pipeline described here.
 
+## How Registration Bootstraps Flashcard Stats
+
+Sources:
+
+- [src/services/flashcard-stat-bootstrap.js](/Users/James/develop/langgo/langgo_strapi4/src/services/flashcard-stat-bootstrap.js:1)
+- [src/extensions/users-permissions/strapi-server.js](/Users/James/develop/langgo/langgo_strapi4/src/extensions/users-permissions/strapi-server.js:1)
+- [src/api/user-profile/controllers/user-profile.js](/Users/James/develop/langgo/langgo_strapi4/src/api/user-profile/controllers/user-profile.js:1)
+
+Registration flows currently covered:
+
+- `POST /api/auth/local/register`
+- `POST /api/user-profiles/register`
+
+Both flows now call the shared `flashcard-stat-bootstrap` service after the user is created.
+
+Bootstrap behavior:
+
+1. Load all review tiers through `tier-service.getAllTiers()`
+2. Load existing `flashcard-stat` rows for the new user
+3. Build the set of already-covered tier ids
+4. For each missing tier, create:
+   - `user = new user`
+   - `review_tire = tier.id`
+   - `word_count = 0`
+
+Effect:
+
+- every newly registered user starts with a complete `flashcard-stat` set
+- later stat-update logic can assume the per-tier rows already exist
+
 ## How User-Article Create Is Recorded
 
 Source: [src/api/user-article/controllers/user-article.js](/Users/James/develop/langgo/langgo_strapi4/src/api/user-article/controllers/user-article.js:1)
@@ -482,33 +540,39 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:457)
 
-4. Idempotency
+4. Registration bootstrap for `flashcard-stat`
+   - `registerWithProfile` creates one `flashcard-stat` row per review tier
+   - each bootstrapped row starts with `word_count = 0`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:355)
+
+5. Idempotency
    - the same `event_id` does not double-write `reviewlog`
    - the same `event_id` does not double-award points
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:549)
 
-5. Same-day gating
+6. Same-day gating
    - if today's `user-point` already exists, same-day reviews only update `points` and `points_add`
    - same-day reviews do not recalculate `honor_title`
    - same-day reviews do not recalculate `user-point-group` or `group-rank`
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:607)
 
-6. Group-rank threshold crossed on a second same-day review
+7. Group-rank threshold crossed on a second same-day review
    - a user can move from `278` to `280` points on the same day
    - if today's row already existed before those reviews, `group-rank` stays unchanged
    - no new target-rank group is created in that case
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:719)
 
-7. Honor-title threshold crossed on same-day follow-up reviews
+8. Honor-title threshold crossed on same-day follow-up reviews
    - if today's row already existed before the reviews, the user can cross the next honor threshold
    - `honor_title` still stays unchanged for those same-day updates
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:886)
 
-8. First review creates the day row and promotes honor title
+9. First review creates the day row and promotes honor title
    - previous day can be one point below the next honor threshold
    - first review of the day can promote `user.honor_title`
    - the created daily `user-point` stores the promoted `rank`
@@ -516,20 +580,20 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1034)
 
-9. New user bootstrap
+10. New user bootstrap
    - a new user with no `user-point-group` and no `honor_title` gets both on first review
    - if the target `group-rank` has no `point_group`, the first group is created
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1174)
 
-10. Reassignment to a higher group rank on first review of the day
+11. Reassignment to a higher group rank on first review of the day
    - a user with `279` period points can cross to `282`
    - on the first review event of the day, the user is reassigned to `Learner`
    - if `Learner` has no existing groups, the first one is created and assigned
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1230)
 
-11. Group split behavior
+12. Group split behavior
    - assignment goes to the least-filled existing group first
    - when membership reaches `2 * group_size`, the group is split into two groups
    - reference:

@@ -149,6 +149,12 @@
       "relation": "manyToOne",
       "target": "api::honor-title.honor-title",
       "inversedBy": "users"
+    },
+    "flashcard_stats": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::flashcard-stat.flashcard-stat",
+      "mappedBy": "user"
     }
   }
 }

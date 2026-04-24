@@ -78,6 +78,8 @@ module.exports = createCoreController(
             db: trx,
           });
 
+          await strapi.service('flashcard-stat-bootstrap').ensureForUser(createdUser.id, trx);
+
           return createdUser;
         });
 

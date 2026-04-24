@@ -1,0 +1,30 @@
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   docs/review-tier-process.md
+	new file:   src/api/flashcard-stat/content-types/flashcard-stat/schema.json
+	new file:   src/api/flashcard-stat/controllers/flashcard-stat.js
+	new file:   src/api/flashcard-stat/routes/custom-flashcard-stat.js
+	new file:   src/api/flashcard-stat/routes/flashcard-stat.js
+	new file:   src/api/flashcard-stat/services/flashcard-stat.js
+	modified:   src/api/flashcard/controllers/flashcard.js
+	modified:   src/api/point-group/controllers/point-group.js
+	new file:   src/api/point-group/routes/custom-point-group-routes.js
+	modified:   src/api/review-tire/content-types/review-tire/schema.json
+	modified:   src/api/user-point/controllers/user-point.js
+	new file:   src/api/user-point/routes/01-custom-user-point.js
+	modified:   src/api/user-profile/controllers/user-profile.js
+	modified:   src/extensions/users-permissions/content-types/user/schema.json
+	modified:   src/extensions/users-permissions/strapi-server.js
+	modified:   src/index.js
+	new file:   src/services/flashcard-stat-bootstrap.js
+	modified:   test/integration/strapi-review.integration.test.js
+	modified:   test/langgo_strapi4_notebook.txt
+	modified:   types/generated/contentTypes.d.ts
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	m.txt
+

@@ -82,6 +82,12 @@
         }
       },
       "type": "string"
+    },
+    "flashcard_stats": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::flashcard-stat.flashcard-stat",
+      "mappedBy": "review_tire"
     }
   }
 }

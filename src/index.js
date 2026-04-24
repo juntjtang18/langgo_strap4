@@ -72,6 +72,10 @@ module.exports = {
     const accountDeletionService = initAccountDeletionService({ strapi });
     strapi.container.get('services').set('account-deletion', accountDeletionService);
 
+    const initFlashcardStatBootstrapService = require('./services/flashcard-stat-bootstrap');
+    const flashcardStatBootstrapService = initFlashcardStatBootstrapService({ strapi });
+    strapi.container.get('services').set('flashcard-stat-bootstrap', flashcardStatBootstrapService);
+
     // Log service setup success
     if (
       wordProcessingQueueService &&
@@ -85,7 +89,8 @@ module.exports = {
       reviewEventQueueService &&
       eventApiService &&
       flashcardValidateService &&
-      accountDeletionService
+      accountDeletionService &&
+      flashcardStatBootstrapService
     ) {
       strapi.log.info('All custom services initialized successfully during bootstrap.');
       strapi.log.info('Word processing queue (in-process) is ready.');

@@ -51,9 +51,11 @@ const createAuthenticatedUser = async () => {
 
 const cleanupTestData = async () => {
   await app.db.query('api::reviewlog.reviewlog').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::flashcard-stat.flashcard-stat').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::user-point.user-point').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::user-point-group.user-point-group').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::flashcard.flashcard').deleteMany({ where: { id: { $gt: 0 } } });
+  await app.db.query('api::vbsetting.vbsetting').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::user-article.user-article').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::article-tag.article-tag').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('api::word-definition.word-definition').deleteMany({ where: { id: { $gt: 0 } } });
@@ -62,7 +64,10 @@ const cleanupTestData = async () => {
   await app.db.query('api::user-profile.user-profile').deleteMany({ where: { id: { $gt: 0 } } });
   await app.db.query('plugin::users-permissions.user').deleteMany({
     where: {
-      email: { $contains: 'ci-user-' },
+      $or: [
+        { email: { $contains: 'ci-user-' } },
+        { email: { $contains: 'register-flashcard-stat-' } },
+      ],
     },
   });
 };
@@ -79,6 +84,31 @@ const makeCtx = (user, flashcardId, result) => ({
   },
   internalServerError(message) {
     throw new Error(`internalServerError: ${message}`);
+  },
+});
+
+const makeStatsCtx = (user) => ({
+  state: { user },
+  body: null,
+  send(payload) {
+    this.body = payload;
+    return payload;
+  },
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+  internalServerError(message) {
+    throw new Error(`internalServerError: ${message}`);
+  },
+});
+
+const makeRegisterWithProfileCtx = (body) => ({
+  request: { body },
+  state: {},
+  body: null,
+  send(payload) {
+    this.body = payload;
+    return payload;
   },
 });
 
@@ -107,6 +137,41 @@ const makeUserArticleCreateCtx = (user, data) => ({
   },
   internalServerError(message) {
     throw new Error(`internalServerError: ${message}`);
+  },
+});
+
+const makeUserPointLatestCtx = (user, query = {}) => ({
+  state: { user },
+  query,
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+  badRequest(message) {
+    throw new Error(`badRequest: ${message}`);
+  },
+  forbidden(message) {
+    throw new Error(`forbidden: ${message}`);
+  },
+});
+
+const makePointGroupMineCtx = (user) => ({
+  state: { user },
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+});
+
+const makePointGroupLeaderboardCtx = (user, groupId) => ({
+  state: { user },
+  params: { id: String(groupId) },
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+  badRequest(message) {
+    throw new Error(`badRequest: ${message}`);
+  },
+  notFound(message) {
+    throw new Error(`notFound: ${message}`);
   },
 });
 
@@ -245,6 +310,8 @@ test('boots Strapi and exposes the flashcard review controller', async () => {
   assert.ok(app.service('point-service'));
   assert.equal(typeof app.service('point-service').applyWordDefinitionCreatedEvent, 'function');
   assert.equal(typeof app.service('point-service').applyArticleCreatedEvent, 'function');
+  assert.ok(app.service('flashcard-stat-bootstrap'));
+  assert.equal(typeof app.service('flashcard-stat-bootstrap').ensureForUser, 'function');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.event_id.type, 'string');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.effective.type, 'boolean');
   assert.equal(app.contentType('api::reviewlog.reviewlog').attributes.points_awarded.type, 'integer');
@@ -302,6 +369,144 @@ test('review action updates the flashcard and delegates side effects to the queu
   }
 });
 
+test('registerWithProfile creates one flashcard-stat row per review tier for the new user', async () => {
+  const controller = app.controller('api::user-profile.user-profile');
+  const unique = Date.now();
+  const ctx = makeRegisterWithProfileCtx({
+    email: `register-flashcard-stat-${unique}@example.com`,
+    username: `register-flashcard-stat-${unique}`,
+    password: 'Passw0rd!',
+    baseLanguage: 'en',
+    visible_on_ladder: true,
+  });
+
+  await controller.registerWithProfile(ctx);
+
+  assert.ok(ctx.body?.user?.id);
+
+  const flashcardStats = await app.entityService.findMany('api::flashcard-stat.flashcard-stat', {
+    filters: {
+      user: ctx.body.user.id,
+    },
+    populate: {
+      review_tire: true,
+    },
+  });
+
+  const reviewTiersFromService = await app.service('tier-service').getAllTiers();
+
+  assert.equal(flashcardStats.length, reviewTiersFromService.length);
+  assert.deepEqual(
+    flashcardStats.map((stat) => stat.review_tire.id).sort((a, b) => a - b),
+    reviewTiersFromService.map((tier) => tier.id).sort((a, b) => a - b)
+  );
+  assert.ok(flashcardStats.every((stat) => stat.word_count === 0));
+});
+
+test('flashcard statistics endpoint aggregates counts in one response', async () => {
+  const user = await createAuthenticatedUser();
+  const otherUser = await createAuthenticatedUser();
+  const controller = app.controller('api::flashcard.flashcard');
+  const ctx = makeStatsCtx(user);
+  const word = await app.entityService.create('api::word.word', {
+    data: {
+      target_text: `stats-word-${Date.now()}`,
+    },
+  });
+  const wordDefinition = await app.entityService.create('api::word-definition.word-definition', {
+    data: {
+      locale: 'en',
+      owner: user.id,
+      word: word.id,
+      base_text: 'stats word',
+    },
+  });
+  const otherWord = await app.entityService.create('api::word.word', {
+    data: {
+      target_text: `stats-word-other-${Date.now()}`,
+    },
+  });
+  const otherWordDefinition = await app.entityService.create('api::word-definition.word-definition', {
+    data: {
+      locale: 'en',
+      owner: otherUser.id,
+      word: otherWord.id,
+      base_text: 'other stats word',
+    },
+  });
+
+  const firstFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+      last_reviewed_at: null,
+    },
+  });
+  const secondFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 1,
+      wrong_streak: 2,
+      is_remembered: false,
+      review_tire: reviewTiers.warmup.id,
+      last_reviewed_at: '2026-04-19T12:00:00.000Z',
+    },
+  });
+  const thirdFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 3,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.weekly.id,
+      last_reviewed_at: '2099-04-22T12:00:00.000Z',
+    },
+  });
+  const otherFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: otherUser.id,
+      word_definition: otherWordDefinition.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+      last_reviewed_at: null,
+    },
+  });
+
+  await app.db.connection.withSchema(process.env.DATABASE_SCHEMA || 'public').table('flashcards_word_definition_links').insert([
+    { flashcard_id: firstFlashcard.id, word_definition_id: wordDefinition.id, flashcard_order: 1 },
+    { flashcard_id: secondFlashcard.id, word_definition_id: wordDefinition.id, flashcard_order: 1 },
+    { flashcard_id: thirdFlashcard.id, word_definition_id: wordDefinition.id, flashcard_order: 1 },
+    { flashcard_id: otherFlashcard.id, word_definition_id: otherWordDefinition.id, flashcard_order: 1 },
+  ]).onConflict(['flashcard_id', 'word_definition_id']).ignore();
+
+  await controller.getStatistics(ctx);
+
+  assert.equal(ctx.body.data.totalCards, 3);
+  assert.equal(ctx.body.data.remembered, 0);
+  assert.equal(ctx.body.data.dueForReview, 2);
+  assert.equal(ctx.body.data.reviewed, 1);
+  assert.equal(ctx.body.data.hardToRemember, 1);
+  assert.equal(ctx.body.data.byTier.length, 3);
+  assert.equal(ctx.body.data.byTier[0].tier, 'new');
+  assert.equal(ctx.body.data.byTier[0].count, 1);
+  assert.equal(ctx.body.data.byTier[0].dueCount, 1);
+  assert.equal(ctx.body.data.byTier[1].tier, 'warmup');
+  assert.equal(ctx.body.data.byTier[1].count, 1);
+  assert.equal(ctx.body.data.byTier[1].dueCount, 1);
+  assert.equal(ctx.body.data.byTier[1].hardToRememberCount, 1);
+  assert.equal(ctx.body.data.byTier[2].tier, 'weekly');
+  assert.equal(ctx.body.data.byTier[2].count, 1);
+  assert.equal(ctx.body.data.byTier[2].dueCount, 0);
+});
+
 test('review action writes reviewlog and daily user points from the local event handler', async () => {
   const user = await createAuthenticatedUser();
 
@@ -317,7 +522,7 @@ test('review action writes reviewlog and daily user points from the local event 
 
   const controller = app.controller('api::flashcard.flashcard');
   await controller.review(makeCtx(user, flashcard.id, 'correct'));
-  await app.service('review-event-queue').waitForIdle();
+  await app.service('review-event-queue').waitForIdle(15000);
 
   const updatedFlashcard = await app.entityService.findOne('api::flashcard.flashcard', flashcard.id, {
     populate: { review_tire: true },
@@ -536,6 +741,253 @@ test('user-article create dispatches a queued event and updates user points thro
   assert.equal(userPointGroups[0].period_points, pointRule.article_point);
   assert.equal(userPointGroups[0].point_group.group_rank.id, groupRanks.starter.id);
   assert.equal(userWithHonor.honor_title?.id, honorTitles.bronze.id);
+});
+
+test('user-point latest endpoint returns the current latest snapshot for the authenticated user', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::user-point.user-point');
+
+  await app.entityService.update('plugin::users-permissions.user', user.id, {
+    data: {
+      honor_title: honorTitles.bronze.id,
+    },
+  });
+
+  await app.entityService.create('api::user-point.user-point', {
+    data: {
+      user: user.id,
+      record_date: '2026-04-19',
+      point_group: seededPointGroups.starter.id,
+      points: 1,
+      points_add: 1,
+      word_count: 0,
+      word_add: 0,
+      article_count: 0,
+      article_add: 0,
+      group_rank_change: 0,
+      rank: 1,
+      rank_change: 1,
+    },
+  });
+
+  await app.entityService.create('api::user-point.user-point', {
+    data: {
+      user: user.id,
+      record_date: '2026-04-20',
+      point_group: seededPointGroups.starter.id,
+      points: 2,
+      points_add: 1,
+      word_count: 1,
+      word_add: 1,
+      article_count: 0,
+      article_add: 0,
+      group_rank_change: 0,
+      rank: 1,
+      rank_change: 0,
+    },
+  });
+
+  await app.entityService.create('api::user-point.user-point', {
+    data: {
+      user: user.id,
+      record_date: '2026-04-21',
+      point_group: seededPointGroups.active.id,
+      points: 5,
+      points_add: 3,
+      word_count: 1,
+      word_add: 0,
+      article_count: 1,
+      article_add: 1,
+      group_rank_change: 1,
+      rank: 2,
+      rank_change: 1,
+    },
+  });
+
+  const response = await controller.findLatest(makeUserPointLatestCtx(user));
+
+  assert.equal(response.data.attributes.record_date, '2026-04-21');
+  assert.equal(response.data.attributes.points, 5);
+  assert.equal(response.data.attributes.point_group.data.attributes.group_rank.data.attributes.title, 'Active');
+  assert.equal(response.data.attributes.user.data.attributes.honor_title.data.attributes.title, 'Bronze');
+});
+
+test('user-point latest endpoint returns a zero-state payload when no user-point exists yet', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::user-point.user-point');
+
+  const response = await controller.findLatest(makeUserPointLatestCtx(user));
+
+  assert.equal(response.data.id, null);
+  assert.equal(response.data.attributes.record_date, null);
+  assert.equal(response.data.attributes.points, 0);
+  assert.equal(response.data.attributes.points_add, 0);
+  assert.equal(response.data.attributes.word_count, 0);
+  assert.equal(response.data.attributes.word_add, 0);
+  assert.equal(response.data.attributes.article_count, 0);
+  assert.equal(response.data.attributes.article_add, 0);
+  assert.equal(response.data.attributes.rank, 0);
+  assert.equal(response.data.attributes.rank_change, 0);
+  assert.equal(response.data.attributes.point_group.data, null);
+  assert.equal(response.data.attributes.user.data.id, user.id);
+});
+
+test('user-point latest endpoint returns rank text and display rank when stored rank is zero', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::user-point.user-point');
+  const profiles = await app.entityService.findMany('api::user-profile.user-profile', {
+    filters: { user: user.id },
+    limit: 1,
+  });
+
+  assert.ok(profiles[0]);
+
+  await app.entityService.update('api::user-profile.user-profile', profiles[0].id, {
+    data: {
+      baseLanguage: 'en',
+    },
+  });
+
+  await app.entityService.create('api::user-point.user-point', {
+    data: {
+      user: user.id,
+      record_date: '2026-04-23',
+      point_group: seededPointGroups.starter.id,
+      points: 28,
+      points_add: 28,
+      word_count: 0,
+      word_add: 0,
+      article_count: 0,
+      article_add: 0,
+      group_rank_change: 0,
+      rank: 0,
+      rank_change: 0,
+    },
+  });
+
+  const response = await controller.findLatest(makeUserPointLatestCtx(user, { locale: 'en' }));
+
+  assert.equal(response.data.attributes.rank, 1);
+  assert.equal(response.data.attributes.rank_text, 'Bronze');
+});
+
+test('my-point-group endpoint returns current group summary and leaderboard position', async () => {
+  const firstUser = await createAuthenticatedUser();
+  const secondUser = await createAuthenticatedUser();
+  const thirdUser = await createAuthenticatedUser();
+  const controller = app.controller('api::point-group.point-group');
+  const customGroup = await app.entityService.create('api::point-group.point-group', {
+    data: {
+      group_rank: groupRanks.active.id,
+      group_no: 3,
+    },
+  });
+
+  await app.entityService.create('api::user-point-group.user-point-group', {
+    data: {
+      user: firstUser.id,
+      point_group: customGroup.id,
+      period_points: 8,
+    },
+  });
+  await app.entityService.create('api::user-point-group.user-point-group', {
+    data: {
+      user: secondUser.id,
+      point_group: customGroup.id,
+      period_points: 12,
+    },
+  });
+  await app.entityService.create('api::user-point-group.user-point-group', {
+    data: {
+      user: thirdUser.id,
+      point_group: customGroup.id,
+      period_points: 3,
+    },
+  });
+
+  const response = await controller.findMine(makePointGroupMineCtx(firstUser));
+
+  assert.equal(response.data.point_group.id, customGroup.id);
+  assert.equal(response.data.point_group.group_no, 3);
+  assert.equal(response.data.point_group.group_rank.title, 'Active');
+  assert.equal(response.data.my_membership.period_points, 8);
+  assert.equal(response.data.my_membership.position_in_group, 2);
+  assert.equal(response.data.my_membership.group_member_count, 3);
+  assert.equal(response.data.leaderboard.length, 3);
+  assert.equal(response.data.leaderboard[0].user.id, secondUser.id);
+  assert.equal(response.data.leaderboard[0].position, 1);
+  assert.equal(response.data.leaderboard[0].period_points, 12);
+  assert.equal(response.data.leaderboard[1].user.id, firstUser.id);
+  assert.equal(response.data.leaderboard[1].position, 2);
+  assert.equal(response.data.leaderboard[1].is_current_user, true);
+  assert.equal(response.data.leaderboard[2].user.id, thirdUser.id);
+  assert.equal(response.data.leaderboard[2].position, 3);
+});
+
+test('point-group leaderboard endpoint returns all members and period points for a given group', async () => {
+  const firstUser = await createAuthenticatedUser();
+  const secondUser = await createAuthenticatedUser();
+  const thirdUser = await createAuthenticatedUser();
+  const controller = app.controller('api::point-group.point-group');
+  const customGroup = await app.entityService.create('api::point-group.point-group', {
+    data: {
+      group_rank: groupRanks.active.id,
+      group_no: 5,
+    },
+  });
+
+  const firstMembership = await app.entityService.create('api::user-point-group.user-point-group', {
+    data: {
+      user: firstUser.id,
+      point_group: customGroup.id,
+      period_points: 8,
+    },
+  });
+  const secondMembership = await app.entityService.create('api::user-point-group.user-point-group', {
+    data: {
+      user: secondUser.id,
+      point_group: customGroup.id,
+      period_points: 12,
+    },
+  });
+  const thirdMembership = await app.entityService.create('api::user-point-group.user-point-group', {
+    data: {
+      user: thirdUser.id,
+      point_group: customGroup.id,
+      period_points: 8,
+    },
+  });
+
+  const response = await controller.findLeaderboard(makePointGroupLeaderboardCtx(firstUser, customGroup.id));
+
+  assert.equal(response.data.point_group.id, customGroup.id);
+  assert.equal(response.data.point_group.group_no, 5);
+  assert.equal(response.data.point_group.group_rank.title, 'Active');
+  assert.equal(response.data.current_user_position, 2);
+  assert.equal(response.data.group_member_count, 3);
+  assert.equal(response.data.leaderboard.length, 3);
+  assert.equal(response.data.leaderboard[0].user_point_group_id, secondMembership.id);
+  assert.equal(response.data.leaderboard[0].period_points, 12);
+  assert.equal(response.data.leaderboard[0].position, 1);
+  assert.equal(response.data.leaderboard[1].user_point_group_id, firstMembership.id);
+  assert.equal(response.data.leaderboard[1].period_points, 8);
+  assert.equal(response.data.leaderboard[1].position, 2);
+  assert.equal(response.data.leaderboard[1].is_current_user, true);
+  assert.equal(response.data.leaderboard[2].user_point_group_id, thirdMembership.id);
+  assert.equal(response.data.leaderboard[2].period_points, 8);
+  assert.equal(response.data.leaderboard[2].position, 3);
+});
+
+test('point-group leaderboard endpoint returns an empty payload when the group does not exist', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::point-group.point-group');
+
+  const response = await controller.findLeaderboard(makePointGroupLeaderboardCtx(user, 999999));
+
+  assert.equal(response.data.point_group, null);
+  assert.equal(response.data.current_user_position, null);
+  assert.equal(response.data.group_member_count, 0);
+  assert.deepEqual(response.data.leaderboard, []);
 });
 
 test('review event handler is idempotent for the same event id', async () => {
@@ -1126,7 +1578,7 @@ test('splits a point group when membership reaches the 2x size threshold', async
   const controller = app.controller('api::flashcard.flashcard');
 
   await controller.review(makeCtx(firstUser, firstFlashcard.id, 'correct'));
-  await app.service('review-event-queue').waitForIdle();
+  await app.service('review-event-queue').waitForIdle(15000);
 
   await controller.review(makeCtx(secondUser, secondFlashcard.id, 'correct'));
   await app.service('review-event-queue').waitForIdle();
