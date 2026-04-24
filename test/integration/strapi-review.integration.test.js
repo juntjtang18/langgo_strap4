@@ -154,6 +154,17 @@ const makeUserPointLatestCtx = (user, query = {}) => ({
   },
 });
 
+const makeFindForReviewCtx = (user, query = {}) => ({
+  state: { user },
+  query,
+  unauthorized(message) {
+    throw new Error(`unauthorized: ${message}`);
+  },
+  internalServerError(message) {
+    throw new Error(`internalServerError: ${message}`);
+  },
+});
+
 const makePointGroupMineCtx = (user) => ({
   state: { user },
   unauthorized(message) {
@@ -421,6 +432,69 @@ test('review action updates flashcard-stat synchronously and creates missing row
   assert.equal(warmupTierStat.word_count, 1);
 
   await app.service('review-event-queue').waitForIdle(15000);
+});
+
+test('findForReview uses next_review_at to return only due flashcards', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::flashcard.flashcard');
+  const word = await app.entityService.create('api::word.word', {
+    data: {
+      target_text: `review-list-word-${Date.now()}`,
+    },
+  });
+  const wordDefinition = await app.entityService.create('api::word-definition.word-definition', {
+    data: {
+      locale: 'en',
+      owner: user.id,
+      word: word.id,
+      base_text: 'review list word',
+    },
+  });
+  const dueFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 1,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.warmup.id,
+      last_reviewed_at: '2026-04-20T12:00:00.000Z',
+      next_review_at: '2026-04-21T12:00:00.000Z',
+    },
+  });
+  await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 1,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.warmup.id,
+      last_reviewed_at: '2026-04-24T12:00:00.000Z',
+      next_review_at: '2099-04-24T12:00:00.000Z',
+    },
+  });
+  const nullNextReviewFlashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+      last_reviewed_at: null,
+      next_review_at: null,
+    },
+  });
+
+  const response = await controller.findForReview(
+    makeFindForReviewCtx(user, { pagination: { page: 1, pageSize: 10 } })
+  );
+
+  const returnedIds = response.data.map((item) => item.id).sort((a, b) => a - b);
+
+  assert.deepEqual(returnedIds, [dueFlashcard.id, nullNextReviewFlashcard.id].sort((a, b) => a - b));
+  assert.equal(response.meta.pagination.total, 2);
 });
 
 test('registerWithProfile creates one flashcard-stat row per review tier for the new user', async () => {

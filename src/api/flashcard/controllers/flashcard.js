@@ -109,45 +109,37 @@ module.exports = createCoreController(
       const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
 
       try {
-        const tierService = strapi.service('tier-service');
-        const allTiers = await tierService.getAllTiers();
+        const nowIso = new Date().toISOString();
+        const dueFilters = {
+          user: user.id,
+          word_definition: { $not: null },
+          $or: [
+            { next_review_at: null },
+            { next_review_at: { $lte: nowIso } },
+          ],
+        };
 
-        // We don't need word_definition here; just tire for the due calculation
-        const allCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-          filters: { user: user.id, word_definition: { $not: null } },
-          populate: { review_tire: true },
-          locale: 'all',
+        const totalDue = await strapi.entityService.count('api::flashcard.flashcard', {
+          filters: dueFilters,
         });
 
-        const now = new Date();
-        const dueCardIds = allCards
-          .filter((card) => {
-            if (!card.last_reviewed_at) return true;
-            const tierForCheck = card.review_tire || tierService.findTierForStreakWithRules(card.correct_streak, allTiers);
-            if (!tierForCheck) return false;
-            const effectiveCooldown = getEffectiveCooldown(tierForCheck.cooldown_hours);
-            const dueTime = new Date(new Date(card.last_reviewed_at).getTime() + (effectiveCooldown * 3600 * 1000));
-            return now >= dueTime;
-          })
-          .map((card) => card.id);
-
-        const totalDue = dueCardIds.length;
         if (totalDue === 0) {
           return this.transformResponse([], { pagination: { page, pageSize, pageCount: 0, total: 0 } });
         }
 
         const pageCount = Math.ceil(totalDue / pageSize);
-        const start = (page - 1) * pageSize;
-        const paginatedDueCardIds = dueCardIds.slice(start, start + pageSize);
+        const start = Math.max(0, (page - 1) * pageSize);
 
-        if (paginatedDueCardIds.length === 0) {
+        if (start >= totalDue) {
           return this.transformResponse([], { pagination: { page, pageSize, pageCount, total: totalDue } });
         }
 
-        // ✅ Fetch due cards WITH the full word-definition details now (includes POS).
         const populatedDueCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-          filters: { id: { $in: paginatedDueCardIds } },
+          filters: dueFilters,
           populate: this._commonPopulate(),
+          sort: ['next_review_at:asc', 'id:asc'],
+          start,
+          limit: pageSize,
           locale: 'all',
         });
 

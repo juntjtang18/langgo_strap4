@@ -77,6 +77,7 @@ Source: [src/api/flashcard/content-types/flashcard/schema.json](/Users/James/dev
 Fields that matter for review:
 
 - `last_reviewed_at`: last effective review time
+- `next_review_at`: next scheduled due time used for fast due queries
 - `correct_streak`: number of effective correct reviews used for promotion
 - `wrong_streak`: consecutive effective wrong reviews used for demotion
 - `is_remembered`: explicit remembered flag
@@ -140,7 +141,9 @@ Current implementation detail:
 
 - the bootstrap service is idempotent
 - if a row for `user + review_tire` already exists, it is left unchanged
-- this step initializes the rows only; incremental maintenance of `word_count` is separate work
+- on registration, the rows are initialized with `word_count = 0`
+- during effective review tier changes, the review transaction updates these rows immediately
+- if a row is missing during review, it is created on demand before the count move is applied
 
 ### `point-rule`
 
@@ -300,8 +303,9 @@ The controller does the following inside a DB transaction:
 2. Resolves the current tier from `flashcard.review_tire`, or from `correct_streak` if the relation is missing.
 3. Checks whether the card is still on cooldown.
 4. Calculates the review outcome payload: `level`, `effective`, `newlevel`
-5. Updates streaks, tier, `last_reviewed_at`, and `is_remembered` when the review is effective
-6. After the transaction commits, dispatches a `flashcard.review.completed` event through `event-api`
+5. Updates streaks, tier, `last_reviewed_at`, `next_review_at`, and `is_remembered` when the review is effective
+6. If the effective review changes the tier, moves `flashcard-stat.word_count` from the old tier row to the new tier row in the same transaction
+7. After the transaction commits, dispatches a `flashcard.review.completed` event through `event-api`
 
 The queue handler then performs the side effects:
 
@@ -315,6 +319,19 @@ The queue handler then performs the side effects:
 7. Hosts extension hooks for future side effects
 
 This means `reviewlog` is now eventually consistent with the flashcard update. The flashcard update is the synchronous core path; the log write and point updates are asynchronous queue work.
+
+Current synchronous `flashcard-stat` behavior:
+
+- `flashcard-stat` is not owned by the queued review event
+- it is updated in the review transaction together with the `flashcard`
+- cooldown review:
+  - no `flashcard-stat` change
+- effective review with no tier change:
+  - no `flashcard-stat` change
+- effective review with tier change:
+  - decrement old tier row
+  - increment new tier row
+- missing stat rows are created on demand
 
 The queued event includes:
 
@@ -524,7 +541,19 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:239)
 
-2. New word-definition flow
+2. Synchronous `flashcard-stat` update during review
+   - effective review tier changes move `flashcard-stat.word_count` in the same transaction as the flashcard update
+   - missing stat rows are created on demand
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:385)
+
+3. Review list due filtering uses `next_review_at`
+   - `GET /api/review-flashcards` returns only cards whose `next_review_at` is null or due
+   - non-due cards are excluded without a full in-memory scan
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:437)
+
+4. New word-definition flow
    - word-definition create endpoint saves `word_definition`
    - endpoint dispatches `word_definition.created` through `event-api`
    - queue handler calls `point-service`
@@ -532,7 +561,19 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:365)
 
-3. New article flow
+5. Registration bootstrap for `flashcard-stat`
+   - `registerWithProfile` creates one `flashcard-stat` row per review tier
+   - each bootstrapped row starts with `word_count = 0`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:500)
+
+6. Flashcard statistics summary
+   - `GET /api/flashcard-stat` returns materialized tier counts from `flashcard-stat`
+   - due totals are still calculated live from `flashcard`
+   - reference:
+     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:534)
+
+7. New article flow
    - user-article create endpoint saves `user_article`
    - endpoint dispatches `user_article.created` through `event-api`
    - queue handler calls `point-service`
@@ -540,39 +581,33 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:457)
 
-4. Registration bootstrap for `flashcard-stat`
-   - `registerWithProfile` creates one `flashcard-stat` row per review tier
-   - each bootstrapped row starts with `word_count = 0`
-   - reference:
-     [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:355)
-
-5. Idempotency
+8. Idempotency
    - the same `event_id` does not double-write `reviewlog`
    - the same `event_id` does not double-award points
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:549)
 
-6. Same-day gating
+9. Same-day gating
    - if today's `user-point` already exists, same-day reviews only update `points` and `points_add`
    - same-day reviews do not recalculate `honor_title`
    - same-day reviews do not recalculate `user-point-group` or `group-rank`
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:607)
 
-7. Group-rank threshold crossed on a second same-day review
+10. Group-rank threshold crossed on a second same-day review
    - a user can move from `278` to `280` points on the same day
    - if today's row already existed before those reviews, `group-rank` stays unchanged
    - no new target-rank group is created in that case
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:719)
 
-8. Honor-title threshold crossed on same-day follow-up reviews
+11. Honor-title threshold crossed on same-day follow-up reviews
    - if today's row already existed before the reviews, the user can cross the next honor threshold
    - `honor_title` still stays unchanged for those same-day updates
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:886)
 
-9. First review creates the day row and promotes honor title
+12. First review creates the day row and promotes honor title
    - previous day can be one point below the next honor threshold
    - first review of the day can promote `user.honor_title`
    - the created daily `user-point` stores the promoted `rank`
@@ -580,20 +615,20 @@ Current integration coverage includes these behavior checks:
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1034)
 
-10. New user bootstrap
+13. New user bootstrap
    - a new user with no `user-point-group` and no `honor_title` gets both on first review
    - if the target `group-rank` has no `point_group`, the first group is created
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1174)
 
-11. Reassignment to a higher group rank on first review of the day
+14. Reassignment to a higher group rank on first review of the day
    - a user with `279` period points can cross to `282`
    - on the first review event of the day, the user is reassigned to `Learner`
    - if `Learner` has no existing groups, the first one is created and assigned
    - reference:
      [test/integration/strapi-review.integration.test.js](/Users/James/develop/langgo/langgo_strapi4/test/integration/strapi-review.integration.test.js:1230)
 
-12. Group split behavior
+15. Group split behavior
    - assignment goes to the least-filled existing group first
    - when membership reaches `2 * group_size`, the group is split into two groups
    - reference:
@@ -639,8 +674,20 @@ If the card is still on cooldown:
 
 - A queued event is still dispatched
 - The flashcard itself is not updated
+- `next_review_at` is not updated
 - The queued `reviewlog.effective = false`
 - The queued `reviewlog.newlevel = reviewlog.level`
+
+If the review is effective:
+
+- The flashcard is updated
+- `last_reviewed_at` becomes the review time
+- `next_review_at` is recalculated from the resulting tier cooldown
+- The queued event still carries `effective = true`
+
+`next_review_at` is now the fast-read due field used by:
+
+- `GET /api/review-flashcards`
 
 ## Promotion and Demotion Rules
 
@@ -654,6 +701,7 @@ When the review is effective and `result === "correct"`:
 - `wrong_streak` is reset to `0`
 - `review_tire` is recalculated from the new `correct_streak`
 - `last_reviewed_at` is updated
+- `next_review_at` is updated to `reviewed_at + resulting tier cooldown`
 - `is_remembered = true` if the new tier is `remembered`
 - The queued `reviewlog.effective = true`
 - The queued `reviewlog.newlevel` is the promoted or recalculated tier
@@ -664,6 +712,7 @@ When the review is effective and `result === "wrong"`:
 
 - `wrong_streak` is incremented by 1
 - `last_reviewed_at` is updated
+- `next_review_at` is updated to `reviewed_at + resulting tier cooldown`
 - `correct_streak` is unchanged unless demotion happens
 - The queued `reviewlog.effective = true`
 
@@ -750,9 +799,34 @@ So the initial tier is effectively resolved later by:
 
 ## How Due Cards Are Calculated
 
-Source: [src/api/flashcard/controllers/flashcard.js](/Users/James/develop/apple/langgo_strapi4/src/api/flashcard/controllers/flashcard.js:67)
+Sources:
 
-`GET /api/review-flashcards` considers a card due when:
+- [src/api/flashcard/controllers/flashcard.js](/Users/James/develop/apple/langgo_strapi4/src/api/flashcard/controllers/flashcard.js:67)
+- [src/api/flashcard-stat/services/flashcard-stat.js](/Users/James/develop/langgo/langgo_strapi4/src/api/flashcard-stat/services/flashcard-stat.js:1)
+
+There are now two read paths.
+
+### `GET /api/review-flashcards`
+
+This endpoint uses `next_review_at` directly.
+
+A card is due when:
+
+- `next_review_at` is `null`, or
+- `next_review_at <= now`
+
+Current performance behavior:
+
+- filtering happens in the database
+- count and pagination happen in the database
+- only the returned page gets full relation populate
+- the list is ordered by `next_review_at ASC, id ASC`
+
+### `GET /api/flashcard-stat`
+
+This endpoint reads stable counts from `flashcard-stat`, but due counts are still calculated live from `flashcard`.
+
+Its current due rule is:
 
 - `last_reviewed_at` is `null`, or
 - `now >= last_reviewed_at + cooldown_hours`
@@ -761,6 +835,39 @@ The tier used for that cooldown is:
 
 - `flashcard.review_tire`, if present
 - otherwise, the tier derived from `correct_streak`
+
+## How Flashcard Statistics Are Queried
+
+Sources:
+
+- [src/api/flashcard/controllers/flashcard.js](/Users/James/develop/apple/langgo_strapi4/src/api/flashcard/controllers/flashcard.js:309)
+- [src/api/flashcard-stat/services/flashcard-stat.js](/Users/James/develop/langgo/langgo_strapi4/src/api/flashcard-stat/services/flashcard-stat.js:1)
+
+`GET /api/flashcard-stat` is now a mixed read model:
+
+- stable counts come from `flashcard-stat`
+- live due counts come from `flashcard`
+
+Current response semantics:
+
+- `totalCards`
+  - sum of all `flashcard-stat.word_count` rows for the user
+- `remembered`
+  - the materialized count for the `remembered` tier
+- `byTier[*].count`
+  - the materialized `flashcard-stat.word_count` for that tier
+- `dueForReview`
+  - calculated live from flashcards
+- `byTier[*].dueCount`
+  - calculated live from flashcards using the same due rule
+- `reviewed`
+  - currently `null`
+- `hardToRemember`
+  - currently `null`
+- `byTier[*].hardToRememberCount`
+  - currently `null`
+
+This keeps stable aggregate counts out of the request-time flashcard scan while still returning accurate due totals.
 
 ## How To Change A Review Tier
 
