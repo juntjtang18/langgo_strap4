@@ -28,6 +28,16 @@ const buildWordDefinitionCreatedEvent = ({
   },
 });
 
+const buildCreateMeta = ({
+  flashcardCreated,
+  flashcardId,
+  reviewTier,
+}) => ({
+  flashcardCreated: !!flashcardCreated,
+  flashcardId: flashcardId || null,
+  reviewTier: reviewTier || null,
+});
+
 module.exports = createCoreController('api::word-definition.word-definition', ({ strapi }) => ({
   /**
    * Corrected Custom search action to find word definitions by base_text.
@@ -245,10 +255,15 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       }))[0];
 
       let flashcard;
+      let flashcardCreated = false;
+      let createdFlashcardTier = null;
       let wordDefinitionCreatedEvent = null;
 
       if (!wordDefinition) {
         const createdAt = new Date().toISOString();
+        const tierService = strapi.service('tier-service');
+        const reviewTiers = await tierService.getAllTiers();
+        const newTier = tierService.findTierForStreakWithRules(0, reviewTiers);
 
         await strapi.db.transaction(async ({ trx }) => {
           wordDefinition = await strapi.entityService.create('api::word-definition.word-definition', {
@@ -268,7 +283,16 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
             data: { user: user.id, word_definition: wordDefinition.id },
             db: trx,
           });
+
+          if (newTier?.id) {
+            await strapi
+              .service('api::flashcard-stat.flashcard-stat')
+              .increment(user.id, newTier.id, 1, trx);
+          }
         });
+
+        flashcardCreated = true;
+        createdFlashcardTier = newTier?.tier || 'new';
         
         wordDefinition = await strapi.entityService.findOne('api::word-definition.word-definition', wordDefinition.id, {
             populate: { word: true, part_of_speech: true },
@@ -290,9 +314,22 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
         }))[0];
 
         if (!flashcard) {
+          const tierService = strapi.service('tier-service');
+          const reviewTiers = await tierService.getAllTiers();
+          const newTier = tierService.findTierForStreakWithRules(0, reviewTiers);
+
           flashcard = await strapi.entityService.create('api::flashcard.flashcard', {
             data: { user: user.id, word_definition: wordDefinition.id },
           });
+
+          if (newTier?.id) {
+            await strapi
+              .service('api::flashcard-stat.flashcard-stat')
+              .increment(user.id, newTier.id, 1);
+          }
+
+          flashcardCreated = true;
+          createdFlashcardTier = newTier?.tier || 'new';
         }
       }
       
@@ -314,7 +351,14 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
         }
       }
       
-      return this.transformResponse(wordDefinition);
+      return this.transformResponse(
+        wordDefinition,
+        buildCreateMeta({
+          flashcardCreated,
+          flashcardId: flashcard?.id,
+          reviewTier: createdFlashcardTier,
+        })
+      );
 
     } catch (error) {
       strapi.log.error('Error in custom word-definition create controller:', error);

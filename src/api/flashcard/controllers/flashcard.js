@@ -282,7 +282,7 @@ module.exports = createCoreController(
       try {
         const flashcard = await strapi.entityService.findOne('api::flashcard.flashcard', id, {
           filters: { user: user.id },
-          populate: { word_definition: true },
+          populate: { word_definition: true, review_tire: true },
         });
 
         // 1. Verify the flashcard exists and is owned by the current user
@@ -293,23 +293,34 @@ module.exports = createCoreController(
         let deletedFlashcard = null;
         let deletedWordDefinition = null;
 
+        const tierService = strapi.service('tier-service');
+        const reviewTiers = await tierService.getAllTiers();
+        const currentTier = flashcard.review_tire || tierService.findTierForStreakWithRules(flashcard.correct_streak || 0, reviewTiers);
+
         // 2. Perform deletion within a database transaction to ensure atomicity
-        await strapi.db.transaction(async () => {
+        await strapi.db.transaction(async ({ trx }) => {
           const wdId = flashcard.word_definition?.id;
           if (wdId) {
             // Check if the related word-definition is also owned by the user
             const wordDefinition = await strapi.entityService.findOne('api::word-definition.word-definition', wdId, {
               filters: { user: user.id },
+              db: trx,
             });
 
             if (wordDefinition) {
               // Only delete the word-definition if it's owned by the user
-              deletedWordDefinition = await strapi.entityService.delete('api::word-definition.word-definition', wdId);
+              deletedWordDefinition = await strapi.entityService.delete('api::word-definition.word-definition', wdId, { db: trx });
             }
           }
 
+          if (flashcard.word_definition?.id && currentTier?.id) {
+            await strapi
+              .service('api::flashcard-stat.flashcard-stat')
+              .increment(user.id, currentTier.id, -1, trx);
+          }
+
           // 3. Delete the flashcard
-          deletedFlashcard = await strapi.entityService.delete('api::flashcard.flashcard', id);
+          deletedFlashcard = await strapi.entityService.delete('api::flashcard.flashcard', id, { db: trx });
         });
 
         strapi.log.info(`✅ Flashcard ${id} deleted by user ${user.id}.`);
@@ -590,20 +601,52 @@ module.exports = createCoreController(
       const page = Math.max(1, parseInt(ctx.query.pagination?.page || '1', 10));
       const pageSize = Math.max(1, parseInt(ctx.query.pagination?.pageSize || '10', 10));
       const start = (page - 1) * pageSize;
+      const requestedTier = typeof ctx.query.tier === 'string'
+        ? ctx.query.tier.trim().toLowerCase()
+        : null;
+      const sortDirection = ctx.query.sort === 'desc' ? 'desc' : 'asc';
 
       // ✅ --- FIX: Use the robust, centralized population helper ---
       const populate = this._commonPopulate();
+      const baseFilters = { user: user.id, word_definition: { $not: null } };
+      let filters = baseFilters;
+
+      if (requestedTier) {
+        const tierService = strapi.service('tier-service');
+        const allTiers = await tierService.getAllTiers();
+        const matchedTier = allTiers.find((tier) => tier.tier === requestedTier);
+
+        if (!matchedTier) {
+          return this.transformResponse([], {
+            pagination: { page, pageSize, pageCount: 0, total: 0 },
+          });
+        }
+
+        filters = {
+          ...baseFilters,
+          $or: [
+            { review_tire: matchedTier.id },
+            {
+              review_tire: null,
+              correct_streak: {
+                $gte: matchedTier.min_streak,
+                $lte: matchedTier.max_streak,
+              },
+            },
+          ],
+        };
+      }
 
       const [results, total] = await Promise.all([
         strapi.entityService.findMany('api::flashcard.flashcard', {
-          filters: { user: user.id, word_definition: { $not: null } },
+          filters,
           populate, // Use the helper's result here
-          sort: { createdAt: 'asc' },
+          sort: { createdAt: sortDirection },
           start,
           limit: pageSize,
         }),
         strapi.entityService.count('api::flashcard.flashcard', {
-          filters: { user: user.id, word_definition: { $not: null } },
+          filters,
         }),
       ]);
 
