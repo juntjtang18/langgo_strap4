@@ -112,3 +112,8 @@ exports
 dist
 build
 .strapi-updater.json
+
+notes.txt
+test/langgo_strapi4_notebook.txt
+.env
+.env.*
