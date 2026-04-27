@@ -10,15 +10,38 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnM
 
 
 
-curl -X POST http://192.168.1.72:1338/api/auth/local \
+curl -X POST http://localhost:1338/api/auth/local \
   -H "Content-Type: application/json" \
   -d '{     "identifier": "chinese2@langgo.ca",    "password": "Passw0rd"  }' | jq .
 
-curl -X GET "http://192.168.1.72:1338/api/proficiency-levels?locale=zh-Hans"
+curl -X GET "http://localhost:1338/api/proficiency-levels?locale=zh-Hans"
 
 
-  curl -X GET "http://localhost:1338/api/flashcard-stat" \
-    -H "Authorization: Bearer YOUR_JWT_TOKEN" | jq .
+curl -X GET "http://localhost:1338/api/flashcard-stat" \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NzcyNjAyNDMsImV4cCI6MTc3OTg1MjI0M30.TOAJU2_INLUuue3rSgXFZ6srCAUCbAtIuRUcZjzBis4" | jq .
 
 
 curl -X GET http://localhost:1338/api/article-tags \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NzcyNjAyNDMsImV4cCI6MTc3OTg1MjI0M30.TOAJU2_INLUuue3rSgXFZ6srCAUCbAtIuRUcZjzBis4" | jq .
+
+
+curl -X GET http://localhost:1338/api/user-articles \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3NzcyNjAyNDMsImV4cCI6MTc3OTg1MjI0M30.TOAJU2_INLUuue3rSgXFZ6srCAUCbAtIuRUcZjzBis4" | jq .
+
+
+
+curl -X GET https://langgo-en-strapi.geniusparentingai.ca/api/proficiency-levels
+
+ArticleService
+- createUserArticle
+- updateUserArticle
+- fetchUserArticles
+- deleteUserArticle
+- cache invalidation after write
+
+ArticleTagService / ArticleService tag methods
+- fetchArticleTags
+- findOrCreateArticleTag
+- deleteArticleTag
+- attach tags during article create/update
+
