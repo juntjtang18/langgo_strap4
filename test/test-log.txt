@@ -36,5 +36,16 @@ curl -X GET https://langgo-en-strapi.geniusparentingai.ca/api/proficiency-levels
 
 curl -X POST http://localhost:1338/api/auth/local \
   -H "Content-Type: application/json" \
-  -d '{     "identifier": "vivia",    "password": "123456"  }' | jq .
+  -d '{     "identifier": "vivian",    "password": "123456"  }' | jq .
 
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A
+
+curl -X 'GET' \
+  'http://localhost:1338/api/flashcard-stat' \
+  -H 'accept: application/json' \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .
+
+curl -X 'POST' http://localhost:1338/api/flashcard-stats/rebuild-all
+  -H 'accept: application/json' \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .

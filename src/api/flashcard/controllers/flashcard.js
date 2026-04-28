@@ -4,6 +4,8 @@ const { createCoreController } = require('@strapi/strapi').factories;
 const { calculateReviewOutcome } = require('./review-logic');
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 
+const REVIEW_SCAN_PAGE_SIZE = 500;
+
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
   if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
@@ -45,6 +47,23 @@ const getTierMembership = (card, tiers, tierById) => {
     || tiers[tiers.length - 1]
     || null
   );
+};
+
+const getEntityCardTier = (card, tiers, tierService) => {
+  if (card.review_tire?.id) {
+    return card.review_tire;
+  }
+
+  return tierService.findTierForStreakWithRules(card.correct_streak || 0, tiers);
+};
+
+const isRememberedCard = (card, tiers, tierService) => {
+  if (card.is_remembered === true) {
+    return true;
+  }
+
+  const tier = getEntityCardTier(card, tiers, tierService);
+  return tier?.tier === 'remembered';
 };
 
 module.exports = createCoreController(
@@ -106,6 +125,8 @@ module.exports = createCoreController(
       const pageSize = parseInt(ctx.query.pagination?.pageSize || '25', 10);
 
       try {
+        const tierService = strapi.service('tier-service');
+        const reviewTiers = await tierService.getAllTiers();
         const nowTimestamp = toFlashcardDbTimestamp(new Date());
         const dueFilters = {
           user: user.id,
@@ -116,31 +137,52 @@ module.exports = createCoreController(
           ],
         };
 
-        const totalDue = await strapi.entityService.count('api::flashcard.flashcard', {
-          filters: dueFilters,
-        });
+        const requestedStart = Math.max(0, (page - 1) * pageSize);
+        const populatedDueCards = [];
+        let totalDue = 0;
+        let scanStart = 0;
+
+        while (true) {
+          const candidates = await strapi.entityService.findMany('api::flashcard.flashcard', {
+            filters: dueFilters,
+            populate: this._commonPopulate(),
+            sort: ['next_review_at:asc', 'id:asc'],
+            start: scanStart,
+            limit: REVIEW_SCAN_PAGE_SIZE,
+            locale: 'all',
+          });
+
+          for (const candidate of candidates) {
+            // Remembered cards are not part of the review queue, even if next_review_at is null or old.
+            if (isRememberedCard(candidate, reviewTiers, tierService)) {
+              continue;
+            }
+
+            if (totalDue >= requestedStart && populatedDueCards.length < pageSize) {
+              populatedDueCards.push(candidate);
+            }
+
+            totalDue += 1;
+          }
+
+          if (candidates.length < REVIEW_SCAN_PAGE_SIZE) {
+            break;
+          }
+
+          scanStart += REVIEW_SCAN_PAGE_SIZE;
+        }
 
         if (totalDue === 0) {
           return this.transformResponse([], { pagination: { page, pageSize, pageCount: 0, total: 0 } });
         }
 
         const pageCount = Math.ceil(totalDue / pageSize);
-        const start = Math.max(0, (page - 1) * pageSize);
 
-        if (start >= totalDue) {
+        if (requestedStart >= totalDue) {
           return this.transformResponse([], { pagination: { page, pageSize, pageCount, total: totalDue } });
         }
 
-        const populatedDueCards = await strapi.entityService.findMany('api::flashcard.flashcard', {
-          filters: dueFilters,
-          populate: this._commonPopulate(),
-          sort: ['next_review_at:asc', 'id:asc'],
-          start,
-          limit: pageSize,
-          locale: 'all',
-        });
-
-        // 🔎 Log a quick preview so you can confirm POS is present
+        // Log a quick preview so you can confirm POS is present
         try {
           const preview = populatedDueCards.slice(0, 5).map((c) => {
             const wd = c?.word_definition?.data?.attributes;
@@ -150,7 +192,7 @@ module.exports = createCoreController(
               pos: wd?.part_of_speech?.data?.attributes?.name || null,
             };
           });
-          strapi.log.debug(`📦 review-flashcards page=${page} size=${pageSize} preview=${JSON.stringify(preview)}`);
+          strapi.log.debug(`review-flashcards page=${page} size=${pageSize} total=${totalDue} preview=${JSON.stringify(preview)}`);
         } catch (e) { /* ignore logging errors */ }
 
         const pagination = { page, pageSize, pageCount, total: totalDue };
