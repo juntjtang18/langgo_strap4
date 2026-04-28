@@ -22,38 +22,59 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
       };
     }
 
-    const dbSchemaName = strapi.config.get('database.connection.connection.schema', 'public');
-    const nowTimestamp = toFlashcardDbTimestamp(new Date());
-    const rows = await strapi.db.connection.withSchema(dbSchemaName).from('flashcards as f')
-      .join('flashcards_user_links as ful', 'ful.flashcard_id', 'f.id')
-      .join('flashcards_word_definition_links as fwdl', 'fwdl.flashcard_id', 'f.id')
-      .leftJoin('flashcards_review_tire_links as frtl', 'frtl.flashcard_id', 'f.id')
-      .where('ful.user_id', userId)
-      .whereNotNull('fwdl.word_definition_id')
-      .where((builder) => {
-        builder
-          .whereNull('f.next_review_at')
-          .orWhereRaw('f.next_review_at <= ?::timestamp', [nowTimestamp]);
-      })
-      .groupBy('frtl.review_tire_id')
-      .select('frtl.review_tire_id')
-      .countDistinct({ due_count: 'f.id' });
-
+    const tierService = strapi.service('tier-service');
+    const now = new Date();
     const dueCountByTierId = new Map(tiers.map((tier) => [tier.id, 0]));
-    let dueForReview = 0;
+    const seenCardIds = new Set();
+    let start = 0;
 
-    for (const row of rows) {
-      const reviewTireId = row.review_tire_id ? Number(row.review_tire_id) : null;
-      const dueCount = Number(row.due_count) || 0;
+    while (true) {
+      const page = await strapi.entityService.findMany('api::flashcard.flashcard', {
+        filters: {
+          user: userId,
+          word_definition: { $not: null },
+          $or: [
+            { next_review_at: { $null: true } },
+            { next_review_at: { $lte: now } },
+          ],
+        },
+        populate: {
+          review_tire: true,
+        },
+        fields: ['id', 'correct_streak', 'next_review_at'],
+        start,
+        limit: PAGE_SIZE,
+      });
 
-      dueForReview += dueCount;
+      for (const card of page) {
+        if (!card?.id || seenCardIds.has(card.id)) {
+          continue;
+        }
 
-      if (!reviewTireId || !dueCountByTierId.has(reviewTireId)) {
-        continue;
+        seenCardIds.add(card.id);
+
+        const tier = this.getCardTier(card, tiers, tierService);
+        if (!tier?.id || !dueCountByTierId.has(tier.id)) {
+          continue;
+        }
+
+        // 🔥 FIX: exclude remembered tier from due
+        if (tier.tier === 'remembered') {
+          continue;
+        }
+
+        dueCountByTierId.set(tier.id, (dueCountByTierId.get(tier.id) || 0) + 1);
       }
 
-      dueCountByTierId.set(reviewTireId, (dueCountByTierId.get(reviewTireId) || 0) + dueCount);
+      if (page.length < PAGE_SIZE) {
+        break;
+      }
+
+      start += PAGE_SIZE;
     }
+
+    const dueForReview = Array.from(dueCountByTierId.values())
+      .reduce((sum, count) => sum + count, 0);
 
     return {
       dueForReview,
@@ -143,22 +164,28 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
       );
     }
 
-    const { dueForReview, dueCountByTierId } = await this.getLiveDueSummary(userId, tiers);
+    const { dueCountByTierId } = await this.getLiveDueSummary(userId, tiers);
 
-    const byTier = tiers.map((tier) => ({
-      id: tier.id,
-      tier: tier.tier,
-      display_name: tier.display_name || null,
-      min_streak: tier.min_streak,
-      max_streak: tier.max_streak,
-      cooldown_hours: tier.cooldown_hours,
-      count: countByTierId.get(tier.id) || 0,
-      dueCount: dueCountByTierId.get(tier.id) || 0,
-      hardToRememberCount: null,
-    }));
+    const byTier = tiers.map((tier) => {
+      const count = countByTierId.get(tier.id) || 0;
+      const liveDueCount = dueCountByTierId.get(tier.id) || 0;
+
+      return {
+        id: tier.id,
+        tier: tier.tier,
+        display_name: tier.display_name || null,
+        min_streak: tier.min_streak,
+        max_streak: tier.max_streak,
+        cooldown_hours: tier.cooldown_hours,
+        count,
+        dueCount: Math.min(count, liveDueCount),
+        hardToRememberCount: null,
+      };
+    });
 
     const totalCards = byTier.reduce((sum, tier) => sum + tier.count, 0);
     const remembered = byTier.find((tier) => tier.tier === 'remembered')?.count || 0;
+    const dueForReview = byTier.reduce((sum, tier) => sum + tier.dueCount, 0);
 
     const nextFetchAt = dueForReview > 0
       ? null

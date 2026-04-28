@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const initPubSubService = require('../src/services/pubsub');
+const initPubSubService = require('../src/unused/pubsub');
 
 test('pubsub service builds client from project id and publishes json payloads', async () => {
   const originalProject = process.env.GOOGLE_PUBSUB_PROJECT_ID;

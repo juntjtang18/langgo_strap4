@@ -33,19 +33,19 @@ module.exports = {
     strapi.container.get('services').set('tier-service', tierService);
 
     // Register Google Pub/Sub service
-    const initPubSubService = require('./services/pubsub');
-    const pubSubService = initPubSubService({ strapi });
-    strapi.container.get('services').set('pubsub', pubSubService);
+    //const initPubSubService = require('./unused/pubsub');
+    //const pubSubService = initPubSubService({ strapi });
+    //strapi.container.get('services').set('pubsub', pubSubService);
 
     // Partially obsolete: user_points writing is superseded by rank subsystem.
     // Still registered because review-event-handler uses calculateReviewPoints for reviewlog.points_awarded.
-    const initReviewRewardService = require('./unused/review-reward-service');
-    const reviewRewardService = initReviewRewardService({ strapi });
-    strapi.container.get('services').set('review-reward-service', reviewRewardService);
+    //const initReviewRewardService = require('./unused/review-reward-service');
+    //const reviewRewardService = initReviewRewardService({ strapi });
+    //strapi.container.get('services').set('review-reward-service', reviewRewardService);
 
-    const initPointService = require('./unused/point-service');
-    const pointService = initPointService({ strapi });
-    strapi.container.get('services').set('point-service', pointService);
+    //const initPointService = require('./unused/point-service');
+    //const pointService = initPointService({ strapi });
+    //strapi.container.get('services').set('point-service', pointService);
 
     // Register flashcard validation
     const initFlashcardValidateService = require('./services/flashcard-validate');
@@ -78,9 +78,9 @@ module.exports = {
       wordProcessingQueueService &&
       openAIService &&
       tierService &&
-      pubSubService &&
-      reviewRewardService &&
-      pointService &&
+      //pubSubService &&
+      //reviewRewardService &&
+      //pointService &&
       flashcardValidateService &&
       accountDeletionService &&
       flashcardStatBootstrapService &&
@@ -92,11 +92,11 @@ module.exports = {
       strapi.log.error('Failed to initialize one or more custom services during bootstrap.');
     }
 
-    if (pubSubService.isConfigured()) {
-      strapi.log.info(`Google Pub/Sub service initialized for project ${pubSubService.getProjectId() || '(ADC inferred)'}.`);
-    } else {
-      strapi.log.warn('Google Pub/Sub service initialized without explicit project configuration.');
-    }
+    //if (pubSubService.isConfigured()) {
+    //  strapi.log.info(`Google Pub/Sub service initialized for project ${pubSubService.getProjectId() || '(ADC inferred)'}.`);
+    //} else {
+    //  strapi.log.warn('Google Pub/Sub service initialized without explicit project configuration.');
+    //}
 
     // Register topic generator
     const initTopicGeneratorService = require('./services/topic-generator');

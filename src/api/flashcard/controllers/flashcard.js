@@ -12,7 +12,7 @@ const getEffectiveCooldown = (hours) => {
   return hours || 0;
 };
 
-const buildReviewCompletedEvent = ({
+const buildReviewEvent = ({
   flashcardId,
   user,
   reviewedAt,
@@ -21,14 +21,10 @@ const buildReviewCompletedEvent = ({
   effective,
   newlevel,
 }) => ({
-  event: 'flashcard.review.completed',
   eventId: `flashcard-review:${flashcardId}:${reviewedAt}:${user.id}`,
-  occurredAt: reviewedAt,
   review: {
     flashcardId,
     userId: user.id,
-    username: user.username || user.email || `user-${user.id}`,
-    email: user.email || null,
     reviewedAt,
     result,
     level,
@@ -238,7 +234,7 @@ module.exports = createCoreController(
 
           return {
             reviewedAt: now.toISOString(),
-            reviewEvent: buildReviewCompletedEvent({
+            reviewEvent: buildReviewEvent({
               flashcardId: flashcard.id,
               user,
               reviewedAt: now.toISOString(),
