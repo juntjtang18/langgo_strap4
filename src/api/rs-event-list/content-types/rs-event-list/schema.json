@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_event_lists",
+  "info": {
+    "singularName": "rs-event-list",
+    "pluralName": "rs-event-lists",
+    "displayName": "rs event list"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "event_name": {
+      "type": "string",
+      "required": true
+    },
+    "points": {
+      "type": "integer",
+      "default": 1,
+      "required": true
+    }
+  }
+}

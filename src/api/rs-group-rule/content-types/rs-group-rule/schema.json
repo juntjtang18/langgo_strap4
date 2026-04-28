@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_group_rules",
+  "info": {
+    "singularName": "rs-group-rule",
+    "pluralName": "rs-group-rules",
+    "displayName": "rs group rule"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "period_days": {
+      "type": "integer",
+      "required": true
+    },
+    "group_size": {
+      "type": "integer",
+      "required": true
+    },
+    "rs_group_ranks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rs-group-rank.rs-group-rank",
+      "mappedBy": "rs_group_rule"
+    },
+    "rs_groups": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rs-group.rs-group",
+      "mappedBy": "rs_group_rule"
+    }
+  }
+}

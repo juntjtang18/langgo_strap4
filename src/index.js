@@ -37,7 +37,8 @@ module.exports = {
     const pubSubService = initPubSubService({ strapi });
     strapi.container.get('services').set('pubsub', pubSubService);
 
-    // Register review event handler and queue facade
+    // Partially obsolete: user_points writing is superseded by rank subsystem.
+    // Still registered because review-event-handler uses calculateReviewPoints for reviewlog.points_awarded.
     const initReviewRewardService = require('./services/review-reward-service');
     const reviewRewardService = initReviewRewardService({ strapi });
     strapi.container.get('services').set('review-reward-service', reviewRewardService);
@@ -79,6 +80,10 @@ module.exports = {
     const initDbIndexEnsureService = require('./services/db-index-ensure');
     const dbIndexEnsureService = initDbIndexEnsureService({ strapi });
     strapi.container.get('services').set('db-index-ensure', dbIndexEnsureService);
+
+    // Register Rank subsystem
+    const initRankSubsystem = require('./services/rank/index');
+    initRankSubsystem({ strapi });
 
     // Log service setup success
     if (

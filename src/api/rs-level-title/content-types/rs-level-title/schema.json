@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_level_titles",
+  "info": {
+    "singularName": "rs-level-title",
+    "pluralName": "rs-level-titles",
+    "displayName": "rs level title"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "rs_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-level.rs-level",
+      "inversedBy": "rs_level_titles"
+    },
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    }
+  }
+}

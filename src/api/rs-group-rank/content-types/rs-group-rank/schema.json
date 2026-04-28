@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_group_ranks",
+  "info": {
+    "singularName": "rs-group-rank",
+    "pluralName": "rs-group-ranks",
+    "displayName": "rs group rank"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "rs_group_rule": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-group-rule.rs-group-rule",
+      "inversedBy": "rs_group_ranks"
+    },
+    "rank_no": {
+      "type": "integer"
+    },
+    "min_period_points": {
+      "type": "integer"
+    },
+    "rs_group_rank_titles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rs-group-rank-title.rs-group-rank-title",
+      "mappedBy": "rs_group_rank"
+    },
+    "rs_groups": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rs-group.rs-group",
+      "mappedBy": "rs_group_rank"
+    },
+    "rs_user_snapshots": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rs-user-snapshot.rs-user-snapshot",
+      "mappedBy": "rs_group_rank"
+    }
+  }
+}

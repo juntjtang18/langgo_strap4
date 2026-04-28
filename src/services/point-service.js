@@ -1,3 +1,7 @@
+// OBSOLETE: This service was the façade over review-reward-service for writing to
+// user_points / user_point_groups. Point tracking is now handled by the rank subsystem
+// (src/services/rank/). calculateReviewPoints is still used by review-event-handler
+// to record points_awarded on reviewlog entries.
 'use strict';
 
 module.exports = ({ strapi }) => ({

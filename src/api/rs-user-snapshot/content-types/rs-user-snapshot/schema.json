@@ -1,0 +1,78 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_user_snapshots",
+  "info": {
+    "singularName": "rs-user-snapshot",
+    "pluralName": "rs-user-snapshots",
+    "displayName": "rs user snapshot"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userid": {
+      "type": "string",
+      "required": true
+    },
+    "record_date": {
+      "type": "date",
+      "required": true
+    },
+    "rs_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-group.rs-group",
+      "inversedBy": "rs_user_snapshots"
+    },
+    "rs_group_rank": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-group-rank.rs-group-rank",
+      "inversedBy": "rs_user_snapshots"
+    },
+    "group_rank_change": {
+      "type": "integer"
+    },
+    "rs_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-level.rs-level",
+      "inversedBy": "rs_user_snapshots"
+    },
+    "level_change": {
+      "type": "integer",
+      "default": 0
+    },
+    "total_points": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "points_add": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "word_count": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "word_add": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "article_count": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "article_add": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    }
+  }
+}

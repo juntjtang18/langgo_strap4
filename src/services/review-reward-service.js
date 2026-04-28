@@ -1,3 +1,9 @@
+// OBSOLETE: The applyDelta / applyReviewEvent / applyWordDefinitionCreatedEvent /
+// applyArticleCreatedEvent / syncUserPointGroupAssignment / splitPointGroupIfNeeded
+// functions all wrote to user_points and user_point_groups, which are superseded by
+// the rank subsystem (src/services/rank/). The calculation functions (calculatePoints,
+// calculateWordDefinitionPoints, calculateArticlePoints, getHonorTitleRule, syncHonorTitle)
+// are still active — review-event-handler uses calculatePoints for reviewlog.points_awarded.
 'use strict';
 
 module.exports = ({ strapi }) => {

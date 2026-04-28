@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_groups",
+  "info": {
+    "singularName": "rs-group",
+    "pluralName": "rs-groups",
+    "displayName": "rs group"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "rs_group_rule": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-group-rule.rs-group-rule",
+      "inversedBy": "rs_groups"
+    },
+    "group_no": {
+      "type": "integer"
+    },
+    "rs_group_rank": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-group-rank.rs-group-rank",
+      "inversedBy": "rs_groups"
+    },
+    "rs_user_snapshots": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rs-user-snapshot.rs-user-snapshot",
+      "mappedBy": "rs_group"
+    }
+  }
+}

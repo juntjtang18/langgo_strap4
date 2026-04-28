@@ -59,7 +59,8 @@ module.exports = ({ strapi }) => {
           db: trx,
         });
 
-        await persistPointsAwarded(event, trx);
+        // OBSOLETE: user_points writing superseded by rank subsystem
+        // await persistPointsAwarded(event, trx);
       });
     } catch (error) {
       if (error.code === '23505') {
@@ -84,40 +85,42 @@ module.exports = ({ strapi }) => {
     };
   };
 
+  // OBSOLETE: user_points writing for word definitions superseded by rank subsystem.
+  // const handleWordDefinitionCreated = async (event) => {
+  //   const payload = event?.wordDefinition;
+  //   if (!event?.eventId || !payload?.userId || !payload?.wordDefinitionId || !payload?.createdAt) {
+  //     throw new Error('Invalid word_definition.created event payload.');
+  //   }
+  //   const result = await strapi.db.transaction(async ({ trx }) => {
+  //     return strapi.service('point-service').applyWordDefinitionCreatedEvent(event, trx);
+  //   });
+  //   return { wordDefinitionId: payload.wordDefinitionId, pointsAwarded: result?.pointsAwarded ?? 0, duplicate: false };
+  // };
   const handleWordDefinitionCreated = async (event) => {
     const payload = event?.wordDefinition;
-
     if (!event?.eventId || !payload?.userId || !payload?.wordDefinitionId || !payload?.createdAt) {
       throw new Error('Invalid word_definition.created event payload.');
     }
-
-    const result = await strapi.db.transaction(async ({ trx }) => {
-      return strapi.service('point-service').applyWordDefinitionCreatedEvent(event, trx);
-    });
-
-    return {
-      wordDefinitionId: payload.wordDefinitionId,
-      pointsAwarded: result?.pointsAwarded ?? 0,
-      duplicate: false,
-    };
+    return { wordDefinitionId: payload.wordDefinitionId, pointsAwarded: 0, duplicate: false };
   };
 
+  // OBSOLETE: user_points writing for articles superseded by rank subsystem.
+  // const handleArticleCreated = async (event) => {
+  //   const payload = event?.article;
+  //   if (!event?.eventId || !payload?.userId || !payload?.userArticleId || !payload?.createdAt) {
+  //     throw new Error('Invalid user_article.created event payload.');
+  //   }
+  //   const result = await strapi.db.transaction(async ({ trx }) => {
+  //     return strapi.service('point-service').applyArticleCreatedEvent(event, trx);
+  //   });
+  //   return { userArticleId: payload.userArticleId, pointsAwarded: result?.pointsAwarded ?? 0, duplicate: false };
+  // };
   const handleArticleCreated = async (event) => {
     const payload = event?.article;
-
     if (!event?.eventId || !payload?.userId || !payload?.userArticleId || !payload?.createdAt) {
       throw new Error('Invalid user_article.created event payload.');
     }
-
-    const result = await strapi.db.transaction(async ({ trx }) => {
-      return strapi.service('point-service').applyArticleCreatedEvent(event, trx);
-    });
-
-    return {
-      userArticleId: payload.userArticleId,
-      pointsAwarded: result?.pointsAwarded ?? 0,
-      duplicate: false,
-    };
+    return { userArticleId: payload.userArticleId, pointsAwarded: 0, duplicate: false };
   };
 
   const handleEvent = async (event) => {
