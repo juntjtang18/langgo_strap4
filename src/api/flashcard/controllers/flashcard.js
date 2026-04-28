@@ -257,7 +257,7 @@ module.exports = createCoreController(
         );
 
         try {
-          await strapi.service('event-api').dispatchReviewCompleted(reviewResult.reviewEvent);
+          strapi.service('event-dispatcher').dispatchFlashcardReviewCompleted(reviewResult.reviewEvent);
         } catch (dispatchError) {
           strapi.log.error(`review event dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }

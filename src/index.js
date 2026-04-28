@@ -39,29 +39,13 @@ module.exports = {
 
     // Partially obsolete: user_points writing is superseded by rank subsystem.
     // Still registered because review-event-handler uses calculateReviewPoints for reviewlog.points_awarded.
-    const initReviewRewardService = require('./services/review-reward-service');
+    const initReviewRewardService = require('./unused/review-reward-service');
     const reviewRewardService = initReviewRewardService({ strapi });
     strapi.container.get('services').set('review-reward-service', reviewRewardService);
 
-    const initPointService = require('./services/point-service');
+    const initPointService = require('./unused/point-service');
     const pointService = initPointService({ strapi });
     strapi.container.get('services').set('point-service', pointService);
-
-    const initReviewEventHandlerService = require('./services/review-event-handler');
-    const reviewEventHandlerService = initReviewEventHandlerService({ strapi });
-    strapi.container.get('services').set('review-event-handler', reviewEventHandlerService);
-
-    const initEventHandlerService = require('./services/event-handler');
-    const eventHandlerService = initEventHandlerService({ strapi });
-    strapi.container.get('services').set('event-handler', eventHandlerService);
-
-    const initReviewEventQueueService = require('./services/review-event-queue');
-    const reviewEventQueueService = initReviewEventQueueService({ strapi });
-    strapi.container.get('services').set('review-event-queue', reviewEventQueueService);
-
-    const initEventApiService = require('./services/event-api');
-    const eventApiService = initEventApiService({ strapi });
-    strapi.container.get('services').set('event-api', eventApiService);
 
     // Register flashcard validation
     const initFlashcardValidateService = require('./services/flashcard-validate');
@@ -85,6 +69,10 @@ module.exports = {
     const initRankSubsystem = require('./services/rank/index');
     initRankSubsystem({ strapi });
 
+    // Register Event Bus (sole dispatch interface, replaces event-api / review-event-queue)
+    const initEventBus = require('./services/event-bus/index');
+    initEventBus({ strapi });
+
     // Log service setup success
     if (
       wordProcessingQueueService &&
@@ -93,10 +81,6 @@ module.exports = {
       pubSubService &&
       reviewRewardService &&
       pointService &&
-      reviewEventHandlerService &&
-      eventHandlerService &&
-      reviewEventQueueService &&
-      eventApiService &&
       flashcardValidateService &&
       accountDeletionService &&
       flashcardStatBootstrapService &&

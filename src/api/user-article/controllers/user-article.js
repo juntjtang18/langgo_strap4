@@ -66,7 +66,7 @@ module.exports = createCoreController('api::user-article.user-article', ({ strap
       });
 
       try {
-        await strapi.service('event-api').dispatchArticleCreated(
+        strapi.service('event-dispatcher').dispatchArticleCreate(
           buildArticleCreatedEvent({
             userArticleId: article.id,
             user,

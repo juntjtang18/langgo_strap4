@@ -345,7 +345,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
 
       if (wordDefinitionCreatedEvent) {
         try {
-          await strapi.service('event-api').dispatchWordDefinitionCreated(wordDefinitionCreatedEvent);
+          strapi.service('event-dispatcher').dispatchFlashcardCreate(wordDefinitionCreatedEvent);
         } catch (dispatchError) {
           strapi.log.error(`word_definition.created dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }
