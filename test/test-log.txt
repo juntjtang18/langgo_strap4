@@ -49,3 +49,41 @@ curl -X 'GET' \
 curl -X 'POST' http://localhost:1338/api/flashcard-stats/rebuild-all
   -H 'accept: application/json' \
     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .
+
+
+curl -X GET http://localhost:1338/api/rank/users/60 \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .
+
+
+
+
+
+James@MacBook-Pro langgo_strapi4 % curl -X GET http://localhost:1338/api/rank/users/60 \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .
+
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   358  100   358    0     0   2002      0 --:--:-- --:--:-- --:--:--  2011
+{
+  "data": {
+    "latest_snapshot": {
+      "id": 7,
+      "userid": "60",
+      "record_date": "2026-04-29",
+      "total_points": 221,
+      "points_add": 4,
+      "word_count": 19,
+      "word_add": 1,
+      "article_count": 11,
+      "article_add": 0,
+      "level_no": 1,
+      "level_change": 0,
+      "group": 1,
+      "group_no": 1,
+      "group_rank_change": 0,
+    }
+  }
+}

@@ -20,32 +20,75 @@ module.exports = {
 
   async getUserStatus(ctx) {
     const { userid } = ctx.params;
+    const userId = String(userid);
 
-    const [userLevel, userGroup, snapshot] = await Promise.all([
-      strapi.entityService.findMany('api::rs-user-level.rs-user-level', {
-        filters: { userid },
-        limit: 1,
-      }),
-      strapi.entityService.findMany('api::rs-user-group.rs-user-group', {
-        filters: { userid },
-        populate: { rs_group: { populate: ['rs_group_rank'] } },
-        limit: 1,
-      }),
-      strapi.entityService.findMany('api::rs-user-snapshot.rs-user-snapshot', {
-        filters: { userid },
+    const snapshots = await strapi.entityService.findMany(
+      'api::rs-user-snapshot.rs-user-snapshot',
+      {
+        filters: { userid: userId },
         sort: { record_date: 'desc' },
-        populate: ['rs_group', 'rs_group_rank', 'rs_level'],
+        fields: [
+          'id',
+          'userid',
+          'record_date',
+          'total_points',
+          'points_add',
+          'word_count',
+          'word_add',
+          'article_count',
+          'article_add',
+          'group_rank_change',
+          'level_change',
+        ],
+        populate: {
+          rs_group: {
+            fields: ['id', 'group_no'],
+            populate: {
+              rs_group_rank: {
+                fields: ['id', 'rank_no', 'min_period_points'],
+              },
+            },
+          },
+          rs_group_rank: {
+            fields: ['id', 'rank_no', 'min_period_points'],
+          },
+          rs_level: {
+            fields: ['id', 'level_no'],
+          },
+        },
         limit: 1,
-      }),
-    ]);
+      }
+    );
+
+    const snapshot = snapshots[0] || null;
+    const groupRank = snapshot?.rs_group?.rs_group_rank || snapshot?.rs_group_rank || null;
 
     ctx.body = {
       data: {
-        userid,
-        level_no: userLevel[0]?.level_no || null,
-        group: userGroup[0]?.rs_group || null,
-        group_rank: userGroup[0]?.rs_group?.rs_group_rank || null,
-        latest_snapshot: snapshot[0] || null,
+        latest_snapshot: snapshot
+          ? {
+              id: snapshot.id,
+              userid: snapshot.userid,
+              record_date: snapshot.record_date,
+
+              total_points: snapshot.total_points,
+              points_add: snapshot.points_add,
+
+              word_count: snapshot.word_count,
+              word_add: snapshot.word_add,
+
+              article_count: snapshot.article_count,
+              article_add: snapshot.article_add,
+
+              level_no: snapshot.rs_level?.level_no || null,
+              level_change: snapshot.level_change,
+
+              group: snapshot.rs_group?.id || null,
+              group_no: snapshot.rs_group?.group_no || null,
+
+              group_rank_change: snapshot.group_rank_change,
+            }
+          : null,
       },
     };
   },
