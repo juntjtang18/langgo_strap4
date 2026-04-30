@@ -27,6 +27,7 @@ module.exports = ({ queue }) => ({
         event_id: uuidv4(),
         userid,
         flashcard_id: review.flashcardId,
+        review,           // kept for reviewlog handler
       });
     }
   },

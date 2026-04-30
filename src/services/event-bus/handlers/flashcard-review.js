@@ -14,10 +14,8 @@ module.exports = async ({ strapi, event }) => {
     limit: 1,
   });
   if (existing.length > 0) {
-    return { reviewlogId: existing[0].id, pointsAwarded: existing[0].points_awarded ?? 0, duplicate: true };
+    return { reviewlogId: existing[0].id, duplicate: true };
   }
-
-  const pointsAwarded = await strapi.service('point-service').calculateReviewPoints(event);
 
   let reviewlog;
   try {
@@ -31,7 +29,7 @@ module.exports = async ({ strapi, event }) => {
           result: review.result,
           level: review.level,
           effective: review.effective,
-          points_awarded: pointsAwarded,
+          points_awarded: null,
           newlevel: review.newlevel,
         },
         db: trx,
@@ -44,11 +42,11 @@ module.exports = async ({ strapi, event }) => {
         limit: 1,
       });
       if (dup.length > 0) {
-        return { reviewlogId: dup[0].id, pointsAwarded: dup[0].points_awarded ?? 0, duplicate: true };
+        return { reviewlogId: dup[0].id, duplicate: true };
       }
     }
     throw err;
   }
 
-  return { reviewlogId: reviewlog.id, pointsAwarded, duplicate: false };
+  return { reviewlogId: reviewlog.id, duplicate: false };
 };

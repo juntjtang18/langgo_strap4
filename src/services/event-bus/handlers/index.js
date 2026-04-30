@@ -3,8 +3,8 @@
 const handleFlashcardReview = require('./flashcard-review');
 const handleRank = require('./rank');
 
-// Only flashcard.review creates a reviewlog entry
-const REVIEWLOG_EVENTS = new Set(['flashcard.review']);
+// Flashcard review events create reviewlog entries
+const REVIEWLOG_EVENTS = new Set(['flashcard.review', 'flashcard.review_tier_promote']);
 
 // All five canonical events update the rank subsystem
 const RANK_EVENTS = new Set([

@@ -10,6 +10,15 @@ module.exports = {
     },
     {
       method: 'GET',
+      path: '/rank/me',
+      handler: 'rank.getMeStatus',
+      config: {
+        policies: [], // Add any policies if needed, e.g., ['global::is-authenticated']
+        middlewares: [],
+      },
+    },
+    {
+      method: 'GET',
       path: '/rank/users/:userid',
       handler: 'rank.getUserStatus',
       config: { auth: false },

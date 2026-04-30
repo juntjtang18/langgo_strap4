@@ -132,24 +132,6 @@
       "target": "api::article-tag.article-tag",
       "mappedBy": "user"
     },
-    "user_point_groups": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-point-group.user-point-group",
-      "mappedBy": "user"
-    },
-    "user_points": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::user-point.user-point",
-      "mappedBy": "user"
-    },
-    "honor_title": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::honor-title.honor-title",
-      "inversedBy": "users"
-    },
     "flashcard_stats": {
       "type": "relation",
       "relation": "oneToMany",

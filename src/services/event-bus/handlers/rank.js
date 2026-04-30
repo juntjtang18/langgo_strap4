@@ -5,10 +5,10 @@ module.exports = async ({ strapi, event }) => {
 
   switch (event.event_name) {
     case 'flashcard.review':
-      await rank.onFlashcardReview(event.userid, event.flashcard_id);
+      await rank.onFlashcardReview(event.userid, event.flashcard_id, event.review);
       break;
     case 'flashcard.review_tier_promote':
-      await rank.onFlashcardReviewTierPromote(event.userid, event.flashcard_id);
+      await rank.onFlashcardReviewTierPromote(event.userid, event.flashcard_id, event.review);
       break;
     case 'flashcard.create':
       await rank.onFlashcardCreate(event.userid, event.flashcard_id);

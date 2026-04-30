@@ -24,12 +24,18 @@ module.exports = ({ strapi }) => ({
     return this.dispatch('flashcard.create', userid, { flashcardId });
   },
 
-  async onFlashcardReview(userid, flashcardId) {
-    return this.dispatch('flashcard.review', userid, { flashcardId });
+  async onFlashcardReview(userid, flashcardId, review = null) {
+    return this.dispatch('flashcard.review', userid, {
+      flashcardId,
+      ...(review ? { review } : {}),
+    });
   },
 
-  async onFlashcardReviewTierPromote(userid, flashcardId) {
-    return this.dispatch('flashcard.review_tier_promote', userid, { flashcardId });
+  async onFlashcardReviewTierPromote(userid, flashcardId, review = null) {
+    return this.dispatch('flashcard.review_tier_promote', userid, {
+      flashcardId,
+      ...(review ? { review } : {}),
+    });
   },
 
   async onArticleCreate(userid, articleId) {

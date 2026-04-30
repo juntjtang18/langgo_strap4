@@ -30,12 +30,17 @@ module.exports = ({ strapi }) => ({
   // Returns userids whose most-recent snapshot belongs to the given group (PostgreSQL).
   async getCurrentMembersOfGroup(groupId) {
     const result = await strapi.db.connection.raw(`
-      SELECT userid FROM (
-        SELECT DISTINCT ON (userid) userid, rs_group_id
-        FROM rs_user_snapshots
-        ORDER BY userid, record_date DESC
+      SELECT latest.userid
+      FROM (
+        SELECT DISTINCT ON (snap.userid)
+          snap.id,
+          snap.userid
+        FROM rs_user_snapshots snap
+        ORDER BY snap.userid, snap.record_date DESC, snap.id DESC
       ) latest
-      WHERE rs_group_id = ?
+      INNER JOIN rs_user_snapshots_rs_group_links group_links
+        ON group_links.rs_user_snapshot_id = latest.id
+      WHERE group_links.rs_group_id = ?
     `, [groupId]);
     return result.rows.map(r => r.userid);
   },
