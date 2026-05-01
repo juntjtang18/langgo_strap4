@@ -1,10 +1,6 @@
 'use strict';
 
-const handleFlashcardReview = require('./flashcard-review');
 const handleRank = require('./rank');
-
-// Flashcard review events create reviewlog entries
-const REVIEWLOG_EVENTS = new Set(['flashcard.review', 'flashcard.review_tier_promote']);
 
 // All five canonical events update the rank subsystem
 const RANK_EVENTS = new Set([
@@ -17,10 +13,6 @@ const RANK_EVENTS = new Set([
 
 module.exports = async ({ strapi, event }) => {
   const promises = [];
-
-  if (REVIEWLOG_EVENTS.has(event.event_name)) {
-    promises.push(handleFlashcardReview({ strapi, event }));
-  }
 
   if (RANK_EVENTS.has(event.event_name)) {
     promises.push(handleRank({ strapi, event }));

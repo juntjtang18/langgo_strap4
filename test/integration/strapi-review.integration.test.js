@@ -376,7 +376,7 @@ test('review action updates the flashcard and delegates side effects to the queu
     assert.equal(dispatchedEvents[0].review.result, 'correct');
     assert.equal(dispatchedEvents[0].review.level, 'new');
     assert.equal(dispatchedEvents[0].review.newlevel, 'warmup');
-    assert.equal(reviewlogs.length, 0);
+    assert.equal(reviewlogs.length, 1);
   } finally {
     queueService.dispatchReviewCompleted = originalDispatch;
   }
@@ -626,7 +626,7 @@ test('flashcard statistics endpoint returns the materialized flashcard-stat summ
   assert.equal(ctx.body.data.byTier[2].dueCount, 0);
 });
 
-test('review action writes reviewlog and daily user points from the local event handler', async () => {
+test('review action writes reviewlog in the review transaction and daily user points via rank event handling', async () => {
   const user = await createAuthenticatedUser();
 
   const flashcard = await app.entityService.create('api::flashcard.flashcard', {
@@ -689,7 +689,7 @@ test('review action writes reviewlog and daily user points from the local event 
   assert.equal(reviewlogs[0].result, 'correct');
   assert.equal(reviewlogs[0].level, 'new');
   assert.equal(reviewlogs[0].effective, true);
-  assert.equal(reviewlogs[0].points_awarded, pointRule.review_tier_up_point + pointRule.review_point);
+  assert.equal(reviewlogs[0].points_awarded, null);
   assert.equal(reviewlogs[0].newlevel, 'warmup');
 
   assert.equal(userPoints.length, 2);

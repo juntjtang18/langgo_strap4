@@ -2,9 +2,6 @@
 
 const { v4: uuidv4 } = require('uuid');
 
-const TIER_ORDER = ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered'];
-const tierRank = (level) => TIER_ORDER.indexOf((level || '').toLowerCase());
-
 // Sole public interface for emitting domain events into the event bus.
 // Normalises controller payloads into canonical event objects before queuing.
 module.exports = ({ queue }) => ({
@@ -18,18 +15,8 @@ module.exports = ({ queue }) => ({
       event_id: id,
       userid,
       flashcard_id: review.flashcardId,
-      review,           // kept for reviewlog handler
+      review,
     });
-
-    if (tierRank(review.newlevel) > tierRank(review.level)) {
-      queue.enqueue({
-        event_name: 'flashcard.review_tier_promote',
-        event_id: uuidv4(),
-        userid,
-        flashcard_id: review.flashcardId,
-        review,           // kept for reviewlog handler
-      });
-    }
   },
 
   dispatchFlashcardCreate(event) {

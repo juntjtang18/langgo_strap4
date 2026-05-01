@@ -1,39 +1,9 @@
 'use strict';
 
 const { createCoreController } = require('@strapi/strapi').factories;
-const { calculateReviewOutcome } = require('./review-logic');
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 
 const REVIEW_SCAN_PAGE_SIZE = 500;
-
-// Helper: shorten cooldowns for testing in development environment
-const getEffectiveCooldown = (hours) => {
-  if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
-    return (hours || 0) / 180;
-  }
-  return hours || 0;
-};
-
-const buildReviewEvent = ({
-  flashcardId,
-  user,
-  reviewedAt,
-  result,
-  level,
-  effective,
-  newlevel,
-}) => ({
-  eventId: `flashcard-review:${flashcardId}:${reviewedAt}:${user.id}`,
-  review: {
-    flashcardId,
-    userId: user.id,
-    reviewedAt,
-    result,
-    level,
-    effective,
-    newlevel,
-  },
-});
 
 const getTierMembership = (card, tiers, tierById) => {
   if (card.review_tire_id && tierById.has(card.review_tire_id)) {
@@ -217,76 +187,9 @@ module.exports = createCoreController(
       }
     
       try {
-        const reviewResult = await strapi.db.transaction(async ({ trx }) => {
-          const flashcard = await strapi.entityService.findOne(
-            'api::flashcard.flashcard',
-            id,
-            {
-              filters: { user: user.id },
-              populate: { review_tire: true, word_definition: true },
-              db: trx,
-            }
-          );
-    
-          if (!flashcard) throw new Error('Flashcard not found.');
-    
-          const tierService = strapi.service('tier-service');
-          const reviewTiers = await tierService.getAllTiers();
-          let currentTier = flashcard.review_tire || tierService.findTierForStreakWithRules(flashcard.correct_streak, reviewTiers);
-    
-          const effectiveCooldown = getEffectiveCooldown(currentTier?.cooldown_hours || 0);
-          const now = new Date();
-          const {
-            effective,
-            currentLevel,
-            newLevel,
-            updateData,
-          } = calculateReviewOutcome({
-            flashcard,
-            currentTier,
-            reviewTiers,
-            result,
-            effectiveCooldownHours: effectiveCooldown,
-            getCooldownHoursForTier: (tier) => getEffectiveCooldown(tier?.cooldown_hours || 0),
-            now,
-          });
-
-          const shouldUpdateFlashcardStat =
-            effective
-            && flashcard.word_definition?.id
-            && currentTier?.id
-            && currentTier.id !== (updateData.review_tire || currentTier.id);
-    
-          if (Object.keys(updateData).length > 0) {
-            await strapi.entityService.update(
-              'api::flashcard.flashcard',
-              id,
-              {
-                data: updateData,
-                db: trx,
-              }
-            );
-          }
-
-          if (shouldUpdateFlashcardStat) {
-            await strapi
-              .service('api::flashcard-stat.flashcard-stat')
-              .move(user.id, currentTier.id, updateData.review_tire, trx);
-          }
-
-          return {
-            reviewedAt: now.toISOString(),
-            reviewEvent: buildReviewEvent({
-              flashcardId: flashcard.id,
-              user,
-              reviewedAt: now.toISOString(),
-              result,
-              level: currentLevel,
-              effective,
-              newlevel: newLevel,
-            }),
-          };
-        });
+        const reviewResult = await strapi
+          .service('api::flashcard.flashcard')
+          .reviewFlashcard({ flashcardId: id, user, result });
 
         const finalCard = await strapi.entityService.findOne(
           'api::flashcard.flashcard',
