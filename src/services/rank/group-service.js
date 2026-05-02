@@ -57,8 +57,10 @@ module.exports = ({ strapi }) => ({
     // Alternate assignment: odd-indexed members move to new group
     const toMove = members.filter((_, i) => i % 2 === 1);
     const snapshotSvc = strapi.service('rank-snapshot');
+    const userGroupSvc = strapi.service('rank-user-group');
     for (const userid of toMove) {
       await snapshotSvc.moveUserToGroup(userid, newGroup.id);
+      await userGroupSvc.upsertUserGroup(userid, newGroup.id);
     }
 
     return newGroup;

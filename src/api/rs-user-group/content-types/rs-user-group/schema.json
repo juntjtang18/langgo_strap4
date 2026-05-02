@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_user_groups",
+  "info": {
+    "singularName": "rs-user-group",
+    "pluralName": "rs-user-groups",
+    "displayName": "rs user group"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userid": {
+      "type": "string",
+      "required": true
+    },
+    "rs_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::rs-group.rs-group",
+      "inversedBy": "rs_user_groups"
+    }
+  }
+}

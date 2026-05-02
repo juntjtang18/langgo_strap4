@@ -5,6 +5,7 @@ module.exports = ({ strapi }) => {
   const snapshots = () => strapi.service('rank-snapshot');
   const levels = () => strapi.service('rank-level');
   const groups = () => strapi.service('rank-group');
+  const userGroups = () => strapi.service('rank-user-group');
 
   const logEvent = async (eventData) =>
     strapi.entityService.create('api::rs-event.rs-event', {
@@ -42,6 +43,7 @@ module.exports = ({ strapi }) => {
     const group = await groups().assignUserToRankedGroup(
       userid, groupRule.id, lowestRank.id, groupRule.group_size
     );
+    await userGroups().upsertUserGroup(userid, group.id);
     return snapshots().createInitialSnapshot(userid, group.id, lowestRank.id, level1.id);
   };
 
@@ -130,6 +132,8 @@ module.exports = ({ strapi }) => {
           );
           newGroupId = newGroup.id;
         }
+
+        await userGroups().upsertUserGroup(userid, newGroupId);
 
         const levelRecord = await rules().findOrCreateLevel(newLevelNo);
 

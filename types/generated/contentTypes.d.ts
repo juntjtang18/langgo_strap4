@@ -1496,6 +1496,11 @@ export interface ApiRsGroupRsGroup extends Schema.CollectionType {
       'oneToMany',
       'api::rs-user-snapshot.rs-user-snapshot'
     >;
+    rs_user_groups: Attribute.Relation<
+      'api::rs-group.rs-group',
+      'oneToMany',
+      'api::rs-user-group.rs-user-group'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1772,6 +1777,40 @@ export interface ApiRsLevelTitleRsLevelTitle extends Schema.CollectionType {
       'api::rs-level-title.rs-level-title'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiRsUserGroupRsUserGroup extends Schema.CollectionType {
+  collectionName: 'rs_user_groups';
+  info: {
+    singularName: 'rs-user-group';
+    pluralName: 'rs-user-groups';
+    displayName: 'rs user group';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    userid: Attribute.String & Attribute.Required;
+    rs_group: Attribute.Relation<
+      'api::rs-user-group.rs-user-group',
+      'manyToOne',
+      'api::rs-group.rs-group'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::rs-user-group.rs-user-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::rs-user-group.rs-user-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -2737,6 +2776,7 @@ declare module '@strapi/types' {
       'api::rs-level.rs-level': ApiRsLevelRsLevel;
       'api::rs-level-rule.rs-level-rule': ApiRsLevelRuleRsLevelRule;
       'api::rs-level-title.rs-level-title': ApiRsLevelTitleRsLevelTitle;
+      'api::rs-user-group.rs-user-group': ApiRsUserGroupRsUserGroup;
       'api::rs-user-snapshot.rs-user-snapshot': ApiRsUserSnapshotRsUserSnapshot;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::story.story': ApiStoryStory;
