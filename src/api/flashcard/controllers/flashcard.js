@@ -36,6 +36,22 @@ const isRememberedCard = (card, tiers, tierService) => {
   return tier?.tier === 'remembered';
 };
 
+const getEffectiveCooldown = (hours) => {
+  if (process.env.SHORT_TIME_FOR_REVIEW === 'true') {
+    return (hours || 0) / 180;
+  }
+  return hours || 0;
+};
+
+const isDueByCooldown = (card, tier, now = new Date()) => {
+  const effectiveCooldownHours = getEffectiveCooldown(tier?.cooldown_hours || 0);
+  if (!card.last_reviewed_at) {
+    return true;
+  }
+
+  return now >= new Date(new Date(card.last_reviewed_at).getTime() + (effectiveCooldownHours * 3600 * 1000));
+};
+
 module.exports = createCoreController(
   'api::flashcard.flashcard',
   ({ strapi }) => ({
@@ -125,6 +141,11 @@ module.exports = createCoreController(
           for (const candidate of candidates) {
             // Remembered cards are not part of the review queue, even if next_review_at is null or old.
             if (isRememberedCard(candidate, reviewTiers, tierService)) {
+              continue;
+            }
+
+            const tier = getEntityCardTier(candidate, reviewTiers, tierService);
+            if (tier && !isDueByCooldown(candidate, tier)) {
               continue;
             }
 

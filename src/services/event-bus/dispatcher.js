@@ -25,7 +25,7 @@ module.exports = ({ queue, strapi }) => {
       const { review, eventId } = event;
       const id = eventId || uuidv4();
       const userid = String(review.userId);
-      const username = await loadUsername(review.userId, review.userName || review.username || null);
+      const username = await loadUsername(review.userId, review.username || review.userName || null);
 
       queue.enqueue({
         event_name: 'flashcard.review',
@@ -35,7 +35,9 @@ module.exports = ({ queue, strapi }) => {
         flashcard_id: review.flashcardId,
         review: {
           ...review,
-          userName: username,
+          userId: review.userId,
+          userid,
+          username,
         },
       });
     },
@@ -52,6 +54,8 @@ module.exports = ({ queue, strapi }) => {
         flashcard_id: flashcard.flashcardId,
         flashcard: {
           ...flashcard,
+          userId: flashcard.userId,
+          userid: String(flashcard.userId),
           username,
         },
       });
@@ -69,6 +73,8 @@ module.exports = ({ queue, strapi }) => {
         article_id: article.userArticleId,
         article: {
           ...article,
+          userId: article.userId,
+          userid: String(article.userId),
           username,
         },
       });

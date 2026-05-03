@@ -434,9 +434,13 @@ test('review action updates flashcard-stat synchronously and creates missing row
   await app.service('review-event-queue').waitForIdle(15000);
 });
 
-test('findForReview uses next_review_at to return only due flashcards', async () => {
+test('findForReview returns only cards that are both scheduled due and out of cooldown', async () => {
   const user = await createAuthenticatedUser();
   const controller = app.controller('api::flashcard.flashcard');
+  const now = new Date();
+  const staleIso = new Date(now.getTime() - (48 * 3600 * 1000)).toISOString();
+  const recentIso = new Date(now.getTime() - (1 * 3600 * 1000)).toISOString();
+  const futureIso = new Date(now.getTime() + (48 * 3600 * 1000)).toISOString();
   const word = await app.entityService.create('api::word.word', {
     data: {
       target_text: `review-list-word-${Date.now()}`,
@@ -458,8 +462,8 @@ test('findForReview uses next_review_at to return only due flashcards', async ()
       wrong_streak: 0,
       is_remembered: false,
       review_tire: reviewTiers.warmup.id,
-      last_reviewed_at: '2026-04-20T12:00:00.000Z',
-      next_review_at: '2026-04-21T12:00:00.000Z',
+      last_reviewed_at: staleIso,
+      next_review_at: staleIso,
     },
   });
   await app.entityService.create('api::flashcard.flashcard', {
@@ -470,8 +474,20 @@ test('findForReview uses next_review_at to return only due flashcards', async ()
       wrong_streak: 0,
       is_remembered: false,
       review_tire: reviewTiers.warmup.id,
-      last_reviewed_at: '2026-04-24T12:00:00.000Z',
-      next_review_at: '2099-04-24T12:00:00.000Z',
+      last_reviewed_at: staleIso,
+      next_review_at: futureIso,
+    },
+  });
+  await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 1,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.warmup.id,
+      last_reviewed_at: recentIso,
+      next_review_at: staleIso,
     },
   });
   const nullNextReviewFlashcard = await app.entityService.create('api::flashcard.flashcard', {
@@ -495,6 +511,51 @@ test('findForReview uses next_review_at to return only due flashcards', async ()
 
   assert.deepEqual(returnedIds, [dueFlashcard.id, nullNextReviewFlashcard.id].sort((a, b) => a - b));
   assert.equal(response.meta.pagination.total, 2);
+});
+
+test('reviewing a card returned by findForReview updates last_reviewed_at', async () => {
+  const user = await createAuthenticatedUser();
+  const controller = app.controller('api::flashcard.flashcard');
+  const staleIso = new Date(Date.now() - (48 * 3600 * 1000)).toISOString();
+  const word = await app.entityService.create('api::word.word', {
+    data: {
+      target_text: `review-last-reviewed-${Date.now()}`,
+    },
+  });
+  const wordDefinition = await app.entityService.create('api::word-definition.word-definition', {
+    data: {
+      locale: 'en',
+      owner: user.id,
+      word: word.id,
+      base_text: 'review last reviewed word',
+    },
+  });
+  const flashcard = await app.entityService.create('api::flashcard.flashcard', {
+    data: {
+      user: user.id,
+      word_definition: wordDefinition.id,
+      correct_streak: 0,
+      wrong_streak: 0,
+      is_remembered: false,
+      review_tire: reviewTiers.new.id,
+      last_reviewed_at: staleIso,
+      next_review_at: staleIso,
+    },
+  });
+
+  const reviewList = await controller.findForReview(
+    makeFindForReviewCtx(user, { pagination: { page: 1, pageSize: 10 } })
+  );
+  assert.ok(reviewList.data.some((item) => item.id === flashcard.id));
+
+  await controller.review(makeCtx(user, flashcard.id, 'correct'));
+
+  const updatedFlashcard = await app.entityService.findOne('api::flashcard.flashcard', flashcard.id, {
+    populate: { review_tire: true },
+  });
+
+  assert.ok(updatedFlashcard.last_reviewed_at);
+  assert.ok(new Date(updatedFlashcard.last_reviewed_at) > new Date(staleIso));
 });
 
 test('registerWithProfile creates one flashcard-stat row per review tier for the new user', async () => {

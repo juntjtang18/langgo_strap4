@@ -28,6 +28,8 @@ const buildReviewEvent = ({
   review: {
     flashcardId,
     userId: user.id,
+    userid: String(user.id),
+    username: user.username || user.email || `user-${user.id}`,
     reviewedAt,
     result,
     level,
