@@ -3,8 +3,7 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-const buildWordDefinitionCreatedEvent = ({
-  wordDefinitionId,
+const buildFlashcardCreatedEvent = ({
   flashcardId,
   user,
   createdAt,
@@ -12,11 +11,10 @@ const buildWordDefinitionCreatedEvent = ({
   baseText,
   targetText,
 }) => ({
-  event: 'word_definition.created',
-  eventId: `word-definition-created:${wordDefinitionId}`,
+  event: 'flashcard.created',
+  eventId: `flashcard-created:${flashcardId}`,
   occurredAt: createdAt,
-  wordDefinition: {
-    wordDefinitionId,
+  flashcard: {
     flashcardId,
     userId: user.id,
     username: user.username || user.email || `user-${user.id}`,
@@ -257,7 +255,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       let flashcard;
       let flashcardCreated = false;
       let createdFlashcardTier = null;
-      let wordDefinitionCreatedEvent = null;
+      let flashcardCreatedEvent = null;
 
       if (!wordDefinition) {
         const createdAt = new Date().toISOString();
@@ -298,8 +296,7 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
             populate: { word: true, part_of_speech: true },
         });
 
-        wordDefinitionCreatedEvent = buildWordDefinitionCreatedEvent({
-          wordDefinitionId: wordDefinition.id,
+        flashcardCreatedEvent = buildFlashcardCreatedEvent({
           flashcardId: flashcard.id,
           user,
           createdAt,
@@ -343,11 +340,11 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
           strapi.log.error("Could not find 'word-processing-queue' service.");
       }
 
-      if (wordDefinitionCreatedEvent) {
+      if (flashcardCreatedEvent) {
         try {
-          strapi.service('event-dispatcher').dispatchFlashcardCreate(wordDefinitionCreatedEvent);
+          strapi.service('event-dispatcher').dispatchFlashcardCreate(flashcardCreatedEvent);
         } catch (dispatchError) {
-          strapi.log.error(`word_definition.created dispatch error: ${dispatchError.message}`, dispatchError.stack);
+          strapi.log.error(`flashcard.created dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }
       }
       

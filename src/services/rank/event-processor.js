@@ -7,151 +7,191 @@ module.exports = ({ strapi }) => {
   const groups = () => strapi.service('rank-group');
   const userGroups = () => strapi.service('rank-user-group');
 
+  const buildEventPayload = (eventData) => ({
+    event_id: eventData.event_id || null,
+    event_name: eventData.event_name,
+    userid: String(eventData.userid),
+    username: eventData.username || null,
+    ...(eventData.flashcard_id ? { flashcard_id: eventData.flashcard_id } : {}),
+    ...(eventData.article_id ? { article_id: eventData.article_id } : {}),
+    ...(eventData.review ? { review: eventData.review } : {}),
+    ...(eventData.article ? { article: eventData.article } : {}),
+    ...(eventData.flashcard ? { flashcard: eventData.flashcard } : {}),
+    ...(eventData.payload || {}),
+  });
+
+  const serializeHandleResult = (value) => {
+    if (value == null) return '';
+    if (typeof value === 'string') return value;
+    try {
+      return JSON.stringify(value);
+    } catch (error) {
+      return String(value);
+    }
+  };
+
   const logEvent = async (eventData) =>
     strapi.entityService.create('api::rs-event.rs-event', {
       data: {
         event_id: eventData.event_id || null,
         event_name: eventData.event_name,
-        userid: eventData.userid,
-        payload: eventData.payload || {},
+        userid: String(eventData.userid),
+        username: eventData.username || null,
+        payload: buildEventPayload(eventData),
         status: 'processing',
       },
     });
 
-  const markHandled = (id) =>
+  const markHandled = (id, result) =>
     strapi.entityService.update('api::rs-event.rs-event', id, {
-      data: { status: 'handled', handled_at: new Date().toISOString() },
+      data: {
+        status: 'handled',
+        handled_at: new Date().toISOString(),
+        handle_result: serializeHandleResult(result || { handled: true }),
+      },
     });
 
   const markFailed = (id, error) =>
     strapi.entityService.update('api::rs-event.rs-event', id, {
-      data: { status: 'failed', payload: { error: error.message } },
+      data: {
+        status: 'failed',
+        handle_result: error.message,
+      },
     });
 
-  const isDuplicate = async (eventId) => {
-    if (!eventId) return false;
-    const found = await strapi.entityService.findMany('api::rs-event.rs-event', {
-      filters: { event_id: eventId, status: { $in: ['handled', 'processing'] } },
-      limit: 1,
-    });
-    return found.length > 0;
+  const extractUsername = async (eventData) => {
+    const fromPayload =
+      eventData.username ||
+      eventData.payload?.username ||
+      eventData.payload?.review?.username ||
+      eventData.payload?.article?.username ||
+      null;
+
+    if (fromPayload) return fromPayload;
+
+    const numericId = Number(eventData.userid);
+    if (!Number.isInteger(numericId)) return null;
+
+    try {
+      const user = await strapi.entityService.findOne('plugin::users-permissions.user', numericId, {
+        fields: ['username'],
+      });
+      return user?.username || null;
+    } catch (error) {
+      strapi.log.warn?.(`[Rank] Unable to resolve username for user ${eventData.userid}: ${error.message}`);
+      return null;
+    }
   };
 
-  const registerUser = async (userid, groupRule, groupRanks) => {
-    const lowestRank = groupRanks[groupRanks.length - 1];
-    const level1 = await rules().findOrCreateLevel(1);
-    const group = await groups().assignUserToRankedGroup(
-      userid, groupRule.id, lowestRank.id, groupRule.group_size
-    );
-    await userGroups().upsertUserGroup(userid, group.id);
-    return snapshots().createInitialSnapshot(userid, group.id, lowestRank.id, level1.id);
-  };
+  const getEventCounters = (eventName, payload = {}) => {
+    const payloadWordCount = Number(payload.word_count || 0);
+    const payloadArticleCount = Number(payload.article_count || 0);
 
-  const applyDelta = (snapshot, eventName, points) => {
-    const delta = {
-      points_add: (snapshot.points_add || 0) + points,
-      word_count: snapshot.word_count || 0,
-      word_add: snapshot.word_add || 0,
-      article_count: snapshot.article_count || 0,
-      article_add: snapshot.article_add || 0,
-    };
-    if (eventName === 'flashcard.create') { delta.word_count += 1; delta.word_add += 1; }
-    else if (eventName === 'article.create') { delta.article_count += 1; delta.article_add += 1; }
-    return delta;
+    if (payloadWordCount || payloadArticleCount) {
+      return {
+        wordCount: payloadWordCount,
+        articleCount: payloadArticleCount,
+      };
+    }
+
+    if (eventName === 'flashcard.create') {
+      return { wordCount: 1, articleCount: 0 };
+    }
+    if (eventName === 'article.create') {
+      return { wordCount: 0, articleCount: 1 };
+    }
+    return { wordCount: 0, articleCount: 0 };
   };
 
   return {
     async processEvent(eventData) {
-      const { event_id, event_name, userid } = eventData;
-
-      if (await isDuplicate(event_id)) {
-        strapi.log.info(`[Rank] Skipping duplicate event: ${event_id}`);
-        return { duplicate: true };
-      }
-
-      const eventRecord = await logEvent(eventData);
+      const username = await extractUsername(eventData);
+      const eventRecord = await logEvent({ ...eventData, username });
 
       try {
-        const groupRule = await rules().loadGroupRule();
+        const [groupRule, levelRule, pointRule] = await Promise.all([
+          rules().loadGroupRule(),
+          rules().loadLevelRule(),
+          rules().loadPointRule(eventData.event_name),
+        ]);
+
         if (!groupRule) throw new Error('No rs_group_rule configured');
+        if (!levelRule) throw new Error('No rs_level_rule configured');
 
         const groupRanks = await rules().loadGroupRanks(groupRule.id);
         if (!groupRanks.length) throw new Error('No rs_group_rank records configured');
 
-        if (event_name === 'user.register') {
-          if (await snapshots().userExists(userid)) {
-            await markHandled(eventRecord.id);
-            return { skipped: true, reason: 'already_registered' };
-          }
-          await registerUser(userid, groupRule, groupRanks);
-          await markHandled(eventRecord.id);
-          return { registered: true };
-        }
-
-        const levelRule = await rules().loadLevelRule();
-        if (!levelRule) throw new Error('No rs_level_rule configured');
-
-        // Auto-register user if first event arrives without a prior user.register
-        if (!(await snapshots().userExists(userid))) {
-          await registerUser(userid, groupRule, groupRanks);
-        }
-
-        const pointRule = await rules().loadPointRule(event_name);
+        const snapshot = await snapshots().ensureTodaySnapshot(eventData.userid, username);
         const eventPoints = pointRule?.points || 0;
+        const counters = getEventCounters(eventData.event_name, eventData.payload);
 
-        // Load or create today's snapshot
-        let snapshot = await snapshots().getTodaySnapshot(userid);
-        if (!snapshot) {
-          const previous = await snapshots().getLatestSnapshot(userid);
-          snapshot = previous
-            ? await snapshots().createFromPrevious(userid, previous)
-            : await snapshots().createInitialSnapshot(
-                userid, null, groupRanks[groupRanks.length - 1].id,
-                (await rules().findOrCreateLevel(1)).id
-              );
-        }
+        const nextTotalPoints = (snapshot.total_points || 0) + eventPoints;
+        const nextPointsAdd = (snapshot.points_add || 0) + eventPoints;
+        const nextWordCount = (snapshot.word_count || 0) + counters.wordCount;
+        const nextWordAdd = (snapshot.word_add || 0) + counters.wordCount;
+        const nextArticleCount = (snapshot.article_count || 0) + counters.articleCount;
+        const nextArticleAdd = (snapshot.article_add || 0) + counters.articleCount;
 
-        const delta = applyDelta(snapshot, event_name, eventPoints);
-        const totalPoints = (snapshot.total_points || 0) + eventPoints;
-
-        // Level recalculation
         const currentLevelNo = snapshot.rs_level?.level_no || 1;
-        const newLevelNo = levels().calculateLevel(totalPoints, currentLevelNo, levelRule);
-        const levelChange = newLevelNo - currentLevelNo;
+        const nextLevelNo = levels().calculateLevel(nextTotalPoints, currentLevelNo, levelRule);
+        const levelChange = nextLevelNo - currentLevelNo;
+        const levelRecord = await rules().findOrCreateLevel(nextLevelNo);
+        const levelTitle = await rules().findLevelTitle(levelRecord.id, 'en');
 
-        // Group rank recalculation
-        const periodPointsBase = await snapshots().getPeriodPoints(userid, groupRule.period_days);
-        const newGroupRank = groups().getGroupRankForPoints(periodPointsBase + eventPoints, groupRanks);
-        const groupRankChange = newGroupRank.rank_no - (snapshot.rs_group_rank?.rank_no || 0);
+        const priorPeriodPoints = (await userGroups().getByUserid(eventData.userid))?.period_points || 0;
+        const periodPointsBase = await snapshots().getPeriodPoints(eventData.userid, groupRule.period_days);
+        const nextPeriodPoints = snapshot.record_date === snapshots().getTodayDate()
+          ? periodPointsBase + eventPoints
+          : periodPointsBase;
+        const nextGroupRank = groups().getGroupRankForPoints(nextPeriodPoints, groupRanks);
+        const currentGroupRankNo = snapshot.rs_group_rank?.rank_no || 0;
+        const groupRankChange = nextGroupRank.rank_no - currentGroupRankNo;
+        const groupRankTitle = await rules().findGroupRankTitle(nextGroupRank.id, 'en');
 
-        // Reassign group when rank changes
-        let newGroupId = snapshot.rs_group?.id || null;
-        if (newGroupRank.id !== snapshot.rs_group_rank?.id) {
-          const newGroup = await groups().assignUserToRankedGroup(
-            userid, groupRule.id, newGroupRank.id, groupRule.group_size
-          );
-          newGroupId = newGroup.id;
-        }
-
-        await userGroups().upsertUserGroup(userid, newGroupId);
-
-        const levelRecord = await rules().findOrCreateLevel(newLevelNo);
+        const assignment = await groups().assignUserToRankedGroup(
+          eventData.userid,
+          username,
+          groupRule.id,
+          nextGroupRank.id,
+          groupRule.group_size,
+          nextPeriodPoints,
+          groupRankTitle
+        );
 
         await snapshots().updateSnapshot(snapshot.id, {
-          ...delta,
-          total_points: totalPoints,
-          level_change: levelChange,
-          group_rank_change: groupRankChange,
+          username: username || snapshot.username || null,
+          total_points: nextTotalPoints,
+          points_add: nextPointsAdd,
+          word_count: nextWordCount,
+          word_add: nextWordAdd,
+          article_count: nextArticleCount,
+          article_add: nextArticleAdd,
           rs_level: levelRecord.id,
-          rs_group: newGroupId,
-          rs_group_rank: newGroupRank.id,
+          level_title: levelTitle,
+          level_change: levelChange,
+          rs_group_rank: nextGroupRank.id,
+          rs_group: assignment.group?.id || null,
+          group_rank_title: groupRankTitle,
+          group_rank_change: groupRankChange,
         });
 
-        await markHandled(eventRecord.id);
-        return { userid, totalPoints, level: newLevelNo, levelChange, groupRankNo: newGroupRank.rank_no, groupRankChange };
-
+        const result = {
+          userid: String(eventData.userid),
+          username: username || null,
+          totalPoints: nextTotalPoints,
+          pointsAdd: nextPointsAdd,
+          wordCount: nextWordCount,
+          articleCount: nextArticleCount,
+          level: nextLevelNo,
+          levelChange,
+          groupRankNo: nextGroupRank.rank_no,
+          groupRankChange,
+          periodPoints: nextPeriodPoints,
+        };
+        await markHandled(eventRecord.id, result);
+        return result;
       } catch (error) {
-        strapi.log.error(`[Rank] Failed to process "${event_name}" for "${userid}": ${error.message}`);
+        strapi.log.error(`[Rank] Failed to process "${eventData.event_name}" for "${eventData.userid}": ${error.message}`);
         await markFailed(eventRecord.id, error);
         throw error;
       }

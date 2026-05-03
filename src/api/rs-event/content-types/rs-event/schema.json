@@ -30,6 +30,12 @@
     },
     "handled_at": {
       "type": "datetime"
+    },
+    "username": {
+      "type": "string"
+    },
+    "handle_result": {
+      "type": "text"
     }
   }
 }

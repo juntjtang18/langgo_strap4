@@ -12,14 +12,19 @@
   "pluginOptions": {},
   "attributes": {
     "userid": {
-      "type": "string",
-      "required": true
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
     },
     "rs_group": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::rs-group.rs-group",
       "inversedBy": "rs_user_groups"
+    },
+    "period_points": {
+      "type": "integer"
     }
   }
 }

@@ -104,3 +104,31 @@ curl X GET "http://localhost:1338/api/review-flashcards" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc2MTU2NzYsImV4cCI6MTc4MDIwNzY3Nn0.H8P7gCx3ESBd9SaXQpB0eUBCXA2JPngaObLW7Ab6SYI" | jq .
 
 
+
+bash-3.2$ curl -X GET "http://localhost:1338/api/rank/me"   -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
+{
+  "data": null,
+  "error": {
+    "status": 500,
+    "name": "InternalServerError",
+    "message": "Internal Server Error"
+  }
+}
+
+
+
+{
+  "review": {
+    "level": "monthly",
+    "result": "correct",
+    "userId": 8,
+    "userName": "vivian",
+    "newlevel": "monthly",
+    "effective": false,
+    "reviewedAt": "2026-05-02T18:35:53.128Z",
+    "flashcardId": 2627
+  },
+  "flashcardId": 2627
+}
+
+curl -X GET "http://localhost:1338/api/myleaderboard"   -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .

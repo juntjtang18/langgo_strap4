@@ -1422,6 +1422,8 @@ export interface ApiRsEventRsEvent extends Schema.CollectionType {
     payload: Attribute.JSON;
     status: Attribute.String;
     handled_at: Attribute.DateTime;
+    username: Attribute.String;
+    handle_result: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1491,15 +1493,15 @@ export interface ApiRsGroupRsGroup extends Schema.CollectionType {
       'manyToOne',
       'api::rs-group-rank.rs-group-rank'
     >;
-    rs_user_snapshots: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'oneToMany',
-      'api::rs-user-snapshot.rs-user-snapshot'
-    >;
     rs_user_groups: Attribute.Relation<
       'api::rs-group.rs-group',
       'oneToMany',
       'api::rs-user-group.rs-user-group'
+    >;
+    rs_user_snapshots: Attribute.Relation<
+      'api::rs-group.rs-group',
+      'oneToMany',
+      'api::rs-user-snapshot.rs-user-snapshot'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1791,12 +1793,14 @@ export interface ApiRsUserGroupRsUserGroup extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    userid: Attribute.String & Attribute.Required;
+    userid: Attribute.String;
+    username: Attribute.String;
     rs_group: Attribute.Relation<
       'api::rs-user-group.rs-user-group',
       'manyToOne',
       'api::rs-group.rs-group'
     >;
+    period_points: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1820,42 +1824,40 @@ export interface ApiRsUserSnapshotRsUserSnapshot extends Schema.CollectionType {
     singularName: 'rs-user-snapshot';
     pluralName: 'rs-user-snapshots';
     displayName: 'rs user snapshot';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
     userid: Attribute.String & Attribute.Required;
+    username: Attribute.String;
     record_date: Attribute.Date & Attribute.Required;
-    rs_group: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
-      'manyToOne',
-      'api::rs-group.rs-group'
-    >;
-    rs_group_rank: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
-      'manyToOne',
-      'api::rs-group-rank.rs-group-rank'
-    >;
-    group_rank_change: Attribute.Integer;
+    total_points: Attribute.Integer & Attribute.DefaultTo<0>;
+    points_add: Attribute.Integer & Attribute.DefaultTo<0>;
+    word_count: Attribute.Integer & Attribute.DefaultTo<0>;
+    word_add: Attribute.Integer & Attribute.DefaultTo<0>;
+    article_count: Attribute.Integer & Attribute.DefaultTo<0>;
+    article_add: Attribute.Integer & Attribute.DefaultTo<0>;
     rs_level: Attribute.Relation<
       'api::rs-user-snapshot.rs-user-snapshot',
       'manyToOne',
       'api::rs-level.rs-level'
     >;
+    level_title: Attribute.String;
     level_change: Attribute.Integer & Attribute.DefaultTo<0>;
-    total_points: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    points_add: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>;
-    word_count: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>;
-    word_add: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>;
-    article_count: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    article_add: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
+    rs_group_rank: Attribute.Relation<
+      'api::rs-user-snapshot.rs-user-snapshot',
+      'manyToOne',
+      'api::rs-group-rank.rs-group-rank'
+    >;
+    rs_group: Attribute.Relation<
+      'api::rs-user-snapshot.rs-user-snapshot',
+      'manyToOne',
+      'api::rs-group.rs-group'
+    >;
+    group_rank_title: Attribute.String;
+    group_rank_change: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

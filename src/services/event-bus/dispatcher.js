@@ -2,52 +2,91 @@
 
 const { v4: uuidv4 } = require('uuid');
 
-// Sole public interface for emitting domain events into the event bus.
-// Normalises controller payloads into canonical event objects before queuing.
-module.exports = ({ queue }) => ({
-  dispatchFlashcardReviewCompleted(event) {
-    const { review, eventId } = event;
-    const id = eventId || uuidv4();
-    const userid = String(review.userId);
+module.exports = ({ queue, strapi }) => {
+  const loadUsername = async (userId, fallback = null) => {
+    const numericId = Number(userId);
+    if (!Number.isInteger(numericId)) {
+      return fallback || null;
+    }
 
-    queue.enqueue({
-      event_name: 'flashcard.review',
-      event_id: id,
-      userid,
-      flashcard_id: review.flashcardId,
-      review,
-    });
-  },
+    try {
+      const user = await strapi.entityService.findOne('plugin::users-permissions.user', numericId, {
+        fields: ['username'],
+      });
+      return user?.username || fallback || null;
+    } catch (error) {
+      strapi.log.warn?.(`[EventBus] Unable to resolve username for user ${userId}: ${error.message}`);
+      return fallback || null;
+    }
+  };
 
-  dispatchFlashcardCreate(event) {
-    const { wordDefinition, eventId } = event;
-    queue.enqueue({
-      event_name: 'flashcard.create',
-      event_id: eventId || uuidv4(),
-      userid: String(wordDefinition.userId),
-      flashcard_id: wordDefinition.flashcardId,
-    });
-  },
+  return {
+    async dispatchFlashcardReviewCompleted(event) {
+      const { review, eventId } = event;
+      const id = eventId || uuidv4();
+      const userid = String(review.userId);
+      const username = await loadUsername(review.userId, review.userName || review.username || null);
 
-  dispatchArticleCreate(event) {
-    const { article, eventId } = event;
-    queue.enqueue({
-      event_name: 'article.create',
-      event_id: eventId || uuidv4(),
-      userid: String(article.userId),
-      article_id: article.userArticleId,
-    });
-  },
+      queue.enqueue({
+        event_name: 'flashcard.review',
+        event_id: id,
+        userid,
+        username,
+        flashcard_id: review.flashcardId,
+        review: {
+          ...review,
+          userName: username,
+        },
+      });
+    },
 
-  dispatchUserRegister(userid) {
-    queue.enqueue({
-      event_name: 'user.register',
-      event_id: uuidv4(),
-      userid: String(userid),
-    });
-  },
+    async dispatchFlashcardCreate(event) {
+      const { flashcard, eventId } = event;
+      const username = await loadUsername(flashcard.userId, flashcard.username || null);
 
-  waitForIdle(timeoutMs = 5000) {
-    return queue.waitForIdle(timeoutMs);
-  },
-});
+      queue.enqueue({
+        event_name: 'flashcard.create',
+        event_id: eventId || uuidv4(),
+        userid: String(flashcard.userId),
+        username,
+        flashcard_id: flashcard.flashcardId,
+        flashcard: {
+          ...flashcard,
+          username,
+        },
+      });
+    },
+
+    async dispatchArticleCreate(event) {
+      const { article, eventId } = event;
+      const username = await loadUsername(article.userId, article.username || null);
+
+      queue.enqueue({
+        event_name: 'article.create',
+        event_id: eventId || uuidv4(),
+        userid: String(article.userId),
+        username,
+        article_id: article.userArticleId,
+        article: {
+          ...article,
+          username,
+        },
+      });
+    },
+
+    async dispatchUserRegister(userid) {
+      const username = await loadUsername(userid);
+
+      queue.enqueue({
+        event_name: 'user.register',
+        event_id: uuidv4(),
+        userid: String(userid),
+        username,
+      });
+    },
+
+    waitForIdle(timeoutMs = 5000) {
+      return queue.waitForIdle(timeoutMs);
+    },
+  };
+};

@@ -10,7 +10,7 @@ module.exports = ({ strapi }) => {
     strapi,
   });
 
-  const dispatcher = createDispatcher({ queue });
+  const dispatcher = createDispatcher({ queue, strapi });
 
   strapi.container.get('services').set('event-bus-queue', queue);
   strapi.container.get('services').set('event-dispatcher', dispatcher);

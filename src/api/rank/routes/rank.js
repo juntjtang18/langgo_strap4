@@ -19,6 +19,15 @@ module.exports = {
     },
     {
       method: 'GET',
+      path: '/myleaderboard',
+      handler: 'rank.getMyLeaderboard',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'GET',
       path: '/rank/users/:userid',
       handler: 'rank.getUserStatus',
       config: { auth: false },

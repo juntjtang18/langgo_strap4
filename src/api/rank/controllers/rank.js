@@ -25,6 +25,28 @@ async function findTitle(uid, relationField, relationId, locale) {
   );
 }
 
+async function getCurrentUserProfile(userId) {
+  const profiles = await strapi.entityService.findMany(
+    'api::user-profile.user-profile',
+    {
+      filters: { user: userId },
+      fields: ['id', 'baseLanguage'],
+      limit: 1,
+    }
+  );
+
+  return profiles[0] || null;
+}
+
+function requireAuthenticatedUser(ctx) {
+  if (!ctx.state.user) {
+    ctx.unauthorized('You must be logged in to perform this action.');
+    return null;
+  }
+
+  return ctx.state.user;
+}
+
 module.exports = {
   async submitEvent(ctx) {
     const { event_id, event_name, userid, payload } = ctx.request.body || {};
@@ -52,11 +74,9 @@ module.exports = {
       'api::rs-user-snapshot.rs-user-snapshot',
       {
         filters: { userid: userId },
-        sort: { record_date: 'desc' },
         fields: [
           'id',
           'userid',
-          'record_date',
           'total_points',
           'points_add',
           'word_count',
@@ -65,6 +85,8 @@ module.exports = {
           'article_add',
           'group_rank_change',
           'level_change',
+          'level_title',
+          'group_rank_title',
         ],
         populate: {
           rs_group: {
@@ -92,6 +114,16 @@ module.exports = {
       return (ctx.body = { data: { latest_snapshot: null } });
     }
 
+    const userGroups = await strapi.entityService.findMany(
+      'api::rs-user-group.rs-user-group',
+      {
+        filters: { userid: userId },
+        fields: ['id', 'period_points'],
+        limit: 1,
+      }
+    );
+    const userGroup = userGroups[0] || null;
+
     const groupRank =
       snapshot?.rs_group?.rs_group_rank ||
       snapshot?.rs_group_rank ||
@@ -116,7 +148,7 @@ module.exports = {
         latest_snapshot: {
           id: snapshot.id,
           userid: snapshot.userid,
-          record_date: snapshot.record_date,
+          record_date: null,
 
           total_points: snapshot.total_points,
           points_add: snapshot.points_add,
@@ -129,41 +161,32 @@ module.exports = {
 
           level_no: snapshot.rs_level?.level_no || null,
           level_change: snapshot.level_change,
-          level_title: levelTitle,
+          level_title: levelTitle || snapshot.level_title || null,
 
           group_id: snapshot.rs_group?.id || null,
           group_no: snapshot.rs_group?.group_no || null,
 
           group_rank: groupRank?.rank_no || null,
-          group_rank_title: groupRankTitle,
+          group_rank_title: groupRankTitle || snapshot.group_rank_title || null,
 
           group_rank_change: snapshot.group_rank_change,
+          period_points: userGroup?.period_points || 0,
+          period_points_change: 0,
         },
       },
     });
   },
 
   async getMeStatus(ctx) {
-    if (!ctx.state.user) {
-      return ctx.unauthorized('You must be logged in to perform this action.');
-    }
+    const user = requireAuthenticatedUser(ctx);
+    if (!user) return;
 
-    const { id: userId } = ctx.state.user;
+    const { id: userId } = user;
+    const profile = await getCurrentUserProfile(userId);
 
-    const profiles = await strapi.entityService.findMany(
-      'api::user-profile.user-profile',
-      {
-        filters: { user: userId },
-        fields: ['id', 'baseLanguage'],
-        limit: 1,
-      }
-    );
-
-    if (profiles.length === 0) {
+    if (!profile) {
       return ctx.notFound('No user profile found for the current user.');
     }
-
-    const profile = profiles[0];
 
     ctx.params = {
       ...ctx.params,
@@ -176,5 +199,74 @@ module.exports = {
     };
 
     return this.getUserStatus(ctx);
+  },
+
+  async getMyLeaderboard(ctx) {
+    const user = requireAuthenticatedUser(ctx);
+    if (!user) return;
+
+    const profile = await getCurrentUserProfile(user.id);
+    if (!profile) {
+      return ctx.notFound('No user profile found for the current user.');
+    }
+
+    const locale = ctx.query?.locale || profile.baseLanguage || 'en';
+    const membership = await strapi.service('rank-user-group').getByUserid(user.id);
+
+    if (!membership?.rs_group?.id) {
+      ctx.body = {
+        data: {
+          group: null,
+          members: [],
+        },
+      };
+      return;
+    }
+
+    const group = await strapi.entityService.findOne('api::rs-group.rs-group', membership.rs_group.id, {
+      fields: ['id', 'group_no'],
+      populate: {
+        rs_group_rank: {
+          fields: ['id', 'rank_no'],
+        },
+      },
+    });
+
+    const members = await strapi.service('rank-user-group').listByGroup(membership.rs_group.id);
+    const sortedMembers = members
+      .slice()
+      .sort((left, right) => {
+        const pointDelta = (right.period_points || 0) - (left.period_points || 0);
+        if (pointDelta !== 0) return pointDelta;
+        const userCompare = String(left.userid).localeCompare(String(right.userid), 'en', { numeric: true });
+        if (userCompare !== 0) return userCompare;
+        return (left.id || 0) - (right.id || 0);
+      })
+      .map((row, index) => ({
+        userid: String(row.userid),
+        username: row.username || null,
+        period_points: row.period_points || 0,
+        order_in_group: index + 1,
+      }));
+
+    const groupRankTitle = await findTitle(
+      'api::rs-group-rank-title.rs-group-rank-title',
+      'rs_group_rank',
+      group?.rs_group_rank?.id,
+      locale
+    );
+
+    ctx.body = {
+      data: {
+        group: {
+          group_id: group?.id || null,
+          group_no: group?.group_no || null,
+          group_rank: group?.rs_group_rank?.rank_no || null,
+          group_rank_title: groupRankTitle || null,
+          member_count: members.length,
+        },
+        members: sortedMembers,
+      },
+    };
   },
 };
