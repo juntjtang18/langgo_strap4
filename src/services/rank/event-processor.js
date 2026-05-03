@@ -5,7 +5,6 @@ module.exports = ({ strapi }) => {
   const snapshots = () => strapi.service('rank-snapshot');
   const levels = () => strapi.service('rank-level');
   const groups = () => strapi.service('rank-group');
-  const userGroups = () => strapi.service('rank-user-group');
 
   const buildEventPayload = (eventData) => ({
     event_id: eventData.event_id || null,
@@ -138,11 +137,13 @@ module.exports = ({ strapi }) => {
         const levelRecord = await rules().findOrCreateLevel(nextLevelNo);
         const levelTitle = await rules().findLevelTitle(levelRecord.id, 'en');
 
-        const priorPeriodPoints = (await userGroups().getByUserid(eventData.userid))?.period_points || 0;
+        const previousSnapshot = await snapshots().getPreviousSnapshot(eventData.userid);
+        const priorPeriodPoints = previousSnapshot?.period_points || 0;
         const periodPointsBase = await snapshots().getPeriodPoints(eventData.userid, groupRule.period_days);
         const nextPeriodPoints = snapshot.record_date === snapshots().getTodayDate()
           ? periodPointsBase + eventPoints
           : periodPointsBase;
+        const periodPointsChange = nextPeriodPoints - priorPeriodPoints;
         const nextGroupRank = groups().getGroupRankForPoints(nextPeriodPoints, groupRanks);
         const currentGroupRankNo = snapshot.rs_group_rank?.rank_no || 0;
         const groupRankChange = nextGroupRank.rank_no - currentGroupRankNo;
@@ -173,6 +174,8 @@ module.exports = ({ strapi }) => {
           rs_group: assignment.group?.id || null,
           group_rank_title: groupRankTitle,
           group_rank_change: groupRankChange,
+          period_points: nextPeriodPoints,
+          period_points_change: periodPointsChange,
         });
 
         const result = {
@@ -187,6 +190,7 @@ module.exports = ({ strapi }) => {
           groupRankNo: nextGroupRank.rank_no,
           groupRankChange,
           periodPoints: nextPeriodPoints,
+          periodPointsChange,
         };
         await markHandled(eventRecord.id, result);
         return result;

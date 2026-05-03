@@ -77,6 +77,12 @@
     },
     "group_rank_change": {
       "type": "integer"
+    },
+    "period_points": {
+      "type": "integer"
+    },
+    "period_points_change": {
+      "type": "integer"
     }
   }
 }

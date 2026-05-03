@@ -61,6 +61,8 @@ module.exports = ({ strapi }) => ({
         rs_group: previous?.rs_group?.id || null,
         group_rank_title: previous?.group_rank_title || null,
         group_rank_change: 0,
+        period_points: previous?.period_points || 0,
+        period_points_change: 0,
       },
     });
   },
@@ -70,19 +72,17 @@ module.exports = ({ strapi }) => ({
   },
 
   async getPeriodPoints(userid, periodDays, date = new Date()) {
-    const end = new Date(date);
-    end.setHours(0, 0, 0, 0);
-
-    const start = new Date(end);
     const safeDays = Number.isInteger(periodDays) && periodDays > 0 ? periodDays : 7;
-    start.setDate(start.getDate() - safeDays + 1);
+    const endDate = this.getTodayDate(date);
+    const start = new Date(`${endDate}T00:00:00.000Z`);
+    start.setUTCDate(start.getUTCDate() - safeDays + 1);
 
     const rows = await strapi.entityService.findMany('api::rs-user-snapshot.rs-user-snapshot', {
       filters: {
         userid: String(userid),
         record_date: {
           $gte: this.getTodayDate(start),
-          $lte: this.getTodayDate(end),
+          $lte: endDate,
         },
       },
       fields: ['points_add'],

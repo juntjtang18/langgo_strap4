@@ -47,6 +47,52 @@ function requireAuthenticatedUser(ctx) {
   return ctx.state.user;
 }
 
+function toUtcDate(dateString) {
+  return new Date(`${dateString}T00:00:00.000Z`);
+}
+
+async function resolvePeriodMetrics(userid, snapshot) {
+  if (!snapshot) {
+    return {
+      periodPoints: 0,
+      periodPointsChange: 0,
+    };
+  }
+
+  if (snapshot.period_points != null && snapshot.period_points_change != null) {
+    return {
+      periodPoints: snapshot.period_points,
+      periodPointsChange: snapshot.period_points_change,
+    };
+  }
+
+  const groupRule = await strapi.service('rank-rule-loader').loadGroupRule();
+  const periodDays = groupRule?.period_days || 7;
+  const snapshotDate = snapshot.record_date ? toUtcDate(snapshot.record_date) : new Date();
+  const snapshotService = strapi.service('rank-snapshot');
+
+  const periodPoints = await snapshotService.getPeriodPoints(userid, periodDays, snapshotDate);
+  const previousSnapshot = await snapshotService.getPreviousSnapshot(userid, snapshotDate);
+
+  let previousPeriodPoints = 0;
+  if (previousSnapshot) {
+    if (previousSnapshot.period_points != null) {
+      previousPeriodPoints = previousSnapshot.period_points;
+    } else if (previousSnapshot.record_date) {
+      previousPeriodPoints = await snapshotService.getPeriodPoints(
+        userid,
+        periodDays,
+        toUtcDate(previousSnapshot.record_date)
+      );
+    }
+  }
+
+  return {
+    periodPoints,
+    periodPointsChange: periodPoints - previousPeriodPoints,
+  };
+}
+
 module.exports = {
   async submitEvent(ctx) {
     const { event_id, event_name, userid, payload } = ctx.request.body || {};
@@ -77,6 +123,7 @@ module.exports = {
         fields: [
           'id',
           'userid',
+          'record_date',
           'total_points',
           'points_add',
           'word_count',
@@ -87,6 +134,8 @@ module.exports = {
           'level_change',
           'level_title',
           'group_rank_title',
+          'period_points',
+          'period_points_change',
         ],
         populate: {
           rs_group: {
@@ -104,6 +153,7 @@ module.exports = {
             fields: ['id', 'level_no'],
           },
         },
+        sort: [{ record_date: 'desc' }, { id: 'desc' }],
         limit: 1,
       }
     );
@@ -113,16 +163,6 @@ module.exports = {
     if (!snapshot) {
       return (ctx.body = { data: { latest_snapshot: null } });
     }
-
-    const userGroups = await strapi.entityService.findMany(
-      'api::rs-user-group.rs-user-group',
-      {
-        filters: { userid: userId },
-        fields: ['id', 'period_points'],
-        limit: 1,
-      }
-    );
-    const userGroup = userGroups[0] || null;
 
     const groupRank =
       snapshot?.rs_group?.rs_group_rank ||
@@ -142,13 +182,14 @@ module.exports = {
       groupRank?.id,
       locale
     );
+    const { periodPoints, periodPointsChange } = await resolvePeriodMetrics(userId, snapshot);
 
     return (ctx.body = {
       data: {
         latest_snapshot: {
           id: snapshot.id,
           userid: snapshot.userid,
-          record_date: null,
+          record_date: snapshot.record_date || null,
 
           total_points: snapshot.total_points,
           points_add: snapshot.points_add,
@@ -170,8 +211,8 @@ module.exports = {
           group_rank_title: groupRankTitle || snapshot.group_rank_title || null,
 
           group_rank_change: snapshot.group_rank_change,
-          period_points: userGroup?.period_points || 0,
-          period_points_change: 0,
+          period_points: periodPoints,
+          period_points_change: periodPointsChange,
         },
       },
     });

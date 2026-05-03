@@ -165,3 +165,142 @@ test('rank controller getMyLeaderboard returns empty payload when the user has n
     },
   });
 });
+
+test('rank controller getMeStatus returns period points from the latest snapshot', async () => {
+  global.strapi = {
+    service(name) {
+      if (name === 'rank-rule-loader') {
+        return {
+          async loadGroupRule() {
+            return { id: 5, period_days: 14 };
+          },
+        };
+      }
+      if (name === 'rank-snapshot') {
+        return {
+          async getPeriodPoints(userid, periodDays, date) {
+            assert.equal(userid, '60');
+            assert.equal(periodDays, 14);
+            const dateString = date.toISOString().slice(0, 10);
+            if (dateString === '2026-05-02') return 13;
+            if (dateString === '2026-05-01') return 9;
+            throw new Error(`Unexpected getPeriodPoints date ${dateString}`);
+          },
+          async getPreviousSnapshot(userid, date) {
+            assert.equal(userid, '60');
+            assert.equal(date.toISOString().slice(0, 10), '2026-05-02');
+            return {
+              id: 16,
+              userid: '60',
+              record_date: '2026-05-01',
+              period_points: null,
+            };
+          },
+        };
+      }
+
+      throw new Error(`Unexpected service ${name}`);
+    },
+    entityService: {
+      async findMany(uid, query) {
+        if (uid === 'api::user-profile.user-profile') {
+          assert.deepEqual(query, {
+            filters: { user: 60 },
+            fields: ['id', 'baseLanguage'],
+            limit: 1,
+          });
+          return [{ id: 10, baseLanguage: 'en' }];
+        }
+
+        if (uid === 'api::rs-user-snapshot.rs-user-snapshot') {
+          assert.deepEqual(query, {
+            filters: { userid: '60' },
+            fields: [
+              'id',
+              'userid',
+              'record_date',
+              'total_points',
+              'points_add',
+              'word_count',
+              'word_add',
+              'article_count',
+              'article_add',
+              'group_rank_change',
+              'level_change',
+              'level_title',
+              'group_rank_title',
+              'period_points',
+              'period_points_change',
+            ],
+            populate: {
+              rs_group: {
+                fields: ['id', 'group_no'],
+                populate: {
+                  rs_group_rank: {
+                    fields: ['id', 'rank_no'],
+                  },
+                },
+              },
+              rs_group_rank: {
+                fields: ['id', 'rank_no'],
+              },
+              rs_level: {
+                fields: ['id', 'level_no'],
+              },
+            },
+            sort: [{ record_date: 'desc' }, { id: 'desc' }],
+            limit: 1,
+          });
+          return [{
+            id: 15,
+            userid: '60',
+            record_date: '2026-05-02',
+            total_points: 320,
+            points_add: 12,
+            word_count: 30,
+            word_add: 2,
+            article_count: 8,
+            article_add: 1,
+            level_change: 1,
+            level_title: 'Level 3',
+            group_rank_change: 1,
+            group_rank_title: 'Starter',
+            period_points: null,
+            period_points_change: null,
+            rs_group: {
+              id: 1,
+              group_no: 1,
+              rs_group_rank: { id: 20, rank_no: 1 },
+            },
+            rs_group_rank: { id: 20, rank_no: 1 },
+            rs_level: { id: 3, level_no: 3 },
+          }];
+        }
+
+        if (uid === 'api::rs-level-title.rs-level-title') {
+          return [{ title: 'Level 3', locale: 'en' }];
+        }
+
+        if (uid === 'api::rs-group-rank-title.rs-group-rank-title') {
+          return [{ title: 'Starter', locale: 'en' }];
+        }
+
+        if (uid === 'api::rs-user-snapshot.rs-user-snapshot' && query.fields?.length === 1 && query.fields[0] === 'points_add') {
+          throw new Error('Expected rank-snapshot service to be stubbed instead of direct points_add lookup');
+        }
+
+        throw new Error(`Unexpected findMany uid ${uid}`);
+      },
+    },
+  };
+
+  const ctx = createCtx(60);
+  await rankController.getMeStatus(ctx);
+
+  assert.equal(ctx.body.data.latest_snapshot.id, 15);
+  assert.equal(ctx.body.data.latest_snapshot.record_date, '2026-05-02');
+  assert.equal(ctx.body.data.latest_snapshot.period_points, 13);
+  assert.equal(ctx.body.data.latest_snapshot.period_points_change, 4);
+  assert.equal(ctx.body.data.latest_snapshot.group_rank, 1);
+  assert.equal(ctx.body.data.latest_snapshot.level_no, 3);
+});

@@ -1858,6 +1858,8 @@ export interface ApiRsUserSnapshotRsUserSnapshot extends Schema.CollectionType {
     >;
     group_rank_title: Attribute.String;
     group_rank_change: Attribute.Integer;
+    period_points: Attribute.Integer;
+    period_points_change: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

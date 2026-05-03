@@ -388,6 +388,8 @@ test('rank snapshot service creates today snapshot from previous day values', as
     rs_group_rank: 31,
     rs_group: 41,
     group_rank_title: 'Starter',
+    period_points: 0,
+    period_points_change: 0,
     group_rank_change: 0,
   });
 });
@@ -574,6 +576,24 @@ test('rank event processor logs event and updates today snapshot, level, rank, a
     rs_level: { id: 11, level_no: 2 },
     rs_group_rank: { id: 21, rank_no: 1 },
     rs_group: { id: 31 },
+    period_points: 4,
+    period_points_change: 1,
+  };
+  const previousSnapshot = {
+    id: 43,
+    userid: '8',
+    username: 'vivian',
+    record_date: '2026-05-01',
+    total_points: 96,
+    points_add: 7,
+    word_count: 3,
+    word_add: 1,
+    article_count: 2,
+    article_add: 0,
+    rs_level: { id: 11, level_no: 2 },
+    rs_group_rank: { id: 21, rank_no: 1 },
+    rs_group: { id: 31 },
+    period_points: 4,
   };
   const groupRanks = [
     { id: 22, rank_no: 2, min_period_points: 10, rs_group_rule: { id: 5 } },
@@ -617,6 +637,10 @@ test('rank event processor logs event and updates today snapshot, level, rank, a
         serviceCalls.push(['ensureTodaySnapshot', userid, username]);
         return todaySnapshot;
       },
+      async getPreviousSnapshot(userid) {
+        serviceCalls.push(['getPreviousSnapshot', userid]);
+        return previousSnapshot;
+      },
       async getPeriodPoints(userid, periodDays) {
         serviceCalls.push(['getPeriodPoints', userid, periodDays]);
         return 7;
@@ -643,12 +667,6 @@ test('rank event processor logs event and updates today snapshot, level, rank, a
           membership: { id: 66 },
           group: { id: 32 },
         };
-      },
-    },
-    'rank-user-group': {
-      async getByUserid(userid) {
-        serviceCalls.push(['getByUserid', userid]);
-        return { id: 77, period_points: 4 };
       },
     },
   };
@@ -712,6 +730,8 @@ test('rank event processor logs event and updates today snapshot, level, rank, a
     rs_group: 32,
     group_rank_title: 'Active',
     group_rank_change: 1,
+    period_points: 12,
+    period_points_change: 8,
   }]]);
   assert.equal(eventUpdates[0][1].status, 'handled');
   assert.ok(eventUpdates[0][1].handled_at);
@@ -729,6 +749,7 @@ test('rank event processor logs event and updates today snapshot, level, rank, a
       groupRankNo: 2,
       groupRankChange: 1,
       periodPoints: 12,
+      periodPointsChange: 8,
     })
   );
   assert.deepEqual(serviceCalls, [
@@ -736,7 +757,7 @@ test('rank event processor logs event and updates today snapshot, level, rank, a
     ['calculateLevel', 105, 2, 6],
     ['findOrCreateLevel', 3],
     ['findLevelTitle', 12, 'en'],
-    ['getByUserid', '8'],
+    ['getPreviousSnapshot', '8'],
     ['getPeriodPoints', '8', 7],
     ['getGroupRankForPoints', 12, 2],
     ['findGroupRankTitle', 22, 'en'],
