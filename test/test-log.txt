@@ -14,6 +14,12 @@ curl -X POST http://localhost:1338/api/auth/local \
   -H "Content-Type: application/json" \
   -d '{     "identifier": "chinese2@langgo.ca",    "password": "Passw0rd"  }' | jq .
 
+
+curl -X POST http://localhost:1338/api/auth/local \
+  -H "Content-Type: application/json" \
+  -d '{     "identifier": "vivian",    "password": "123456"  }' | jq .
+
+
 curl -X GET "http://localhost:1338/api/proficiency-levels?locale=zh-Hans"
 
 
@@ -63,6 +69,10 @@ curl -X GET "http://localhost:1338/api/rank/me" \
   | jq .
 
 
+curl -X GET "http://localhost:1338/api/rs-user-snapshots" \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs" \
+  | jq .
 
 
 curl -X GET "http://localhost:1338/api/rank/users/60?locale=zh" \
@@ -132,3 +142,149 @@ bash-3.2$ curl -X GET "http://localhost:1338/api/rank/me"   -H 'accept: applicat
 }
 
 curl -X GET "http://localhost:1338/api/myleaderboard"   -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
+
+
+
+curl -X GET "http://localhost:1338/api/rs-user-snapshots" -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
+
+
+
+bash-3.2$ curl -X GET "http://localhost:1338/api/rs-user-snapshots" -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
+{
+  "data": [
+    {
+      "id": 13,
+      "attributes": {
+        "userid": "8",
+        "createdAt": "2026-05-02T23:22:09.114Z",
+        "updatedAt": "2026-05-03T02:06:04.578Z",
+        "username": null,
+        "record_date": "2026-05-02",
+        "total_points": 781,
+        "points_add": 781,
+        "word_count": 0,
+        "word_add": 0,
+        "article_count": 0,
+        "article_add": 0,
+        "level_change": 0,
+        "level_title": null,
+        "group_rank_title": null,
+        "group_rank_change": 0,
+        "period_points": null,
+        "period_points_change": null
+      }
+    },
+    {
+      "id": 14,
+      "attributes": {
+        "userid": "60",
+        "createdAt": "2026-05-02T19:47:42.787Z",
+        "updatedAt": "2026-05-02T20:36:01.106Z",
+        "username": "chinese2",
+        "record_date": "2026-05-01",
+        "total_points": 5,
+        "points_add": 5,
+        "word_count": 0,
+        "word_add": 0,
+        "article_count": 0,
+        "article_add": 0,
+        "level_change": 0,
+        "level_title": "Kindgarden I",
+        "group_rank_title": "Starter",
+        "group_rank_change": 0,
+        "period_points": null,
+        "period_points_change": null
+      }
+    },
+    {
+      "id": 15,
+      "attributes": {
+        "userid": "60",
+        "createdAt": "2026-05-02T20:36:23.598Z",
+        "updatedAt": "2026-05-02T20:36:31.752Z",
+        "username": "chinese2",
+        "record_date": "2026-05-02",
+        "total_points": 9,
+        "points_add": 4,
+        "word_count": 0,
+        "word_add": 0,
+        "article_count": 0,
+        "article_add": 0,
+        "level_change": 0,
+        "level_title": "Kindgarden I",
+        "group_rank_title": "Starter",
+        "group_rank_change": 0,
+        "period_points": null,
+        "period_points_change": null
+      }
+    },
+    {
+      "id": 16,
+      "attributes": {
+        "userid": "60",
+        "createdAt": "2026-05-03T01:04:38.213Z",
+        "updatedAt": "2026-05-03T01:11:56.316Z",
+        "username": "chinese2",
+        "record_date": "2026-04-30",
+        "total_points": 13,
+        "points_add": 4,
+        "word_count": 0,
+        "word_add": 0,
+        "article_count": 0,
+        "article_add": 0,
+        "level_change": 0,
+        "level_title": "Kindgarden I",
+        "group_rank_title": "Starter",
+        "group_rank_change": 0,
+        "period_points": null,
+        "period_points_change": null
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 4
+    }
+  }
+}
+curl -X GET "http://localhost:1338/api/rank/me"   -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
+{
+  "data": {
+    "latest_snapshot": {
+      "id": 17,
+      "userid": "60",
+      "record_date": "2026-05-03",
+      "total_points": 30,
+      "points_add": 21,
+      "word_count": 0,
+      "word_add": 0,
+      "article_count": 0,
+      "article_add": 0,
+      "level_no": 1,
+      "level_change": 0,
+      "level_title": "Kindgarden I",
+      "group_id": 1,
+      "group_no": 1,
+      "group_rank": 1,
+      "group_rank_title": "Starter",
+      "group_rank_change": 0,
+      "period_points": 34,
+      "period_points_change": 34
+    }
+  }
+}
+
+
+vivian: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI
+
+
+curl X GET "http://localhost:1338/api/review-flashcards" \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI" | jq .
+
+curl X GET "https://langgo-en-strapi.geniusparentingai.ca:1338/api/review-flashcards" \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI" | jq .

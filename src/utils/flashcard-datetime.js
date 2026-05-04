@@ -5,9 +5,9 @@ const pad = (value, width = 2) => String(value).padStart(width, '0');
 const toFlashcardDbTimestamp = (input = new Date()) => {
   const date = input instanceof Date ? input : new Date(input);
 
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
-    + `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.`
-    + `${pad(date.getMilliseconds(), 3)}`;
+  return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())} `
+    + `${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}:${pad(date.getUTCSeconds())}.`
+    + `${pad(date.getUTCMilliseconds(), 3)}`;
 };
 
 const addHoursAsFlashcardDbTimestamp = (input, hours = 0) => (

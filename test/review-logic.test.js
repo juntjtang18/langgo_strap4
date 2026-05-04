@@ -13,7 +13,7 @@ const reviewTiers = [
 ];
 
 test('effective correct review promotes tier and records new level', () => {
-  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
+  const now = new Date('2026-04-16T12:00:00.000Z');
   const flashcard = {
     correct_streak: 0,
     wrong_streak: 0,
@@ -42,7 +42,7 @@ test('effective correct review promotes tier and records new level', () => {
 });
 
 test('review on cooldown is not effective and does not change level', () => {
-  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
+  const now = new Date('2026-04-16T12:00:00.000Z');
   const flashcard = {
     correct_streak: 1,
     wrong_streak: 0,
@@ -65,7 +65,7 @@ test('review on cooldown is not effective and does not change level', () => {
 });
 
 test('effective wrong review demotes when demote bar is reached', () => {
-  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
+  const now = new Date('2026-04-16T12:00:00.000Z');
   const flashcard = {
     correct_streak: 3,
     wrong_streak: 1,
@@ -95,7 +95,7 @@ test('effective wrong review demotes when demote bar is reached', () => {
 });
 
 test('effective wrong review below demote bar keeps current level', () => {
-  const now = new Date(2026, 3, 16, 12, 0, 0, 0);
+  const now = new Date('2026-04-16T12:00:00.000Z');
   const flashcard = {
     correct_streak: 3,
     wrong_streak: 0,
