@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "eb_events",
+  "info": {
+    "singularName": "eb-event",
+    "pluralName": "eb-events",
+    "displayName": "Event Bus Event"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "event_name": {
+      "type": "string",
+      "required": true
+    },
+    "payload": {
+      "type": "json",
+      "required": true
+    },
+    "source": {
+      "type": "string",
+      "required": true
+    },
+    "occurred_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "metadata": {
+      "type": "json"
+    },
+    "deliveries": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::event-bus.eb-event-delivery",
+      "mappedBy": "event"
+    }
+  }
+}

@@ -25,4 +25,9 @@ module.exports = () => ({
     },
   },
 
+  'event-bus': {
+    enabled: true,
+    resolve: './src/plugins/event-bus',
+  },
+
 });

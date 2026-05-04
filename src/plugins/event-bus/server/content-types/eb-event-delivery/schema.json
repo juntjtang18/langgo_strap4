@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "eb_event_deliveries",
+  "info": {
+    "singularName": "eb-event-delivery",
+    "pluralName": "eb-event-deliveries",
+    "displayName": "Event Bus Event Delivery"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::event-bus.eb-event",
+      "inversedBy": "deliveries",
+      "required": true
+    },
+    "subscriber_name": {
+      "type": "string",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "success",
+        "failed"
+      ],
+      "required": true
+    },
+    "error_message": {
+      "type": "text"
+    },
+    "processed_at": {
+      "type": "datetime"
+    }
+  }
+}
