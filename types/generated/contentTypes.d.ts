@@ -704,6 +704,7 @@ export interface PluginEventBusEbEvent extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
+    event_id: Attribute.String & Attribute.Required & Attribute.Unique;
     event_name: Attribute.String & Attribute.Required;
     payload: Attribute.JSON & Attribute.Required;
     source: Attribute.String & Attribute.Required;

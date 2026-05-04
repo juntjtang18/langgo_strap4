@@ -204,15 +204,26 @@ module.exports = createCoreController(
           { populate: this._commonPopulate() }
         );
 
-        try {
-          if (reviewResult.effective) {
-            strapi.service('event-dispatcher').dispatchFlashcardReviewCompleted(reviewResult.reviewEvent);
-            if (reviewResult.tierPromoted) {
-              strapi.service('event-dispatcher').dispatchFlashcardReviewTierPromote(reviewResult.reviewEvent);
-            }
+        if (reviewResult.effective) {
+          const eventBus = strapi.plugin('event-bus').service('event-bus');
+
+          strapi.log.info('[EventPublisher] publishing event: flashcard.review');
+          eventBus.publish('flashcard.review', reviewResult.reviewEvent, {
+            source: 'flashcard.review',
+            metadata: {
+              publisher: 'api::flashcard.flashcard.review',
+            },
+          });
+
+          if (reviewResult.tierPromoted) {
+            strapi.log.info('[EventPublisher] publishing event: flashcard.review_tier_promote');
+            eventBus.publish('flashcard.review_tier_promote', reviewResult.reviewEvent, {
+              source: 'flashcard.review',
+              metadata: {
+                publisher: 'api::flashcard.flashcard.review',
+              },
+            });
           }
-        } catch (dispatchError) {
-          strapi.log.error(`review event dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }
     
         return this.transformResponse(finalCard);

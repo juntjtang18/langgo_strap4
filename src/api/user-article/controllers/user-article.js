@@ -65,8 +65,12 @@ module.exports = createCoreController('api::user-article.user-article', ({ strap
         },
       });
 
-      try {
-        strapi.service('event-dispatcher').dispatchArticleCreate(
+      strapi.log.info('[EventPublisher] publishing event: article.create');
+      strapi
+        .plugin('event-bus')
+        .service('event-bus')
+        .publish(
+          'article.create',
           buildArticleCreatedEvent({
             userArticleId: article.id,
             user,
@@ -74,11 +78,14 @@ module.exports = createCoreController('api::user-article.user-article', ({ strap
             title: article.title,
             languageCode: article.language_code,
             wordCount: article.word_count,
-          })
+          }),
+          {
+            source: 'user-article.create',
+            metadata: {
+              publisher: 'api::user-article.user-article.create',
+            },
+          }
         );
-      } catch (dispatchError) {
-        strapi.log.error(`user_article.created dispatch error: ${dispatchError.message}`, dispatchError.stack);
-      }
 
       return this.transformResponse(article);
     } catch (error) {

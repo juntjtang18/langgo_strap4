@@ -21,7 +21,39 @@ module.exports = ({ strapi }) => {
     return metadata;
   };
 
-  return {
+  const executeSubscribers = async ({ subscribers, event }) =>
+    Promise.allSettled(
+      subscribers.map(async ([subscriberName, handler]) => {
+        try {
+          await handler(event);
+          strapi.log.info(`[EventBus] subscriber success: ${subscriberName} -> ${event.event_name}`);
+        } catch (error) {
+          strapi.log.error(`[EventBus] subscriber failed: ${subscriberName} -> ${event.event_name}: ${error.message}`);
+        }
+      })
+    );
+
+  const runPublish = async ({ event, subscribers }) => {
+    const persistedEvent = await strapi.entityService.create('plugin::event-bus.eb-event', {
+      data: {
+        event_id: event.event_id,
+        event_name: event.event_name,
+        payload: event.payload,
+        source: event.source,
+        occurred_at: event.occurred_at,
+        metadata: event.metadata,
+      },
+    });
+
+    if (subscribers.length === 0) {
+      strapi.log.info(`[EventBus] no subscribers: ${event.event_name}`);
+      return;
+    }
+
+    await executeSubscribers({ subscribers, event });
+  };
+
+  const service = {
     initializeRegistry() {
       subscribersByEvent.clear();
     },
@@ -75,13 +107,15 @@ module.exports = ({ strapi }) => {
       return count;
     },
 
-    async publish(eventName, payload, options = {}) {
+    publish(eventName, payload, options = {}) {
       if (!eventName || typeof eventName !== 'string') {
         throw new Error('eventName is required');
       }
 
+      const eventId = uuidv4();
       const event = {
-        id: uuidv4(),
+        id: eventId,
+        event_id: eventId,
         event_name: eventName,
         payload: payload && typeof payload === 'object' ? payload : {},
         source: options.source || 'unknown',
@@ -90,90 +124,20 @@ module.exports = ({ strapi }) => {
       };
 
       strapi.log.info(`[EventBus] publishing event: ${event.event_name}`);
-
-      const persistedEvent = await strapi.entityService.create('plugin::event-bus.eb-event', {
-        data: event,
-      });
-
       const registry = subscribersByEvent.get(eventName);
       const subscribers = registry ? Array.from(registry.entries()) : [];
-
-      if (subscribers.length === 0) {
-        strapi.log.info(`[EventBus] no subscribers: ${event.event_name}`);
-        return {
-          event: persistedEvent,
-          results: [],
-        };
-      }
-
-      const deliveries = await Promise.all(
-        subscribers.map(([subscriberName]) =>
-          strapi.entityService.create('plugin::event-bus.eb-event-delivery', {
-            data: {
-              event: persistedEvent.id,
-              subscriber_name: subscriberName,
-              status: 'pending',
-              error_message: null,
-              processed_at: null,
-            },
-          })
-        )
-      );
-
-      const settled = await Promise.allSettled(
-        subscribers.map(async ([subscriberName, handler], index) => {
-          const delivery = deliveries[index];
-
-          try {
-            const value = await handler(event);
-            await strapi.entityService.update('plugin::event-bus.eb-event-delivery', delivery.id, {
-              data: {
-                status: 'success',
-                error_message: null,
-                processed_at: new Date().toISOString(),
-              },
-            });
-            strapi.log.info(`[EventBus] subscriber success: ${subscriberName} -> ${event.event_name}`);
-            return {
-              subscriberName,
-              deliveryId: delivery.id,
-              status: 'success',
-              value,
-            };
-          } catch (error) {
-            await strapi.entityService.update('plugin::event-bus.eb-event-delivery', delivery.id, {
-              data: {
-                status: 'failed',
-                error_message: error.message,
-                processed_at: new Date().toISOString(),
-              },
-            });
-            strapi.log.error(`[EventBus] subscriber failed: ${subscriberName} -> ${event.event_name}: ${error.message}`);
-            throw Object.assign(error, {
-              subscriberName,
-              deliveryId: delivery.id,
-            });
-          }
-        })
-      );
-
-      const results = settled.map((entry) => {
-        if (entry.status === 'fulfilled') {
-          return entry.value;
-        }
-
-        return {
-          subscriberName: entry.reason.subscriberName || 'unknown',
-          deliveryId: entry.reason.deliveryId || null,
-          status: 'failed',
-          error: entry.reason.message,
-        };
+      setImmediate(() => {
+        runPublish({ event, subscribers }).catch((error) => {
+          strapi.log.error(`[EventBus] publish failed for ${eventName}: ${error.message}`);
+        });
       });
 
       return {
-        event: persistedEvent,
-        results,
+        accepted: true,
+        event,
       };
     },
   };
+
+  return service;
 };

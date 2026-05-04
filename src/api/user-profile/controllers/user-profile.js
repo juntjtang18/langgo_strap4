@@ -98,6 +98,26 @@ module.exports = createCoreController(
         );
         const sanitized = await sanitizeUser(strapi, userWithDetails, ctx);
         sanitized.user_profile = formatUserProfile(strapi, userWithDetails.user_profile);
+
+        strapi.log.info('[EventPublisher] publishing event: user.register');
+        strapi
+          .plugin('event-bus')
+          .service('event-bus')
+          .publish(
+            'user.register',
+            {
+              userId: user.id,
+              username: user.username || user.email || null,
+              email: user.email || null,
+            },
+            {
+              source: 'user-profile.register',
+              metadata: {
+                publisher: 'api::user-profile.user-profile.registerWithProfile',
+              },
+            }
+          );
+
         return ctx.send({ jwt, user: sanitized });
 
       } catch (error) {

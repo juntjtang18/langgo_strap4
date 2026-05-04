@@ -69,9 +69,8 @@ module.exports = {
     const initRankSubsystem = require('./services/rank/index');
     initRankSubsystem({ strapi });
 
-    // Register Event Bus (sole dispatch interface, replaces event-api / review-event-queue)
-    const initEventBus = require('./services/event-bus/index');
-    initEventBus({ strapi });
+    const registerRankEventSubscribers = require('./services/rank/register-event-subscribers');
+    await registerRankEventSubscribers({ strapi });
 
     // Log service setup success
     if (

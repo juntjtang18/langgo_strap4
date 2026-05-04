@@ -341,11 +341,16 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       }
 
       if (flashcardCreatedEvent) {
-        try {
-          strapi.service('event-dispatcher').dispatchFlashcardCreate(flashcardCreatedEvent);
-        } catch (dispatchError) {
-          strapi.log.error(`flashcard.created dispatch error: ${dispatchError.message}`, dispatchError.stack);
-        }
+        strapi.log.info('[EventPublisher] publishing event: flashcard.create');
+        strapi
+          .plugin('event-bus')
+          .service('event-bus')
+          .publish('flashcard.create', flashcardCreatedEvent, {
+            source: 'word-definition.create',
+            metadata: {
+              publisher: 'api::word-definition.word-definition.create',
+            },
+          });
       }
       
       return this.transformResponse(
