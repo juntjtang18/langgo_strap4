@@ -1383,7 +1383,6 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       'api::flashcard.flashcard'
     >;
     effective: Attribute.Boolean;
-    points_awarded: Attribute.Integer & Attribute.DefaultTo<0>;
     newlevel: Attribute.Enumeration<
       ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered']
     >;

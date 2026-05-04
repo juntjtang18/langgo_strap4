@@ -18,6 +18,7 @@ test('effective correct review promotes tier and records new level', () => {
     correct_streak: 0,
     wrong_streak: 0,
     last_reviewed_at: null,
+    next_review_at: null,
   };
 
   const outcome = calculateReviewOutcome({
@@ -25,7 +26,6 @@ test('effective correct review promotes tier and records new level', () => {
     currentTier: reviewTiers[0],
     reviewTiers,
     result: 'correct',
-    effectiveCooldownHours: 0,
     now,
   });
 
@@ -47,6 +47,7 @@ test('review on cooldown is not effective and does not change level', () => {
     correct_streak: 1,
     wrong_streak: 0,
     last_reviewed_at: '2026-04-16 11:00:00.000',
+    next_review_at: '2026-04-16 13:00:00.000',
   };
 
   const outcome = calculateReviewOutcome({
@@ -54,7 +55,6 @@ test('review on cooldown is not effective and does not change level', () => {
     currentTier: reviewTiers[1],
     reviewTiers,
     result: 'correct',
-    effectiveCooldownHours: 24,
     now,
   });
 
@@ -70,6 +70,7 @@ test('effective wrong review demotes when demote bar is reached', () => {
     correct_streak: 3,
     wrong_streak: 1,
     last_reviewed_at: '2026-04-01 12:00:00.000',
+    next_review_at: '2026-04-08 12:00:00.000',
   };
 
   const outcome = calculateReviewOutcome({
@@ -77,7 +78,6 @@ test('effective wrong review demotes when demote bar is reached', () => {
     currentTier: reviewTiers[2],
     reviewTiers,
     result: 'wrong',
-    effectiveCooldownHours: 168,
     now,
   });
 
@@ -100,6 +100,7 @@ test('effective wrong review below demote bar keeps current level', () => {
     correct_streak: 3,
     wrong_streak: 0,
     last_reviewed_at: '2026-04-01 12:00:00.000',
+    next_review_at: '2026-04-08 12:00:00.000',
   };
 
   const outcome = calculateReviewOutcome({
@@ -107,7 +108,6 @@ test('effective wrong review below demote bar keeps current level', () => {
     currentTier: reviewTiers[2],
     reviewTiers,
     result: 'wrong',
-    effectiveCooldownHours: 168,
     now,
   });
 

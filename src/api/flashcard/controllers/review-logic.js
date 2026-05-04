@@ -12,12 +12,11 @@ const calculateReviewOutcome = ({
   currentTier,
   reviewTiers,
   result,
-  effectiveCooldownHours,
   getCooldownHoursForTier = (tier) => tier?.cooldown_hours || 0,
   now = new Date(),
 }) => {
-  const reviewIsOnCooldown = currentTier && flashcard.last_reviewed_at
-    ? (now - new Date(flashcard.last_reviewed_at)) / 3600e3 <= effectiveCooldownHours
+  const reviewIsOnCooldown = flashcard.next_review_at
+    ? now <= new Date(flashcard.next_review_at)
     : false;
 
   const effective = !reviewIsOnCooldown;

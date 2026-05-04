@@ -54,10 +54,6 @@
       "type": "boolean",
       "required": false
     },
-    "points_awarded": {
-      "type": "integer",
-      "default": 0
-    },
     "newlevel": {
       "type": "enumeration",
       "enum": [

@@ -43,15 +43,6 @@ const getEffectiveCooldown = (hours) => {
   return hours || 0;
 };
 
-const isDueByCooldown = (card, tier, now = new Date()) => {
-  const effectiveCooldownHours = getEffectiveCooldown(tier?.cooldown_hours || 0);
-  if (!card.last_reviewed_at) {
-    return true;
-  }
-
-  return now >= new Date(new Date(card.last_reviewed_at).getTime() + (effectiveCooldownHours * 3600 * 1000));
-};
-
 module.exports = createCoreController(
   'api::flashcard.flashcard',
   ({ strapi }) => ({
@@ -144,11 +135,6 @@ module.exports = createCoreController(
               continue;
             }
 
-            const tier = getEntityCardTier(candidate, reviewTiers, tierService);
-            if (tier && !isDueByCooldown(candidate, tier)) {
-              continue;
-            }
-
             if (totalDue >= requestedStart && populatedDueCards.length < pageSize) {
               populatedDueCards.push(candidate);
             }
@@ -219,7 +205,12 @@ module.exports = createCoreController(
         );
 
         try {
-          strapi.service('event-dispatcher').dispatchFlashcardReviewCompleted(reviewResult.reviewEvent);
+          if (reviewResult.effective) {
+            strapi.service('event-dispatcher').dispatchFlashcardReviewCompleted(reviewResult.reviewEvent);
+            if (reviewResult.tierPromoted) {
+              strapi.service('event-dispatcher').dispatchFlashcardReviewTierPromote(reviewResult.reviewEvent);
+            }
+          }
         } catch (dispatchError) {
           strapi.log.error(`review event dispatch error: ${dispatchError.message}`, dispatchError.stack);
         }

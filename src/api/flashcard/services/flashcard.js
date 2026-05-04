@@ -15,6 +15,9 @@ const getEffectiveCooldown = (hours) => {
   return hours || 0;
 };
 
+const TIER_ORDER = ['new', 'warmup', 'daily', 'weekly', 'monthly', 'remembered'];
+const tierRank = (level) => TIER_ORDER.indexOf((level || '').toLowerCase());
+
 const buildReviewEvent = ({
   flashcardId,
   user,
@@ -74,7 +77,6 @@ module.exports = createCoreService('api::flashcard.flashcard', ({ strapi }) => (
         currentTier,
         reviewTiers,
         result,
-        effectiveCooldownHours: effectiveCooldown,
         getCooldownHoursForTier: (tier) => getEffectiveCooldown(tier?.cooldown_hours || 0),
         now,
       });
@@ -128,6 +130,8 @@ module.exports = createCoreService('api::flashcard.flashcard', ({ strapi }) => (
       });
 
       return {
+        effective,
+        tierPromoted: tierRank(newLevel) > tierRank(currentLevel),
         reviewedAt,
         reviewEvent,
       };

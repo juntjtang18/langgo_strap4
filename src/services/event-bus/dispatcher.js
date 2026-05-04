@@ -42,6 +42,27 @@ module.exports = ({ queue, strapi }) => {
       });
     },
 
+    async dispatchFlashcardReviewTierPromote(event) {
+      const { review, eventId } = event;
+      const id = eventId || uuidv4();
+      const userid = String(review.userId);
+      const username = await loadUsername(review.userId, review.username || review.userName || null);
+
+      queue.enqueue({
+        event_name: 'flashcard.review_tier_promote',
+        event_id: id,
+        userid,
+        username,
+        flashcard_id: review.flashcardId,
+        review: {
+          ...review,
+          userId: review.userId,
+          userid,
+          username,
+        },
+      });
+    },
+
     async dispatchFlashcardCreate(event) {
       const { flashcard, eventId } = event;
       const username = await loadUsername(flashcard.userId, flashcard.username || null);

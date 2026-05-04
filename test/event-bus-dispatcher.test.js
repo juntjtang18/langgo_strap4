@@ -44,6 +44,19 @@ test('event-bus dispatcher publishes username on all rank-related events', async
     },
   });
 
+  await dispatcher.dispatchFlashcardReviewTierPromote({
+    eventId: 'evt-review-promote',
+    review: {
+      flashcardId: 2627,
+      userId: 8,
+      level: 'warmup',
+      result: 'correct',
+      newlevel: 'weekly',
+      effective: true,
+      reviewedAt: '2026-05-02T18:36:53.128Z',
+    },
+  });
+
   await dispatcher.dispatchFlashcardCreate({
     eventId: 'evt-create',
     flashcard: {
@@ -62,7 +75,7 @@ test('event-bus dispatcher publishes username on all rank-related events', async
 
   await dispatcher.dispatchUserRegister(8);
 
-  assert.equal(lookedUpIds.length, 4);
+  assert.equal(lookedUpIds.length, 5);
   assert.deepEqual(enqueued, [
     {
       event_name: 'flashcard.review',
@@ -78,7 +91,26 @@ test('event-bus dispatcher publishes username on all rank-related events', async
         newlevel: 'monthly',
         effective: false,
         reviewedAt: '2026-05-02T18:35:53.128Z',
-        userName: 'user-8',
+        userid: '8',
+        username: 'user-8',
+      },
+    },
+    {
+      event_name: 'flashcard.review_tier_promote',
+      event_id: 'evt-review-promote',
+      userid: '8',
+      username: 'user-8',
+      flashcard_id: 2627,
+      review: {
+        flashcardId: 2627,
+        userId: 8,
+        level: 'warmup',
+        result: 'correct',
+        newlevel: 'weekly',
+        effective: true,
+        reviewedAt: '2026-05-02T18:36:53.128Z',
+        userid: '8',
+        username: 'user-8',
       },
     },
     {
@@ -90,6 +122,7 @@ test('event-bus dispatcher publishes username on all rank-related events', async
       flashcard: {
         flashcardId: 91,
         userId: 8,
+        userid: '8',
         username: 'user-8',
       },
     },
@@ -102,15 +135,16 @@ test('event-bus dispatcher publishes username on all rank-related events', async
       article: {
         userArticleId: 55,
         userId: 8,
+        userid: '8',
         username: 'user-8',
       },
     },
     {
       event_name: 'user.register',
-      event_id: enqueued[3].event_id,
+      event_id: enqueued[4].event_id,
       userid: '8',
       username: 'user-8',
     },
   ]);
-  assert.ok(typeof enqueued[3].event_id === 'string');
+  assert.ok(typeof enqueued[4].event_id === 'string');
 });
