@@ -10,8 +10,5 @@ module.exports = {
     'eb-event': {
       schema: require('./server/content-types/eb-event/schema.json'),
     },
-    'eb-event-delivery': {
-      schema: require('./server/content-types/eb-event-delivery/schema.json'),
-    },
   },
 };

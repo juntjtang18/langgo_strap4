@@ -31,7 +31,6 @@ const createHarness = () => {
   const store = {
     users: [{ id: 8, username: 'vivian', email: 'vivian@example.com' }],
     ebEvents: [],
-    ebEventDeliveries: [],
     rsEvents: [],
     rsSnapshots: [],
     rsUserGroups: [],
@@ -182,11 +181,6 @@ const createHarness = () => {
           store.ebEvents.push(row);
           return row;
         }
-        if (uid === 'plugin::event-bus.eb-event-delivery') {
-          const row = { id: idCursor++, ...data };
-          store.ebEventDeliveries.push(row);
-          return row;
-        }
         if (uid === 'api::rs-event.rs-event') {
           const row = { id: idCursor++, ...data };
           store.rsEvents.push(row);
@@ -218,12 +212,6 @@ const createHarness = () => {
 
       async update(uid, id, payload) {
         const data = payload.data;
-
-        if (uid === 'plugin::event-bus.eb-event-delivery') {
-          const row = store.ebEventDeliveries.find((item) => item.id === id);
-          Object.assign(row, data);
-          return row;
-        }
         if (uid === 'api::rs-event.rs-event') {
           const row = store.rsEvents.find((item) => item.id === id);
           Object.assign(row, data);
@@ -387,7 +375,6 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
   await flushImmediates(6);
 
   assert.equal(store.ebEvents.length, 5);
-  assert.equal(store.ebEventDeliveries.length, 0);
   assert.equal(store.rsEvents.length, 5);
 
   assert.deepEqual(

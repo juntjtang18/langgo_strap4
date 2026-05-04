@@ -710,11 +710,6 @@ export interface PluginEventBusEbEvent extends Schema.CollectionType {
     source: Attribute.String & Attribute.Required;
     occurred_at: Attribute.DateTime & Attribute.Required;
     metadata: Attribute.JSON;
-    deliveries: Attribute.Relation<
-      'plugin::event-bus.eb-event',
-      'oneToMany',
-      'plugin::event-bus.eb-event-delivery'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -725,45 +720,6 @@ export interface PluginEventBusEbEvent extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::event-bus.eb-event',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface PluginEventBusEbEventDelivery extends Schema.CollectionType {
-  collectionName: 'eb_event_deliveries';
-  info: {
-    singularName: 'eb-event-delivery';
-    pluralName: 'eb-event-deliveries';
-    displayName: 'Event Bus Event Delivery';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    event: Attribute.Relation<
-      'plugin::event-bus.eb-event-delivery',
-      'manyToOne',
-      'plugin::event-bus.eb-event'
-    > &
-      Attribute.Required;
-    subscriber_name: Attribute.String & Attribute.Required;
-    status: Attribute.Enumeration<['pending', 'success', 'failed']> &
-      Attribute.Required;
-    error_message: Attribute.Text;
-    processed_at: Attribute.DateTime;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::event-bus.eb-event-delivery',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'plugin::event-bus.eb-event-delivery',
       'oneToOne',
       'admin::user'
     > &
@@ -2835,7 +2791,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::event-bus.eb-event': PluginEventBusEbEvent;
-      'plugin::event-bus.eb-event-delivery': PluginEventBusEbEventDelivery;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::article-tag.article-tag': ApiArticleTagArticleTag;
       'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;

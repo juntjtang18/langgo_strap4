@@ -20,6 +20,6 @@ module.exports = async ({ strapi, event }) => {
       await rank.onUserRegister(event.userid, event.username, event.event_id);
       break;
     default:
-      strapi.log.warn(`[EventBus/rank] No rank handler for event: ${event.event_name}`);
+      strapi.log.warn(`[Rank] No handler for event: ${event.event_name}`);
   }
 };

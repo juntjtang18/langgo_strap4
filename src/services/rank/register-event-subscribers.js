@@ -1,6 +1,6 @@
 'use strict';
 
-const handleRankEvent = require('../event-bus/handlers/rank');
+const handleRankEvent = require('./handle-event');
 
 const RANK_EVENT_NAMES = [
   'user.register',
