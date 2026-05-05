@@ -2,6 +2,7 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
+const { buildDueFlashcardFilters } = require('../services/review-queue');
 
 const REVIEW_SCAN_PAGE_SIZE = 500;
 
@@ -104,15 +105,7 @@ module.exports = createCoreController(
       try {
         const tierService = strapi.service('tier-service');
         const reviewTiers = await tierService.getAllTiers();
-        const nowTimestamp = toFlashcardDbTimestamp(new Date());
-        const dueFilters = {
-          user: user.id,
-          word_definition: { $not: null },
-          $or: [
-            { next_review_at: null },
-            { next_review_at: { $lte: nowTimestamp } },
-          ],
-        };
+        const dueFilters = buildDueFlashcardFilters(user.id);
 
         const requestedStart = Math.max(0, (page - 1) * pageSize);
         const populatedDueCards = [];

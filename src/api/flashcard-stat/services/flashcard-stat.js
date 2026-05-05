@@ -9,6 +9,7 @@
 
 const { createCoreService } = require('@strapi/strapi').factories;
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
+const { buildDueFlashcardFilters } = require('../../flashcard/services/review-queue');
 
 const PAGE_SIZE = 500;
 const BATCH_WINDOW_MINUTES = 20;
@@ -23,21 +24,13 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
     }
 
     const tierService = strapi.service('tier-service');
-    const now = new Date();
     const dueCountByTierId = new Map(tiers.map((tier) => [tier.id, 0]));
     const seenCardIds = new Set();
     let start = 0;
 
     while (true) {
       const page = await strapi.entityService.findMany('api::flashcard.flashcard', {
-        filters: {
-          user: userId,
-          word_definition: { $not: null },
-          $or: [
-            { next_review_at: { $null: true } },
-            { next_review_at: { $lte: now } },
-          ],
-        },
+        filters: buildDueFlashcardFilters(userId),
         populate: {
           review_tire: true,
         },
@@ -178,7 +171,8 @@ module.exports = createCoreService('api::flashcard-stat.flashcard-stat', ({ stra
         max_streak: tier.max_streak,
         cooldown_hours: tier.cooldown_hours,
         count,
-        dueCount: Math.min(count, liveDueCount),
+        // Due-for-review must reflect the live queue, even if persisted tier counts are stale.
+        dueCount: liveDueCount,
         hardToRememberCount: null,
       };
     });
