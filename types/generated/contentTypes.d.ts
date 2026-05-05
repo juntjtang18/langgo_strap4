@@ -727,6 +727,629 @@ export interface PluginEventBusEbEvent extends Schema.CollectionType {
   };
 }
 
+export interface PluginRankSystemRsEvent extends Schema.CollectionType {
+  collectionName: 'rs_events';
+  info: {
+    singularName: 'rs-event';
+    pluralName: 'rs-events';
+    displayName: 'RS Event';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    event_id: Attribute.String;
+    event_name: Attribute.String;
+    userid: Attribute.String & Attribute.Required;
+    payload: Attribute.JSON;
+    status: Attribute.String;
+    handled_at: Attribute.DateTime;
+    username: Attribute.String;
+    handle_result: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsEventList extends Schema.CollectionType {
+  collectionName: 'rs_event_lists';
+  info: {
+    singularName: 'rs-event-list';
+    pluralName: 'rs-event-lists';
+    displayName: 'RS Event List';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    event_name: Attribute.String & Attribute.Required;
+    points: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-event-list',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-event-list',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsGroup extends Schema.CollectionType {
+  collectionName: 'rs_groups';
+  info: {
+    singularName: 'rs-group';
+    pluralName: 'rs-groups';
+    displayName: 'RS Group';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    rs_group_rule: Attribute.Relation<
+      'plugin::rank-system.rs-group',
+      'manyToOne',
+      'plugin::rank-system.rs-group-rule'
+    >;
+    group_no: Attribute.Integer;
+    rs_group_rank: Attribute.Relation<
+      'plugin::rank-system.rs-group',
+      'manyToOne',
+      'plugin::rank-system.rs-group-rank'
+    >;
+    rs_user_groups: Attribute.Relation<
+      'plugin::rank-system.rs-group',
+      'oneToMany',
+      'plugin::rank-system.rs-user-group'
+    >;
+    rs_user_snapshots: Attribute.Relation<
+      'plugin::rank-system.rs-group',
+      'oneToMany',
+      'plugin::rank-system.rs-user-snapshot'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsGroupRank extends Schema.CollectionType {
+  collectionName: 'rs_group_ranks';
+  info: {
+    singularName: 'rs-group-rank';
+    pluralName: 'rs-group-ranks';
+    displayName: 'RS Group Rank';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    rs_group_rule: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank',
+      'manyToOne',
+      'plugin::rank-system.rs-group-rule'
+    >;
+    rank_no: Attribute.Integer;
+    min_period_points: Attribute.Integer;
+    rs_group_rank_titles: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank',
+      'oneToMany',
+      'plugin::rank-system.rs-group-rank-title'
+    >;
+    rs_groups: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank',
+      'oneToMany',
+      'plugin::rank-system.rs-group'
+    >;
+    rs_user_snapshots: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank',
+      'oneToMany',
+      'plugin::rank-system.rs-user-snapshot'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsGroupRankTitle
+  extends Schema.CollectionType {
+  collectionName: 'rs_group_rank_titles';
+  info: {
+    singularName: 'rs-group-rank-title';
+    pluralName: 'rs-group-rank-titles';
+    displayName: 'RS Group Rank Title';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    rs_group_rank: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank-title',
+      'manyToOne',
+      'plugin::rank-system.rs-group-rank'
+    >;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank-title',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank-title',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'plugin::rank-system.rs-group-rank-title',
+      'oneToMany',
+      'plugin::rank-system.rs-group-rank-title'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface PluginRankSystemRsGroupRule extends Schema.CollectionType {
+  collectionName: 'rs_group_rules';
+  info: {
+    singularName: 'rs-group-rule';
+    pluralName: 'rs-group-rules';
+    displayName: 'RS Group Rule';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    period_days: Attribute.Integer & Attribute.Required;
+    group_size: Attribute.Integer & Attribute.Required;
+    rs_group_ranks: Attribute.Relation<
+      'plugin::rank-system.rs-group-rule',
+      'oneToMany',
+      'plugin::rank-system.rs-group-rank'
+    >;
+    rs_groups: Attribute.Relation<
+      'plugin::rank-system.rs-group-rule',
+      'oneToMany',
+      'plugin::rank-system.rs-group'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-group-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-group-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsLevel extends Schema.CollectionType {
+  collectionName: 'rs_levels';
+  info: {
+    singularName: 'rs-level';
+    pluralName: 'rs-levels';
+    displayName: 'RS Level';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    level_no: Attribute.Integer & Attribute.Required;
+    rs_level_titles: Attribute.Relation<
+      'plugin::rank-system.rs-level',
+      'oneToMany',
+      'plugin::rank-system.rs-level-title'
+    >;
+    rs_user_snapshots: Attribute.Relation<
+      'plugin::rank-system.rs-level',
+      'oneToMany',
+      'plugin::rank-system.rs-user-snapshot'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-level',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-level',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsLevelRule extends Schema.CollectionType {
+  collectionName: 'rs_level_rules';
+  info: {
+    singularName: 'rs-level-rule';
+    pluralName: 'rs-level-rules';
+    displayName: 'RS Level Rule';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    base_points: Attribute.Integer;
+    increase_points: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-level-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-level-rule',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsLevelTitle extends Schema.CollectionType {
+  collectionName: 'rs_level_titles';
+  info: {
+    singularName: 'rs-level-title';
+    pluralName: 'rs-level-titles';
+    displayName: 'RS Level Title';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    rs_level: Attribute.Relation<
+      'plugin::rank-system.rs-level-title',
+      'manyToOne',
+      'plugin::rank-system.rs-level'
+    >;
+    title: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-level-title',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-level-title',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'plugin::rank-system.rs-level-title',
+      'oneToMany',
+      'plugin::rank-system.rs-level-title'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface PluginRankSystemRsUserGroup extends Schema.CollectionType {
+  collectionName: 'rs_user_groups';
+  info: {
+    singularName: 'rs-user-group';
+    pluralName: 'rs-user-groups';
+    displayName: 'RS User Group';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    userid: Attribute.String;
+    username: Attribute.String;
+    rs_group: Attribute.Relation<
+      'plugin::rank-system.rs-user-group',
+      'manyToOne',
+      'plugin::rank-system.rs-group'
+    >;
+    period_points: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-user-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-user-group',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginRankSystemRsUserSnapshot extends Schema.CollectionType {
+  collectionName: 'rs_user_snapshots';
+  info: {
+    singularName: 'rs-user-snapshot';
+    pluralName: 'rs-user-snapshots';
+    displayName: 'RS User Snapshot';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    userid: Attribute.String & Attribute.Required;
+    username: Attribute.String;
+    record_date: Attribute.Date & Attribute.Required;
+    total_points: Attribute.Integer & Attribute.DefaultTo<0>;
+    points_add: Attribute.Integer & Attribute.DefaultTo<0>;
+    word_count: Attribute.Integer & Attribute.DefaultTo<0>;
+    word_add: Attribute.Integer & Attribute.DefaultTo<0>;
+    article_count: Attribute.Integer & Attribute.DefaultTo<0>;
+    article_add: Attribute.Integer & Attribute.DefaultTo<0>;
+    rs_level: Attribute.Relation<
+      'plugin::rank-system.rs-user-snapshot',
+      'manyToOne',
+      'plugin::rank-system.rs-level'
+    >;
+    level_title: Attribute.String;
+    level_change: Attribute.Integer & Attribute.DefaultTo<0>;
+    rs_group_rank: Attribute.Relation<
+      'plugin::rank-system.rs-user-snapshot',
+      'manyToOne',
+      'plugin::rank-system.rs-group-rank'
+    >;
+    rs_group: Attribute.Relation<
+      'plugin::rank-system.rs-user-snapshot',
+      'manyToOne',
+      'plugin::rank-system.rs-group'
+    >;
+    group_rank_title: Attribute.String;
+    group_rank_change: Attribute.Integer;
+    period_points: Attribute.Integer;
+    period_points_change: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::rank-system.rs-user-snapshot',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::rank-system.rs-user-snapshot',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginAchievementAsAchievement extends Schema.CollectionType {
+  collectionName: 'as_achievements';
+  info: {
+    singularName: 'as-achievement';
+    pluralName: 'as-achievements';
+    displayName: 'AS Achievement';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    code: Attribute.String & Attribute.Required & Attribute.Unique;
+    event_name: Attribute.String & Attribute.Required;
+    points: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>;
+    goal: Attribute.Integer & Attribute.Required;
+    translations: Attribute.Relation<
+      'plugin::achievement.as-achievement',
+      'oneToMany',
+      'plugin::achievement.as-achievement-translation'
+    >;
+    user_achievements: Attribute.Relation<
+      'plugin::achievement.as-achievement',
+      'oneToMany',
+      'plugin::achievement.as-user-achievement'
+    >;
+    icon_name: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::achievement.as-achievement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::achievement.as-achievement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginAchievementAsAchievementTranslation
+  extends Schema.CollectionType {
+  collectionName: 'as_achievement_translations';
+  info: {
+    singularName: 'as-achievement-translation';
+    pluralName: 'as-achievement-translations';
+    displayName: 'AS Achievement Translation';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    achievement: Attribute.Relation<
+      'plugin::achievement.as-achievement-translation',
+      'manyToOne',
+      'plugin::achievement.as-achievement'
+    >;
+    locale: Attribute.String & Attribute.Required & Attribute.DefaultTo<'en'>;
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::achievement.as-achievement-translation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::achievement.as-achievement-translation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginAchievementAsEventList extends Schema.CollectionType {
+  collectionName: 'as_event_lists';
+  info: {
+    singularName: 'as-event-list';
+    pluralName: 'as-event-lists';
+    displayName: 'AS Event List';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    event_name: Attribute.String & Attribute.Required;
+    points: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::achievement.as-event-list',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::achievement.as-event-list',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginAchievementAsUserAchievement
+  extends Schema.CollectionType {
+  collectionName: 'as_user_achievements';
+  info: {
+    singularName: 'as-user-achievement';
+    pluralName: 'as-user-achievements';
+    displayName: 'AS User Achievement';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    userid: Attribute.String & Attribute.Required;
+    username: Attribute.String;
+    achievement: Attribute.Relation<
+      'plugin::achievement.as-user-achievement',
+      'manyToOne',
+      'plugin::achievement.as-achievement'
+    >;
+    progress: Attribute.Integer & Attribute.DefaultTo<0>;
+    achieved: Attribute.Boolean & Attribute.DefaultTo<false>;
+    achieved_at: Attribute.DateTime;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::achievement.as-user-achievement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::achievement.as-user-achievement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginI18NLocale extends Schema.CollectionType {
   collectionName: 'i18n_locale';
   info: {
@@ -1430,479 +2053,6 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::reviewlog.reviewlog',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsEventRsEvent extends Schema.CollectionType {
-  collectionName: 'rs_events';
-  info: {
-    singularName: 'rs-event';
-    pluralName: 'rs-events';
-    displayName: 'rs event';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    event_id: Attribute.String;
-    event_name: Attribute.String;
-    userid: Attribute.String & Attribute.Required;
-    payload: Attribute.JSON;
-    status: Attribute.String;
-    handled_at: Attribute.DateTime;
-    username: Attribute.String;
-    handle_result: Attribute.Text;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-event.rs-event',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-event.rs-event',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsEventListRsEventList extends Schema.CollectionType {
-  collectionName: 'rs_event_lists';
-  info: {
-    singularName: 'rs-event-list';
-    pluralName: 'rs-event-lists';
-    displayName: 'rs event list';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    event_name: Attribute.String & Attribute.Required;
-    points: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-event-list.rs-event-list',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-event-list.rs-event-list',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsGroupRsGroup extends Schema.CollectionType {
-  collectionName: 'rs_groups';
-  info: {
-    singularName: 'rs-group';
-    pluralName: 'rs-groups';
-    displayName: 'rs group';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    rs_group_rule: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'manyToOne',
-      'api::rs-group-rule.rs-group-rule'
-    >;
-    group_no: Attribute.Integer;
-    rs_group_rank: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'manyToOne',
-      'api::rs-group-rank.rs-group-rank'
-    >;
-    rs_user_groups: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'oneToMany',
-      'api::rs-user-group.rs-user-group'
-    >;
-    rs_user_snapshots: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'oneToMany',
-      'api::rs-user-snapshot.rs-user-snapshot'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-group.rs-group',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsGroupRankRsGroupRank extends Schema.CollectionType {
-  collectionName: 'rs_group_ranks';
-  info: {
-    singularName: 'rs-group-rank';
-    pluralName: 'rs-group-ranks';
-    displayName: 'rs group rank';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    rs_group_rule: Attribute.Relation<
-      'api::rs-group-rank.rs-group-rank',
-      'manyToOne',
-      'api::rs-group-rule.rs-group-rule'
-    >;
-    rank_no: Attribute.Integer;
-    min_period_points: Attribute.Integer;
-    rs_group_rank_titles: Attribute.Relation<
-      'api::rs-group-rank.rs-group-rank',
-      'oneToMany',
-      'api::rs-group-rank-title.rs-group-rank-title'
-    >;
-    rs_groups: Attribute.Relation<
-      'api::rs-group-rank.rs-group-rank',
-      'oneToMany',
-      'api::rs-group.rs-group'
-    >;
-    rs_user_snapshots: Attribute.Relation<
-      'api::rs-group-rank.rs-group-rank',
-      'oneToMany',
-      'api::rs-user-snapshot.rs-user-snapshot'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-group-rank.rs-group-rank',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-group-rank.rs-group-rank',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsGroupRankTitleRsGroupRankTitle
-  extends Schema.CollectionType {
-  collectionName: 'rs_group_rank_titles';
-  info: {
-    singularName: 'rs-group-rank-title';
-    pluralName: 'rs-group-rank-titles';
-    displayName: 'rs group rank title';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    rs_group_rank: Attribute.Relation<
-      'api::rs-group-rank-title.rs-group-rank-title',
-      'manyToOne',
-      'api::rs-group-rank.rs-group-rank'
-    >;
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-group-rank-title.rs-group-rank-title',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-group-rank-title.rs-group-rank-title',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::rs-group-rank-title.rs-group-rank-title',
-      'oneToMany',
-      'api::rs-group-rank-title.rs-group-rank-title'
-    >;
-    locale: Attribute.String;
-  };
-}
-
-export interface ApiRsGroupRuleRsGroupRule extends Schema.CollectionType {
-  collectionName: 'rs_group_rules';
-  info: {
-    singularName: 'rs-group-rule';
-    pluralName: 'rs-group-rules';
-    displayName: 'rs group rule';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    period_days: Attribute.Integer & Attribute.Required;
-    group_size: Attribute.Integer & Attribute.Required;
-    rs_group_ranks: Attribute.Relation<
-      'api::rs-group-rule.rs-group-rule',
-      'oneToMany',
-      'api::rs-group-rank.rs-group-rank'
-    >;
-    rs_groups: Attribute.Relation<
-      'api::rs-group-rule.rs-group-rule',
-      'oneToMany',
-      'api::rs-group.rs-group'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-group-rule.rs-group-rule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-group-rule.rs-group-rule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsLevelRsLevel extends Schema.CollectionType {
-  collectionName: 'rs_levels';
-  info: {
-    singularName: 'rs-level';
-    pluralName: 'rs-levels';
-    displayName: 'rs level';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    level_no: Attribute.Integer & Attribute.Required;
-    rs_level_titles: Attribute.Relation<
-      'api::rs-level.rs-level',
-      'oneToMany',
-      'api::rs-level-title.rs-level-title'
-    >;
-    rs_user_snapshots: Attribute.Relation<
-      'api::rs-level.rs-level',
-      'oneToMany',
-      'api::rs-user-snapshot.rs-user-snapshot'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-level.rs-level',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-level.rs-level',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsLevelRuleRsLevelRule extends Schema.CollectionType {
-  collectionName: 'rs_level_rules';
-  info: {
-    singularName: 'rs-level-rule';
-    pluralName: 'rs-level-rules';
-    displayName: 'rs level rule';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    base_points: Attribute.Integer;
-    increase_points: Attribute.Integer;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-level-rule.rs-level-rule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-level-rule.rs-level-rule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsLevelTitleRsLevelTitle extends Schema.CollectionType {
-  collectionName: 'rs_level_titles';
-  info: {
-    singularName: 'rs-level-title';
-    pluralName: 'rs-level-titles';
-    displayName: 'rs level title';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    rs_level: Attribute.Relation<
-      'api::rs-level-title.rs-level-title',
-      'manyToOne',
-      'api::rs-level.rs-level'
-    >;
-    title: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-level-title.rs-level-title',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-level-title.rs-level-title',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::rs-level-title.rs-level-title',
-      'oneToMany',
-      'api::rs-level-title.rs-level-title'
-    >;
-    locale: Attribute.String;
-  };
-}
-
-export interface ApiRsUserGroupRsUserGroup extends Schema.CollectionType {
-  collectionName: 'rs_user_groups';
-  info: {
-    singularName: 'rs-user-group';
-    pluralName: 'rs-user-groups';
-    displayName: 'rs user group';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    userid: Attribute.String;
-    username: Attribute.String;
-    rs_group: Attribute.Relation<
-      'api::rs-user-group.rs-user-group',
-      'manyToOne',
-      'api::rs-group.rs-group'
-    >;
-    period_points: Attribute.Integer;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-user-group.rs-user-group',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-user-group.rs-user-group',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRsUserSnapshotRsUserSnapshot extends Schema.CollectionType {
-  collectionName: 'rs_user_snapshots';
-  info: {
-    singularName: 'rs-user-snapshot';
-    pluralName: 'rs-user-snapshots';
-    displayName: 'rs user snapshot';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    userid: Attribute.String & Attribute.Required;
-    username: Attribute.String;
-    record_date: Attribute.Date & Attribute.Required;
-    total_points: Attribute.Integer & Attribute.DefaultTo<0>;
-    points_add: Attribute.Integer & Attribute.DefaultTo<0>;
-    word_count: Attribute.Integer & Attribute.DefaultTo<0>;
-    word_add: Attribute.Integer & Attribute.DefaultTo<0>;
-    article_count: Attribute.Integer & Attribute.DefaultTo<0>;
-    article_add: Attribute.Integer & Attribute.DefaultTo<0>;
-    rs_level: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
-      'manyToOne',
-      'api::rs-level.rs-level'
-    >;
-    level_title: Attribute.String;
-    level_change: Attribute.Integer & Attribute.DefaultTo<0>;
-    rs_group_rank: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
-      'manyToOne',
-      'api::rs-group-rank.rs-group-rank'
-    >;
-    rs_group: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
-      'manyToOne',
-      'api::rs-group.rs-group'
-    >;
-    group_rank_title: Attribute.String;
-    group_rank_change: Attribute.Integer;
-    period_points: Attribute.Integer;
-    period_points_change: Attribute.Integer;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rs-user-snapshot.rs-user-snapshot',
       'oneToOne',
       'admin::user'
     > &
@@ -2791,6 +2941,21 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::event-bus.eb-event': PluginEventBusEbEvent;
+      'plugin::rank-system.rs-event': PluginRankSystemRsEvent;
+      'plugin::rank-system.rs-event-list': PluginRankSystemRsEventList;
+      'plugin::rank-system.rs-group': PluginRankSystemRsGroup;
+      'plugin::rank-system.rs-group-rank': PluginRankSystemRsGroupRank;
+      'plugin::rank-system.rs-group-rank-title': PluginRankSystemRsGroupRankTitle;
+      'plugin::rank-system.rs-group-rule': PluginRankSystemRsGroupRule;
+      'plugin::rank-system.rs-level': PluginRankSystemRsLevel;
+      'plugin::rank-system.rs-level-rule': PluginRankSystemRsLevelRule;
+      'plugin::rank-system.rs-level-title': PluginRankSystemRsLevelTitle;
+      'plugin::rank-system.rs-user-group': PluginRankSystemRsUserGroup;
+      'plugin::rank-system.rs-user-snapshot': PluginRankSystemRsUserSnapshot;
+      'plugin::achievement.as-achievement': PluginAchievementAsAchievement;
+      'plugin::achievement.as-achievement-translation': PluginAchievementAsAchievementTranslation;
+      'plugin::achievement.as-event-list': PluginAchievementAsEventList;
+      'plugin::achievement.as-user-achievement': PluginAchievementAsUserAchievement;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::article-tag.article-tag': ApiArticleTagArticleTag;
       'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;
@@ -2805,17 +2970,6 @@ declare module '@strapi/types' {
       'api::proficiency-level.proficiency-level': ApiProficiencyLevelProficiencyLevel;
       'api::review-tire.review-tire': ApiReviewTireReviewTire;
       'api::reviewlog.reviewlog': ApiReviewlogReviewlog;
-      'api::rs-event.rs-event': ApiRsEventRsEvent;
-      'api::rs-event-list.rs-event-list': ApiRsEventListRsEventList;
-      'api::rs-group.rs-group': ApiRsGroupRsGroup;
-      'api::rs-group-rank.rs-group-rank': ApiRsGroupRankRsGroupRank;
-      'api::rs-group-rank-title.rs-group-rank-title': ApiRsGroupRankTitleRsGroupRankTitle;
-      'api::rs-group-rule.rs-group-rule': ApiRsGroupRuleRsGroupRule;
-      'api::rs-level.rs-level': ApiRsLevelRsLevel;
-      'api::rs-level-rule.rs-level-rule': ApiRsLevelRuleRsLevelRule;
-      'api::rs-level-title.rs-level-title': ApiRsLevelTitleRsLevelTitle;
-      'api::rs-user-group.rs-user-group': ApiRsUserGroupRsUserGroup;
-      'api::rs-user-snapshot.rs-user-snapshot': ApiRsUserSnapshotRsUserSnapshot;
       'api::sentence.sentence': ApiSentenceSentence;
       'api::story.story': ApiStoryStory;
       'api::story-audio.story-audio': ApiStoryAudioStoryAudio;

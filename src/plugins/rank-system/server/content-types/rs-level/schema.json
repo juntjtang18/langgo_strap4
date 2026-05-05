@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_levels",
+  "info": {
+    "singularName": "rs-level",
+    "pluralName": "rs-levels",
+    "displayName": "RS Level",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "level_no": {
+      "type": "integer",
+      "required": true
+    },
+    "rs_level_titles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::rank-system.rs-level-title",
+      "mappedBy": "rs_level"
+    },
+    "rs_user_snapshots": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::rank-system.rs-user-snapshot",
+      "mappedBy": "rs_level"
+    }
+  }
+}

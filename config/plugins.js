@@ -30,4 +30,14 @@ module.exports = () => ({
     resolve: './src/plugins/event-bus',
   },
 
+  'rank-system': {
+    enabled: true,
+    resolve: './src/plugins/rank-system',
+  },
+
+  achievement: {
+    enabled: true,
+    resolve: './src/plugins/achievement',
+  },
+
 });

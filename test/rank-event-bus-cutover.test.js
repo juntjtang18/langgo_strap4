@@ -3,15 +3,16 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const createSnapshotService = require('../src/services/rank/snapshot-service');
-const createGroupService = require('../src/services/rank/group-service');
-const createUserGroupService = require('../src/services/rank/user-group-service');
-const createEventProcessor = require('../src/services/rank/event-processor');
-const createRuleLoader = require('../src/services/rank/rule-loader');
-const createLevelService = require('../src/services/rank/level-service');
-const createRankDispatcher = require('../src/services/rank/dispatcher');
+const createSnapshotService = require('../src/plugins/rank-system/server/services/snapshot-service');
+const createGroupService = require('../src/plugins/rank-system/server/services/group-service');
+const createUserGroupService = require('../src/plugins/rank-system/server/services/user-group-service');
+const createEventProcessor = require('../src/plugins/rank-system/server/services/event-processor');
+const createRuleLoader = require('../src/plugins/rank-system/server/services/rule-loader');
+const createLevelService = require('../src/plugins/rank-system/server/services/level-service');
+const createRankDispatcher = require('../src/plugins/rank-system/server/services/dispatcher');
+const createRankHandleEvent = require('../src/plugins/rank-system/server/services/handle-event');
+const createRankRegisterSubscribers = require('../src/plugins/rank-system/server/services/register-event-subscribers');
 const createEventBusService = require('../src/plugins/event-bus/server/services/event-bus');
-const registerRankEventSubscribers = require('../src/services/rank/register-event-subscribers');
 
 const getToday = () => new Date().toISOString().slice(0, 10);
 const flushImmediates = async (times = 3) => {
@@ -90,7 +91,7 @@ const createHarness = () => {
         if (uid === 'plugin::users-permissions.user') {
           return store.users.find((user) => user.id === id) || null;
         }
-        if (uid === 'api::rs-group.rs-group') {
+        if (uid === 'plugin::rank-system.rs-group') {
           const row = store.rsGroups.find((group) => group.id === id);
           return row ? { ...row, rs_group_rank: row.rs_group_rank ? { id: row.rs_group_rank } : null } : null;
         }
@@ -100,40 +101,40 @@ const createHarness = () => {
       async findMany(uid, query = {}) {
         const filters = query.filters || {};
 
-        if (uid === 'api::rs-group-rule.rs-group-rule') return [store.rsGroupRule];
-        if (uid === 'api::rs-level-rule.rs-level-rule') return [store.rsLevelRule];
-        if (uid === 'api::rs-event-list.rs-event-list') {
+        if (uid === 'plugin::rank-system.rs-group-rule') return [store.rsGroupRule];
+        if (uid === 'plugin::rank-system.rs-level-rule') return [store.rsLevelRule];
+        if (uid === 'plugin::rank-system.rs-event-list') {
           return filters.event_name
             ? store.rsEventList.filter((row) => row.event_name === filters.event_name)
             : store.rsEventList.slice();
         }
-        if (uid === 'api::rs-group-rank.rs-group-rank') {
+        if (uid === 'plugin::rank-system.rs-group-rank') {
           const rows = store.rsGroupRanks.filter((row) => !filters.rs_group_rule?.id || row.rs_group_rule?.id === filters.rs_group_rule.id);
           return rows.slice().sort((a, b) => (b.rank_no - a.rank_no) || (a.id - b.id));
         }
-        if (uid === 'api::rs-level-title.rs-level-title') {
+        if (uid === 'plugin::rank-system.rs-level-title') {
           const rows = filters.rs_level?.id
             ? store.rsLevelTitles.filter((row) => row.rs_level?.id === filters.rs_level.id)
             : store.rsLevelTitles.slice();
           return rows.filter((row) => !query.locale || row.locale === query.locale);
         }
-        if (uid === 'api::rs-group-rank-title.rs-group-rank-title') {
+        if (uid === 'plugin::rank-system.rs-group-rank-title') {
           const rows = filters.rs_group_rank?.id
             ? store.rsGroupRankTitles.filter((row) => row.rs_group_rank?.id === filters.rs_group_rank.id)
             : store.rsGroupRankTitles.slice();
           return rows.filter((row) => !query.locale || row.locale === query.locale);
         }
-        if (uid === 'api::rs-level.rs-level') {
+        if (uid === 'plugin::rank-system.rs-level') {
           return filters.level_no
             ? store.rsLevels.filter((row) => row.level_no === filters.level_no)
             : store.rsLevels.slice();
         }
-        if (uid === 'api::rs-event.rs-event') {
+        if (uid === 'plugin::rank-system.rs-event') {
           return filters.event_id
             ? store.rsEvents.filter((row) => row.event_id === filters.event_id)
             : store.rsEvents.slice();
         }
-        if (uid === 'api::rs-user-snapshot.rs-user-snapshot') {
+        if (uid === 'plugin::rank-system.rs-user-snapshot') {
           let rows = store.rsSnapshots.slice();
           if (filters.userid) rows = rows.filter((row) => row.userid === String(filters.userid));
           if (typeof filters.record_date === 'string') {
@@ -152,7 +153,7 @@ const createHarness = () => {
           rows = sortSnapshots(rows).map(hydrateSnapshot);
           return rows.slice(0, query.limit || rows.length);
         }
-        if (uid === 'api::rs-user-group.rs-user-group') {
+        if (uid === 'plugin::rank-system.rs-user-group') {
           let rows = store.rsUserGroups.slice();
           if (filters.userid) rows = rows.filter((row) => row.userid === String(filters.userid));
           if (filters.rs_group?.id) rows = rows.filter((row) => row.rs_group === filters.rs_group.id);
@@ -162,7 +163,7 @@ const createHarness = () => {
             rs_group: row.rs_group ? { id: row.rs_group } : null,
           }));
         }
-        if (uid === 'api::rs-group.rs-group') {
+        if (uid === 'plugin::rank-system.rs-group') {
           let rows = store.rsGroups.slice();
           if (filters.rs_group_rank?.id) rows = rows.filter((row) => row.rs_group_rank === filters.rs_group_rank.id);
           if (filters.rs_group_rule?.id) rows = rows.filter((row) => row.rs_group_rule === filters.rs_group_rule.id);
@@ -181,27 +182,27 @@ const createHarness = () => {
           store.ebEvents.push(row);
           return row;
         }
-        if (uid === 'api::rs-event.rs-event') {
+        if (uid === 'plugin::rank-system.rs-event') {
           const row = { id: idCursor++, ...data };
           store.rsEvents.push(row);
           return row;
         }
-        if (uid === 'api::rs-level.rs-level') {
+        if (uid === 'plugin::rank-system.rs-level') {
           const row = { id: idCursor++, ...data };
           store.rsLevels.push(row);
           return row;
         }
-        if (uid === 'api::rs-user-snapshot.rs-user-snapshot') {
+        if (uid === 'plugin::rank-system.rs-user-snapshot') {
           const row = { id: idCursor++, ...data };
           store.rsSnapshots.push(row);
           return hydrateSnapshot(row);
         }
-        if (uid === 'api::rs-user-group.rs-user-group') {
+        if (uid === 'plugin::rank-system.rs-user-group') {
           const row = { id: idCursor++, ...data };
           store.rsUserGroups.push(row);
           return { ...row, rs_group: row.rs_group ? { id: row.rs_group } : null };
         }
-        if (uid === 'api::rs-group.rs-group') {
+        if (uid === 'plugin::rank-system.rs-group') {
           const row = { id: idCursor++, ...data };
           store.rsGroups.push(row);
           return row;
@@ -212,17 +213,17 @@ const createHarness = () => {
 
       async update(uid, id, payload) {
         const data = payload.data;
-        if (uid === 'api::rs-event.rs-event') {
+        if (uid === 'plugin::rank-system.rs-event') {
           const row = store.rsEvents.find((item) => item.id === id);
           Object.assign(row, data);
           return row;
         }
-        if (uid === 'api::rs-user-snapshot.rs-user-snapshot') {
+        if (uid === 'plugin::rank-system.rs-user-snapshot') {
           const row = store.rsSnapshots.find((item) => item.id === id);
           Object.assign(row, data);
           return hydrateSnapshot(row);
         }
-        if (uid === 'api::rs-user-group.rs-user-group') {
+        if (uid === 'plugin::rank-system.rs-user-group') {
           const row = store.rsUserGroups.find((item) => item.id === id);
           Object.assign(row, data);
           return { ...row, rs_group: row.rs_group ? { id: row.rs_group } : null };
@@ -233,25 +234,30 @@ const createHarness = () => {
     },
   };
 
-  const services = {};
   const plugins = {};
 
-  strapi.service = (name) => services[name];
+  strapi.service = () => {
+    throw new Error('Unexpected global service lookup in rank-system plugin harness');
+  };
   strapi.plugin = (name) => ({
     service(serviceName) {
       return plugins[name][serviceName];
     },
   });
 
-  services['rank-rule-loader'] = createRuleLoader({ strapi });
-  services['rank-snapshot'] = createSnapshotService({ strapi });
-  services['rank-level'] = createLevelService({ strapi });
-  services['rank-user-group'] = createUserGroupService({ strapi });
-  services['rank-group'] = createGroupService({ strapi });
-  services['rank-event-processor'] = createEventProcessor({ strapi });
-  services['rank-dispatcher'] = createRankDispatcher({ strapi });
   plugins['event-bus'] = {
     'event-bus': createEventBusService({ strapi }),
+  };
+  plugins['rank-system'] = {
+    'rule-loader': createRuleLoader({ strapi }),
+    snapshot: createSnapshotService({ strapi }),
+    level: createLevelService({ strapi }),
+    'user-group': createUserGroupService({ strapi }),
+    group: createGroupService({ strapi }),
+    'event-processor': createEventProcessor({ strapi }),
+    dispatcher: createRankDispatcher({ strapi }),
+    'handle-event': createRankHandleEvent({ strapi }),
+    'register-event-subscribers': createRankRegisterSubscribers({ strapi }),
   };
 
   return {
@@ -267,7 +273,7 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
   const { eventBus, strapi, store, logs } = harness;
 
   eventBus.initializeRegistry();
-  await registerRankEventSubscribers({ strapi });
+  await strapi.plugin('rank-system').service('register-event-subscribers').register();
 
   assert.deepEqual(eventBus.listSubscribers('flashcard.review'), ['rank']);
   assert.ok(logs.some(([, message]) => message === '[Rank] registered event-bus subscribers'));

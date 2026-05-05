@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "as_achievement_translations",
+  "info": {
+    "singularName": "as-achievement-translation",
+    "pluralName": "as-achievement-translations",
+    "displayName": "AS Achievement Translation"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "achievement": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::achievement.as-achievement",
+      "inversedBy": "translations"
+    },
+    "locale": {
+      "type": "string",
+      "required": true,
+      "default": "en"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

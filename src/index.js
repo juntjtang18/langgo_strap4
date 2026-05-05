@@ -32,21 +32,6 @@ module.exports = {
     const tierService = initTierService({ strapi });
     strapi.container.get('services').set('tier-service', tierService);
 
-    // Register Google Pub/Sub service
-    //const initPubSubService = require('./unused/pubsub');
-    //const pubSubService = initPubSubService({ strapi });
-    //strapi.container.get('services').set('pubsub', pubSubService);
-
-    // Partially obsolete: user_points writing is superseded by rank subsystem.
-    // Still registered because review-event-handler uses calculateReviewPoints for reviewlog.points_awarded.
-    //const initReviewRewardService = require('./unused/review-reward-service');
-    //const reviewRewardService = initReviewRewardService({ strapi });
-    //strapi.container.get('services').set('review-reward-service', reviewRewardService);
-
-    //const initPointService = require('./unused/point-service');
-    //const pointService = initPointService({ strapi });
-    //strapi.container.get('services').set('point-service', pointService);
-
     // Register flashcard validation
     const initFlashcardValidateService = require('./services/flashcard-validate');
     const flashcardValidateService = initFlashcardValidateService({ strapi });
@@ -65,21 +50,11 @@ module.exports = {
     const dbIndexEnsureService = initDbIndexEnsureService({ strapi });
     strapi.container.get('services').set('db-index-ensure', dbIndexEnsureService);
 
-    // Register Rank subsystem
-    const initRankSubsystem = require('./services/rank/index');
-    initRankSubsystem({ strapi });
-
-    const registerRankEventSubscribers = require('./services/rank/register-event-subscribers');
-    await registerRankEventSubscribers({ strapi });
-
     // Log service setup success
     if (
       wordProcessingQueueService &&
       openAIService &&
       tierService &&
-      //pubSubService &&
-      //reviewRewardService &&
-      //pointService &&
       flashcardValidateService &&
       accountDeletionService &&
       flashcardStatBootstrapService &&
@@ -90,12 +65,6 @@ module.exports = {
     } else {
       strapi.log.error('Failed to initialize one or more custom services during bootstrap.');
     }
-
-    //if (pubSubService.isConfigured()) {
-    //  strapi.log.info(`Google Pub/Sub service initialized for project ${pubSubService.getProjectId() || '(ADC inferred)'}.`);
-    //} else {
-    //  strapi.log.warn('Google Pub/Sub service initialized without explicit project configuration.');
-    //}
 
     // Register topic generator
     const initTopicGeneratorService = require('./services/topic-generator');

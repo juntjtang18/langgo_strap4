@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const rankController = require('../src/api/rank/controllers/rank');
+const rankController = require('../src/plugins/rank-system/server/controllers/rank');
 
 function createCtx(userId = 60) {
   return {
@@ -27,31 +27,36 @@ function createCtx(userId = 60) {
 
 test('rank controller getMyLeaderboard returns current group summary and ordered members', async () => {
   global.strapi = {
-    service(name) {
-      if (name === 'rank-user-group') {
-        return {
-          async getByUserid(userid) {
-            assert.equal(userid, 60);
+    plugin(name) {
+      assert.equal(name, 'rank-system');
+      return {
+        service(serviceName) {
+          if (serviceName === 'user-group') {
             return {
-              id: 1,
-              userid: '60',
-              username: 'James',
-              period_points: 146,
-              rs_group: { id: 1 },
+              async getByUserid(userid) {
+                assert.equal(userid, 60);
+                return {
+                  id: 1,
+                  userid: '60',
+                  username: 'James',
+                  period_points: 146,
+                  rs_group: { id: 1 },
+                };
+              },
+              async listByGroup(groupId) {
+                assert.equal(groupId, 1);
+                return [
+                  { id: 2, userid: '72', username: 'Vivian', period_points: 120 },
+                  { id: 1, userid: '60', username: 'James', period_points: 146 },
+                  { id: 3, userid: '80', username: 'Aaron', period_points: 120 },
+                ];
+              },
             };
-          },
-          async listByGroup(groupId) {
-            assert.equal(groupId, 1);
-            return [
-              { id: 2, userid: '72', username: 'Vivian', period_points: 120 },
-              { id: 1, userid: '60', username: 'James', period_points: 146 },
-              { id: 3, userid: '80', username: 'Aaron', period_points: 120 },
-            ];
-          },
-        };
-      }
+          }
 
-      throw new Error(`Unexpected service ${name}`);
+          throw new Error(`Unexpected plugin service ${serviceName}`);
+        },
+      };
     },
     entityService: {
       async findMany(uid, query) {
@@ -64,7 +69,7 @@ test('rank controller getMyLeaderboard returns current group summary and ordered
           return [{ id: 10, baseLanguage: 'en' }];
         }
 
-        if (uid === 'api::rs-group-rank-title.rs-group-rank-title') {
+        if (uid === 'plugin::rank-system.rs-group-rank-title') {
           assert.deepEqual(query, {
             filters: { rs_group_rank: { id: 20 } },
             locale: 'en',
@@ -78,7 +83,7 @@ test('rank controller getMyLeaderboard returns current group summary and ordered
       },
 
       async findOne(uid, id, query) {
-        assert.equal(uid, 'api::rs-group.rs-group');
+        assert.equal(uid, 'plugin::rank-system.rs-group');
         assert.equal(id, 1);
         assert.deepEqual(query, {
           fields: ['id', 'group_no'],
@@ -135,17 +140,22 @@ test('rank controller getMyLeaderboard returns current group summary and ordered
 
 test('rank controller getMyLeaderboard returns empty payload when the user has no group', async () => {
   global.strapi = {
-    service(name) {
-      if (name === 'rank-user-group') {
-        return {
-          async getByUserid(userid) {
-            assert.equal(userid, 60);
-            return null;
-          },
-        };
-      }
+    plugin(name) {
+      assert.equal(name, 'rank-system');
+      return {
+        service(serviceName) {
+          if (serviceName === 'user-group') {
+            return {
+              async getByUserid(userid) {
+                assert.equal(userid, 60);
+                return null;
+              },
+            };
+          }
 
-      throw new Error(`Unexpected service ${name}`);
+          throw new Error(`Unexpected plugin service ${serviceName}`);
+        },
+      };
     },
     entityService: {
       async findMany(uid) {
@@ -168,38 +178,43 @@ test('rank controller getMyLeaderboard returns empty payload when the user has n
 
 test('rank controller getMeStatus returns period points from the latest snapshot', async () => {
   global.strapi = {
-    service(name) {
-      if (name === 'rank-rule-loader') {
-        return {
-          async loadGroupRule() {
-            return { id: 5, period_days: 14 };
-          },
-        };
-      }
-      if (name === 'rank-snapshot') {
-        return {
-          async getPeriodPoints(userid, periodDays, date) {
-            assert.equal(userid, '60');
-            assert.equal(periodDays, 14);
-            const dateString = date.toISOString().slice(0, 10);
-            if (dateString === '2026-05-02') return 13;
-            if (dateString === '2026-05-01') return 9;
-            throw new Error(`Unexpected getPeriodPoints date ${dateString}`);
-          },
-          async getPreviousSnapshot(userid, date) {
-            assert.equal(userid, '60');
-            assert.equal(date.toISOString().slice(0, 10), '2026-05-02');
+    plugin(name) {
+      assert.equal(name, 'rank-system');
+      return {
+        service(serviceName) {
+          if (serviceName === 'rule-loader') {
             return {
-              id: 16,
-              userid: '60',
-              record_date: '2026-05-01',
-              period_points: null,
+              async loadGroupRule() {
+                return { id: 5, period_days: 14 };
+              },
             };
-          },
-        };
-      }
+          }
+          if (serviceName === 'snapshot') {
+            return {
+              async getPeriodPoints(userid, periodDays, date) {
+                assert.equal(userid, '60');
+                assert.equal(periodDays, 14);
+                const dateString = date.toISOString().slice(0, 10);
+                if (dateString === '2026-05-02') return 13;
+                if (dateString === '2026-05-01') return 9;
+                throw new Error(`Unexpected getPeriodPoints date ${dateString}`);
+              },
+              async getPreviousSnapshot(userid, date) {
+                assert.equal(userid, '60');
+                assert.equal(date.toISOString().slice(0, 10), '2026-05-02');
+                return {
+                  id: 16,
+                  userid: '60',
+                  record_date: '2026-05-01',
+                  period_points: null,
+                };
+              },
+            };
+          }
 
-      throw new Error(`Unexpected service ${name}`);
+          throw new Error(`Unexpected plugin service ${serviceName}`);
+        },
+      };
     },
     entityService: {
       async findMany(uid, query) {
@@ -212,7 +227,7 @@ test('rank controller getMeStatus returns period points from the latest snapshot
           return [{ id: 10, baseLanguage: 'en' }];
         }
 
-        if (uid === 'api::rs-user-snapshot.rs-user-snapshot') {
+        if (uid === 'plugin::rank-system.rs-user-snapshot') {
           assert.deepEqual(query, {
             filters: { userid: '60' },
             fields: [
@@ -277,15 +292,15 @@ test('rank controller getMeStatus returns period points from the latest snapshot
           }];
         }
 
-        if (uid === 'api::rs-level-title.rs-level-title') {
+        if (uid === 'plugin::rank-system.rs-level-title') {
           return [{ title: 'Level 3', locale: 'en' }];
         }
 
-        if (uid === 'api::rs-group-rank-title.rs-group-rank-title') {
+        if (uid === 'plugin::rank-system.rs-group-rank-title') {
           return [{ title: 'Starter', locale: 'en' }];
         }
 
-        if (uid === 'api::rs-user-snapshot.rs-user-snapshot' && query.fields?.length === 1 && query.fields[0] === 'points_add') {
+        if (uid === 'plugin::rank-system.rs-user-snapshot' && query.fields?.length === 1 && query.fields[0] === 'points_add') {
           throw new Error('Expected rank-snapshot service to be stubbed instead of direct points_add lookup');
         }
 

@@ -1,0 +1,10 @@
+{
+  "name": "rank-system",
+  "version": "0.1.0",
+  "private": true,
+  "strapi": {
+    "kind": "plugin",
+    "name": "rank-system"
+  },
+  "main": "strapi-server.js"
+}
