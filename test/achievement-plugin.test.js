@@ -22,14 +22,22 @@ const createHarness = () => {
     users: [{ id: 8, username: 'vivian' }],
     profiles: [{ id: 1, user: 8, baseLanguage: 'en' }],
     ebEvents: [],
+    eventList: [
+      { id: 1, event_name: 'flashcard.review', points: 1 },
+      { id: 2, event_name: 'article.create', points: 1 },
+      { id: 3, event_name: 'flashcard.remembered', points: 1 },
+    ],
     achievements: [
       { id: 10, code: 'review-novice', event_name: 'flashcard.review', points: 2, goal: 5 },
       { id: 11, code: 'writer', event_name: 'article.create', points: 1, goal: 1 },
+      { id: 12, code: 'memory-starter', event_name: 'flashcard.remembered', points: 1, goal: 1 },
     ],
     translations: [
       { id: 20, achievement: { id: 10 }, locale: 'en', title: 'Review Novice', description: 'Do reviews' },
       { id: 21, achievement: { id: 10 }, locale: 'zh', title: '复习新手', description: '去复习' },
       { id: 22, achievement: { id: 11 }, locale: 'en', title: 'Writer', description: 'Write an article' },
+      { id: 23, achievement: { id: 12 }, locale: 'en', title: 'Memory Starter', description: 'Remember your first flashcard' },
+      { id: 24, achievement: { id: 12 }, locale: 'zh', title: '记忆起步', description: '记住你的第一张闪卡' },
     ],
     userAchievements: [],
   };
@@ -74,6 +82,10 @@ const createHarness = () => {
             ...row,
             achievement: store.achievements.find((achievement) => achievement.id === row.achievement.id) || row.achievement,
           }));
+        }
+
+        if (uid === 'plugin::achievement.as-event-list') {
+          return store.eventList.slice();
         }
 
         if (uid === 'plugin::event-bus.eb-event') {
@@ -169,6 +181,7 @@ test('achievement plugin subscribes to event bus and increments progress until a
   await strapi.plugin('achievement').service('register-event-subscribers').register();
 
   assert.deepEqual(eventBus.listSubscribers('flashcard.review'), ['achievement']);
+  assert.deepEqual(eventBus.listSubscribers('flashcard.remembered'), ['achievement']);
   assert.ok(logs.some(([, message]) => message === '[Achievement] registered event-bus subscribers'));
 
   eventBus.publish('flashcard.review', {
@@ -184,13 +197,15 @@ test('achievement plugin subscribes to event bus and increments progress until a
   await flushImmediates(4);
 
   assert.equal(store.ebEvents.length, 1);
-  assert.equal(store.userAchievements.length, 2);
+  assert.equal(store.userAchievements.length, 3);
 
   const reviewAchievement = store.userAchievements.find((row) => row.achievement.id === 10);
   const writerAchievement = store.userAchievements.find((row) => row.achievement.id === 11);
+  const rememberedAchievement = store.userAchievements.find((row) => row.achievement.id === 12);
 
   assert.ok(reviewAchievement);
   assert.ok(writerAchievement);
+  assert.ok(rememberedAchievement);
   assert.equal(reviewAchievement.userid, '8');
   assert.equal(reviewAchievement.username, 'vivian');
   assert.equal(reviewAchievement.progress, 2);
@@ -199,6 +214,8 @@ test('achievement plugin subscribes to event bus and increments progress until a
   assert.equal(writerAchievement.username, 'vivian');
   assert.equal(writerAchievement.progress, 0);
   assert.equal(writerAchievement.achieved, false);
+  assert.equal(rememberedAchievement.progress, 0);
+  assert.equal(rememberedAchievement.achieved, false);
 
   eventBus.publish('flashcard.review', {
     review: {
@@ -251,18 +268,50 @@ test('achievement plugin initializes missing user achievement rows on first matc
 
   await flushImmediates(4);
 
-  assert.equal(store.userAchievements.length, 2);
+  assert.equal(store.userAchievements.length, 3);
 
   const reviewAchievement = store.userAchievements.find((row) => row.achievement.id === 10);
   const writerAchievement = store.userAchievements.find((row) => row.achievement.id === 11);
+  const rememberedAchievement = store.userAchievements.find((row) => row.achievement.id === 12);
 
   assert.ok(reviewAchievement);
   assert.ok(writerAchievement);
+  assert.ok(rememberedAchievement);
   assert.equal(reviewAchievement.progress, 0);
   assert.equal(reviewAchievement.achieved, false);
   assert.equal(writerAchievement.progress, 1);
   assert.equal(writerAchievement.achieved, true);
   assert.ok(writerAchievement.achieved_at);
+  assert.equal(rememberedAchievement.progress, 0);
+  assert.equal(rememberedAchievement.achieved, false);
+});
+
+test('achievement plugin handles flashcard.remembered from AS Event List subscriptions', async () => {
+  const harness = createHarness();
+  const { strapi, eventBus, store } = harness;
+
+  eventBus.initializeRegistry();
+  await strapi.plugin('achievement').service('register-event-subscribers').register();
+
+  eventBus.publish('flashcard.remembered', {
+    review: {
+      userId: 8,
+      userName: 'vivian',
+      flashcardId: 2627,
+      newlevel: 'remembered',
+    },
+  }, {
+    source: 'test.flashcard',
+  });
+
+  await flushImmediates(4);
+
+  const rememberedAchievement = store.userAchievements.find((row) => row.achievement.id === 12);
+
+  assert.ok(rememberedAchievement);
+  assert.equal(rememberedAchievement.progress, 1);
+  assert.equal(rememberedAchievement.achieved, true);
+  assert.ok(rememberedAchievement.achieved_at);
 });
 
 test('achievement controller separates achieved and not achieved lists with locale translations', async () => {
@@ -326,6 +375,18 @@ test('achievement controller separates achieved and not achieved lists with loca
         achieved_at: null,
         title: 'Writer',
         description: 'Write an article',
+      },
+      {
+        id: 12,
+        code: 'memory-starter',
+        event_name: 'flashcard.remembered',
+        points: 1,
+        goal: 1,
+        progress: 0,
+        achieved: false,
+        achieved_at: null,
+        title: 'Memory Starter',
+        description: 'Remember your first flashcard',
       },
     ],
   });

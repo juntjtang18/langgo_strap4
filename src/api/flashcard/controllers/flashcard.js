@@ -224,6 +224,16 @@ module.exports = createCoreController(
               },
             });
           }
+
+          if (reviewResult.becameRemembered) {
+            strapi.log.info('[EventPublisher] publishing event: flashcard.remembered');
+            eventBus.publish('flashcard.remembered', reviewResult.reviewEvent, {
+              source: 'flashcard.review',
+              metadata: {
+                publisher: 'api::flashcard.flashcard.review',
+              },
+            });
+          }
         }
     
         return this.transformResponse(finalCard);

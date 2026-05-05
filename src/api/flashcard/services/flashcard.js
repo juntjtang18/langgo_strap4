@@ -132,6 +132,7 @@ module.exports = createCoreService('api::flashcard.flashcard', ({ strapi }) => (
       return {
         effective,
         tierPromoted: tierRank(newLevel) > tierRank(currentLevel),
+        becameRemembered: currentLevel !== 'remembered' && newLevel === 'remembered',
         reviewedAt,
         reviewEvent,
       };
