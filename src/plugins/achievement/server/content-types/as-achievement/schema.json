@@ -40,6 +40,9 @@
       "relation": "oneToMany",
       "target": "plugin::achievement.as-user-achievement",
       "mappedBy": "achievement"
+    },
+    "icon_name": {
+      "type": "string"
     }
   }
 }

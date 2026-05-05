@@ -14,6 +14,7 @@ module.exports = ({ strapi }) => {
     id: achievement.id,
     code: achievement.code,
     event_name: achievement.event_name,
+    icon_name: achievement.icon_name || null,
     points: achievement.points || 0,
     goal: achievement.goal || 0,
     progress: userAchievement?.progress || 0,
@@ -26,7 +27,7 @@ module.exports = ({ strapi }) => {
   return {
     async listAll(locale = 'en') {
       return strapi.entityService.findMany('plugin::achievement.as-achievement', {
-        fields: ['id', 'code', 'event_name', 'points', 'goal'],
+        fields: ['id', 'code', 'event_name', 'icon_name', 'points', 'goal'],
         populate: {
           translations: {
             fields: ['id', 'locale', 'title', 'description'],
@@ -45,7 +46,7 @@ module.exports = ({ strapi }) => {
         filters: { userid: String(userid) },
         populate: {
           achievement: {
-            fields: ['id', 'code', 'event_name', 'points', 'goal'],
+            fields: ['id', 'code', 'event_name', 'icon_name', 'points', 'goal'],
           },
         },
         sort: [{ id: 'asc' }],
@@ -102,7 +103,7 @@ module.exports = ({ strapi }) => {
         },
         populate: {
           achievement: {
-            fields: ['id', 'code', 'event_name', 'points', 'goal'],
+            fields: ['id', 'code', 'event_name', 'icon_name', 'points', 'goal'],
           },
         },
         limit: 1,
