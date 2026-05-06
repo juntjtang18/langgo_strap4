@@ -47,10 +47,9 @@ curl -X POST http://localhost:1338/api/auth/local \
 
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A
 
-curl -X 'GET' \
-  'http://localhost:1338/api/flashcard-stat' \
+curl -X 'GET' 'http://localhost:1338/api/flashcard-stat' \
   -H 'accept: application/json' \
-    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc5NDk4NjgsImV4cCI6MTc4MDU0MTg2OH0.nZoMUbxD8foVL5_XgmVi-5t_7z2dFT21mh0l6O_Eps0" | jq .
 
 curl -X 'POST' http://localhost:1338/api/flashcard-stats/rebuild-all
   -H 'accept: application/json' \
@@ -78,30 +77,6 @@ curl -X GET "http://localhost:1338/api/rs-user-snapshots" \
 curl -X GET "http://localhost:1338/api/rank/users/60?locale=zh" \
   -H 'accept: application/json' \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3NzczNTU1MjMsImV4cCI6MTc3OTk0NzUyM30.L_35Haj0eGJKzGX6VkZh21nAbtwFTzidV2wlpoAFN8A" | jq .
-
-{
-  "data": {
-    "latest_snapshot": {
-      "id": 8,
-      "userid": "60",
-      "record_date": "2026-04-30",
-      "total_points": 224,
-      "points_add": 3,
-      "word_count": 19,
-      "word_add": 0,
-      "article_count": 11,
-      "article_add": 0,
-      "level_no": 1,
-      "level_change": 0,
-      "level_title": "幼儿园小班",
-      "group_id": 1,
-      "group_no": 1,
-      "group_rank": 1,
-      "group_rank_title": "起步者",
-      "group_rank_change": 0
-    }
-  }
-}
 
 
 curl X GET "http://localhost:1338/api/user-articles?filters%5Buser%5D%5Bid%5D%5B$eq%5D=60&fields%5B0%5D=title&fields%5B1%5D=content&fields%5B2%5D=language_code&fields%5B3%5D=word_count&fields%5B4%5D=progress&fields%5B5%5D=last_read_at&populate%5Barticle_tags%5D%5Bfields%5D%5B0%5D=tag&sort=updatedAt:desc&pagination%5Bpage%5D=1&pagination%5BpageSize%5D=3" \
@@ -150,141 +125,56 @@ curl -X GET "http://localhost:1338/api/rs-user-snapshots" -H 'accept: applicatio
 
 
 bash-3.2$ curl -X GET "http://localhost:1338/api/rs-user-snapshots" -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
-{
-  "data": [
-    {
-      "id": 13,
-      "attributes": {
-        "userid": "8",
-        "createdAt": "2026-05-02T23:22:09.114Z",
-        "updatedAt": "2026-05-03T02:06:04.578Z",
-        "username": null,
-        "record_date": "2026-05-02",
-        "total_points": 781,
-        "points_add": 781,
-        "word_count": 0,
-        "word_add": 0,
-        "article_count": 0,
-        "article_add": 0,
-        "level_change": 0,
-        "level_title": null,
-        "group_rank_title": null,
-        "group_rank_change": 0,
-        "period_points": null,
-        "period_points_change": null
-      }
-    },
-    {
-      "id": 14,
-      "attributes": {
-        "userid": "60",
-        "createdAt": "2026-05-02T19:47:42.787Z",
-        "updatedAt": "2026-05-02T20:36:01.106Z",
-        "username": "chinese2",
-        "record_date": "2026-05-01",
-        "total_points": 5,
-        "points_add": 5,
-        "word_count": 0,
-        "word_add": 0,
-        "article_count": 0,
-        "article_add": 0,
-        "level_change": 0,
-        "level_title": "Kindgarden I",
-        "group_rank_title": "Starter",
-        "group_rank_change": 0,
-        "period_points": null,
-        "period_points_change": null
-      }
-    },
-    {
-      "id": 15,
-      "attributes": {
-        "userid": "60",
-        "createdAt": "2026-05-02T20:36:23.598Z",
-        "updatedAt": "2026-05-02T20:36:31.752Z",
-        "username": "chinese2",
-        "record_date": "2026-05-02",
-        "total_points": 9,
-        "points_add": 4,
-        "word_count": 0,
-        "word_add": 0,
-        "article_count": 0,
-        "article_add": 0,
-        "level_change": 0,
-        "level_title": "Kindgarden I",
-        "group_rank_title": "Starter",
-        "group_rank_change": 0,
-        "period_points": null,
-        "period_points_change": null
-      }
-    },
-    {
-      "id": 16,
-      "attributes": {
-        "userid": "60",
-        "createdAt": "2026-05-03T01:04:38.213Z",
-        "updatedAt": "2026-05-03T01:11:56.316Z",
-        "username": "chinese2",
-        "record_date": "2026-04-30",
-        "total_points": 13,
-        "points_add": 4,
-        "word_count": 0,
-        "word_add": 0,
-        "article_count": 0,
-        "article_add": 0,
-        "level_change": 0,
-        "level_title": "Kindgarden I",
-        "group_rank_title": "Starter",
-        "group_rank_change": 0,
-        "period_points": null,
-        "period_points_change": null
-      }
-    }
-  ],
-  "meta": {
-    "pagination": {
-      "page": 1,
-      "pageSize": 25,
-      "pageCount": 1,
-      "total": 4
-    }
-  }
-}
-curl -X GET "http://localhost:1338/api/rank/me"   -H 'accept: application/json'   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs"   | jq .
-{
-  "data": {
-    "latest_snapshot": {
-      "id": 17,
-      "userid": "60",
-      "record_date": "2026-05-03",
-      "total_points": 30,
-      "points_add": 21,
-      "word_count": 0,
-      "word_add": 0,
-      "article_count": 0,
-      "article_add": 0,
-      "level_no": 1,
-      "level_change": 0,
-      "level_title": "Kindgarden I",
-      "group_id": 1,
-      "group_no": 1,
-      "group_rank": 1,
-      "group_rank_title": "Starter",
-      "group_rank_change": 0,
-      "period_points": 34,
-      "period_points_change": 34
-    }
-  }
-}
 
 
 vivian: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI
+chinese2: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc5NDk4NjgsImV4cCI6MTc4MDU0MTg2OH0.nZoMUbxD8foVL5_XgmVi-5t_7z2dFT21mh0l6O_Eps0
 
 
 curl X GET "http://localhost:1338/api/review-flashcards" \
   -H 'accept: application/json' \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI" | jq .
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc5NDk4NjgsImV4cCI6MTc4MDU0MTg2OH0.nZoMUbxD8foVL5_XgmVi-5t_7z2dFT21mh0l6O_Eps0" | jq .
 
-curl X GET "https://langgo-en-strapi.geniusparentingai.ca:1338/api/review-flashcards" \
+curl X GET "https://langgo-en-strapi.geniusparentingai.ca/api/review-flashcards" \
   -H 'accept: application/json' \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI" | jq .
+
+
+
+
+
+curl -X 'GET' 'http://localhost:1338/api/flashcard-stat' \
+  -H 'accept: application/json' \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc5NDk4NjgsImV4cCI6MTc4MDU0MTg2OH0.nZoMUbxD8foVL5_XgmVi-5t_7z2dFT21mh0l6O_Eps0" | jq .
+
+
+
+
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 3,
+      "total": 71
+    }
+
+    
+{
+  "data": {
+    "totalCards": 96,
+    "remembered": 0,
+    "dueForReview": 54,
+    "reviewed": null,
+    "hardToRemember": null,
+    "byTier": [
+      {
+        "id": 1,
+        "tier": "new",
+        "display_name": "New Word",
+        "min_streak": 0,
+        "max_streak": 2,
+        "cooldown_hours": 6,
+        "count": 58,
+        "dueCount": 31,
+        "hardToRememberCount": null
+      },
