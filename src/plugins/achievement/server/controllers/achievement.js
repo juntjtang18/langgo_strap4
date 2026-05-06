@@ -26,6 +26,10 @@ module.exports = {
 
     const profile = await getCurrentUserProfile(user.id);
     const locale = ctx.query?.locale || profile?.baseLanguage || 'en';
+    await strapi.plugin('achievement').service('achievement').ensureUserAchievements(
+      user.id,
+      user.username || user.email || null
+    );
     const rows = await strapi.plugin('achievement').service('achievement').listAchievedByUserid(user.id, locale);
 
     ctx.body = { data: rows };
@@ -37,6 +41,10 @@ module.exports = {
 
     const profile = await getCurrentUserProfile(user.id);
     const locale = ctx.query?.locale || profile?.baseLanguage || 'en';
+    await strapi.plugin('achievement').service('achievement').ensureUserAchievements(
+      user.id,
+      user.username || user.email || null
+    );
     const rows = await strapi.plugin('achievement').service('achievement').listNotAchievedByUserid(user.id, locale);
 
     ctx.body = { data: rows };

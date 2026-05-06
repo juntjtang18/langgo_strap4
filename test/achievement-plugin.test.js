@@ -420,3 +420,24 @@ test('achievement controller falls back from zh-Hans to zh localized achievement
   assert.equal(ctx.body.data[0].title, '复习新手');
   assert.equal(ctx.body.data[0].description, '去复习');
 });
+
+test('achievement fetch endpoints initialize missing AS User Achievement rows for the current user', async () => {
+  const harness = createHarness();
+  const { strapi, store } = harness;
+
+  global.strapi = strapi;
+
+  const ctx = createCtx(8, 'en');
+  await achievementController.listNotAchieved(ctx);
+
+  assert.equal(store.userAchievements.length, 3);
+  assert.deepEqual(
+    store.userAchievements.map((row) => row.achievement.id).sort((a, b) => a - b),
+    [10, 11, 12]
+  );
+  assert.equal(ctx.body.data.length, 3);
+  assert.deepEqual(
+    ctx.body.data.map((row) => row.code),
+    ['review-novice', 'writer', 'memory-starter']
+  );
+});
