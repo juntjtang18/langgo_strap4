@@ -1,13 +1,21 @@
 'use strict';
 
 const sortById = (rows) => rows.slice().sort((left, right) => (left.id || 0) - (right.id || 0));
+const getLocaleCandidates = (locale = 'en') => {
+  const values = [locale, locale.split('-')[0], 'en'];
+  return Array.from(new Set(values.filter((value) => typeof value === 'string' && value.length > 0)));
+};
 
 module.exports = ({ strapi }) => {
   const findTranslation = (translations, locale) => {
-    const exact = translations.find((row) => (row.locale || 'en') === locale);
-    if (exact) return exact;
-    const english = translations.find((row) => (row.locale || 'en') === 'en');
-    return english || translations[0] || null;
+    const candidates = getLocaleCandidates(locale);
+
+    for (const candidate of candidates) {
+      const match = translations.find((row) => (row.locale || 'en') === candidate);
+      if (match) return match;
+    }
+
+    return translations[0] || null;
   };
 
   const formatAchievement = (achievement, userAchievement, translation) => ({
@@ -31,6 +39,7 @@ module.exports = ({ strapi }) => {
         populate: {
           translations: {
             fields: ['id', 'locale', 'title', 'description'],
+            locale: 'all',
           },
         },
         sort: [{ id: 'asc' }],

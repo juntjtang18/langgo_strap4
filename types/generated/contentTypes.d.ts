@@ -1255,15 +1255,35 @@ export interface PluginAchievementAsAchievementTranslation
   options: {
     draftAndPublish: false;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
     achievement: Attribute.Relation<
       'plugin::achievement.as-achievement-translation',
       'manyToOne',
       'plugin::achievement.as-achievement'
-    >;
-    locale: Attribute.String & Attribute.Required & Attribute.DefaultTo<'en'>;
-    title: Attribute.String & Attribute.Required;
-    description: Attribute.Text;
+    > &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    description: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1278,6 +1298,12 @@ export interface PluginAchievementAsAchievementTranslation
       'admin::user'
     > &
       Attribute.Private;
+    localizations: Attribute.Relation<
+      'plugin::achievement.as-achievement-translation',
+      'oneToMany',
+      'plugin::achievement.as-achievement-translation'
+    >;
+    locale: Attribute.String;
   };
 }
 

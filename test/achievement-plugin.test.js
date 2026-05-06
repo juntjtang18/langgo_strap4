@@ -348,6 +348,7 @@ test('achievement controller separates achieved and not achieved lists with loca
         id: 10,
         code: 'review-novice',
         event_name: 'flashcard.review',
+        icon_name: null,
         points: 2,
         goal: 5,
         progress: 6,
@@ -368,6 +369,7 @@ test('achievement controller separates achieved and not achieved lists with loca
         id: 11,
         code: 'writer',
         event_name: 'article.create',
+        icon_name: null,
         points: 1,
         goal: 1,
         progress: 0,
@@ -380,6 +382,7 @@ test('achievement controller separates achieved and not achieved lists with loca
         id: 12,
         code: 'memory-starter',
         event_name: 'flashcard.remembered',
+        icon_name: null,
         points: 1,
         goal: 1,
         progress: 0,
@@ -390,4 +393,30 @@ test('achievement controller separates achieved and not achieved lists with loca
       },
     ],
   });
+});
+
+test('achievement controller falls back from zh-Hans to zh localized achievements', async () => {
+  const harness = createHarness();
+  const { strapi, store } = harness;
+
+  store.profiles = [{ id: 1, user: 8, baseLanguage: 'zh-Hans' }];
+  store.userAchievements.push({
+    id: 90,
+    userid: '8',
+    username: 'vivian',
+    achievement: { id: 10 },
+    progress: 6,
+    achieved: true,
+    achieved_at: '2026-05-04T21:00:00.000Z',
+  });
+
+  global.strapi = strapi;
+
+  const ctx = createCtx(8);
+  await achievementController.listAchieved(ctx);
+
+  assert.equal(ctx.body.data.length, 1);
+  assert.equal(ctx.body.data[0].id, 10);
+  assert.equal(ctx.body.data[0].title, '复习新手');
+  assert.equal(ctx.body.data[0].description, '去复习');
 });
