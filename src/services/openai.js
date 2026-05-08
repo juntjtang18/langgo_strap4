@@ -5,6 +5,67 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 
 module.exports = ({ strapi }) => ({
+  buildExamOptionsPrompt(text, locale) {
+    return `
+You are generating multiple-choice options for a language-learning exam in ${locale}.
+
+The CORRECT word is: "${text}".
+
+Your job:
+- Create a total of 4 options.
+- Exactly ONE option must be the correct word "${text}".
+- The other 3 must be incorrect options.
+
+STRICT RULES:
+
+1) Meaning:
+   - Only one option is correct for "${text}".
+   - The 3 incorrect options must NOT:
+     - have the same meaning as "${text}",
+     - be synonyms or near-synonyms of "${text}",
+     - be valid translations of the same concept as "${text}" in normal usage,
+     - belong to the same small semantic set as the answer if that makes them "almost right".
+   - They should be clearly wrong in meaning, not "almost right".
+   - Prefer distractors that are visually or phonetically similar to the correct word, but clearly different in meaning.
+
+2) Form:
+   - The incorrect options should be plausible confusions by FORM, not by meaning.
+   - Prefer distractors with:
+     - similar spelling,
+     - similar pronunciation,
+     - similar length,
+     - similar character pattern.
+   - Same part of speech if possible.
+   - Avoid inflected forms of the same word (e.g. for "go": "goes", "going", etc.).
+   - Avoid words that are too close in meaning, even if they are common confusions.
+   - If needed, choose look-alike or sound-alike words from a different semantic field.
+
+3) Quality target:
+   - Make the wrong options distinguishable for a learner.
+   - A learner should need to notice the exact word form, but should NOT be trapped by 3 nearly equivalent meanings.
+   - Better distractors are similar in spelling/sound but clearly wrong in meaning.
+   - Worse distractors are synonyms, near-synonyms, or translations of the same idea.
+
+4) OUTPUT FORMAT (IMPORTANT):
+   - You MUST return a JSON object with this exact shape:
+
+     {
+       "options": [
+         { "text": "option1", "isCorrect": false },
+         { "text": "option2", "isCorrect": false },
+         { "text": "option3", "isCorrect": false },
+         { "text": "option4", "isCorrect": true }
+       ]
+     }
+
+   - "options" must be an array of exactly 4 items.
+   - Each item must have:
+       - "text": string
+       - "isCorrect": boolean
+   - Exactly one item must have "isCorrect": true and its "text" must be "${text}".
+`;
+  },
+
   /**
    * Generates a natural, conversational reply based on the chat history.
    * @param {Array<object>} history - The conversation history.
@@ -97,50 +158,7 @@ module.exports = ({ strapi }) => ({
    * - locale: language code for the options (e.g. "en", "zh")
    */
   async generateExamOptions(text, locale, wordDefinitionId = 'N/A') {
-    const prompt = `
-You are generating multiple-choice options for a language-learning exam in ${locale}.
-
-The CORRECT word is: "${text}".
-
-Your job:
-- Create a total of 4 options.
-- Exactly ONE option must be the correct word "${text}".
-- The other 3 must be incorrect options.
-
-STRICT RULES:
-
-1) Meaning:
-   - Only one option is correct for "${text}".
-   - The 3 incorrect options must NOT:
-     - have the same meaning as "${text}",
-     - be synonyms or near-synonyms of "${text}",
-     - be valid translations of the same concept as "${text}" in normal usage.
-   - They should be clearly wrong in meaning, not "almost right".
-
-2) Form:
-   - The incorrect options should be plausible confusions:
-     - same part of speech if possible (all verbs, or all nouns),
-     - similar length, characters, or phonetic feel.
-   - Avoid inflected forms of the same word (e.g. for "go": "goes", "going", etc.).
-
-3) OUTPUT FORMAT (IMPORTANT):
-   - You MUST return a JSON object with this exact shape:
-
-     {
-       "options": [
-         { "text": "option1", "isCorrect": false },
-         { "text": "option2", "isCorrect": false },
-         { "text": "option3", "isCorrect": false },
-         { "text": "option4", "isCorrect": true }
-       ]
-     }
-
-   - "options" must be an array of exactly 4 items.
-   - Each item must have:
-       - "text": string
-       - "isCorrect": boolean
-   - Exactly one item must have "isCorrect": true and its "text" must be "${text}".
-`;
+    const prompt = this.buildExamOptionsPrompt(text, locale);
 
     try {
       const chatCompletion = await openai.chat.completions.create({
