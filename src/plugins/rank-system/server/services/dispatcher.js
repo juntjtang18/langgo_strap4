@@ -17,8 +17,18 @@ module.exports = ({ strapi }) => ({
     }
   },
 
-  async onUserRegister(userid, username = null, eventId = null) {
-    return this.dispatch('user.register', userid, {}, username, eventId);
+  async onUserRegister(userid, username = null, eventId = null, payload = {}) {
+    return this.dispatch('user.register', userid, {
+      ...(username ? { username } : {}),
+      ...payload,
+    }, username, eventId);
+  },
+
+  async onUserProfileUpdate(userid, username = null, eventId = null, payload = {}) {
+    return this.dispatch('user.profile.update', userid, {
+      ...(username ? { username } : {}),
+      ...payload,
+    }, username, eventId);
   },
 
   async onFlashcardCreate(userid, flashcardId, username = null, eventId = null, flashcard = null) {

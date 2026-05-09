@@ -4,7 +4,8 @@
   "info": {
     "singularName": "flashcard-stat",
     "pluralName": "flashcard-stats",
-    "displayName": "flashcard stat"
+    "displayName": "VB Flashcard stat",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false

@@ -145,7 +145,7 @@ curl X GET "https://langgo-en-strapi.geniusparentingai.ca/api/review-flashcards"
 
 curl -X 'GET' 'http://localhost:1338/api/flashcard-stat' \
   -H 'accept: application/json' \
-    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc5NDk4NjgsImV4cCI6MTc4MDU0MTg2OH0.nZoMUbxD8foVL5_XgmVi-5t_7z2dFT21mh0l6O_Eps0" | jq .
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI" | jq .
 
 
 

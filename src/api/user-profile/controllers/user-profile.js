@@ -109,6 +109,7 @@ module.exports = createCoreController(
               userId: user.id,
               username: user.username || user.email || null,
               email: user.email || null,
+              visible_on_ladder: profileData.visible_on_ladder !== false,
             },
             {
               source: 'user-profile.register',

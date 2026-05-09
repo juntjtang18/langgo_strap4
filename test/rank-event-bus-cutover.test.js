@@ -285,6 +285,7 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
         userId: 8,
         username: 'vivian',
         email: 'vivian@example.com',
+        visible_on_ladder: true,
       },
       options: {
         source: 'test.user-profile',
@@ -370,6 +371,18 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
         metadata: { publisher: 'test.user-article.create' },
       },
     },
+    {
+      eventName: 'user.profile.update',
+      payload: {
+        userId: 8,
+        username: 'vivian',
+        visible_on_ladder: false,
+      },
+      options: {
+        source: 'test.user-profile',
+        metadata: { publisher: 'test.user-profile.updateMine' },
+      },
+    },
   ];
 
   for (const event of events) {
@@ -380,8 +393,8 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
 
   await flushImmediates(6);
 
-  assert.equal(store.ebEvents.length, 5);
-  assert.equal(store.rsEvents.length, 5);
+  assert.equal(store.ebEvents.length, 6);
+  assert.equal(store.rsEvents.length, 6);
 
   assert.deepEqual(
     store.rsEvents.map((row) => row.event_name),
@@ -391,6 +404,7 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       'flashcard.review',
       'flashcard.review_tier_promote',
       'article.create',
+      'user.profile.update',
     ]
   );
   assert.ok(store.rsEvents.every((row) => row.status === 'handled'));
@@ -402,6 +416,7 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       '[Rank] handling event: flashcard.review',
       '[Rank] handling event: flashcard.review_tier_promote',
       '[Rank] handling event: article.create',
+      '[Rank] handling event: user.profile.update',
     ]
   );
 
@@ -423,6 +438,7 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
   assert.equal(store.rsUserGroups[0].userid, '8');
   assert.equal(store.rsUserGroups[0].period_points, 17);
   assert.equal(store.rsUserGroups[0].rs_group, latestSnapshot.rs_group);
+  assert.equal(store.rsUserGroups[0].visible_on_ladder, false);
 
   assert.equal(store.rsGroups.length, 2);
   assert.deepEqual(

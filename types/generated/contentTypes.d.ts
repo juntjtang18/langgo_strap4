@@ -1124,6 +1124,7 @@ export interface PluginRankSystemRsUserGroup extends Schema.CollectionType {
       'plugin::rank-system.rs-group'
     >;
     period_points: Attribute.Integer;
+    visible_on_ladder: Attribute.Boolean & Attribute.DefaultTo<true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1425,7 +1426,7 @@ export interface ApiArticleTagArticleTag extends Schema.CollectionType {
   info: {
     singularName: 'article-tag';
     pluralName: 'article-tags';
-    displayName: 'article tag';
+    displayName: 'VB article tag';
     description: '';
   };
   options: {
@@ -1650,7 +1651,7 @@ export interface ApiFlashcardFlashcard extends Schema.CollectionType {
   info: {
     singularName: 'flashcard';
     pluralName: 'flashcards';
-    displayName: 'flashcard';
+    displayName: 'VB flashcard';
     description: '';
   };
   options: {
@@ -1710,7 +1711,8 @@ export interface ApiFlashcardStatFlashcardStat extends Schema.CollectionType {
   info: {
     singularName: 'flashcard-stat';
     pluralName: 'flashcard-stats';
-    displayName: 'flashcard stat';
+    displayName: 'VB Flashcard stat';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1786,7 +1788,7 @@ export interface ApiLearningUnitLearningUnit extends Schema.CollectionType {
   info: {
     singularName: 'learning-unit';
     pluralName: 'learning-units';
-    displayName: 'learning_unit';
+    displayName: 'Learning unit';
     description: '';
   };
   options: {
@@ -2491,7 +2493,7 @@ export interface ApiUserArticleUserArticle extends Schema.CollectionType {
   info: {
     singularName: 'user-article';
     pluralName: 'user-articles';
-    displayName: 'user article';
+    displayName: 'VB user article';
     description: '';
   };
   options: {
@@ -2536,7 +2538,7 @@ export interface ApiUserProfileUserProfile extends Schema.CollectionType {
   info: {
     singularName: 'user-profile';
     pluralName: 'user-profiles';
-    displayName: 'userProfile';
+    displayName: 'User Profile';
     description: '';
   };
   options: {

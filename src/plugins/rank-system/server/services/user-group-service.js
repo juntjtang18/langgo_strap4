@@ -13,7 +13,7 @@ module.exports = ({ strapi }) => ({
   async listByGroup(groupId) {
     return strapi.entityService.findMany('plugin::rank-system.rs-user-group', {
       filters: { rs_group: { id: groupId } },
-      fields: ['id', 'userid', 'username', 'period_points'],
+      fields: ['id', 'userid', 'username', 'period_points', 'visible_on_ladder'],
       sort: [{ userid: 'asc' }, { id: 'asc' }],
       limit: 1000,
     });
@@ -24,13 +24,16 @@ module.exports = ({ strapi }) => ({
     return rows.length;
   },
 
-  async upsert(userid, username, groupId, periodPoints) {
+  async upsert(userid, username, groupId, periodPoints, visibleOnLadder = null) {
     const existing = await this.getByUserid(userid);
     const data = {
       userid: String(userid),
       username: username || existing?.username || null,
       rs_group: groupId || null,
       period_points: periodPoints || 0,
+      visible_on_ladder: visibleOnLadder == null
+        ? (existing?.visible_on_ladder ?? true)
+        : visibleOnLadder !== false,
     };
 
     if (existing) {

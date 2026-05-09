@@ -6,6 +6,21 @@ module.exports = ({ strapi }) => {
   const levels = () => strapi.plugin('rank-system').service('level');
   const groups = () => strapi.plugin('rank-system').service('group');
 
+  const extractVisibleOnLadder = (eventData) => {
+    const candidates = [
+      eventData.visible_on_ladder,
+      eventData.payload?.visible_on_ladder,
+      eventData.payload?.user?.visible_on_ladder,
+      eventData.payload?.profile?.visible_on_ladder,
+    ];
+
+    for (const value of candidates) {
+      if (typeof value === 'boolean') return value;
+    }
+
+    return null;
+  };
+
   const buildEventPayload = (eventData) => ({
     event_id: eventData.event_id || null,
     event_name: eventData.event_name,
@@ -16,6 +31,7 @@ module.exports = ({ strapi }) => {
     ...(eventData.review ? { review: eventData.review } : {}),
     ...(eventData.article ? { article: eventData.article } : {}),
     ...(eventData.flashcard ? { flashcard: eventData.flashcard } : {}),
+    ...(extractVisibleOnLadder(eventData) != null ? { visible_on_ladder: extractVisibleOnLadder(eventData) } : {}),
     ...(eventData.payload || {}),
   });
 
@@ -102,12 +118,53 @@ module.exports = ({ strapi }) => {
     return { wordCount: 0, articleCount: 0 };
   };
 
+  const syncUserGroupVisibility = async (eventData, username) => {
+    const visibleOnLadder = extractVisibleOnLadder(eventData);
+    if (visibleOnLadder == null) {
+      return {
+        userid: String(eventData.userid),
+        username: username || null,
+        visible_on_ladder: null,
+      };
+    }
+
+    const userGroupService = strapi.plugin('rank-system').service('user-group');
+    const existing = await userGroupService.getByUserid(eventData.userid);
+    if (!existing) {
+      return {
+        userid: String(eventData.userid),
+        username: username || null,
+        visible_on_ladder: visibleOnLadder,
+      };
+    }
+
+    const updated = await userGroupService.upsert(
+      eventData.userid,
+      username || existing.username || null,
+      existing.rs_group?.id || null,
+      existing.period_points || 0,
+      visibleOnLadder
+    );
+
+    return {
+      userid: String(eventData.userid),
+      username: updated?.username || username || null,
+      visible_on_ladder: updated?.visible_on_ladder ?? visibleOnLadder,
+    };
+  };
+
   return {
     async processEvent(eventData) {
       const username = await extractUsername(eventData);
       const eventRecord = await logEvent({ ...eventData, username });
 
       try {
+        if (eventData.event_name === 'user.profile.update') {
+          const result = await syncUserGroupVisibility(eventData, username);
+          await markHandled(eventRecord.id, result);
+          return result;
+        }
+
         const [groupRule, levelRule, pointRule] = await Promise.all([
           rules().loadGroupRule(),
           rules().loadLevelRule(),
@@ -148,6 +205,7 @@ module.exports = ({ strapi }) => {
         const currentGroupRankNo = snapshot.rs_group_rank?.rank_no || 0;
         const groupRankChange = nextGroupRank.rank_no - currentGroupRankNo;
         const groupRankTitle = await rules().findGroupRankTitle(nextGroupRank.id, 'en');
+        const visibleOnLadder = extractVisibleOnLadder(eventData);
 
         const assignment = await groups().assignUserToRankedGroup(
           eventData.userid,
@@ -156,7 +214,8 @@ module.exports = ({ strapi }) => {
           nextGroupRank.id,
           groupRule.group_size,
           nextPeriodPoints,
-          groupRankTitle
+          groupRankTitle,
+          visibleOnLadder
         );
 
         await snapshots().updateSnapshot(snapshot.id, {

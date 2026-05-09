@@ -2,6 +2,7 @@
 
 const RANK_EVENT_NAMES = [
   'user.register',
+  'user.profile.update',
   'flashcard.create',
   'flashcard.review',
   'flashcard.review_tier_promote',
@@ -45,6 +46,7 @@ const adaptPluginEvent = (event) => {
     review: payload.review || null,
     flashcard: payload.flashcard || null,
     article: payload.article || null,
+    payload,
   };
 };
 

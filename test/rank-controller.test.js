@@ -8,7 +8,7 @@ const rankController = require('../src/plugins/rank-system/server/controllers/ra
 function createCtx(userId = 60) {
   return {
     state: {
-      user: userId ? { id: userId } : null,
+      user: userId ? { id: userId, baseLanguage: 'en', username: 'James' } : null,
     },
     query: {},
     body: null,
@@ -46,9 +46,9 @@ test('rank controller getMyLeaderboard returns current group summary and ordered
               async listByGroup(groupId) {
                 assert.equal(groupId, 1);
                 return [
-                  { id: 2, userid: '72', username: 'Vivian', period_points: 120 },
-                  { id: 1, userid: '60', username: 'James', period_points: 146 },
-                  { id: 3, userid: '80', username: 'Aaron', period_points: 120 },
+                  { id: 2, userid: '72', username: 'Vivian', period_points: 120, visible_on_ladder: true },
+                  { id: 1, userid: '60', username: 'James', period_points: 146, visible_on_ladder: true },
+                  { id: 3, userid: '80', username: 'Aaron', period_points: 120, visible_on_ladder: true },
                 ];
               },
             };
@@ -60,15 +60,6 @@ test('rank controller getMyLeaderboard returns current group summary and ordered
     },
     entityService: {
       async findMany(uid, query) {
-        if (uid === 'api::user-profile.user-profile') {
-          assert.deepEqual(query, {
-            filters: { user: 60 },
-            fields: ['id', 'baseLanguage'],
-            limit: 1,
-          });
-          return [{ id: 10, baseLanguage: 'en' }];
-        }
-
         if (uid === 'plugin::rank-system.rs-group-rank-title') {
           assert.deepEqual(query, {
             filters: { rs_group_rank: { id: 20 } },
@@ -138,6 +129,78 @@ test('rank controller getMyLeaderboard returns current group summary and ordered
   });
 });
 
+test('rank controller getMyLeaderboard masks usernames when profile visibility is disabled', async () => {
+  global.strapi = {
+    plugin(name) {
+      assert.equal(name, 'rank-system');
+      return {
+        service(serviceName) {
+          if (serviceName === 'user-group') {
+            return {
+              async getByUserid(userid) {
+                assert.equal(userid, 60);
+                return {
+                  id: 1,
+                  userid: '60',
+                  username: 'James',
+                  period_points: 146,
+                  rs_group: { id: 1 },
+                };
+              },
+              async listByGroup(groupId) {
+                assert.equal(groupId, 1);
+                return [
+                  { id: 2, userid: '72', username: 'Vivian', period_points: 120, visible_on_ladder: false },
+                  { id: 1, userid: '60', username: 'James', period_points: 146, visible_on_ladder: true },
+                ];
+              },
+            };
+          }
+
+          throw new Error(`Unexpected plugin service ${serviceName}`);
+        },
+      };
+    },
+    entityService: {
+      async findMany(uid, query) {
+        if (uid === 'plugin::rank-system.rs-group-rank-title') {
+          return [{ title: 'Starter', locale: 'en' }];
+        }
+
+        throw new Error(`Unexpected findMany uid ${uid}`);
+      },
+
+      async findOne(uid, id) {
+        assert.equal(uid, 'plugin::rank-system.rs-group');
+        assert.equal(id, 1);
+        return {
+          id: 1,
+          group_no: 1,
+          rs_group_rank: { id: 20, rank_no: 1 },
+        };
+      },
+    },
+  };
+
+  const ctx = createCtx(60);
+  await rankController.getMyLeaderboard(ctx);
+
+  assert.deepEqual(ctx.body.data.members, [
+    {
+      userid: '60',
+      username: 'James',
+      period_points: 146,
+      order_in_group: 1,
+    },
+    {
+      userid: '72',
+      username: '******',
+      period_points: 120,
+      order_in_group: 2,
+    },
+  ]);
+});
+
 test('rank controller getMyLeaderboard returns empty payload when the user has no group', async () => {
   global.strapi = {
     plugin(name) {
@@ -159,8 +222,7 @@ test('rank controller getMyLeaderboard returns empty payload when the user has n
     },
     entityService: {
       async findMany(uid) {
-        assert.equal(uid, 'api::user-profile.user-profile');
-        return [{ id: 10, baseLanguage: 'en' }];
+        throw new Error(`Unexpected findMany uid ${uid}`);
       },
     },
   };
@@ -218,15 +280,6 @@ test('rank controller getMeStatus returns period points from the latest snapshot
     },
     entityService: {
       async findMany(uid, query) {
-        if (uid === 'api::user-profile.user-profile') {
-          assert.deepEqual(query, {
-            filters: { user: 60 },
-            fields: ['id', 'baseLanguage'],
-            limit: 1,
-          });
-          return [{ id: 10, baseLanguage: 'en' }];
-        }
-
         if (uid === 'plugin::rank-system.rs-user-snapshot') {
           assert.deepEqual(query, {
             filters: { userid: '60' },

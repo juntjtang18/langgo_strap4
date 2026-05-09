@@ -25,6 +25,10 @@
     },
     "period_points": {
       "type": "integer"
+    },
+    "visible_on_ladder": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

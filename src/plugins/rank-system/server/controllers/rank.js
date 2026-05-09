@@ -25,17 +25,10 @@ async function findTitle(uid, relationField, relationId, locale) {
   );
 }
 
-async function getCurrentUserProfile(userId) {
-  const profiles = await strapi.entityService.findMany(
-    'api::user-profile.user-profile',
-    {
-      filters: { user: userId },
-      fields: ['id', 'baseLanguage'],
-      limit: 1,
-    }
-  );
-
-  return profiles[0] || null;
+function maskLeaderboardUsername(username) {
+  const normalized = String(username || '').trim();
+  const maskLength = Math.min(Math.max(normalized.length, 1), 8);
+  return '*'.repeat(maskLength);
 }
 
 function requireAuthenticatedUser(ctx) {
@@ -216,11 +209,6 @@ module.exports = {
     if (!user) return;
 
     const { id: userId } = user;
-    const profile = await getCurrentUserProfile(userId);
-
-    if (!profile) {
-      return ctx.notFound('No user profile found for the current user.');
-    }
 
     ctx.params = {
       ...ctx.params,
@@ -229,7 +217,7 @@ module.exports = {
 
     ctx.query = {
       ...ctx.query,
-      locale: profile.baseLanguage || 'en',
+      locale: ctx.query?.locale || user.baseLanguage || 'en',
     };
 
     return this.getUserStatus(ctx);
@@ -239,12 +227,7 @@ module.exports = {
     const user = requireAuthenticatedUser(ctx);
     if (!user) return;
 
-    const profile = await getCurrentUserProfile(user.id);
-    if (!profile) {
-      return ctx.notFound('No user profile found for the current user.');
-    }
-
-    const locale = ctx.query?.locale || profile.baseLanguage || 'en';
+    const locale = ctx.query?.locale || user.baseLanguage || 'en';
     const membership = await strapi.plugin('rank-system').service('user-group').getByUserid(user.id);
 
     if (!membership?.rs_group?.id) {
@@ -278,7 +261,9 @@ module.exports = {
       })
       .map((row, index) => ({
         userid: String(row.userid),
-        username: row.username || null,
+        username: row.visible_on_ladder === false
+          ? maskLeaderboardUsername(row.username)
+          : (row.username || null),
         period_points: row.period_points || 0,
         order_in_group: index + 1,
       }));

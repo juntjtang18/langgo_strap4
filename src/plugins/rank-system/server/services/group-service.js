@@ -51,14 +51,20 @@ module.exports = ({ strapi }) => ({
     const snapshotSvc = strapi.plugin('rank-system').service('snapshot');
 
     for (const row of toMove) {
-      await userGroupSvc.upsert(row.userid, row.username, newGroup.id, row.period_points || 0);
+      await userGroupSvc.upsert(
+        row.userid,
+        row.username,
+        newGroup.id,
+        row.period_points || 0,
+        row.visible_on_ladder
+      );
       await snapshotSvc.updateLatestGroup(row.userid, newGroup.id, groupRankId, groupRankTitle);
     }
 
     return newGroup;
   },
 
-  async assignUserToRankedGroup(userid, username, groupRuleId, groupRankId, groupSize, periodPoints, groupRankTitle) {
+  async assignUserToRankedGroup(userid, username, groupRuleId, groupRankId, groupSize, periodPoints, groupRankTitle, visibleOnLadder = null) {
     const userGroupSvc = strapi.plugin('rank-system').service('user-group');
     const existingMembership = await userGroupSvc.getByUserid(userid);
 
@@ -90,7 +96,7 @@ module.exports = ({ strapi }) => ({
       }
     }
 
-    await userGroupSvc.upsert(userid, username, targetGroup.id, periodPoints);
+    await userGroupSvc.upsert(userid, username, targetGroup.id, periodPoints, visibleOnLadder);
     await this.splitGroup(targetGroup.id, groupRuleId, groupRankId, groupSize, groupRankTitle);
 
     const finalMembership = await userGroupSvc.getByUserid(userid);
