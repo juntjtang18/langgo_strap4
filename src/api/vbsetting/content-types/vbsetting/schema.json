@@ -4,7 +4,8 @@
   "info": {
     "singularName": "vbsetting",
     "pluralName": "vbsettings",
-    "displayName": "vbsetting"
+    "displayName": "vb setting",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false

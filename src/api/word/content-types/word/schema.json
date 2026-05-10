@@ -4,7 +4,8 @@
   "info": {
     "singularName": "word",
     "pluralName": "words",
-    "displayName": "word"
+    "displayName": "VB word",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false

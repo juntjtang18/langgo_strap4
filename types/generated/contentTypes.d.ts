@@ -1828,7 +1828,7 @@ export interface ApiPartOfSpeechPartOfSpeech extends Schema.CollectionType {
   info: {
     singularName: 'part-of-speech';
     pluralName: 'part-of-speeches';
-    displayName: 'part of speech';
+    displayName: 'VB part of speech';
     description: '';
   };
   options: {
@@ -1950,7 +1950,7 @@ export interface ApiReviewTireReviewTire extends Schema.CollectionType {
   info: {
     singularName: 'review-tire';
     pluralName: 'review-tires';
-    displayName: 'reviewTire';
+    displayName: 'VB reviewTire';
     description: '';
   };
   options: {
@@ -2044,7 +2044,7 @@ export interface ApiReviewlogReviewlog extends Schema.CollectionType {
   info: {
     singularName: 'reviewlog';
     pluralName: 'reviewlogs';
-    displayName: 'reviewlog';
+    displayName: 'VB reviewlog';
     description: '';
   };
   options: {
@@ -2724,7 +2724,8 @@ export interface ApiVbsettingVbsetting extends Schema.CollectionType {
   info: {
     singularName: 'vbsetting';
     pluralName: 'vbsettings';
-    displayName: 'vbsetting';
+    displayName: 'vb setting';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -2763,7 +2764,8 @@ export interface ApiWordWord extends Schema.CollectionType {
   info: {
     singularName: 'word';
     pluralName: 'words';
-    displayName: 'word';
+    displayName: 'VB word';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -2833,7 +2835,7 @@ export interface ApiWordDefinitionWordDefinition extends Schema.CollectionType {
   info: {
     singularName: 'word-definition';
     pluralName: 'word-definitions';
-    displayName: 'word definition';
+    displayName: 'VB word definition';
     description: '';
   };
   options: {
