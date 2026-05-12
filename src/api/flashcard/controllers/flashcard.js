@@ -199,19 +199,40 @@ module.exports = createCoreController(
 
         if (reviewResult.effective) {
           const eventBus = strapi.plugin('event-bus').service('event-bus');
+          const occurredAt = reviewResult.reviewedAt;
+          const reviewedEvent = {
+            eventId: reviewResult.reviewEvent.eventId,
+            eventType: 'flashcard.reviewed',
+            occurredAt,
+            flashcardId: reviewResult.flashcardId,
+            userId: user.id,
+            username: user.username || user.email || null,
+            result,
+            tierBefore: reviewResult.currentLevel,
+            effective: reviewResult.effective,
+          };
 
-          strapi.log.info('[EventPublisher] publishing event: flashcard.review');
-          eventBus.publish('flashcard.review', reviewResult.reviewEvent, {
-            source: 'flashcard.review',
+          strapi.log.info('[EventPublisher] publishing event: flashcard.reviewed');
+          eventBus.publish('flashcard.reviewed', reviewedEvent, {
+            source: 'flashcard.reviewed',
             metadata: {
               publisher: 'api::flashcard.flashcard.review',
             },
           });
 
           if (reviewResult.tierPromoted) {
-            strapi.log.info('[EventPublisher] publishing event: flashcard.review_tier_promote');
-            eventBus.publish('flashcard.review_tier_promote', reviewResult.reviewEvent, {
-              source: 'flashcard.review',
+            strapi.log.info('[EventPublisher] publishing event: flashcard.review_tier_promoted');
+            eventBus.publish('flashcard.review_tier_promoted', {
+              eventId: `flashcard.review_tier_promoted:${reviewResult.flashcardId}:${user.id}:${occurredAt}`,
+              eventType: 'flashcard.review_tier_promoted',
+              occurredAt,
+              flashcardId: reviewResult.flashcardId,
+              userId: user.id,
+              username: user.username || user.email || null,
+              tierBefore: reviewResult.currentLevel,
+              tierAfter: reviewResult.newLevel,
+            }, {
+              source: 'flashcard.reviewed',
               metadata: {
                 publisher: 'api::flashcard.flashcard.review',
               },
@@ -220,8 +241,15 @@ module.exports = createCoreController(
 
           if (reviewResult.becameRemembered) {
             strapi.log.info('[EventPublisher] publishing event: flashcard.remembered');
-            eventBus.publish('flashcard.remembered', reviewResult.reviewEvent, {
-              source: 'flashcard.review',
+            eventBus.publish('flashcard.remembered', {
+              eventId: `flashcard.remembered:${reviewResult.flashcardId}:${user.id}`,
+              eventType: 'flashcard.remembered',
+              occurredAt,
+              flashcardId: reviewResult.flashcardId,
+              userId: user.id,
+              username: user.username || user.email || null,
+            }, {
+              source: 'flashcard.reviewed',
               metadata: {
                 publisher: 'api::flashcard.flashcard.review',
               },

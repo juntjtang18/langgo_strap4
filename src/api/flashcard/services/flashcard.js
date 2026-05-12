@@ -23,22 +23,19 @@ const buildReviewEvent = ({
   user,
   reviewedAt,
   result,
-  level,
+  tierBefore,
+  tierAfter,
   effective,
-  newlevel,
 }) => ({
-  eventId: `flashcard-review:${flashcardId}:${reviewedAt}:${user.id}`,
-  review: {
-    flashcardId,
-    userId: user.id,
-    userid: String(user.id),
-    username: user.username || user.email || `user-${user.id}`,
-    reviewedAt,
-    result,
-    level,
-    effective,
-    newlevel,
-  },
+  eventId: `flashcard.reviewed:${flashcardId}:${user.id}:${reviewedAt}`,
+  flashcardId,
+  userId: user.id,
+  username: user.username || user.email || `user-${user.id}`,
+  result,
+  tierBefore,
+  tierAfter,
+  effective,
+  occurredAt: reviewedAt,
 });
 
 module.exports = createCoreService('api::flashcard.flashcard', ({ strapi }) => ({
@@ -109,9 +106,9 @@ module.exports = createCoreService('api::flashcard.flashcard', ({ strapi }) => (
         user,
         reviewedAt,
         result,
-        level: currentLevel,
+        tierBefore: currentLevel,
+        tierAfter: newLevel,
         effective,
-        newlevel: newLevel,
       });
 
       await strapi.entityService.create('api::reviewlog.reviewlog', {
@@ -134,6 +131,9 @@ module.exports = createCoreService('api::flashcard.flashcard', ({ strapi }) => (
         tierPromoted: tierRank(newLevel) > tierRank(currentLevel),
         becameRemembered: currentLevel !== 'remembered' && newLevel === 'remembered',
         reviewedAt,
+        currentLevel,
+        newLevel,
+        flashcardId: flashcard.id,
         reviewEvent,
       };
     });

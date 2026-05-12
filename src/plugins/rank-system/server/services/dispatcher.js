@@ -18,47 +18,47 @@ module.exports = ({ strapi }) => ({
   },
 
   async onUserRegister(userid, username = null, eventId = null, payload = {}) {
-    return this.dispatch('user.register', userid, {
+    return this.dispatch('user.registered', userid, {
       ...(username ? { username } : {}),
       ...payload,
     }, username, eventId);
   },
 
   async onUserProfileUpdate(userid, username = null, eventId = null, payload = {}) {
-    return this.dispatch('user.profile.update', userid, {
+    return this.dispatch('user_profile.visibility_updated', userid, {
       ...(username ? { username } : {}),
       ...payload,
     }, username, eventId);
   },
 
   async onFlashcardCreate(userid, flashcardId, username = null, eventId = null, flashcard = null) {
-    return this.dispatch('flashcard.create', userid, {
+    return this.dispatch('flashcard.created', userid, {
       flashcardId,
-      ...(flashcard ? { flashcard } : {}),
+      ...(flashcard || {}),
       ...(username ? { username } : {}),
     }, username, eventId);
   },
 
   async onFlashcardReview(userid, flashcardId, review = null, username = null, eventId = null) {
-    return this.dispatch('flashcard.review', userid, {
+    return this.dispatch('flashcard.reviewed', userid, {
       flashcardId,
-      ...(review ? { review } : {}),
+      ...(review || {}),
       ...(username ? { username } : {}),
     }, username, eventId);
   },
 
   async onFlashcardReviewTierPromote(userid, flashcardId, review = null, username = null, eventId = null) {
-    return this.dispatch('flashcard.review_tier_promote', userid, {
+    return this.dispatch('flashcard.review_tier_promoted', userid, {
       flashcardId,
-      ...(review ? { review } : {}),
+      ...(review || {}),
       ...(username ? { username } : {}),
     }, username, eventId);
   },
 
   async onArticleCreate(userid, articleId, username = null, eventId = null, article = null) {
-    return this.dispatch('article.create', userid, {
+    return this.dispatch('article.created', userid, {
       articleId,
-      ...(article ? { article } : {}),
+      ...(article || {}),
       ...(username ? { username } : {}),
     }, username, eventId);
   },

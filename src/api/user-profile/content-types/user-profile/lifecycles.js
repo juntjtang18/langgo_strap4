@@ -35,15 +35,20 @@ module.exports = {
       return;
     }
 
+    const occurredAt = new Date().toISOString();
+
     strapi
       .plugin('event-bus')
       .service('event-bus')
       .publish(
-        'user.profile.update',
+        'user_profile.visibility_updated',
         {
+          eventId: `user_profile.visibility_updated:${after.user.id}:${occurredAt}`,
+          eventType: 'user_profile.visibility_updated',
+          occurredAt,
           userId: after.user.id,
           username: after.user.username || after.user.email || null,
-          visible_on_ladder: after.visible_on_ladder !== false,
+          visibleOnLadder: after.visible_on_ladder !== false,
         },
         {
           source: 'user-profile.lifecycle',

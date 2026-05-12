@@ -5,12 +5,30 @@ const assert = require('node:assert/strict');
 
 const lifecycles = require('../src/api/user-profile/content-types/user-profile/lifecycles');
 
-test('user-profile lifecycle publishes user.profile.update when visible_on_ladder changes', async () => {
+test('user-profile lifecycle publishes user_profile.visibility_updated when visible_on_ladder changes', async () => {
   const published = [];
+  const RealDate = Date;
   const profiles = new Map([
     [25, { id: 25, visible_on_ladder: false, user: { id: 60, username: 'chinese2', email: 'chinese2@langgo.ca' } }],
   ]);
 
+  global.Date = class extends RealDate {
+    constructor(...args) {
+      if (args.length > 0) return new RealDate(...args);
+      return new RealDate('2026-05-11T00:00:00.000Z');
+    }
+    static now() {
+      return new RealDate('2026-05-11T00:00:00.000Z').valueOf();
+    }
+    static parse(value) {
+      return RealDate.parse(value);
+    }
+    static UTC(...args) {
+      return RealDate.UTC(...args);
+    }
+  };
+
+  try {
   global.strapi = {
     entityService: {
       async findOne(uid, id) {
@@ -46,11 +64,14 @@ test('user-profile lifecycle publishes user.profile.update when visible_on_ladde
 
   assert.deepEqual(published, [
     {
-      eventName: 'user.profile.update',
+      eventName: 'user_profile.visibility_updated',
       payload: {
+        eventId: 'user_profile.visibility_updated:60:2026-05-11T00:00:00.000Z',
+        eventType: 'user_profile.visibility_updated',
+        occurredAt: '2026-05-11T00:00:00.000Z',
         userId: 60,
         username: 'chinese2',
-        visible_on_ladder: true,
+        visibleOnLadder: true,
       },
       options: {
         source: 'user-profile.lifecycle',
@@ -61,6 +82,9 @@ test('user-profile lifecycle publishes user.profile.update when visible_on_ladde
       },
     },
   ]);
+  } finally {
+    global.Date = RealDate;
+  }
 });
 
 test('user-profile lifecycle skips publish when visible_on_ladder is unchanged', async () => {

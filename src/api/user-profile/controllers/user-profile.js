@@ -99,17 +99,22 @@ module.exports = createCoreController(
         const sanitized = await sanitizeUser(strapi, userWithDetails, ctx);
         sanitized.user_profile = formatUserProfile(strapi, userWithDetails.user_profile);
 
-        strapi.log.info('[EventPublisher] publishing event: user.register');
+        const occurredAt = new Date().toISOString();
+        const visibleOnLadder = profileData.visible_on_ladder !== false;
+
+        strapi.log.info('[EventPublisher] publishing event: user.registered');
         strapi
           .plugin('event-bus')
           .service('event-bus')
           .publish(
-            'user.register',
+            'user.registered',
             {
+              eventId: `user.registered:${user.id}`,
+              eventType: 'user.registered',
+              occurredAt,
               userId: user.id,
               username: user.username || user.email || null,
-              email: user.email || null,
-              visible_on_ladder: profileData.visible_on_ladder !== false,
+              visibleOnLadder,
             },
             {
               source: 'user-profile.register',

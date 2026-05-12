@@ -7,23 +7,13 @@ const buildFlashcardCreatedEvent = ({
   flashcardId,
   user,
   createdAt,
-  locale,
-  baseText,
-  targetText,
 }) => ({
-  event: 'flashcard.created',
-  eventId: `flashcard-created:${flashcardId}`,
+  eventId: `flashcard.created:${flashcardId}`,
+  eventType: 'flashcard.created',
   occurredAt: createdAt,
-  flashcard: {
-    flashcardId,
-    userId: user.id,
-    username: user.username || user.email || `user-${user.id}`,
-    email: user.email || null,
-    createdAt,
-    locale: locale || null,
-    baseText: baseText || null,
-    targetText: targetText || null,
-  },
+  flashcardId,
+  userId: user.id,
+  username: user.username || user.email || `user-${user.id}`,
 });
 
 const buildCreateMeta = ({
@@ -300,9 +290,6 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
           flashcardId: flashcard.id,
           user,
           createdAt,
-          locale: finalLocale,
-          baseText: trimmedBase,
-          targetText: trimmedTarget,
         });
 
       } else {
@@ -341,12 +328,12 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       }
 
       if (flashcardCreatedEvent) {
-        strapi.log.info('[EventPublisher] publishing event: flashcard.create');
+        strapi.log.info('[EventPublisher] publishing event: flashcard.created');
         strapi
           .plugin('event-bus')
           .service('event-bus')
-          .publish('flashcard.create', flashcardCreatedEvent, {
-            source: 'word-definition.create',
+          .publish('flashcard.created', flashcardCreatedEvent, {
+            source: 'flashcard.created',
             metadata: {
               publisher: 'api::word-definition.word-definition.create',
             },

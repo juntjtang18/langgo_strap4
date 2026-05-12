@@ -23,13 +23,13 @@ const createHarness = () => {
     profiles: [{ id: 1, user: 8, baseLanguage: 'en' }],
     ebEvents: [],
     eventList: [
-      { id: 1, event_name: 'flashcard.review', points: 1 },
-      { id: 2, event_name: 'article.create', points: 1 },
+      { id: 1, event_name: 'flashcard.reviewed', points: 1 },
+      { id: 2, event_name: 'article.created', points: 1 },
       { id: 3, event_name: 'flashcard.remembered', points: 1 },
     ],
     achievements: [
-      { id: 10, code: 'review-novice', event_name: 'flashcard.review', points: 2, goal: 5 },
-      { id: 11, code: 'writer', event_name: 'article.create', points: 1, goal: 1 },
+      { id: 10, code: 'review-novice', event_name: 'flashcard.reviewed', points: 2, goal: 5 },
+      { id: 11, code: 'writer', event_name: 'article.created', points: 1, goal: 1 },
       { id: 12, code: 'memory-starter', event_name: 'flashcard.remembered', points: 1, goal: 1 },
     ],
     translations: [
@@ -180,16 +180,14 @@ test('achievement plugin subscribes to event bus and increments progress until a
   eventBus.initializeRegistry();
   await strapi.plugin('achievement').service('register-event-subscribers').register();
 
-  assert.deepEqual(eventBus.listSubscribers('flashcard.review'), ['achievement']);
+  assert.deepEqual(eventBus.listSubscribers('flashcard.reviewed'), ['achievement']);
   assert.deepEqual(eventBus.listSubscribers('flashcard.remembered'), ['achievement']);
   assert.ok(logs.some(([, message]) => message === '[Achievement] registered event-bus subscribers'));
 
-  eventBus.publish('flashcard.review', {
-    review: {
-      userId: 8,
-      userName: 'vivian',
-      flashcardId: 2627,
-    },
+  eventBus.publish('flashcard.reviewed', {
+    userId: 8,
+    username: 'vivian',
+    flashcardId: 2627,
   }, {
     source: 'test.flashcard',
   });
@@ -217,12 +215,10 @@ test('achievement plugin subscribes to event bus and increments progress until a
   assert.equal(rememberedAchievement.progress, 0);
   assert.equal(rememberedAchievement.achieved, false);
 
-  eventBus.publish('flashcard.review', {
-    review: {
-      userId: 8,
-      userName: 'vivian',
-      flashcardId: 2627,
-    },
+  eventBus.publish('flashcard.reviewed', {
+    userId: 8,
+    username: 'vivian',
+    flashcardId: 2627,
   }, {
     source: 'test.flashcard',
   });
@@ -232,12 +228,10 @@ test('achievement plugin subscribes to event bus and increments progress until a
   assert.equal(reviewAchievement.progress, 4);
   assert.equal(reviewAchievement.achieved, false);
 
-  eventBus.publish('flashcard.review', {
-    review: {
-      userId: 8,
-      userName: 'vivian',
-      flashcardId: 2627,
-    },
+  eventBus.publish('flashcard.reviewed', {
+    userId: 8,
+    username: 'vivian',
+    flashcardId: 2627,
   }, {
     source: 'test.flashcard',
   });
@@ -256,12 +250,10 @@ test('achievement plugin initializes missing user achievement rows on first matc
   eventBus.initializeRegistry();
   await strapi.plugin('achievement').service('register-event-subscribers').register();
 
-  eventBus.publish('article.create', {
-    article: {
-      userId: 8,
-      userName: 'vivian',
-      articleId: 900,
-    },
+  eventBus.publish('article.created', {
+    userId: 8,
+    username: 'vivian',
+    articleId: 900,
   }, {
     source: 'test.article',
   });
@@ -294,12 +286,9 @@ test('achievement plugin handles flashcard.remembered from AS Event List subscri
   await strapi.plugin('achievement').service('register-event-subscribers').register();
 
   eventBus.publish('flashcard.remembered', {
-    review: {
-      userId: 8,
-      userName: 'vivian',
-      flashcardId: 2627,
-      newlevel: 'remembered',
-    },
+    userId: 8,
+    username: 'vivian',
+    flashcardId: 2627,
   }, {
     source: 'test.flashcard',
   });
@@ -347,7 +336,7 @@ test('achievement controller separates achieved and not achieved lists with loca
       {
         id: 10,
         code: 'review-novice',
-        event_name: 'flashcard.review',
+        event_name: 'flashcard.reviewed',
         icon_name: null,
         points: 2,
         goal: 5,
@@ -368,7 +357,7 @@ test('achievement controller separates achieved and not achieved lists with loca
       {
         id: 11,
         code: 'writer',
-        event_name: 'article.create',
+        event_name: 'article.created',
         icon_name: null,
         points: 1,
         goal: 1,

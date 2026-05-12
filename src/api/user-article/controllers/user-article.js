@@ -6,23 +6,13 @@ const buildArticleCreatedEvent = ({
   userArticleId,
   user,
   createdAt,
-  title,
-  languageCode,
-  wordCount,
 }) => ({
-  event: 'user_article.created',
-  eventId: `user-article-created:${userArticleId}`,
+  eventId: `article.created:${userArticleId}`,
+  eventType: 'article.created',
   occurredAt: createdAt,
-  article: {
-    userArticleId,
-    userId: user.id,
-    username: user.username || user.email || `user-${user.id}`,
-    email: user.email || null,
-    createdAt,
-    title: title || null,
-    languageCode: languageCode || null,
-    wordCount: wordCount ?? null,
-  },
+  articleId: userArticleId,
+  userId: user.id,
+  username: user.username || user.email || `user-${user.id}`,
 });
 
 module.exports = createCoreController('api::user-article.user-article', ({ strapi }) => ({
@@ -65,22 +55,19 @@ module.exports = createCoreController('api::user-article.user-article', ({ strap
         },
       });
 
-      strapi.log.info('[EventPublisher] publishing event: article.create');
+      strapi.log.info('[EventPublisher] publishing event: article.created');
       strapi
         .plugin('event-bus')
         .service('event-bus')
         .publish(
-          'article.create',
+          'article.created',
           buildArticleCreatedEvent({
             userArticleId: article.id,
             user,
             createdAt,
-            title: article.title,
-            languageCode: article.language_code,
-            wordCount: article.word_count,
           }),
           {
-            source: 'user-article.create',
+            source: 'article.created',
             metadata: {
               publisher: 'api::user-article.user-article.create',
             },

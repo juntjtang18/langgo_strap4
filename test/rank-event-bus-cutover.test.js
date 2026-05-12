@@ -44,11 +44,11 @@ const createHarness = () => {
     rsGroupRule: { id: 5, period_days: 7, group_size: 2 },
     rsLevelRule: { id: 6, base_points: 10, increase_points: 10 },
     rsEventList: [
-      { id: 1, event_name: 'flashcard.create', points: 2 },
-      { id: 2, event_name: 'flashcard.review', points: 5 },
-      { id: 3, event_name: 'article.create', points: 3 },
-      { id: 4, event_name: 'flashcard.review_tier_promote', points: 7 },
-      { id: 5, event_name: 'user.register', points: 0 },
+      { id: 1, event_name: 'flashcard.created', points: 2 },
+      { id: 2, event_name: 'flashcard.reviewed', points: 5 },
+      { id: 3, event_name: 'article.created', points: 3 },
+      { id: 4, event_name: 'flashcard.review_tier_promoted', points: 7 },
+      { id: 5, event_name: 'user.registered', points: 0 },
     ],
     rsGroupRanks: [
       { id: 21, rank_no: 2, min_period_points: 10, rs_group_rule: { id: 5 } },
@@ -275,17 +275,19 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
   eventBus.initializeRegistry();
   await strapi.plugin('rank-system').service('register-event-subscribers').register();
 
-  assert.deepEqual(eventBus.listSubscribers('flashcard.review'), ['rank']);
+  assert.deepEqual(eventBus.listSubscribers('flashcard.reviewed'), ['rank']);
   assert.ok(logs.some(([, message]) => message === '[Rank] registered event-bus subscribers'));
 
   const events = [
     {
-      eventName: 'user.register',
+      eventName: 'user.registered',
       payload: {
+        eventId: 'user.registered:8',
+        eventType: 'user.registered',
+        occurredAt: `${getToday()}T11:59:00.000Z`,
         userId: 8,
         username: 'vivian',
-        email: 'vivian@example.com',
-        visible_on_ladder: true,
+        visibleOnLadder: true,
       },
       options: {
         source: 'test.user-profile',
@@ -293,19 +295,14 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       },
     },
     {
-      eventName: 'flashcard.create',
+      eventName: 'flashcard.created',
       payload: {
-        event: 'flashcard.created',
-        eventId: 'flashcard-created:2627',
+        eventId: 'flashcard.created:2627',
+        eventType: 'flashcard.created',
         occurredAt: `${getToday()}T12:00:00.000Z`,
-        flashcard: {
-          flashcardId: 2627,
-          userId: 8,
-          username: 'vivian',
-          locale: 'en',
-          baseText: 'hello',
-          targetText: 'hola',
-        },
+        flashcardId: 2627,
+        userId: 8,
+        username: 'vivian',
       },
       options: {
         source: 'test.word-definition',
@@ -313,19 +310,17 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       },
     },
     {
-      eventName: 'flashcard.review',
+      eventName: 'flashcard.reviewed',
       payload: {
-        review: {
-          flashcardId: 2627,
-          userId: 8,
-          userName: 'vivian',
-          level: 'monthly',
-          result: 'correct',
-          newlevel: 'monthly',
-          effective: true,
-          reviewedAt: `${getToday()}T12:01:00.000Z`,
-        },
         flashcardId: 2627,
+        userId: 8,
+        username: 'vivian',
+        eventId: `flashcard.reviewed:2627:8:${getToday()}T12:01:00.000Z`,
+        eventType: 'flashcard.reviewed',
+        occurredAt: `${getToday()}T12:01:00.000Z`,
+        result: 'correct',
+        tierBefore: 'monthly',
+        effective: true,
       },
       options: {
         source: 'test.flashcard',
@@ -333,19 +328,16 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       },
     },
     {
-      eventName: 'flashcard.review_tier_promote',
+      eventName: 'flashcard.review_tier_promoted',
       payload: {
-        review: {
-          flashcardId: 2627,
-          userId: 8,
-          userName: 'vivian',
-          level: 'daily',
-          result: 'correct',
-          newlevel: 'weekly',
-          effective: true,
-          reviewedAt: `${getToday()}T12:02:00.000Z`,
-        },
         flashcardId: 2627,
+        userId: 8,
+        username: 'vivian',
+        eventId: `flashcard.review_tier_promoted:2627:8:${getToday()}T12:02:00.000Z`,
+        eventType: 'flashcard.review_tier_promoted',
+        occurredAt: `${getToday()}T12:02:00.000Z`,
+        tierBefore: 'daily',
+        tierAfter: 'weekly',
       },
       options: {
         source: 'test.flashcard',
@@ -353,18 +345,14 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       },
     },
     {
-      eventName: 'article.create',
+      eventName: 'article.created',
       payload: {
-        event: 'user_article.created',
-        eventId: 'user-article-created:9001',
+        eventId: 'article.created:9001',
+        eventType: 'article.created',
         occurredAt: `${getToday()}T12:03:00.000Z`,
-        article: {
-          userArticleId: 9001,
-          userId: 8,
-          username: 'vivian',
-          title: 'My article',
-          wordCount: 120,
-        },
+        articleId: 9001,
+        userId: 8,
+        username: 'vivian',
       },
       options: {
         source: 'test.user-article',
@@ -372,11 +360,14 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
       },
     },
     {
-      eventName: 'user.profile.update',
+      eventName: 'user_profile.visibility_updated',
       payload: {
+        eventId: `user_profile.visibility_updated:8:${getToday()}T12:04:00.000Z`,
+        eventType: 'user_profile.visibility_updated',
+        occurredAt: `${getToday()}T12:04:00.000Z`,
         userId: 8,
         username: 'vivian',
-        visible_on_ladder: false,
+        visibleOnLadder: false,
       },
       options: {
         source: 'test.user-profile',
@@ -399,24 +390,24 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
   assert.deepEqual(
     store.rsEvents.map((row) => row.event_name),
     [
-      'user.register',
-      'flashcard.create',
-      'flashcard.review',
-      'flashcard.review_tier_promote',
-      'article.create',
-      'user.profile.update',
+      'user.registered',
+      'flashcard.created',
+      'flashcard.reviewed',
+      'flashcard.review_tier_promoted',
+      'article.created',
+      'user_profile.visibility_updated',
     ]
   );
   assert.ok(store.rsEvents.every((row) => row.status === 'handled'));
   assert.deepEqual(
     logs.filter(([, message]) => message.startsWith('[Rank] handling event: ')).map(([, message]) => message),
     [
-      '[Rank] handling event: user.register',
-      '[Rank] handling event: flashcard.create',
-      '[Rank] handling event: flashcard.review',
-      '[Rank] handling event: flashcard.review_tier_promote',
-      '[Rank] handling event: article.create',
-      '[Rank] handling event: user.profile.update',
+      '[Rank] handling event: user.registered',
+      '[Rank] handling event: flashcard.created',
+      '[Rank] handling event: flashcard.reviewed',
+      '[Rank] handling event: flashcard.review_tier_promoted',
+      '[Rank] handling event: article.created',
+      '[Rank] handling event: user_profile.visibility_updated',
     ]
   );
 
@@ -446,8 +437,8 @@ test('event-bus plugin publishes all active LangGo events to the rank subscriber
     [20, 21]
   );
 
-  const flashcardCreateEvent = store.rsEvents.find((row) => row.event_name === 'flashcard.create');
-  assert.equal(flashcardCreateEvent.payload.flashcard.flashcardId, 2627);
-  const articleCreateEvent = store.rsEvents.find((row) => row.event_name === 'article.create');
-  assert.equal(articleCreateEvent.payload.article.userArticleId, 9001);
+  const flashcardCreateEvent = store.rsEvents.find((row) => row.event_name === 'flashcard.created');
+  assert.equal(flashcardCreateEvent.payload.flashcardId, 2627);
+  const articleCreateEvent = store.rsEvents.find((row) => row.event_name === 'article.created');
+  assert.equal(articleCreateEvent.payload.articleId, 9001);
 });

@@ -8,7 +8,9 @@ module.exports = ({ strapi }) => {
 
   const extractVisibleOnLadder = (eventData) => {
     const candidates = [
+      eventData.visibleOnLadder,
       eventData.visible_on_ladder,
+      eventData.payload?.visibleOnLadder,
       eventData.payload?.visible_on_ladder,
       eventData.payload?.user?.visible_on_ladder,
       eventData.payload?.profile?.visible_on_ladder,
@@ -28,9 +30,6 @@ module.exports = ({ strapi }) => {
     username: eventData.username || null,
     ...(eventData.flashcard_id ? { flashcard_id: eventData.flashcard_id } : {}),
     ...(eventData.article_id ? { article_id: eventData.article_id } : {}),
-    ...(eventData.review ? { review: eventData.review } : {}),
-    ...(eventData.article ? { article: eventData.article } : {}),
-    ...(eventData.flashcard ? { flashcard: eventData.flashcard } : {}),
     ...(extractVisibleOnLadder(eventData) != null ? { visible_on_ladder: extractVisibleOnLadder(eventData) } : {}),
     ...(eventData.payload || {}),
   });
@@ -78,8 +77,6 @@ module.exports = ({ strapi }) => {
     const fromPayload =
       eventData.username ||
       eventData.payload?.username ||
-      eventData.payload?.review?.username ||
-      eventData.payload?.article?.username ||
       null;
 
     if (fromPayload) return fromPayload;
@@ -109,10 +106,10 @@ module.exports = ({ strapi }) => {
       };
     }
 
-    if (eventName === 'flashcard.create') {
+    if (eventName === 'flashcard.created') {
       return { wordCount: 1, articleCount: 0 };
     }
-    if (eventName === 'article.create') {
+    if (eventName === 'article.created') {
       return { wordCount: 0, articleCount: 1 };
     }
     return { wordCount: 0, articleCount: 0 };
@@ -159,7 +156,7 @@ module.exports = ({ strapi }) => {
       const eventRecord = await logEvent({ ...eventData, username });
 
       try {
-        if (eventData.event_name === 'user.profile.update') {
+        if (eventData.event_name === 'user_profile.visibility_updated') {
           const result = await syncUserGroupVisibility(eventData, username);
           await markHandled(eventRecord.id, result);
           return result;

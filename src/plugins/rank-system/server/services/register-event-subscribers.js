@@ -1,34 +1,22 @@
 'use strict';
 
 const RANK_EVENT_NAMES = [
-  'user.register',
-  'user.profile.update',
-  'flashcard.create',
-  'flashcard.review',
-  'flashcard.review_tier_promote',
-  'article.create',
+  'user.registered',
+  'user_profile.visibility_updated',
+  'flashcard.created',
+  'flashcard.reviewed',
+  'flashcard.review_tier_promoted',
+  'article.created',
 ];
 
 const pickUserId = (payload = {}) =>
   payload.userid
   || payload.userId
-  || payload.review?.userid
-  || payload.review?.userId
-  || payload.flashcard?.userid
-  || payload.flashcard?.userId
-  || payload.article?.userid
-  || payload.article?.userId
   || null;
 
 const pickUsername = (payload = {}) =>
   payload.username
   || payload.userName
-  || payload.review?.username
-  || payload.review?.userName
-  || payload.flashcard?.username
-  || payload.flashcard?.userName
-  || payload.article?.username
-  || payload.article?.userName
   || null;
 
 const adaptPluginEvent = (event) => {
@@ -41,11 +29,8 @@ const adaptPluginEvent = (event) => {
     event_id: event.event_id || event.id,
     userid: userid == null ? null : String(userid),
     username,
-    flashcard_id: payload.flashcardId || payload.flashcard?.flashcardId || payload.review?.flashcardId || null,
-    article_id: payload.articleId || payload.article?.articleId || payload.article?.userArticleId || null,
-    review: payload.review || null,
-    flashcard: payload.flashcard || null,
-    article: payload.article || null,
+    flashcard_id: payload.flashcardId || null,
+    article_id: payload.articleId || null,
     payload,
   };
 };
