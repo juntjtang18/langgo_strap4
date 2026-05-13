@@ -84,7 +84,7 @@ test('reviewFlashcard marks becameRemembered when an effective correct review re
   assert.equal(result.effective, true);
   assert.equal(result.tierPromoted, true);
   assert.equal(result.becameRemembered, true);
-  assert.equal(result.reviewEvent.review.newlevel, 'remembered');
+  assert.equal(result.reviewEvent.tierAfter, 'remembered');
   assert.equal(updates.length, 1);
   assert.equal(updates[0].is_remembered, true);
   assert.equal(reviewlogs.length, 1);

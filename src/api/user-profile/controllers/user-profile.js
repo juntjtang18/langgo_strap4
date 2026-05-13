@@ -104,7 +104,6 @@ module.exports = createCoreController(
 
         strapi.log.info('[EventPublisher] publishing event: user.registered');
         strapi
-          .plugin('event-bus')
           .service('event-bus')
           .publish(
             'user.registered',

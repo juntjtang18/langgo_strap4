@@ -2,7 +2,11 @@
 const { keepSubsysWarm } = require('./utils/cron-jobs');
 
 module.exports = {
-  register(/*{ strapi }*/) {},
+  register({ strapi }) {
+    const initEventBusService = require('./services/event-bus');
+    const eventBusService = initEventBusService({ strapi });
+    strapi.container.get('services').set('event-bus', eventBusService);
+  },
 
   async bootstrap({ strapi }) {
     const disableBackgroundTasks =

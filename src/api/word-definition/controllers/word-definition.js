@@ -330,7 +330,6 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
       if (flashcardCreatedEvent) {
         strapi.log.info('[EventPublisher] publishing event: flashcard.created');
         strapi
-          .plugin('event-bus')
           .service('event-bus')
           .publish('flashcard.created', flashcardCreatedEvent, {
             source: 'flashcard.created',

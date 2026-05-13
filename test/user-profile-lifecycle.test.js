@@ -36,16 +36,11 @@ test('user-profile lifecycle publishes user_profile.visibility_updated when visi
         return profiles.get(id) || null;
       },
     },
-    plugin(name) {
-      assert.equal(name, 'event-bus');
+    service(serviceName) {
+      assert.equal(serviceName, 'event-bus');
       return {
-        service(serviceName) {
-          assert.equal(serviceName, 'event-bus');
-          return {
-            publish(eventName, payload, options) {
-              published.push({ eventName, payload, options });
-            },
-          };
+        publish(eventName, payload, options) {
+          published.push({ eventName, payload, options });
         },
       };
     },
@@ -98,14 +93,10 @@ test('user-profile lifecycle skips publish when visible_on_ladder is unchanged',
         return { id: 25, visible_on_ladder: true, user: { id: 60, username: 'chinese2', email: 'chinese2@langgo.ca' } };
       },
     },
-    plugin() {
+    service() {
       return {
-        service() {
-          return {
-            publish(...args) {
-              published.push(args);
-            },
-          };
+        publish(...args) {
+          published.push(args);
         },
       };
     },
