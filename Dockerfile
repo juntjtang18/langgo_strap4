@@ -1,11 +1,18 @@
 # Stage 1: Base image for building dependencies
-FROM node:18-alpine AS build
+FROM node:18-bullseye-slim AS build
 
 # Set working directory
 WORKDIR /app
 
+# Native build deps for packages like sharp. Debian/glibc avoids the musl
+# fallback path that pulls Node headers from unofficial-builds.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 build-essential pkg-config libvips-dev \
+  && rm -rf /var/lib/apt/lists/*
+
 # Copy package files and install dependencies
 COPY package*.json ./
+COPY vendor ./vendor
 
 # Install only production dependencies first to enable better caching
 RUN npm install --omit=dev
@@ -17,7 +24,7 @@ COPY . .
 # RUN npm run build
 
 # Stage 2: Final slim image
-FROM node:18-alpine
+FROM node:18-bullseye-slim
 
 # Set working directory
 WORKDIR /app

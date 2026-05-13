@@ -37,6 +37,9 @@ REVIEWLOG_EVENTS_TOPIC="pointserver-reviewlogs"
 # --- Deployment Steps ---
 echo "--- Deploying version: ${VERSION} ---"
 
+echo "Syncing event-bus-client dependency..."
+./scripts/sync-event-bus-client.sh
+
 echo "Building Docker image: ${IMAGE_NAME}"
 docker build -t "${IMAGE_NAME}" .
 
