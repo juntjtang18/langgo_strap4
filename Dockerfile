@@ -33,5 +33,3 @@ EXPOSE 8080
 
 # Start Strapi in development mode (change to 'start' for production)
 CMD ["npm", "run", "develop"]
-
-
