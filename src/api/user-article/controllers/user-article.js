@@ -57,6 +57,7 @@ module.exports = createCoreController('api::user-article.user-article', ({ strap
 
       strapi.log.info('[EventPublisher] publishing event: article.created');
       strapi
+        .plugin('event-bus')
         .service('event-bus')
         .publish(
           'article.created',

@@ -38,6 +38,7 @@ module.exports = {
     const occurredAt = new Date().toISOString();
 
     strapi
+      .plugin('event-bus')
       .service('event-bus')
       .publish(
         'user_profile.visibility_updated',

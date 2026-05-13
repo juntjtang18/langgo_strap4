@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "as_achievements",
+  "info": {
+    "singularName": "as-achievement",
+    "pluralName": "as-achievements",
+    "displayName": "AS Achievement"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "code": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "event_name": {
+      "type": "string",
+      "required": true
+    },
+    "points": {
+      "type": "integer",
+      "required": true,
+      "default": 1
+    },
+    "goal": {
+      "type": "integer",
+      "required": true
+    },
+    "translations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::achievement.as-achievement-translation",
+      "mappedBy": "achievement"
+    },
+    "user_achievements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::achievement.as-user-achievement",
+      "mappedBy": "achievement"
+    },
+    "icon_name": {
+      "type": "string"
+    }
+  }
+}

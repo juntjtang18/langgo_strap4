@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rs_user_groups",
+  "info": {
+    "singularName": "rs-user-group",
+    "pluralName": "rs-user-groups",
+    "displayName": "RS User Group"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userid": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "rs_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::rank-system.rs-group",
+      "inversedBy": "rs_user_groups"
+    },
+    "period_points": {
+      "type": "integer"
+    },
+    "visible_on_ladder": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

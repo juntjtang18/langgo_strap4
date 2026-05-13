@@ -198,7 +198,7 @@ module.exports = createCoreController(
         );
 
         if (reviewResult.effective) {
-          const eventBus = strapi.service('event-bus');
+          const eventBus = strapi.plugin('event-bus').service('event-bus');
           const occurredAt = reviewResult.reviewedAt;
           const reviewedEvent = {
             eventId: reviewResult.reviewEvent.eventId,
