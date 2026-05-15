@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: langgo_e2e
+    ports:
+      - "${LANGGO_E2E_POSTGRES_PORT:-55432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d langgo_e2e"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  rank-server:
+    build:
+      context: ../langgo-rank-server
+    command: sh -c "rm -f backup/*.sql && npm run start"
+    environment:
+      PORT: 8080
+      LOG_LEVEL: silent
+      RANK_INTERNAL_KEY: test-rank-key
+      RANK_DB_SCHEMA: rank_system
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: langgo_e2e
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_SSL: "false"
+      DATABASE_SCHEMA: public
+      EVENT_BUS_DRIVER: postgres
+      EVENT_BUS_POSTGRES_URL: postgres://postgres:postgres@postgres:5432/langgo_e2e
+      EVENT_BUS_CHANNEL_PREFIX: event_bus
+      RANK_SUBSCRIBE_TO_EVENT_BUS: "true"
+    ports:
+      - "${LANGGO_E2E_RANK_PORT:-18080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  achievement-server:
+    build:
+      context: ../langgo-achievement-server
+    command: sh -c "rm -f backup/*.sql && npm run start"
+    environment:
+      PORT: 8080
+      LOG_LEVEL: silent
+      ACHIEVEMENT_INTERNAL_KEY: test-achievement-key
+      ACHIEVEMENT_DB_SCHEMA: achievement_system
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: langgo_e2e
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_SSL: "false"
+      EVENT_BUS_DRIVER: postgres
+      EVENT_BUS_POSTGRES_URL: postgres://postgres:postgres@postgres:5432/langgo_e2e
+      EVENT_BUS_CHANNEL_PREFIX: event_bus
+    ports:
+      - "${LANGGO_E2E_ACHIEVEMENT_PORT:-18081}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy

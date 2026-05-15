@@ -148,36 +148,6 @@ curl -X 'GET' 'http://localhost:1338/api/flashcard-stat' \
     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYmFzZUxhbmd1YWdlIjoiemgiLCJpYXQiOjE3Nzc4MzE2MzYsImV4cCI6MTc4MDQyMzYzNn0.24cfT7rArNogJYn03Sd1qvghQEbrRflofjcJzSfIdOI" | jq .
 
 
-
-
-  "meta": {
-    "pagination": {
-      "page": 1,
-      "pageSize": 25,
-      "pageCount": 3,
-      "total": 71
-    }
-
-    
-{
-  "data": {
-    "totalCards": 96,
-    "remembered": 0,
-    "dueForReview": 54,
-    "reviewed": null,
-    "hardToRemember": null,
-    "byTier": [
-      {
-        "id": 1,
-        "tier": "new",
-        "display_name": "New Word",
-        "min_streak": 0,
-        "max_streak": 2,
-        "cooldown_hours": 6,
-        "count": 58,
-        "dueCount": 31,
-        "hardToRememberCount": null
-      },
-
-
-
+  curl -X GET "http://localhost:1338/api/achievements-achieved?locale=zh-Hans" \
+    -H "accept: application/json" \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsImJhc2VMYW5ndWFnZSI6InpoLUhhbnMiLCJpYXQiOjE3Nzc1MzM0MzUsImV4cCI6MTc4MDEyNTQzNX0.VyMRJ7BYqY826fytRSsIpM73jmtJfLEMAJCxa--vfGs" | jq .

@@ -40,6 +40,54 @@ echo "--- Deploying version: ${VERSION} ---"
 echo "Syncing event-bus-client dependency..."
 ./scripts/sync-event-bus-client.sh
 
+resolve_cloud_run_url() {
+  local service_name="$1"
+  gcloud run services describe "${service_name}" \
+    --project "${PROJECT_ID}" \
+    --region "${REGION}" \
+    --format='value(status.url)' 2>/dev/null || true
+}
+
+is_local_url() {
+  local value="$1"
+  [[ "${value}" == http://127.0.0.1:* ]] ||
+    [[ "${value}" == http://localhost:* ]] ||
+    [[ "${value}" == https://127.0.0.1:* ]] ||
+    [[ "${value}" == https://localhost:* ]]
+}
+
+resolve_deploy_base_url() {
+  local configured_url="$1"
+  local service_name="$2"
+
+  if [ -n "${configured_url}" ] && ! is_local_url "${configured_url}"; then
+    echo "${configured_url}"
+    return
+  fi
+
+  resolve_cloud_run_url "${service_name}"
+}
+
+RANK_SERVER_BASE_URL="$(resolve_deploy_base_url "${RANK_SERVER_BASE_URL:-}" langgo-rank-server)"
+ACHIEVEMENT_SERVER_BASE_URL="$(resolve_deploy_base_url "${ACHIEVEMENT_SERVER_BASE_URL:-}" achievement-service)"
+RANK_SERVER_INTERNAL_KEY="${RANK_SERVER_INTERNAL_KEY:-${RANK_INTERNAL_KEY:-}}"
+ACHIEVEMENT_SERVER_INTERNAL_KEY="${ACHIEVEMENT_SERVER_INTERNAL_KEY:-${ACHIEVEMENT_INTERNAL_KEY:-}}"
+SUBSYSTEM_PROXY_TIMEOUT_MS="${SUBSYSTEM_PROXY_TIMEOUT_MS:-10000}"
+
+require_proxy_env() {
+  local name="$1"
+  local value="$2"
+  if [ -z "${value}" ]; then
+    echo "Error: ${name} is required for rank/achievement proxy configuration."
+    exit 1
+  fi
+}
+
+require_proxy_env "RANK_SERVER_BASE_URL" "${RANK_SERVER_BASE_URL}"
+require_proxy_env "RANK_SERVER_INTERNAL_KEY or RANK_INTERNAL_KEY" "${RANK_SERVER_INTERNAL_KEY}"
+require_proxy_env "ACHIEVEMENT_SERVER_BASE_URL" "${ACHIEVEMENT_SERVER_BASE_URL}"
+require_proxy_env "ACHIEVEMENT_SERVER_INTERNAL_KEY or ACHIEVEMENT_INTERNAL_KEY" "${ACHIEVEMENT_SERVER_INTERNAL_KEY}"
+
 echo "Building Docker image: ${IMAGE_NAME}"
 docker build -t "${IMAGE_NAME}" .
 
@@ -74,6 +122,11 @@ gcloud run deploy "${SERVICE_NAME}" \
   --set-env-vars "OPENAI_API_KEY=${OPENAI_API_KEY}" \
   --set-env-vars "SUBSYS_BASE_URL=https://langgo-subsys.geniusparentingai.ca" \
   --set-env-vars "SUBSCRIPTION_SERVICE_SECRET=${SUBSCRIPTION_SERVICE_SECRET}" \
+  --set-env-vars "RANK_SERVER_BASE_URL=${RANK_SERVER_BASE_URL}" \
+  --set-env-vars "RANK_SERVER_INTERNAL_KEY=${RANK_SERVER_INTERNAL_KEY}" \
+  --set-env-vars "ACHIEVEMENT_SERVER_BASE_URL=${ACHIEVEMENT_SERVER_BASE_URL}" \
+  --set-env-vars "ACHIEVEMENT_SERVER_INTERNAL_KEY=${ACHIEVEMENT_SERVER_INTERNAL_KEY}" \
+  --set-env-vars "SUBSYSTEM_PROXY_TIMEOUT_MS=${SUBSYSTEM_PROXY_TIMEOUT_MS}" \
   --set-env-vars "GOOGLE_TRANSLATE_API_KEY=${GOOGLE_TRANSLATE_API_KEY}" \
   --set-env-vars "GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}" \
   --set-env-vars "GOOGLE_PUBSUB_PROJECT_ID=${GOOGLE_PUBSUB_PROJECT_ID}" \
