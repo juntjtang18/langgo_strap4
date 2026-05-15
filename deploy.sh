@@ -3,13 +3,26 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Load environment variables from .env
-if [ -f .env ]; then
-    source .env
-else
+load_dotenv_defaults() {
+  if [ ! -f .env ]; then
     echo "Error: .env file not found. Please create .env with required variables."
     exit 1
-fi
+  fi
+
+  while IFS= read -r line; do
+    [[ -z "${line}" || "${line}" =~ ^[[:space:]]*# ]] && continue
+    local key="${line%%=*}"
+    local value="${line#*=}"
+    key="${key#"${key%%[![:space:]]*}"}"
+    key="${key%"${key##*[![:space:]]}"}"
+    [[ -z "${key}" || ! "${key}" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] && continue
+    if [ -z "${!key+x}" ]; then
+      export "${key}=${value}"
+    fi
+  done < .env
+}
+
+load_dotenv_defaults
 
 # --- Versioning Configuration ---
 VERSION_FILE="VERSION"
@@ -73,6 +86,8 @@ ACHIEVEMENT_SERVER_BASE_URL="$(resolve_deploy_base_url "${ACHIEVEMENT_SERVER_BAS
 RANK_SERVER_INTERNAL_KEY="${RANK_SERVER_INTERNAL_KEY:-${RANK_INTERNAL_KEY:-}}"
 ACHIEVEMENT_SERVER_INTERNAL_KEY="${ACHIEVEMENT_SERVER_INTERNAL_KEY:-${ACHIEVEMENT_INTERNAL_KEY:-}}"
 SUBSYSTEM_PROXY_TIMEOUT_MS="${SUBSYSTEM_PROXY_TIMEOUT_MS:-10000}"
+EVENT_BUS_DRIVER="${EVENT_BUS_DRIVER:-postgres}"
+EVENT_BUS_CHANNEL_PREFIX="${EVENT_BUS_CHANNEL_PREFIX:-event_bus}"
 
 require_proxy_env() {
   local name="$1"
@@ -87,6 +102,12 @@ require_proxy_env "RANK_SERVER_BASE_URL" "${RANK_SERVER_BASE_URL}"
 require_proxy_env "RANK_SERVER_INTERNAL_KEY or RANK_INTERNAL_KEY" "${RANK_SERVER_INTERNAL_KEY}"
 require_proxy_env "ACHIEVEMENT_SERVER_BASE_URL" "${ACHIEVEMENT_SERVER_BASE_URL}"
 require_proxy_env "ACHIEVEMENT_SERVER_INTERNAL_KEY or ACHIEVEMENT_INTERNAL_KEY" "${ACHIEVEMENT_SERVER_INTERNAL_KEY}"
+require_proxy_env "EVENT_BUS_POSTGRES_URL" "${EVENT_BUS_POSTGRES_URL:-}"
+
+if [ "${EVENT_BUS_DRIVER}" != "postgres" ]; then
+  echo "Error: EVENT_BUS_DRIVER must be postgres for the current event-bus-client deployment."
+  exit 1
+fi
 
 echo "Building Docker image: ${IMAGE_NAME}"
 docker build -t "${IMAGE_NAME}" .
@@ -131,6 +152,9 @@ gcloud run deploy "${SERVICE_NAME}" \
   --set-env-vars "GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}" \
   --set-env-vars "GOOGLE_PUBSUB_PROJECT_ID=${GOOGLE_PUBSUB_PROJECT_ID}" \
   --set-env-vars "REVIEWLOG_EVENTS_TOPIC=${REVIEWLOG_EVENTS_TOPIC}" \
+  --set-env-vars "EVENT_BUS_DRIVER=${EVENT_BUS_DRIVER}" \
+  --set-env-vars "EVENT_BUS_POSTGRES_URL=${EVENT_BUS_POSTGRES_URL}" \
+  --set-env-vars "EVENT_BUS_CHANNEL_PREFIX=${EVENT_BUS_CHANNEL_PREFIX}" \
   --set-env-vars "DATABASE_CLIENT=${DATABASE_CLIENT}" \
   --set-env-vars "DATABASE_HOST=${DATABASE_HOST}" \
   --set-env-vars "DATABASE_PORT=${DATABASE_PORT}" \
