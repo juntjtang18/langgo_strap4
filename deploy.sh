@@ -125,7 +125,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --allow-unauthenticated \
   --add-cloudsql-instances "${CLOUD_SQL_INSTANCE}" \
   --vpc-connector "${VPC_CONNECTOR}" \
-  --set-env-vars "NODE_ENV=development" \
+  --set-env-vars "NODE_ENV=production" \
   --set-env-vars "CLOUD_SQL_INSTANCE=${CLOUD_SQL_INSTANCE}" \
   --set-env-vars "REDIS_HOST=${REDIS_HOST}" \
   --set-env-vars "REDIS_PORT=${REDIS_PORT}" \

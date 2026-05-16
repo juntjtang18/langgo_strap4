@@ -20,8 +20,8 @@ RUN npm install --omit=dev
 # Copy the rest of the code
 COPY . .
 
-# Optional: build admin panel (for production use)
-# RUN npm run build
+# Build the admin panel at image build time so Cloud Run startup stays light.
+RUN npm run build
 
 # Stage 2: Final slim image
 FROM node:18-bullseye-slim
@@ -33,10 +33,10 @@ WORKDIR /app
 COPY --from=build /app ./
 
 # Add production-only environment variables
-#ENV NODE_ENV=production
+ENV NODE_ENV=production
 
 # Expose Strapi port
 EXPOSE 8080
 
-# Start Strapi in development mode (change to 'start' for production)
-CMD ["npm", "run", "develop"]
+# Start Strapi in production mode
+CMD ["npm", "run", "start"]
