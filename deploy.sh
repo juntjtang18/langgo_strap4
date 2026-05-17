@@ -24,6 +24,35 @@ load_dotenv_defaults() {
 
 load_dotenv_defaults
 
+build_database_postgres_url() {
+  node <<'NODE'
+const encode = encodeURIComponent;
+const user = encode(process.env.DATABASE_USERNAME || '');
+const password = encode(process.env.DATABASE_PASSWORD || '');
+const database = encode(process.env.DATABASE_NAME || '');
+const port = encode(process.env.DATABASE_PORT || '5432');
+const hostValue = process.env.DATABASE_HOST || '';
+if (hostValue.startsWith('/')) {
+  process.stdout.write(`postgresql://${user}:${password}@/${database}?host=${encode(hostValue)}&port=${port}`);
+} else {
+  process.stdout.write(`postgresql://${user}:${password}@${encode(hostValue)}:${port}/${database}`);
+}
+NODE
+}
+
+get_postgres_url_database_name() {
+  node <<'NODE'
+const connectionString = process.env.EVENT_BUS_POSTGRES_URL || '';
+try {
+  const url = new URL(connectionString);
+  process.stdout.write(decodeURIComponent(url.pathname.replace(/^\/+/, '')));
+} catch {
+  const match = connectionString.match(/^postgres(?:ql)?:\/\/(?:[^/@]+@)?\/([^?]+)/);
+  process.stdout.write(match && match[1] ? decodeURIComponent(match[1]) : '');
+}
+NODE
+}
+
 # --- Versioning Configuration ---
 VERSION_FILE="VERSION"
 
@@ -88,6 +117,7 @@ ACHIEVEMENT_SERVER_INTERNAL_KEY="${ACHIEVEMENT_SERVER_INTERNAL_KEY:-${ACHIEVEMEN
 SUBSYSTEM_PROXY_TIMEOUT_MS="${SUBSYSTEM_PROXY_TIMEOUT_MS:-10000}"
 EVENT_BUS_DRIVER="${EVENT_BUS_DRIVER:-postgres}"
 EVENT_BUS_CHANNEL_PREFIX="${EVENT_BUS_CHANNEL_PREFIX:-event_bus}"
+EVENT_BUS_POSTGRES_URL="${EVENT_BUS_POSTGRES_URL:-$(build_database_postgres_url)}"
 
 require_proxy_env() {
   local name="$1"
@@ -102,10 +132,15 @@ require_proxy_env "RANK_SERVER_BASE_URL" "${RANK_SERVER_BASE_URL}"
 require_proxy_env "RANK_SERVER_INTERNAL_KEY or RANK_INTERNAL_KEY" "${RANK_SERVER_INTERNAL_KEY}"
 require_proxy_env "ACHIEVEMENT_SERVER_BASE_URL" "${ACHIEVEMENT_SERVER_BASE_URL}"
 require_proxy_env "ACHIEVEMENT_SERVER_INTERNAL_KEY or ACHIEVEMENT_INTERNAL_KEY" "${ACHIEVEMENT_SERVER_INTERNAL_KEY}"
-require_proxy_env "EVENT_BUS_POSTGRES_URL" "${EVENT_BUS_POSTGRES_URL:-}"
 
 if [ "${EVENT_BUS_DRIVER}" != "postgres" ]; then
   echo "Error: EVENT_BUS_DRIVER must be postgres for the current event-bus-client deployment."
+  exit 1
+fi
+
+EVENT_BUS_DATABASE_NAME="$(get_postgres_url_database_name)"
+if [ "${EVENT_BUS_DATABASE_NAME}" != "${DATABASE_NAME}" ]; then
+  echo "Error: EVENT_BUS_POSTGRES_URL database '${EVENT_BUS_DATABASE_NAME}' must match DATABASE_NAME '${DATABASE_NAME}'."
   exit 1
 fi
 
