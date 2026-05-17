@@ -6,6 +6,30 @@ const { buildDueFlashcardFilters } = require('../services/review-queue');
 
 const REVIEW_SCAN_PAGE_SIZE = 500;
 
+const sanitizeHeaders = (headers = {}) => {
+  const redacted = new Set(['authorization', 'cookie', 'x-api-key', 'x-internal-key']);
+  return Object.fromEntries(
+    Object.entries(headers).map(([key, value]) => [
+      key,
+      redacted.has(String(key).toLowerCase()) ? '[redacted]' : value,
+    ])
+  );
+};
+
+const buildEventRequestContext = (ctx) => ({
+  requestId: ctx.state?.requestId || ctx.request?.id || null,
+  method: ctx.method,
+  path: ctx.path,
+  url: ctx.url,
+  origin: ctx.get?.('origin') || null,
+  referer: ctx.get?.('referer') || null,
+  userAgent: ctx.get?.('user-agent') || null,
+  host: ctx.get?.('host') || null,
+  ip: ctx.ip,
+  ips: ctx.ips,
+  headers: sanitizeHeaders(ctx.headers),
+});
+
 const getTierMembership = (card, tiers, tierById) => {
   if (card.review_tire_id && tierById.has(card.review_tire_id)) {
     return tierById.get(card.review_tire_id);
@@ -218,6 +242,7 @@ module.exports = createCoreController(
             metadata: {
               publisher: 'api::flashcard.flashcard.review',
             },
+            requestContext: buildEventRequestContext(ctx),
           });
 
           if (reviewResult.tierPromoted) {
@@ -236,6 +261,7 @@ module.exports = createCoreController(
               metadata: {
                 publisher: 'api::flashcard.flashcard.review',
               },
+              requestContext: buildEventRequestContext(ctx),
             });
           }
 
@@ -253,6 +279,7 @@ module.exports = createCoreController(
               metadata: {
                 publisher: 'api::flashcard.flashcard.review',
               },
+              requestContext: buildEventRequestContext(ctx),
             });
           }
         }

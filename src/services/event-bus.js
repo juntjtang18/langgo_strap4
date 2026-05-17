@@ -3,9 +3,12 @@
 const { v4: uuidv4 } = require('uuid');
 const { createEventBus } = require('@langgo/event-bus-client');
 
+const PUBLISH_LOG_TABLE = 'public.strapi_event_publish_logs';
+
 module.exports = ({ strapi, eventBusClient } = {}) => {
   const subscribersByEvent = new Map();
   const client = eventBusClient || createClientFromEnv(strapi);
+  let ensurePublishLogTablePromise = null;
 
   const getRegistry = (eventName) => {
     if (!subscribersByEvent.has(eventName)) {
@@ -37,6 +40,83 @@ module.exports = ({ strapi, eventBusClient } = {}) => {
       occurred_at: occurredAt,
       metadata: normalizeMetadata(options.metadata),
     };
+  };
+
+  const safeJson = (value) => {
+    if (value == null) {
+      return {};
+    }
+    try {
+      return JSON.parse(JSON.stringify(value));
+    } catch {
+      return { unserializable: true };
+    }
+  };
+
+  const ensurePublishLogTable = async () => {
+    if (!ensurePublishLogTablePromise) {
+      ensurePublishLogTablePromise = strapi.db.connection.raw(`
+        CREATE TABLE IF NOT EXISTS ${PUBLISH_LOG_TABLE} (
+          id BIGSERIAL PRIMARY KEY,
+          event_id TEXT,
+          event_name TEXT NOT NULL,
+          source TEXT,
+          status TEXT NOT NULL DEFAULT 'accepted',
+          error_message TEXT,
+          payload_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+          metadata_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+          request_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+          publish_ack_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          published_at TIMESTAMPTZ,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+        CREATE INDEX IF NOT EXISTS strapi_event_publish_logs_event_name_idx
+          ON ${PUBLISH_LOG_TABLE} (event_name, created_at DESC);
+        CREATE INDEX IF NOT EXISTS strapi_event_publish_logs_event_id_idx
+          ON ${PUBLISH_LOG_TABLE} (event_id);
+        CREATE INDEX IF NOT EXISTS strapi_event_publish_logs_status_idx
+          ON ${PUBLISH_LOG_TABLE} (status, created_at DESC);
+      `);
+    }
+
+    return ensurePublishLogTablePromise;
+  };
+
+  const insertPublishLog = async (event, requestContext = {}) => {
+    await ensurePublishLogTable();
+    const result = await strapi.db.connection.raw(
+      `INSERT INTO ${PUBLISH_LOG_TABLE}
+        (event_id, event_name, source, status, payload_json, metadata_json, request_json)
+       VALUES (?, ?, ?, 'accepted', ?::jsonb, ?::jsonb, ?::jsonb)
+       RETURNING id`,
+      [
+        event.event_id,
+        event.event_name,
+        event.source,
+        JSON.stringify(safeJson(event.payload)),
+        JSON.stringify(safeJson(event.metadata)),
+        JSON.stringify(safeJson(requestContext)),
+      ]
+    );
+
+    return result.rows?.[0]?.id ?? result[0]?.id ?? null;
+  };
+
+  const updatePublishLog = async (id, status, { ack = {}, errorMessage = null } = {}) => {
+    if (!id) {
+      return;
+    }
+    await strapi.db.connection.raw(
+      `UPDATE ${PUBLISH_LOG_TABLE}
+       SET status = ?,
+           error_message = ?,
+           publish_ack_json = ?::jsonb,
+           published_at = CASE WHEN ? = 'published' THEN NOW() ELSE published_at END,
+           updated_at = NOW()
+       WHERE id = ?`,
+      [status, errorMessage, JSON.stringify(safeJson(ack)), status, id]
+    );
   };
 
   return {
@@ -152,9 +232,19 @@ module.exports = ({ strapi, eventBusClient } = {}) => {
       strapi.log.info(`[EventBus] publishing event: ${event.event_name}`);
 
       setImmediate(() => {
-        client.publish(eventName, event.payload).catch((error) => {
-          strapi.log.error(`[EventBus] publish failed for ${eventName}: ${error.message}`);
-        });
+        (async () => {
+          let publishLogId = null;
+          try {
+            publishLogId = await insertPublishLog(event, options.requestContext);
+            const ack = await client.publish(eventName, event.payload);
+            await updatePublishLog(publishLogId, 'published', { ack });
+          } catch (error) {
+            await updatePublishLog(publishLogId, 'failed', {
+              errorMessage: error instanceof Error ? error.message : String(error),
+            }).catch(() => {});
+            strapi.log.error(`[EventBus] publish failed for ${eventName}: ${error.message}`);
+          }
+        })();
       });
 
       return {
