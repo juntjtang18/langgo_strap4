@@ -193,12 +193,13 @@ gcloud run deploy "${SERVICE_NAME}" \
   --set-env-vars "DATABASE_CLIENT=${DATABASE_CLIENT}" \
   --set-env-vars "DATABASE_HOST=${DATABASE_HOST}" \
   --set-env-vars "DATABASE_PORT=${DATABASE_PORT}" \
+  --set-env-vars "DATABASE_SCHEMA=${DATABASE_SCHEMA}" \
   --set-env-vars "DATABASE_SSL=${DATABASE_SSL}" \
   --set-env-vars "PGPASSWORD=${PGPASSWORD}" \
   --set-env-vars "WORDS_PER_VOCAPAGE=${WORDS_PER_VOCAPAGE}" \
   --set-env-vars "LANGGO_STRAPI4_VERSION=${LANGGO_STRAPI4_VERSION}" \
   --set-env-vars "TARGET_LOCALE=${TARGET_LOCALE}" \
-  --set-env-vars "SHORT_TIME_FOR_REVIEW=flase" \
+  --set-env-vars "SHORT_TIME_FOR_REVIEW=false" \
   --revision-suffix "v${VERSION//./-}"
 
 echo "--- Deployment of ${SERVICE_NAME} version ${VERSION} complete! ---"
