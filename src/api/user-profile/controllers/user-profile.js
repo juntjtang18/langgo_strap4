@@ -10,6 +10,7 @@ const {
   pickUserProfileData,
 } = require('../../../utils/user-profile');
 const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
+const { buildEventId } = require('../../../utils/event-id');
 
 // A helper function to sanitize the output user data
 const sanitizeUser = (strapi, user, ctx) => {
@@ -105,7 +106,7 @@ module.exports = createCoreController(
 
         strapi.log.info('[EventPublisher] publishing event: user.registered');
         await publishEventWithAudit(strapi, 'user.registered', {
-          eventId: `user.registered:${user.id}`,
+          eventId: buildEventId(),
           eventType: 'user.registered',
           occurredAt,
           userId: user.id,

@@ -1,6 +1,7 @@
 'use strict';
 
 const { publishEventWithAudit } = require('../../../../utils/event-publish-audit');
+const { buildEventId } = require('../../../../utils/event-id');
 
 const USER_PROFILE_UID = 'api::user-profile.user-profile';
 
@@ -40,7 +41,7 @@ module.exports = {
     const occurredAt = new Date().toISOString();
 
     await publishEventWithAudit(strapi, 'user_profile.visibility_updated', {
-      eventId: `user_profile.visibility_updated:${after.user.id}:${occurredAt}`,
+      eventId: buildEventId(),
       eventType: 'user_profile.visibility_updated',
       occurredAt,
       userId: after.user.id,

@@ -56,11 +56,13 @@ test('user-profile lifecycle publishes user_profile.visibility_updated when visi
   await lifecycles.afterUpdate(event);
   await new Promise((resolve) => setImmediate(resolve));
 
+  assert.match(published[0].payload.eventId, /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+  delete published[0].payload.eventId;
+
   assert.deepEqual(published, [
     {
       eventName: 'user_profile.visibility_updated',
       payload: {
-        eventId: 'user_profile.visibility_updated:60:2026-05-11T00:00:00.000Z',
         eventType: 'user_profile.visibility_updated',
         occurredAt: '2026-05-11T00:00:00.000Z',
         userId: 60,

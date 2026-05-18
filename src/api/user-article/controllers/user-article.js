@@ -2,13 +2,14 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
+const { buildEventId } = require('../../../utils/event-id');
 
 const buildArticleCreatedEvent = ({
   userArticleId,
   user,
   createdAt,
 }) => ({
-  eventId: `article.created:${userArticleId}`,
+  eventId: buildEventId(),
   eventType: 'article.created',
   occurredAt: createdAt,
   articleId: userArticleId,

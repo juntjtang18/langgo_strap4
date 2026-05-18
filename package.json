@@ -20,7 +20,7 @@
   "dependencies": {
     "@google-cloud/pubsub": "^5.3.0",
     "@google-cloud/translate": "^9.1.0",
-    "@langgo/event-bus-client": "git+https://github.com/juntjtang18/event-bus-client.git",
+    "@langgo/event-bus-client": "file:../event-bus-client",
     "@strapi-community/strapi-provider-upload-google-cloud-storage": "^4.10.5",
     "@strapi/plugin-cloud": "4.15.5",
     "@strapi/plugin-i18n": "4.15.5",

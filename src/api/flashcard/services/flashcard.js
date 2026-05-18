@@ -6,6 +6,7 @@
 
 const { createCoreService } = require('@strapi/strapi').factories;
 const { calculateReviewOutcome } = require('../controllers/review-logic');
+const { buildEventId } = require('../../../utils/event-id');
 
 // Helper: shorten cooldowns for testing in development environment
 const getEffectiveCooldown = (hours) => {
@@ -27,7 +28,7 @@ const buildReviewEvent = ({
   tierAfter,
   effective,
 }) => ({
-  eventId: `flashcard.reviewed:${flashcardId}:${user.id}:${reviewedAt}`,
+  eventId: buildEventId(),
   flashcardId,
   userId: user.id,
   username: user.username || user.email || `user-${user.id}`,

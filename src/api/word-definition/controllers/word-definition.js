@@ -3,13 +3,14 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
+const { buildEventId } = require('../../../utils/event-id');
 
 const buildFlashcardCreatedEvent = ({
   flashcardId,
   user,
   createdAt,
 }) => ({
-  eventId: `flashcard.created:${flashcardId}`,
+  eventId: buildEventId(),
   eventType: 'flashcard.created',
   occurredAt: createdAt,
   flashcardId,

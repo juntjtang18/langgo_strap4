@@ -4,6 +4,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 const { buildDueFlashcardFilters } = require('../services/review-queue');
 const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
+const { buildEventId } = require('../../../utils/event-id');
 
 const REVIEW_SCAN_PAGE_SIZE = 500;
 
@@ -223,7 +224,7 @@ module.exports = createCoreController(
           if (reviewResult.tierPromoted) {
             strapi.log.info('[EventPublisher] publishing event: flashcard.review_tier_promoted');
             await publishEventWithAudit(strapi, 'flashcard.review_tier_promoted', {
-              eventId: `flashcard.review_tier_promoted:${reviewResult.flashcardId}:${user.id}:${occurredAt}`,
+              eventId: buildEventId(),
               eventType: 'flashcard.review_tier_promoted',
               occurredAt,
               flashcardId: reviewResult.flashcardId,
@@ -242,7 +243,7 @@ module.exports = createCoreController(
           if (reviewResult.becameRemembered) {
             strapi.log.info('[EventPublisher] publishing event: flashcard.remembered');
             await publishEventWithAudit(strapi, 'flashcard.remembered', {
-              eventId: `flashcard.remembered:${reviewResult.flashcardId}:${user.id}`,
+              eventId: buildEventId(),
               eventType: 'flashcard.remembered',
               occurredAt,
               flashcardId: reviewResult.flashcardId,
