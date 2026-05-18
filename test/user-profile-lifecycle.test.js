@@ -36,13 +36,11 @@ test('user-profile lifecycle publishes user_profile.visibility_updated when visi
         return profiles.get(id) || null;
       },
     },
-    service(serviceName) {
-      assert.equal(serviceName, 'event-bus');
-      return {
-        publish(eventName, payload, options) {
-          published.push({ eventName, payload, options });
-        },
-      };
+    eventBusClient: {
+      publish(eventName, payload) {
+        published.push({ eventName, payload });
+        return Promise.resolve({ driver: 'test', topic: eventName });
+      },
     },
   };
 
@@ -56,6 +54,7 @@ test('user-profile lifecycle publishes user_profile.visibility_updated when visi
   event.state.before = { id: 25, visible_on_ladder: false, user: { id: 60, username: 'chinese2', email: 'chinese2@langgo.ca' } };
 
   await lifecycles.afterUpdate(event);
+  await new Promise((resolve) => setImmediate(resolve));
 
   assert.deepEqual(published, [
     {
@@ -67,13 +66,6 @@ test('user-profile lifecycle publishes user_profile.visibility_updated when visi
         userId: 60,
         username: 'chinese2',
         visibleOnLadder: true,
-      },
-      options: {
-        source: 'user-profile.lifecycle',
-        metadata: {
-          publisher: 'api::user-profile.user-profile.afterUpdate',
-          profileId: 25,
-        },
       },
     },
   ]);
@@ -93,12 +85,11 @@ test('user-profile lifecycle skips publish when visible_on_ladder is unchanged',
         return { id: 25, visible_on_ladder: true, user: { id: 60, username: 'chinese2', email: 'chinese2@langgo.ca' } };
       },
     },
-    service() {
-      return {
-        publish(...args) {
-          published.push(args);
-        },
-      };
+    eventBusClient: {
+      publish(...args) {
+        published.push(args);
+        return Promise.resolve({ driver: 'test' });
+      },
     },
   };
 

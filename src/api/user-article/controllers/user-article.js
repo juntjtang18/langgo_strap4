@@ -1,6 +1,7 @@
 'use strict';
 
 const { createCoreController } = require('@strapi/strapi').factories;
+const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
 
 const buildArticleCreatedEvent = ({
   userArticleId,
@@ -56,22 +57,16 @@ module.exports = createCoreController('api::user-article.user-article', ({ strap
       });
 
       strapi.log.info('[EventPublisher] publishing event: article.created');
-      strapi
-        .service('event-bus')
-        .publish(
-          'article.created',
-          buildArticleCreatedEvent({
-            userArticleId: article.id,
-            user,
-            createdAt,
-          }),
-          {
-            source: 'article.created',
-            metadata: {
-              publisher: 'api::user-article.user-article.create',
-            },
-          }
-        );
+      await publishEventWithAudit(strapi, 'article.created', buildArticleCreatedEvent({
+        userArticleId: article.id,
+        user,
+        createdAt,
+      }), {
+        source: 'article.created',
+        metadata: {
+          publisher: 'api::user-article.user-article.create',
+        },
+      }, ctx);
 
       return this.transformResponse(article);
     } catch (error) {

@@ -9,6 +9,7 @@ const {
   formatUserProfile,
   pickUserProfileData,
 } = require('../../../utils/user-profile');
+const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
 
 // A helper function to sanitize the output user data
 const sanitizeUser = (strapi, user, ctx) => {
@@ -103,25 +104,19 @@ module.exports = createCoreController(
         const visibleOnLadder = profileData.visible_on_ladder !== false;
 
         strapi.log.info('[EventPublisher] publishing event: user.registered');
-        strapi
-          .service('event-bus')
-          .publish(
-            'user.registered',
-            {
-              eventId: `user.registered:${user.id}`,
-              eventType: 'user.registered',
-              occurredAt,
-              userId: user.id,
-              username: user.username || user.email || null,
-              visibleOnLadder,
-            },
-            {
-              source: 'user-profile.register',
-              metadata: {
-                publisher: 'api::user-profile.user-profile.registerWithProfile',
-              },
-            }
-          );
+        await publishEventWithAudit(strapi, 'user.registered', {
+          eventId: `user.registered:${user.id}`,
+          eventType: 'user.registered',
+          occurredAt,
+          userId: user.id,
+          username: user.username || user.email || null,
+          visibleOnLadder,
+        }, {
+          source: 'user-profile.register',
+          metadata: {
+            publisher: 'api::user-profile.user-profile.registerWithProfile',
+          },
+        }, ctx);
 
         return ctx.send({ jwt, user: sanitized });
 

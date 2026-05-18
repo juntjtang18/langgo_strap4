@@ -2,6 +2,7 @@
 'use strict';
 
 const { createCoreController } = require('@strapi/strapi').factories;
+const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
 
 const buildFlashcardCreatedEvent = ({
   flashcardId,
@@ -329,14 +330,12 @@ module.exports = createCoreController('api::word-definition.word-definition', ({
 
       if (flashcardCreatedEvent) {
         strapi.log.info('[EventPublisher] publishing event: flashcard.created');
-        strapi
-          .service('event-bus')
-          .publish('flashcard.created', flashcardCreatedEvent, {
-            source: 'flashcard.created',
-            metadata: {
-              publisher: 'api::word-definition.word-definition.create',
-            },
-          });
+        await publishEventWithAudit(strapi, 'flashcard.created', flashcardCreatedEvent, {
+          source: 'flashcard.created',
+          metadata: {
+            publisher: 'api::word-definition.word-definition.create',
+          },
+        }, ctx);
       }
       
       return this.transformResponse(

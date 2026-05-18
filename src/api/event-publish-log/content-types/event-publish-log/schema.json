@@ -1,0 +1,87 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_publish_logs",
+  "info": {
+    "singularName": "event-publish-log",
+    "pluralName": "event-publish-logs",
+    "displayName": "Event Publish Log",
+    "description": "Audit rows for events published by Strapi to the event bus."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": true
+    }
+  },
+  "attributes": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_name": {
+      "type": "string",
+      "required": true
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "occurred_at": {
+      "type": "datetime"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "accepted",
+        "failed"
+      ],
+      "default": "accepted",
+      "required": true
+    },
+    "error_message": {
+      "type": "text"
+    },
+    "request_method": {
+      "type": "string"
+    },
+    "request_path": {
+      "type": "string"
+    },
+    "request_host": {
+      "type": "string"
+    },
+    "request_origin": {
+      "type": "string"
+    },
+    "request_user_agent": {
+      "type": "text"
+    },
+    "payload_json": {
+      "type": "json"
+    },
+    "metadata_json": {
+      "type": "json"
+    },
+    "request_json": {
+      "type": "json"
+    },
+    "publish_result_json": {
+      "type": "json"
+    }
+  }
+}

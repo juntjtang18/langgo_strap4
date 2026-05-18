@@ -1,5 +1,7 @@
 'use strict';
 
+const { publishEventWithAudit } = require('../../../../utils/event-publish-audit');
+
 const USER_PROFILE_UID = 'api::user-profile.user-profile';
 
 async function loadProfileWithUser(id) {
@@ -37,25 +39,19 @@ module.exports = {
 
     const occurredAt = new Date().toISOString();
 
-    strapi
-      .service('event-bus')
-      .publish(
-        'user_profile.visibility_updated',
-        {
-          eventId: `user_profile.visibility_updated:${after.user.id}:${occurredAt}`,
-          eventType: 'user_profile.visibility_updated',
-          occurredAt,
-          userId: after.user.id,
-          username: after.user.username || after.user.email || null,
-          visibleOnLadder: after.visible_on_ladder !== false,
-        },
-        {
-          source: 'user-profile.lifecycle',
-          metadata: {
-            publisher: 'api::user-profile.user-profile.afterUpdate',
-            profileId,
-          },
-        }
-      );
+    await publishEventWithAudit(strapi, 'user_profile.visibility_updated', {
+      eventId: `user_profile.visibility_updated:${after.user.id}:${occurredAt}`,
+      eventType: 'user_profile.visibility_updated',
+      occurredAt,
+      userId: after.user.id,
+      username: after.user.username || after.user.email || null,
+      visibleOnLadder: after.visible_on_ladder !== false,
+    }, {
+      source: 'user-profile.lifecycle',
+      metadata: {
+        publisher: 'api::user-profile.user-profile.afterUpdate',
+        profileId,
+      },
+    });
   },
 };

@@ -962,6 +962,65 @@ export interface ApiDifficultyLevelDifficultyLevel
   };
 }
 
+export interface ApiEventPublishLogEventPublishLog
+  extends Schema.CollectionType {
+  collectionName: 'event_publish_logs';
+  info: {
+    singularName: 'event-publish-log';
+    pluralName: 'event-publish-logs';
+    displayName: 'Event Publish Log';
+    description: 'Audit rows for events published by Strapi to the event bus.';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: true;
+    };
+    'content-type-builder': {
+      visible: true;
+    };
+  };
+  attributes: {
+    event_id: Attribute.String;
+    event_name: Attribute.String & Attribute.Required;
+    event_type: Attribute.String;
+    user_id: Attribute.String;
+    username: Attribute.String;
+    source: Attribute.String;
+    publisher: Attribute.String;
+    occurred_at: Attribute.DateTime;
+    status: Attribute.Enumeration<['accepted', 'failed']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'accepted'>;
+    error_message: Attribute.Text;
+    request_method: Attribute.String;
+    request_path: Attribute.String;
+    request_host: Attribute.String;
+    request_origin: Attribute.String;
+    request_user_agent: Attribute.Text;
+    payload_json: Attribute.JSON;
+    metadata_json: Attribute.JSON;
+    request_json: Attribute.JSON;
+    publish_result_json: Attribute.JSON;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::event-publish-log.event-publish-log',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::event-publish-log.event-publish-log',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiFlashcardFlashcard extends Schema.CollectionType {
   collectionName: 'flashcards';
   info: {
@@ -2291,6 +2350,7 @@ declare module '@strapi/types' {
       'api::cefr-syllabus.cefr-syllabus': ApiCefrSyllabusCefrSyllabus;
       'api::conversation.conversation': ApiConversationConversation;
       'api::difficulty-level.difficulty-level': ApiDifficultyLevelDifficultyLevel;
+      'api::event-publish-log.event-publish-log': ApiEventPublishLogEventPublishLog;
       'api::flashcard.flashcard': ApiFlashcardFlashcard;
       'api::flashcard-stat.flashcard-stat': ApiFlashcardStatFlashcardStat;
       'api::grammar-point.grammar-point': ApiGrammarPointGrammarPoint;

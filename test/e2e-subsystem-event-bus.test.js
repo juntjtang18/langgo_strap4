@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 const path = require('node:path');
 const test = require('node:test');
-const createEventBusService = require('../src/services/event-bus');
+const { createEventBus } = require('@langgo/event-bus-client');
 
 const composeFile = path.resolve(__dirname, '../docker-compose.e2e-subsystems.yml');
 const projectName = process.env.LANGGO_E2E_DOCKER_PROJECT || 'langgo-subsystem-e2e';
@@ -251,9 +251,15 @@ test('docker e2e: Strapi event bus reaches rank-server and achievement-server', 
 
     process.env.EVENT_BUS_POSTGRES_URL = `postgres://postgres:postgres@127.0.0.1:${postgresPort}/langgo_e2e`;
     process.env.EVENT_BUS_CHANNEL_PREFIX = 'event_bus';
-    eventBus = createEventBusService({ strapi: createStrapiMock() });
+    eventBus = createEventBus({
+      driver: 'postgres',
+      config: {
+        connectionString: process.env.EVENT_BUS_POSTGRES_URL,
+        channelPrefix: process.env.EVENT_BUS_CHANNEL_PREFIX,
+      },
+    });
 
-    const publishResult = eventBus.publish('flashcard.created', {
+    const publishResult = await eventBus.publish('flashcard.created', {
       eventId,
       eventType: 'flashcard.created',
       occurredAt,
@@ -267,8 +273,7 @@ test('docker e2e: Strapi event bus reaches rank-server and achievement-server', 
       },
     });
 
-    assert.equal(publishResult.accepted, true);
-    assert.equal(publishResult.event.event_id, eventId);
+    assert.equal(publishResult.topic, 'flashcard.created');
 
     const rankResponse = await waitFor(
       () => fetchRankSnapshot(userId),

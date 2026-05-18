@@ -3,32 +3,9 @@
 const { createCoreController } = require('@strapi/strapi').factories;
 const { toFlashcardDbTimestamp } = require('../../../utils/flashcard-datetime');
 const { buildDueFlashcardFilters } = require('../services/review-queue');
+const { publishEventWithAudit } = require('../../../utils/event-publish-audit');
 
 const REVIEW_SCAN_PAGE_SIZE = 500;
-
-const sanitizeHeaders = (headers = {}) => {
-  const redacted = new Set(['authorization', 'cookie', 'x-api-key', 'x-internal-key']);
-  return Object.fromEntries(
-    Object.entries(headers).map(([key, value]) => [
-      key,
-      redacted.has(String(key).toLowerCase()) ? '[redacted]' : value,
-    ])
-  );
-};
-
-const buildEventRequestContext = (ctx) => ({
-  requestId: ctx.state?.requestId || ctx.request?.id || null,
-  method: ctx.method,
-  path: ctx.path,
-  url: ctx.url,
-  origin: ctx.get?.('origin') || null,
-  referer: ctx.get?.('referer') || null,
-  userAgent: ctx.get?.('user-agent') || null,
-  host: ctx.get?.('host') || null,
-  ip: ctx.ip,
-  ips: ctx.ips,
-  headers: sanitizeHeaders(ctx.headers),
-});
 
 const getTierMembership = (card, tiers, tierById) => {
   if (card.review_tire_id && tierById.has(card.review_tire_id)) {
@@ -222,7 +199,6 @@ module.exports = createCoreController(
         );
 
         if (reviewResult.effective) {
-          const eventBus = strapi.service('event-bus');
           const occurredAt = reviewResult.reviewedAt;
           const reviewedEvent = {
             eventId: reviewResult.reviewEvent.eventId,
@@ -237,17 +213,16 @@ module.exports = createCoreController(
           };
 
           strapi.log.info('[EventPublisher] publishing event: flashcard.reviewed');
-          eventBus.publish('flashcard.reviewed', reviewedEvent, {
+          await publishEventWithAudit(strapi, 'flashcard.reviewed', reviewedEvent, {
             source: 'flashcard.reviewed',
             metadata: {
               publisher: 'api::flashcard.flashcard.review',
             },
-            requestContext: buildEventRequestContext(ctx),
-          });
+          }, ctx);
 
           if (reviewResult.tierPromoted) {
             strapi.log.info('[EventPublisher] publishing event: flashcard.review_tier_promoted');
-            eventBus.publish('flashcard.review_tier_promoted', {
+            await publishEventWithAudit(strapi, 'flashcard.review_tier_promoted', {
               eventId: `flashcard.review_tier_promoted:${reviewResult.flashcardId}:${user.id}:${occurredAt}`,
               eventType: 'flashcard.review_tier_promoted',
               occurredAt,
@@ -261,13 +236,12 @@ module.exports = createCoreController(
               metadata: {
                 publisher: 'api::flashcard.flashcard.review',
               },
-              requestContext: buildEventRequestContext(ctx),
-            });
+            }, ctx);
           }
 
           if (reviewResult.becameRemembered) {
             strapi.log.info('[EventPublisher] publishing event: flashcard.remembered');
-            eventBus.publish('flashcard.remembered', {
+            await publishEventWithAudit(strapi, 'flashcard.remembered', {
               eventId: `flashcard.remembered:${reviewResult.flashcardId}:${user.id}`,
               eventType: 'flashcard.remembered',
               occurredAt,
@@ -279,8 +253,7 @@ module.exports = createCoreController(
               metadata: {
                 publisher: 'api::flashcard.flashcard.review',
               },
-              requestContext: buildEventRequestContext(ctx),
-            });
+            }, ctx);
           }
         }
     

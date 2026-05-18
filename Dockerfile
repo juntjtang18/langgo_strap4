@@ -7,12 +7,11 @@ WORKDIR /app
 # Native build deps for packages like sharp. Debian/glibc avoids the musl
 # fallback path that pulls Node headers from unofficial-builds.
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 build-essential pkg-config libvips-dev \
+  && apt-get install -y --no-install-recommends git python3 build-essential pkg-config libvips-dev \
   && rm -rf /var/lib/apt/lists/*
 
 # Copy package files and install dependencies
 COPY package*.json ./
-COPY vendor ./vendor
 
 # Install only production dependencies first to enable better caching
 RUN npm install --omit=dev
